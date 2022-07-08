@@ -31,7 +31,7 @@ services:
         env_file:
           ./environnement/dev.env
         ports:
-          - "${ENV_PORT}:3000"
+          - "${ENV_PORT}:${ENV_PORT}"
 
 
 volumes:
