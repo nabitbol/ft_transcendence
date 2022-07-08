@@ -2,7 +2,7 @@
 
 This project is about creating a website for the mighty Pong contest! 
 
-# QUICK START
+## QUICK START
 
 > git clone https://github.com/nabitbol/ft_transcendence.git
 > cd ft_transcendence
