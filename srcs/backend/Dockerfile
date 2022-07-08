@@ -22,4 +22,4 @@ RUN npm install
 EXPOSE ${ENV_PORT}
 
 # Execute backend command
-CMD [ "npm", "run", "start:prod"]
+CMD [ "npm", "run", "start"]
