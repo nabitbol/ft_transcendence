@@ -4,10 +4,10 @@ This project is about creating a website for the mighty Pong contest!
 
 ## QUICK START
 
-> git clone https://github.com/nabitbol/ft_transcendence.git
-> cd ft_transcendence
-> create ./environnement/you_file_name.env check templates [here](https://github.com/nabitbol/ft_transcendence/notes/env_template.md)
-> make
+- git clone https://github.com/nabitbol/ft_transcendence.git
+- cd ft_transcendence
+- create ./environnement/you_file_name.env check templates [here](https://github.com/nabitbol/ft_transcendence/notes/env_template.md)
+- make
 
 ## RUN THE PROJECT
 
