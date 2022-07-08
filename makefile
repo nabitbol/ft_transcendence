@@ -8,6 +8,8 @@ Env_flag = ./environnement/dev.env
 
 all: up
 
+restart: down up ps
+
 up:
 	docker-compose -f $(compose_file) --env-file $(Env_flag) up -d --build
 
@@ -19,6 +21,9 @@ stop:
 
 down:
 	docker-compose -f $(compose_file) --env-file $(Env_flag) down
+	
+ps:
+	docker-compose -f $(compose_file) --env-file $(Env_flag) ps
 
 images:
 	docker images
@@ -27,11 +32,6 @@ clean: down
 	docker container prune
 
 fclean: clean
-	docker rmi pgadmin
-	docker rmi postgres
-	docker rmi backend
-	docker rmi node:16
-	docker volume rm pgadmin
-	docker volume rm postgres
+	zsh fclean.sh
 
 re: fclean all
