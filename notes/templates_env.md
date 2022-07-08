@@ -1,15 +1,15 @@
-# adminer.env
+# adminer
 
-PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
-PGADMIN_DEFAULT_PASSWORD=psd
-PGADMIN_LISTEN_PORT=80
+> PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
+> PGADMIN_DEFAULT_PASSWORD=psd
+> PGADMIN_LISTEN_PORT=80
 
-# data_base.env
+# data_base
 
-ENV_HOST=0.0.0.0
-ENV_PORT=5555
+> POSTGRES_PASSWORD=postgres
+> POSTGRES_USER=postgres
 
-# backend.env
+# backend
 
-POSTGRES_PASSWORD=postgres
-POSTGRES_USER=postgres
+> ENV_HOST=127.0.0.1
+> ENV_PORT=3000
