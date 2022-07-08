@@ -20,3 +20,9 @@ This project is about creating a website for the mighty Pong contest!
 
 > Access to your app by going to **hostname:port**
 > Access the adminer by going to **hostname:15432** for more informations click [here](https://github.com/nabitbol/ft_transcendence/notes/adminer.md)
+
+## HOW IT WORKS
+
+### DATA
+
+![ft_transcendence_data](./ressources/ft_transcendence_data.png)
