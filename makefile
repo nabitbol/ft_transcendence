@@ -1,6 +1,10 @@
-compose_file = ./srcs/docker-compose.yml
+# ---------------------------------------------------------------------------- #
+#                               ft_transcendence                               #
+# ---------------------------------------------------------------------------- #
 
-Env_flag = ./environnement/*.env
+compose_file = ./docker-compose.yml
+
+Env_flag = ./environnement/dev.env
 
 all: up
 
