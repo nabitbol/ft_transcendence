@@ -3,29 +3,29 @@
 # DEPLOYEMENT
 
 > You can deploy the application using `docker-compose up -d`
-![deployement image](../ressources/docker-compose-up.png)
+![deployement image](../assets/docker-compose-up.png)
 > Then check the containers status using `docker-compose ps`
-![container status](../ressources/docker-compose-ps.png)
+![container status](../assets/docker-compose-ps.png)
 
 # LOGIN
 
 > Now open your web browser and go to the **hostname:15432** you would get the login page
-![pgadmin login](../ressources/pgadmin-login.png)
+![pgadmin login](../assets/pgadmin-login.png)
 > The fill the fields with your `PGADMIN_EMAIL` and `PGADMIN_PASSWORD`
 
 # ADD DATABASE
 
 > Click Add New Server under Quick Links
-![add new server](../ressources/add-new-server.png)
+![add new server](../assets/add-new-server.png)
 
 > Enter a **Name** the value can be anything
-![server name](../ressources/server-name.png)
+![server name](../assets/server-name.png)
 
 > Go under **Connection** and enter the **Host name/adress**, **Username** and the **Password**
 > - For Host name/address, the value is the Docker Compose database service name, in our case is postgres.
 > - For the **Username** use the one store in your environnement variable `POSTGRES_USER`
 > - Same for the **Password** `POSTGRES_PASSWORD`
-![add database](../ressources/add-connection.png)
+![add database](../assets/add-connection.png)
 
 > And click Save to finish. After you can get access to the database from the sidebar.
-![add database](../ressources/database-dashboard.png)
+![add database](../assets/database-dashboard.png)

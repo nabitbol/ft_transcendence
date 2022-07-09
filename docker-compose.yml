@@ -5,20 +5,34 @@ services:
         image: postgres:12.3-alpine
         restart: always
         env_file:
-          ./data_base.env
+          ./environnement/dev.env
         volumes:
             - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
 
     pgadmin:
         image: dpage/pgadmin4:4.23
         env_file:
-          ./adminer.env
+          ./environnement/dev.env
         ports:
             - 15432:80
         volumes:
             - pgadmin:/var/home/noam/Documents/web/todo.app/pgadmin
         depends_on:
             - postgres
+
+    backend:
+        container_name: backend
+        build:
+          dockerfile: ./Dockerfile
+          context: ./srcs/backend
+          args:
+            - ENV_HOST=${ENV_HOST}
+            - ENV_PORT=${ENV_PORT}
+        env_file:
+          ./environnement/dev.env
+        ports:
+          - "${ENV_PORT}:${ENV_PORT}"
+
 
 volumes:
     postgres:
