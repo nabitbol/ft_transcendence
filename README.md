@@ -6,7 +6,7 @@ This project is about creating a website for the mighty Pong contest!
 
 ```bash
 git clone https://github.com/nabitbol/ft_transcendence.git && cd ft_transcendence
-create ./environnement/you_file_name.env check templates [here](https://github.com/nabitbol/ft_transcendence/notes/templates_env.md)
+mkdir environnement && cat notes/templates_env.md > ./environnement/dev.env
 make
 ```
 
