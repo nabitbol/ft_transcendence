@@ -8,6 +8,8 @@ services:
           ./environnement/dev.env
         volumes:
             - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+        ports:
+          - ${POSTGRES_ENV_PORT}:${POSTGRES_ENV_PORT}
 
     pgadmin:
         image: dpage/pgadmin4:4.23
