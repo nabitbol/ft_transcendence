@@ -22,7 +22,5 @@ RUN npm install
 # Expose the port in the container
 EXPOSE ${ENV_PORT}
 
-RUN postgres -u root < init.sql
-
 # Execute backend command
 CMD [ "npm", "run", "start"]
