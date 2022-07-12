@@ -3,12 +3,14 @@ version: "3"
 services:
     postgres:
         image: postgres:12.3-alpine
-        restart: always
         env_file:
           ./environnement/dev.env
         volumes:
-            - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
-
+          - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+        ports:
+          - ${POSTGRES_ENV_PORT}:${POSTGRES_ENV_PORT}
+        restart: always
+  
     pgadmin:
         image: dpage/pgadmin4:4.23
         env_file:
@@ -32,7 +34,6 @@ services:
           ./environnement/dev.env
         ports:
           - "${ENV_PORT}:${ENV_PORT}"
-
 
 volumes:
     postgres:
