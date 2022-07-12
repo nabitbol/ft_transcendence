@@ -12,7 +12,7 @@ services:
         restart: always
   
     pgadmin:
-        image: dpage/pgadmin4:4.23
+        image: dpage/pgadmin4:6.11
         env_file:
           ./environnement/dev.env
         ports:
@@ -27,9 +27,6 @@ services:
         build:
           dockerfile: ./Dockerfile
           context: ./srcs/backend
-          args:
-            - ENV_HOST=${ENV_HOST}
-            - ENV_PORT=${ENV_PORT}
         env_file:
           ./environnement/dev.env
         ports:

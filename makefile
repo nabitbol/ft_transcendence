@@ -29,9 +29,9 @@ images:
 	docker images
 
 clean: down
-	bash clean.sh
+	docker container prune
 
 fclean: clean
-	docker container prune
+	bash clean.sh
 
 re: fclean all
