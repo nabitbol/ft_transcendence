@@ -23,6 +23,8 @@ printf $CYAN"Delete pgadmin image...$RESET\n"
 docker rmi pgadmin 2>&1 >/dev/null
 printf $BOLDGREEN"Delete postgres image...$RESET\n"
 docker rmi postgres 2>&1 >/dev/null
+printf $BOLDYELLOW"Delete frontend image...$RESET\n"
+docker rmi frontend 2>&1 >/dev/null
 printf $BOLDRED"Delete backend image...$RESET\n"
 docker rmi backend 2>&1 >/dev/null
 printf $BOLDYELLOW"Delete node:16 image...$RESET\n"

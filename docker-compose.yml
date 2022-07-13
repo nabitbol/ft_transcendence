@@ -30,7 +30,17 @@ services:
         env_file:
           ./environnement/dev.env
         ports:
-          - "${ENV_PORT}:${ENV_PORT}"
+          - "${BACK_ENV_PORT}:${BACK_ENV_PORT}"
+    
+    frontend:
+        container_name: frontend
+        build:
+          dockerfile: ./Dockerfile
+          context: ./srcs/frontend
+        env_file:
+          ./environnement/dev.env
+        ports:
+          - "${PORT}:${PORT}"
 
 volumes:
     postgres:
