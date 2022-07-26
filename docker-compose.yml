@@ -1,16 +1,24 @@
 version: "3"
 
+networks:
+  isolation-network:
+    driver: bridge
+
 services:
     postgres:
         image: postgres:12.3-alpine
-        restart: always
         env_file:
           ./environnement/dev.env
         volumes:
-            - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
-
+          - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+        ports:
+          - ${POSTGRES_ENV_PORT}:${POSTGRES_ENV_PORT}
+        restart: always
+        networks:
+          - isolation-network
+  
     pgadmin:
-        image: dpage/pgadmin4:4.23
+        image: dpage/pgadmin4:6.11
         env_file:
           ./environnement/dev.env
         ports:
@@ -25,14 +33,28 @@ services:
         build:
           dockerfile: ./Dockerfile
           context: ./srcs/backend
-          args:
-            - ENV_HOST=${ENV_HOST}
-            - ENV_PORT=${ENV_PORT}
+        expose:
+          - "${BACK_ENV_PORT}"
         env_file:
           ./environnement/dev.env
         ports:
-          - "${ENV_PORT}:${ENV_PORT}"
-
+          - "${BACK_ENV_PORT}:${BACK_ENV_PORT}"
+        networks:
+          - isolation-network
+    
+    frontend:
+        container_name: frontend
+        build:
+          dockerfile: ./Dockerfile
+          context: ./srcs/frontend
+        env_file:
+          ./environnement/dev.env
+        expose:
+          - "${PORT}"
+        ports:
+          - "${PORT}:${PORT}"
+        networks:
+          - isolation-network
 
 volumes:
     postgres:

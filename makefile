@@ -32,6 +32,6 @@ clean: down
 	docker container prune
 
 fclean: clean
-	zsh fclean.sh
+	bash clean.sh
 
 re: fclean all

@@ -1,17 +1,12 @@
 # ---------------------------------------------------------------------------- #
-#                                    Backend                                   #
+#                                    Frontend                                   #
 # ---------------------------------------------------------------------------- #
 
 # Deploy form node 16 image
-FROM node:16
-
-# Get the env vcariables
-ENV ENV_HOST 127.0.0.1
-ENV ENV_PORT 3000
-ENV POSTGRES_ENV_PORT 5432
+FROM node:13.12.0-alpine
 
 # Create the app directory
-WORKDIR /var/home/ft_transcendence/srcs/backend/app/
+WORKDIR /var/home/ft_transcendence/srcs/frontend/app/
 
 # Copy the porject files
 COPY ./app .
@@ -20,7 +15,7 @@ COPY ./app .
 RUN npm install
 
 # Expose the port in the container
-EXPOSE ${BACK_ENV_PORT}
+EXPOSE ${PORT}
 
 # Execute backend command
 CMD [ "npm", "run", "start"]
