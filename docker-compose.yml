@@ -1,5 +1,9 @@
 version: "3"
 
+networks:
+  isolation-network:
+    driver: bridge
+
 services:
     postgres:
         image: postgres:12.3-alpine
@@ -10,6 +14,8 @@ services:
         ports:
           - ${POSTGRES_ENV_PORT}:${POSTGRES_ENV_PORT}
         restart: always
+        networks:
+          - isolation-network
   
     pgadmin:
         image: dpage/pgadmin4:6.11
@@ -27,10 +33,14 @@ services:
         build:
           dockerfile: ./Dockerfile
           context: ./srcs/backend
+        expose:
+          - "${BACK_ENV_PORT}"
         env_file:
           ./environnement/dev.env
         ports:
           - "${BACK_ENV_PORT}:${BACK_ENV_PORT}"
+        networks:
+          - isolation-network
     
     frontend:
         container_name: frontend
@@ -39,8 +49,12 @@ services:
           context: ./srcs/frontend
         env_file:
           ./environnement/dev.env
+        expose:
+          - "${PORT}"
         ports:
           - "${PORT}:${PORT}"
+        networks:
+          - isolation-network
 
 volumes:
     postgres:
