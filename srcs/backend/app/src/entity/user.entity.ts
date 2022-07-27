@@ -6,6 +6,9 @@ export class User {
   user_id: number;
 
   @Column()
+  user_status: number;
+
+  @Column()
   user_mail: string;
 
   @Column()
@@ -15,5 +18,5 @@ export class User {
   user_JWT: string;
 
   @Column()
-  user_status: number;
+  user_password: string;
 }
