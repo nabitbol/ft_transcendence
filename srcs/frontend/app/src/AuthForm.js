@@ -1,25 +1,28 @@
 import React, {Component} from 'react'
+import './index.css';
 
 class AuthForm extends Component
 {
 	initialState = {
-		user_name: '',
+		user_mail: '',
+		user_pseudo: '',
 		user_password: '',
 	}
 
 	state = this.initialState
 
 	render() {
-		const { user_name, user_password } = this.state;
+		const { user_mail, user_pseudo, user_password} = this.state;
 
 		return (
+		<div>
 		  <form>
-			<label htmlFor="user_name">Username</label>
+			<label htmlFor="user_pseudo">Username</label>
 			<input
 			  type="text"
-			  name="user_name"
-			  id="user_name"
-			  value={user_name}
+			  name="user_pseudo"
+			  id="user_pseudo"
+			  value={user_pseudo}
 			  onChange={this.handleChange} />
 			<p/>
 			<label htmlFor="user_password">Password</label>
@@ -30,16 +33,23 @@ class AuthForm extends Component
 			  value={user_password}
 			  onChange={this.handleChange} />
 			<p/>
-			<input className='button-input'type="button"value="Sign in" onClick={this.submitAuthForm} />
+			<label htmlFor="user_mail">Email</label>
+			<input
+			  type="text"
+			  name="user_mail"
+			  id="user_mail"
+			  value={user_mail}
+			  onChange={this.handleChange} />
+			<p/>
+			<input className='button-input'type="button"value="Register" onClick={() => { this.submitForm(); this.props.closeBackdrop();}} />
 		  </form>
+		</div>
 		);
 	}
 
-	submitAuthForm = () => {
-		this.props.SignIn(this.state);
-		this.setState({
-			user_password: ''
-		})
+	submitForm = () => {
+		this.props.register(this.state);
+		this.setState(this.initialState)
 	}
 
 	handleChange = (event) => {

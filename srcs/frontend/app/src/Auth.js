@@ -1,21 +1,25 @@
 import React from 'react';
-import AuthForm from './AuthForm';
+import AuthLogin from './AuthLogin';
+import AuthRegister from './AuthRegister';
 import { Component } from "react";
 import './index.css';
 import axios from 'axios'
 
 class Auth extends Component {
 
-	SignIn = () => {
+	signIn = (user_info) => {
+		axios.post('http://localhost:3333/auth/login', user_info)
+		.then(response => {
+		  console.log(response);
+		  console.log(response.data);
+		})
+		.catch(error => {
+			console.log(error)
+		})
+	}
 
-		const user_info = {
-			user_mail: 'test',// this.state.user_mail ,
-			user_pseudo: 'test',// this.state.user_pseudo ,
-			user_JWT: 'test',// this.state.user_JWT ,
-			user_status: 1,// this.state.user_status ,
-		};
-		
-		axios.post('http://localhost:3333', user_info)
+	register = (user_info) => {
+		axios.post('http://localhost:3333/auth/register', user_info)
 		.then(response => {
 		  console.log(response);
 		  console.log(response.data);
@@ -28,7 +32,8 @@ class Auth extends Component {
 	render() { 
 		return (
 			<div>
-				<AuthForm SignIn={this.SignIn}/>
+				<AuthLogin signIn={this.signIn}/>
+				<AuthRegister register={this.register}/>
 			</div>
 		)
 	}
