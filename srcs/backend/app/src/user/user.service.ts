@@ -37,4 +37,9 @@ export class UserService {
 		retUserDto.user_status = user.user_status;
 		return (retUserDto);
 	}
+
+	removeUser(id: string)
+	{
+		this.userRepository.delete(id);
+	}
 }
