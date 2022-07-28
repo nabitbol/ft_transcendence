@@ -7,17 +7,18 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
 
-	constructor(
+	constructor
+	(
 		@InjectRepository(User)
 		private userRepository: Repository<User>
 	) {}
 
-	getAll()
+	async getAll(): Promise<UserDto[] | undefined> 
 	{
-		return this.userRepository.find();
+		return await this.userRepository.find();
 	}
 
-	async createUser(userDto: UserDto)
+	async createUser(userDto: UserDto) : Promise<UserDto | undefined> 
 	{
 		const user: User = new User();
 
@@ -25,6 +26,7 @@ export class UserService {
 		user.user_pseudo = userDto.user_pseudo;
 		user.user_JWT = userDto.user_JWT;
 		user.user_status = userDto.user_status;
+		user.user_password = 'crypted' + userDto.user_password + 'crypted';
 
 		await this.userRepository.save(user);
 
@@ -38,8 +40,24 @@ export class UserService {
 		return (retUserDto);
 	}
 
-	removeUser(id: string)
+	async findByUsername(pseudo: string) : Promise<UserDto | undefined> 
 	{
-		this.userRepository.delete(id);
+		return await this.userRepository.findOne({ where:{ user_pseudo: pseudo}});
+	}
+
+	async findById(id: number) : Promise<UserDto | undefined> 
+	{
+		return await this.userRepository.findOne({ where:{ user_id: id}});
+	}
+
+	async removeUser(id: number) : Promise<string> 
+	{
+		const user = await this.findById(id);
+		if(user)
+		{
+			this.userRepository.remove(user);
+			return ('User '+ id +' removed successfully');
+		}
+		return ('User '+ id +' doesnt exist !');
 	}
 }

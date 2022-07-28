@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Delete, Param } from '@nestjs/common';
 import { UserDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
 
-@Controller()
+@Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
@@ -11,16 +11,27 @@ export class UserController {
 		return this.userService.getAll();
 	}
 
-	@Post()
+	@Post('create')
 	createUser(@Body() userDto: UserDto)
 	{
 		return this.userService.createUser(userDto);
 	}
 
-	@Delete(':id')
-	RemoveTask(@Param('id') id: string)
+	@Post('name_find')
+	findByUsername(@Body('user_pseudo') user_pseudo: string)
 	{
-	  this.userService.removeUser(id);
-	  return ('User removed successfully');
+		return this.userService.findByUsername(user_pseudo);
+	}
+
+	@Post('id_find')
+	findById(@Body('user_id') user_id: number)
+	{
+		return this.userService.findById(user_id);
+	}
+
+	@Delete('delete')
+	RemoveUser(@Body('user_id') user_id: number)
+	{
+		return this.userService.removeUser(user_id);
 	} 
 }

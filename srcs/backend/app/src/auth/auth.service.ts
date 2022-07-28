@@ -5,18 +5,30 @@ import { RegisterDto } from 'src/dto/register.dto';
 import { LoginDto } from 'src/dto/login.dto';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
 
 	constructor(
 		@InjectRepository(User)
-		private userRepository: Repository<User>
+		private userRepository: Repository<User>,
+		private usersService: UserService,
 	) {}
 
 	login(loginDto: LoginDto)
 	{
 		return this.userRepository.find();
+	}
+
+	async validateUser(username: string, pass: string): Promise<any> 
+	{
+		/*const user: UserDto = await this.usersService.findByUsername(username);
+		if (user && user.user_password === pass) {
+		  const { user_password, ...result } = user;
+		  return result;
+		}*/
+		return null;
 	}
 
 	async register(registerDto: RegisterDto)
