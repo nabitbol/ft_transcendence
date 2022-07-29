@@ -26,7 +26,7 @@ export class UserService {
 		user.user_pseudo = userDto.user_pseudo;
 		user.user_JWT = userDto.user_JWT;
 		user.user_status = userDto.user_status;
-		user.user_password = 'crypted' + userDto.user_password + 'crypted';
+		user.user_password = userDto.user_password;
 
 		await this.userRepository.save(user);
 

@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, UseGuards, Request } from '@nestjs/common';
 import { UserDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
@@ -33,5 +35,10 @@ export class UserController {
 	RemoveUser(@Body('user_id') user_id: number)
 	{
 		return this.userService.removeUser(user_id);
-	} 
+	}
+
+	@Get('profile')
+	getProfile(@Request() req) {
+	  return req.user;
+	}
 }
