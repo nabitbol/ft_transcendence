@@ -1,13 +1,14 @@
-import './index.css';
 import { Component } from 'react';
-import Auth from './Auth.js'
+import Login from './components/Login.component'
+import { Route, Routes } from 'react-router-dom'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {
 	render() {  
 		return (
-		<div>
-			<Auth />
-		</div>
+		<Routes>
+			<Route path='/' element={<Login />}/>
+		</Routes>
 		)
 	}
 }
