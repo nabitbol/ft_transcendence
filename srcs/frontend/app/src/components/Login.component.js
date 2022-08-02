@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import AuthService from "../auth/auth.service";
@@ -14,91 +15,88 @@ const required = value => {
   }
 };
 
-export default class Login extends Component {
-	
-	initialState = {
-		user_pseudo: "",
-		user_password: "",
-	};
+export default function Login() {
 
-	state = this.initialState;
+  let navigate = useNavigate();
+  const form = useRef();
+  const checkBtn = useRef();
+  const [user_pseudo, setUserPseudo] = useState("");
+  const [user_password, setUserPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-	form;
-	onChangeUserPseudo = event => {
-		this.setState({
-			user_pseudo: event.target.value
-		});
+	const onChangeUserPseudo = event => {
+		const user_pseudo = event.target.value;
+    setUserPseudo(user_pseudo);
 	}
 	
-	onChangeUserPassword = event => {
-		this.setState({
-			user_password: event.target.value
-		});
+	const onChangeUserPassword = event => {
+		const password = event.target.value;
+    setUserPassword(password);
 	}
 
-	handleLogin = event => {
+	const handleLogin = event => {
 		event.preventDefault();
-		this.form.validateAll();
-		if (this.checkBtn.context._errors.length === 0) {
-		  AuthService.login(this.state.user_pseudo, this.state.user_password).then(
-			(response) => {
-				console.log(response);
-				console.log(response.data);
-				this.props.history.push("/home");
-          		window.location.reload();
-			})
-			.catch(error => {
-				  console.log(error)
-			  })
-		}
+    setMessage("");
+		form.current.validateAll();
+		if (checkBtn.current.context._errors.length === 0) {
+		  AuthService.login(user_pseudo, user_password).then(
+			() => {
+          navigate("/home");
+          window.location.reload();
+			},
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+          setMessage(resMessage);
+        })
+		  }
 	  }
-	
-	    render() {
+
     return (
-		
-          	<Form onSubmit={this.handleLogin}
-            ref={c => {
-              this.form = c;
-            }}
-			>
-			
-            <div className="form-group">
-              <label htmlFor="user_pseudo">Username</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="user_pseudo"
-                value={this.state.user_pseudo}
-                onChange={this.onChangeUserPseudo}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="user_password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="user_password"
-                value={this.state.user_password}
-                onChange={this.onChangeUserPassword}
-                validations={[required]}
-              />
-            </div>
-
-            <div className="form-group">
-              <button className="btn btn-primary btn-block">
-                <span>Login</span>
-              </button>
-            </div>
-
-			<CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
+      <Form onSubmit={handleLogin} ref={form}>
+        <div className="form-group">
+            <label htmlFor="user_pseudo">Username</label>
+            <Input
+              type="text"
+              className="form-control"
+              name="user_pseudo"
+              value={user_pseudo}
+              onChange={onChangeUserPseudo}
+              validations={[required]}
             />
-          </Form>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="user_password">Password</label>
+          <Input
+            type="password"
+            className="form-control"
+            name="user_password"
+            value={user_password}
+            onChange={onChangeUserPassword}
+            validations={[required]}
+          />
+        </div>
+
+        <div className="form-group">
+            <button className="btn btn-primary btn-block">
+              <span>Login</span>
+            </button>
+        </div>
+
+        {message && (
+          <div className="form-group">
+            <div className="alert alert-danger" role="alert">
+              {message}
+            </div>
+          </div>
+        )}
+
+			  <CheckButton style={{ display: "none" }} ref={checkBtn}/>
+      </Form>
     );
-	}
 }
