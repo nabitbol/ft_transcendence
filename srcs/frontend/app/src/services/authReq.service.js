@@ -18,10 +18,10 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
   }
-  register(user_pseudo, user_email, user_password) {
+  register(user_pseudo, user_mail, user_password) {
     return axios.post(URL + "register", {
       user_pseudo,
-      user_email,
+      user_mail,
       user_password
     });
   }
@@ -29,4 +29,5 @@ class AuthService {
     return JSON.parse(localStorage.getItem('user'));;
   }
 }
+
 export default new AuthService();

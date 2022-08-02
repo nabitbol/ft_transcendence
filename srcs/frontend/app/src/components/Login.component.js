@@ -2,18 +2,9 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import AuthService from "../auth/auth.service";
+import AuthService from "../services/authReq.service";
 import CheckButton from "react-validation/build/button";
-
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+import { required } from "../services/formValidation.service";
 
 export default function Login() {
 
@@ -46,11 +37,11 @@ export default function Login() {
 			},
       (error) => {
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
           setMessage(resMessage);
         })
 		  }
