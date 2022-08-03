@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/user.dto';
 import { RegisterDto } from 'src/dto/register.dto';
 import { User } from 'src/entity/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -17,11 +17,11 @@ export class AuthService {
 		private jwtService: JwtService,
 	) {}
 
-	async login(user: any) {
+	async login(user: any): Promise<UserDto> {
 		const payload = { user_pseudo: user.user_pseudo, sub: user.user_id };
-		return {
-		  access_token: this.jwtService.sign(payload),
-		};
+		const ret: UserDto = user;
+		ret.user_JWT = this.jwtService.sign(payload);
+		return(ret);
 	}
 
 	async validateUser(username: string, pass: string): Promise<any> 
@@ -34,7 +34,7 @@ export class AuthService {
 		return null;
 	}
 
-	async register(registerDto: RegisterDto)
+	async register(registerDto: RegisterDto): Promise<any> 
 	{
 		const user: User = new User();
 
@@ -45,15 +45,7 @@ export class AuthService {
 		user.user_JWT = 'placeholder JWT token';
 
 		await this.userRepository.save(user);
-
-		const retUserDto: UserDto = new UserDto();
-
-		retUserDto.user_id = user.user_id;
-		retUserDto.user_mail = user.user_mail;
-		retUserDto.user_pseudo = user.user_pseudo;
-		retUserDto.user_JWT = user.user_JWT;
-		retUserDto.user_status = user.user_status;
-		retUserDto.user_password = '';
+		const { user_password, user_status, user_JWT, ...retUserDto } = user;
 		return (retUserDto);
 	}
 }

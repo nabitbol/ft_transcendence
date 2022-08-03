@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 import AuthService from "../services/authReq.service";
+import CheckButton from "react-validation/build/button";
 import { required, validEmail, vusername, vpassword } from "../services/formValidation.service";
 
 const Register = () => {
@@ -13,6 +13,7 @@ const Register = () => {
   const [user_email, setUserEmail] = useState("");
   const [user_password, setUserPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [successful, setSuccessful] = useState(false);
   
   const onChangeUserPseudo = event => {
     const user_pseudo = event.target.value;
@@ -32,11 +33,13 @@ const Register = () => {
   const handleRegister = event => {
     event.preventDefault();
     setMessage("");
+	setSuccessful(false);
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(user_pseudo, user_email, user_password).then(
         (response) => {
-          setMessage(response.data.message);
+          setMessage('User creation was successful !');
+		  setSuccessful(true);
         },
         (error) => {
 			const resMessage =
@@ -46,6 +49,7 @@ const Register = () => {
             error.message ||
             error.toString();
           setMessage(resMessage);
+		  setSuccessful(false);
         }
       );
     }
@@ -92,11 +96,23 @@ const Register = () => {
 
             <div className="form-group">
                 <button className="btn btn-primary btn-block">Sign Up</button>
-            </div>
-        </div>
+        	</div>
 
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+			{message && (
+            <div className="form-group">
+              <div
+                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                role="alert"
+              >
+                {message}
+              </div>
+            </div>
+          	)}
+
+         	 <CheckButton style={{ display: "none" }} ref={checkBtn} />
+    	</div>
+	</Form>
+
   );
 };
 
