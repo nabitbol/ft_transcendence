@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import AuthService from "../services/authReq.service";
 import CheckButton from "react-validation/build/button";
 import { required, validEmail, vusername, vpassword } from "../services/formValidation.service";
+import classes from './Register.component.module.css'
 
 const Register = () => {
 
@@ -56,7 +57,7 @@ const Register = () => {
   };
 
   return (
-        <Form onSubmit={handleRegister} ref={form}>
+        <Form className={classes.form} onSubmit={handleRegister} ref={form}>
         <div>
               <div className="form-group">
                 <label htmlFor="user_pseudo">Username</label>

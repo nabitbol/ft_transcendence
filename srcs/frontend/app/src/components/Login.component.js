@@ -5,8 +5,9 @@ import Input from "react-validation/build/input";
 import AuthService from "../services/authReq.service";
 import CheckButton from "react-validation/build/button";
 import { required } from "../services/formValidation.service";
+import classes from './Login.component.module.css'
 
-export default function Login() {
+export default function Login(props) {
 
   let navigate = useNavigate();
   const form = useRef();
@@ -48,7 +49,7 @@ export default function Login() {
 	  }
 
     return (
-      <Form onSubmit={handleLogin} ref={form}>
+      <Form className={classes.form} onSubmit={handleLogin} ref={form}>
         <div className="form-group">
             <label htmlFor="user_pseudo">Username</label>
             <Input
@@ -58,7 +59,7 @@ export default function Login() {
               value={user_pseudo}
               onChange={onChangeUserPseudo}
               validations={[required]}
-            />
+              />
         </div>
 
         <div className="form-group">
@@ -70,7 +71,7 @@ export default function Login() {
             value={user_password}
             onChange={onChangeUserPassword}
             validations={[required]}
-          />
+            />
         </div>
 
         <div className="form-group">
