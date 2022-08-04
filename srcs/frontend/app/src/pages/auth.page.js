@@ -26,7 +26,7 @@ function AuthPage () {
 	return(
 		<div>
 			<button className='btn btn-primary btn-block' onClick={activateRegisterForm}>Create a new account</button>
-			<button className='btn btn-primary btn-block' onClick=''>Connect with 42 intra</button>
+			<button className='btn btn-primary btn-block'>Connect with 42 intra</button>
 			<span> You already have an account ? </span>
 			<button className='btn btn-primary btn-block' onClick={activateLoginForm}>Login here</button>
 			{LoginForm && <Login/>}
