@@ -3,14 +3,16 @@ import { Route, Routes } from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthPage from './pages/auth.page';
 import HomePage from './pages/home.page';
+import ProfilePage from './pages/profile.page';
 
 class App extends Component {
 	render() {  
 		return (
 		<Routes>
 			<Route path='/home' element={<HomePage />}/>
-			<Route path='/'  element={<AuthPage />}/>
+			<Route path='/'  element={<HomePage />}/>
 			<Route path='/auth' element={<AuthPage />}/>
+			<Route path='/profile' element={<ProfilePage />}/>
 		</Routes>
 		)
 	}

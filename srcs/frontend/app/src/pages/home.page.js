@@ -1,8 +1,10 @@
-import Profile from '../components/Profile.component'
+import Navbar from '../components/Navbar.component'
 
 function HomePage () {
 	return(
-		<Profile/>
+		<div>
+			<Navbar/>
+		</div>
 	)
 }
 

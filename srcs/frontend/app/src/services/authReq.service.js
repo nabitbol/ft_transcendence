@@ -14,9 +14,11 @@ class AuthService {
         return response.data;
       });
   }
+
   logout() {
     localStorage.removeItem('userdata');
   }
+
   async register(user_pseudo, user_mail, user_password) {
     return axios.post(URL + "register", {
       user_pseudo,
@@ -24,9 +26,11 @@ class AuthService {
       user_password
     })
   }
+
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('userdata'));
   }
+  
 }
 
 export default new AuthService();

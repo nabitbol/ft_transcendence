@@ -2,6 +2,7 @@ import Login from '../components/Login.component';
 import Register from '../components/Register.component';
 import React, { useState } from "react";
 import Backdrop from '../components/Backdrop.component';
+import Navbar from '../components/Navbar.component'
 
 function AuthPage () {
 
@@ -25,6 +26,7 @@ function AuthPage () {
 
 	return(
 		<div>
+			<Navbar/>
 			<button className='btn btn-primary btn-block' onClick={activateRegisterForm}>Create a new account</button>
 			<button className='btn btn-primary btn-block'>Connect with 42 intra</button>
 			<span> You already have an account ? </span>
