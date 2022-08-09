@@ -3,7 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import AuthService from "../services/authReq.service";
 import CheckButton from "react-validation/build/button";
-import { required, validEmail, vusername, vpassword } from "../services/formValidation.service";
+import { vrequired, validEmail, vusername_length, vpassword_length, vregex, vnumber, vmaj } from "../services/formValidation.service";
 import classes from './Register.component.module.css'
 
 const Register = () => {
@@ -40,7 +40,7 @@ const Register = () => {
       AuthService.register(user_pseudo, user_email, user_password).then(
         (response) => {
           setMessage('User creation was successful !');
-		  setSuccessful(true);
+		      setSuccessful(true);
         },
         (error) => {
 			const resMessage =
@@ -67,7 +67,7 @@ const Register = () => {
                   name="user_pseudo"
                   value={user_pseudo}
                   onChange={onChangeUserPseudo}
-                  validations={[required, vusername]}
+                  validations={[vrequired, vusername_length, vregex]}
                 />
             </div>
 
@@ -79,7 +79,7 @@ const Register = () => {
                   name="user_email"
                   value={user_email}
                   onChange={onChangeUserEmail}
-                  validations={[required, validEmail]}
+                  validations={[vrequired, validEmail]}
                 />
             </div>
 
@@ -91,7 +91,7 @@ const Register = () => {
                   name="user_password"
                   value={user_password}
                   onChange={onChangeUserPassword}
-                  validations={[required, vpassword]}
+                  validations={[vrequired, vpassword_length, vregex, vnumber, vmaj]}
                 />
             </div>
 
