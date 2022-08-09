@@ -20,9 +20,7 @@ export class AuthController {
 	async GetAccessToken(@Query('code') QueryParams)
 	{	
 		const access_token = await this.authService.postApi(QueryParams);
-		await this.authService.loginApi(access_token);
-		//console.log(token);
-		//need further implementation
+		return await this.authService.loginApi(access_token);
 	}
 
 	@UseGuards(LocalAuthGuard)
@@ -33,7 +31,7 @@ export class AuthController {
 
 	@Post('register')
 	async Register(@Body() registerDto: RegisterDto) {
-		return this.authService.register(registerDto);
+		return await this.authService.register(registerDto);
 	}
 
 }
