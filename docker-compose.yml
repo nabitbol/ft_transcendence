@@ -27,6 +27,8 @@ services:
             - pgadmin:/var/home/noam/Documents/web/todo.app/pgadmin
         depends_on:
             - postgres
+        networks:
+            - isolation-network
 
     backend:
         container_name: backend

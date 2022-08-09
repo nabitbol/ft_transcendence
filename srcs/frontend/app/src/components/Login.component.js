@@ -4,7 +4,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import AuthService from "../services/authReq.service";
 import CheckButton from "react-validation/build/button";
-import { required } from "../services/formValidation.service";
+import { vrequired } from "../services/formValidation.service";
 import classes from './Login.component.module.css'
 
 export default function Login(props) {
@@ -58,7 +58,7 @@ export default function Login(props) {
               name="user_pseudo"
               value={user_pseudo}
               onChange={onChangeUserPseudo}
-              validations={[required]}
+              validations={[vrequired]}
               />
         </div>
 
@@ -70,7 +70,7 @@ export default function Login(props) {
             name="user_password"
             value={user_password}
             onChange={onChangeUserPassword}
-            validations={[required]}
+            validations={[vrequired]}
             />
         </div>
 

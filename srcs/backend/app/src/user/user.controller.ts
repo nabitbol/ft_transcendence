@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Delete, UseGuards, Request } from '@nestjs
 import { UserDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RegisterDto } from 'src/dto/register.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -14,9 +15,9 @@ export class UserController {
 	}
 
 	@Post('create')
-	createUser(@Body() userDto: UserDto)
+	createUser(@Body() registerDto: RegisterDto)
 	{
-		return this.userService.createUser(userDto);
+		return this.userService.createUser(registerDto);
 	}
 
 	@Post('name_find')

@@ -24,7 +24,7 @@ class AuthService {
       user_pseudo,
       user_mail,
       user_password
-    })
+    });
   }
 
   getCurrentUser() {

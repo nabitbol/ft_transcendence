@@ -19,7 +19,7 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1000s' },
+      signOptions: { expiresIn: '200s' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

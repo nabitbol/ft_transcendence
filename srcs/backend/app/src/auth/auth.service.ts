@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException  } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/user.dto';
 import { RegisterDto } from 'src/dto/register.dto';
@@ -41,16 +41,24 @@ export class AuthService {
 
 	async register(registerDto: RegisterDto): Promise<any> 
 	{
+		if(await this.usersService.findByUsername(registerDto.user_pseudo))
+			throw new ConflictException("This username is already associated with an account.")
+		if(await this.usersService.findByMail(registerDto.user_mail))
+			throw new ConflictException("This email is already associated with an account.")
+		
 		const user: User = new User();
 
-		user.user_mail = registerDto.user_mail;
 		user.user_pseudo = registerDto.user_pseudo;
 		user.user_password = registerDto.user_password;
+		user.user_mail = registerDto.user_mail;
+		user.user_JWT = '';
+		user.user_elo = 500;
+		user.user_rank = 0;
 		user.user_status = 0;
-		user.user_JWT = 'placeholder JWT token';
 
 		await this.userRepository.save(user);
-		const { user_password, user_status, user_JWT, ...retUserDto } = user;
+		const { user_password, user_JWT, ...retUserDto } = user;
+
 		return (retUserDto);
 	}
 
