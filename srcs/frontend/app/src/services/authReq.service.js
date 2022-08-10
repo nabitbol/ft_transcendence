@@ -31,6 +31,15 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('userdata'));
   }
+
+  reqBackApi()
+	{
+		axios.get('http://localhost:3333/auth/login/42')
+    .then(response => {
+      console.log(response);
+      console.log(response.data);
+    });
+	}
   
 }
 

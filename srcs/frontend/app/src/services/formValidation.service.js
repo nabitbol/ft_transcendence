@@ -42,7 +42,7 @@ export const vpassword_length = value => {
 
 
 export const vregex = value => {
-	var re = new RegExp("^[a-zA-Z0-9_]+$");
+	var re = new RegExp("^[a-zA-Z0-9_-]+$");
 	if (!re.test(value))
 	{
 		return (
