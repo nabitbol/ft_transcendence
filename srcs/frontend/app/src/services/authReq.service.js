@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const URL = "http://localhost:3333/auth/";
+
 class AuthService {
   async login(user_pseudo, user_password) {
     return axios
