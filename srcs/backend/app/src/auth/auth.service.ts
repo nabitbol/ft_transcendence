@@ -6,6 +6,7 @@ import { User } from 'src/entity/user.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { use } from 'passport';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +18,13 @@ export class AuthService {
 		private jwtService: JwtService,
 	) {}
 
-	async login(user: any): Promise<UserDto> {
+	async login(user: any): Promise<any> {
 		const payload = { user_pseudo: user.user_pseudo, sub: user.user_id };
-		const ret: UserDto = user;
-		ret.user_JWT = this.jwtService.sign(payload);
-		return(ret);
+		const JWT_token = this.jwtService.sign(payload);
+		
+		const { user_password, ... result } = user;
+		result.user_JWT = JWT_token;
+		return(result);
 	}
 
 	async validateUser(username: string, pass: string): Promise<any> 
@@ -46,13 +49,12 @@ export class AuthService {
 		user.user_pseudo = registerDto.user_pseudo;
 		user.user_password = registerDto.user_password;
 		user.user_mail = registerDto.user_mail;
-		user.user_JWT = '';
 		user.user_elo = 500;
 		user.user_rank = 0;
 		user.user_status = 0;
 
 		await this.userRepository.save(user);
-		const { user_password, user_JWT, ...retUserDto } = user;
+		const { user_password, ...retUserDto } = user;
 
 		return (retUserDto);
 	}

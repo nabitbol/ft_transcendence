@@ -14,9 +14,6 @@ export class User {
   user_password: string
 
   @Column()
-  user_JWT: string
-
-  @Column()
   user_elo: number
 
   @Column()
