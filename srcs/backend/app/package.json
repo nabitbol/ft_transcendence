@@ -28,6 +28,7 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.0",
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
