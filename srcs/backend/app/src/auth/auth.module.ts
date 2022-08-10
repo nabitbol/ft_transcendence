@@ -9,12 +9,14 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]), 
     UserModule, 
     PassportModule,
+    HttpModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '200s' },
