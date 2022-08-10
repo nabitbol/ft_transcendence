@@ -11,8 +11,9 @@ export class AuthController {
 	RedirApi(@Res() response)
 	{
 		response.writeHead(302,
-			{Location: process.env.API_URL}
+			{Location: process.env.API_URL,}
 		  );
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.end();
 	}
 

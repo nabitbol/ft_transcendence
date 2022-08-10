@@ -91,7 +91,7 @@ const Register = () => {
                   name="user_password"
                   value={user_password}
                   onChange={onChangeUserPassword}
-                  validations={[vrequired, vpassword_length, vregex, vnumber, vmaj]}
+                  validations={[vrequired, vpassword_length, vnumber, vmaj]}
                 />
             </div>
 

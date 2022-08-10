@@ -3,6 +3,7 @@ import Register from '../components/Register.component';
 import React, { useState } from "react";
 import Backdrop from '../components/Backdrop.component';
 import Navbar from '../components/Navbar.component'
+import AuthService from "../services/authReq.service";
 
 function AuthPage () {
 
@@ -28,7 +29,7 @@ function AuthPage () {
 		<div>
 			<Navbar/>
 			<button className='btn btn-primary btn-block' onClick={activateRegisterForm}>Create a new account</button>
-			<button className='btn btn-primary btn-block'>Connect with 42 intra</button>
+			<button className='btn btn-primary btn-block' onClick={AuthService.reqBackApi}>Connect with 42 intra</button>
 			<span> You already have an account ? </span>
 			<button className='btn btn-primary btn-block' onClick={activateLoginForm}>Login here</button>
 			{LoginForm && <Login/>}

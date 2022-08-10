@@ -20,7 +20,7 @@ class UserService {
 		.then(response => {
 		  console.log(response.data);
 		});
-	}	
+	}
 	/*findById(@Body('user_id') user_id: number)
 	{
 		return this.userService.findById(user_id);
