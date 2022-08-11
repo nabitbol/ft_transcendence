@@ -1,3 +1,3 @@
 export const jwtConstants = {
-	secret: 'secretKey', //needs to be secret
+	secret: process.env.JWT_CONSTANT, //needs to be secret
   };

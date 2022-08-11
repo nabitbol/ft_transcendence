@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request, Get, Res, Query, Redirect } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Res, Query } from '@nestjs/common';
 import { RegisterDto } from 'src/dto/register.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -8,13 +8,9 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Get('login/42')
-	RedirApi(@Res() response)
+	async RedirApi(@Res() res)
 	{
-		response.writeHead(302,
-			{Location: process.env.API_URL,}
-		  );
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.end();
+		return res.redirect(302, process.env.API_URL);
 	}
 
 	@Get('login/api')
