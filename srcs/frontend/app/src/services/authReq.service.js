@@ -31,7 +31,16 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('userdata'));
   }
-  
+
+ async sendApiCode(code) {
+    return await axios.get(URL + "login/api?code=" + code)
+      .then(response => {
+        if (response.data)
+          localStorage.setItem('userdata', JSON.stringify(response.data));
+            return response.data;
+      })
+  }
+
 }
 
 export default new AuthService();

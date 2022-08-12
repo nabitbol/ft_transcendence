@@ -65,10 +65,10 @@ export class AuthService {
 	async postApi(code : string)
 	{
 		const grant_type = 'authorization_code';
-		const client_id = process.env.CLIENT_ID
-		const client_secret = process.env.CLIENT_SECRET
+		const client_id = process.env.CLIENT_ID;
+		const client_secret = process.env.CLIENT_SECRET;
 		const base_url = 'https://api.intra.42.fr/oauth/token';
-		const redirect_uri = 'http://localhost:' + process.env.BACK_ENV_PORT + '/auth/login/api'
+		const redirect_uri = 'http://localhost:' + process.env.PORT + '/auth/api';
 
 		return axios
       .post(base_url, {
@@ -80,7 +80,7 @@ export class AuthService {
       })
       .then(response => {
         return response.data.access_token;
-      });
+      })
 	}
 
 	async loginApi(access_token : string)

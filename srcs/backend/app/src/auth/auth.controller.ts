@@ -15,9 +15,9 @@ export class AuthController {
 
 	@Get('login/api')
 	async GetAccessToken(@Query('code') QueryParams)
-	{	
+	{
 		const access_token = await this.authService.postApi(QueryParams);
-		return await this.authService.loginApi(access_token);
+		return this.authService.loginApi(access_token);
 	}
 
 	@UseGuards(LocalAuthGuard)
