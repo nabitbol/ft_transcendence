@@ -8,6 +8,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { HttpService } from '@nestjs/axios';
 import axios from "axios";
+import * as bcrypt from 'bcrypt';
 import { firstValueFrom, map } from 'rxjs';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AuthService {
 		private usersService: UserService,
 		private readonly httpService: HttpService,
 		private jwtService: JwtService,
-	) {}
+	){}
 
 	async login(user: any): Promise<any> {
 		const payload = { user_pseudo: user.user_pseudo, sub: user.user_id };
@@ -33,7 +34,7 @@ export class AuthService {
 	async validateUser(username: string, pass: string): Promise<any> 
 	{
 		const user: UserDto = await this.usersService.findByUsername(username);
-		if (user && user.user_password === pass) {
+		if (user && this.compareHash(user.user_password, pass)) {
 		  const { user_password, ...result } = user;
 		  return result;
 		}
@@ -50,7 +51,7 @@ export class AuthService {
 		const user: User = new User();
 
 		user.user_pseudo = registerDto.user_pseudo;
-		user.user_password = registerDto.user_password;
+		user.user_password =  await this.hashString(registerDto.user_password);
 		user.user_mail = registerDto.user_mail;
 		user.user_elo = 500;
 		user.user_rank = 0;
@@ -62,7 +63,7 @@ export class AuthService {
 		return (retUserDto);
 	}
 
-	async postApi(code : string)
+	async postApi(code : string): Promise<any> 
 	{
 		const grant_type = 'authorization_code';
 		const client_id = process.env.CLIENT_ID
@@ -83,7 +84,7 @@ export class AuthService {
       });
 	}
 
-	async loginApi(access_token : string)
+	async loginApi(access_token : string): Promise<any> 
 	{
 		const base_url = 'https://api.intra.42.fr/v2/me';
 
@@ -99,20 +100,20 @@ export class AuthService {
 		user.user_password = "";
 		user.user_pseudo = data.login;
 
-		return await this.registerApi(user);
+		return 
 		
 	}
 
 	async registerApi(registerDto: RegisterDto): Promise<any> 
 	{
 		const newUser: User = new User();
-		let payload;
-		let ret;
+		let payload: any;
+		let ret: any;
 
 		if(!(await this.usersService.findByUsername(registerDto.user_pseudo) && await this.usersService.findByMail(registerDto.user_mail)))
 		{
 			newUser.user_pseudo = registerDto.user_pseudo;
-			newUser.user_password = registerDto.user_password;
+			newUser.user_password = await this.hashString(registerDto.user_password);
 			newUser.user_mail = registerDto.user_mail;
 			newUser.user_elo = 500;
 			newUser.user_rank = 0;
@@ -129,6 +130,19 @@ export class AuthService {
 		}
 		ret.user_JWT = this.jwtService.sign(payload);
 		return(ret);
+	}
+
+	async hashString(textToEncrypt: string): Promise<string> 
+	{
+		const saltRounds = 10;
+		
+		const salt = await bcrypt.genSalt(saltRounds);
+		return await bcrypt.hash(textToEncrypt, salt);
+	}
+
+	async compareHash(hash: string, textToCompare: string): Promise<boolean> 
+	{
+		return await bcrypt.compare(hash, textToCompare);
 	}
 
 }
