@@ -1,6 +1,6 @@
 import classes from './Modal.component.module.css'
 
-export function Modal(props) {
+export default function Modal(props) {
 	return (
 		<div className={classes.modal}>
 			<p>Are you sure ?</p>

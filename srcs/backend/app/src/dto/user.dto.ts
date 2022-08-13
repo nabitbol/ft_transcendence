@@ -4,7 +4,7 @@ export class UserDto {
   user_password: string;
   user_elo: number;
   user_rank: number;
-  user_status?: boolean;
+  user_status: boolean;
   user_mail: string;
-  user_2FA?: boolean;
+  user_2FA: boolean;
 }

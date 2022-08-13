@@ -18,11 +18,14 @@ export class User {
   user_rank: number
   
   @Column({default: false})
-  user_status?: boolean
+  user_status: boolean
 
   @Column()
   user_mail: string
 
   @Column({default: false})
-  user_2FA?: boolean
+  user_2FA: boolean
+
+  @Column({default: ''})
+  user_2FA_secret: string
 }

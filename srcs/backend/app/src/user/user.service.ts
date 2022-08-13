@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/user.dto';
-import { RegisterDto } from 'src/dto/register.dto';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
 
@@ -42,8 +41,11 @@ export class UserService {
 			return(true);
 		return(false);
 	}
-	async setTwoFactorAuthenticationSecret(user_id : number, secret: string): Promise<void>
-	{
 
+	async setTwoFactorAuthenticationSecret(user_id : number, secret: string): Promise<any> 
+	{
+		return this.userRepository.update(user_id, {
+			user_2FA_secret: secret
+		  });
 	}
 }

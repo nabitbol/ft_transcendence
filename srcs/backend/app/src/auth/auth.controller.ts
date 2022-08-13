@@ -1,8 +1,10 @@
-import { Body, Controller, Post, UseGuards, Request, Get, Res, Query } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Res, Query, Req, Response} from '@nestjs/common';
 import { RegisterDto } from 'src/dto/register.dto';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './services/api.service';
 import { LocalAuthGuard } from './strategy/local-auth.guard';
+import { TwoFactorAuthenticationService } from './services/twoFactorAuthentication.service';
+import { JwtAuthGuard } from './strategy/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,16 +12,17 @@ export class AuthController {
 	(
 		private readonly authService: AuthService,
 		private readonly apiService: ApiService,
+		private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
 	) {}
 
 	@Get('login/42')
-	async RedirApi(@Res() res)
+	async RedirApi(@Res() res: any)
 	{
 		return res.redirect(302, process.env.API_URL);
 	}
 
 	@Get('login/api')
-	async GetAccessToken(@Query('code') QueryParams)
+	async GetAccessToken(@Query('code') QueryParams: string)
 	{
 		const access_token = await this.apiService.postApi(QueryParams);
 		return this.apiService.loginApi(access_token);
@@ -27,7 +30,7 @@ export class AuthController {
 
 	@UseGuards(LocalAuthGuard)
 	@Post('login')
-	async Login(@Request() req) {
+	async Login(@Request() req: any) {
 		return await this.authService.login(req.user);
 	}
 
@@ -36,4 +39,11 @@ export class AuthController {
 		return await this.authService.register(registerDto);
 	}
 
+	@UseGuards(JwtAuthGuard)
+	@Get('generate')
+	async Generate(@Req() request: any) {
+		return await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
+	}
 }
+
+

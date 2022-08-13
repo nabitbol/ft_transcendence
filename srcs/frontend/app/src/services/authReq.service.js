@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from './authHeader.service';
 
 const URL = "http://localhost:3333/auth/";
 
@@ -39,6 +40,20 @@ class AuthService {
           localStorage.setItem('userdata', JSON.stringify(response.data));
             return response.data;
       })
+  }
+
+  async requestQR() {
+    return await axios.get(URL + "generate", { headers: authHeader() }) 
+      .then(response => {
+        if (response.data)
+        {
+          console.log(response.data)
+          return response.data
+        }
+      }).catch((error) => {
+        console.log(error.config);
+        return error;
+    });
   }
 
 }

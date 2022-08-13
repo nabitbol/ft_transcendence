@@ -5,6 +5,7 @@ import AuthPage from './pages/auth.page';
 import HomePage from './pages/home.page';
 import ProfilePage from './pages/profile.page';
 import AuthApiPage from './pages/authApi.page';
+import GenerateQRPage from './pages/generateQR.page';
 
 class App extends Component {
 	render() {  
@@ -12,9 +13,10 @@ class App extends Component {
 		<Routes>
 			<Route path='/home' element={<HomePage />}/>
 			<Route path='/'  element={<HomePage />}/>
-			<Route path='/auth' element={<AuthPage />}/>
 			<Route path='/profile' element={<ProfilePage />}/>
+			<Route path='/auth' element={<AuthPage />}/>
 			<Route path='/auth/api' element={<AuthApiPage />}/>
+			<Route path='/auth/generateQR' element={<GenerateQRPage />}/>
 		</Routes>
 		)
 	}
