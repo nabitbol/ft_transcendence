@@ -25,6 +25,9 @@ down:
 ps:
 	docker-compose -f $(compose_file) --env-file $(Env_flag) ps
 
+logs:
+	docker ps -q -a | xargs -L 1 docker logs
+
 images:
 	docker images
 
