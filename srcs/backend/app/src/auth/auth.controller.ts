@@ -14,12 +14,10 @@ export class AuthController {
 	}
 
 	@Get('login/api')
-	async GetAccessToken(@Query('code') QueryParams, @Res() res)
-	{	
+	async GetAccessToken(@Query('code') QueryParams)
+	{
 		const access_token = await this.authService.postApi(QueryParams);
-		const value :any = this.authService.loginApi(access_token);
-		res.append('Warning', '199 Miscellaneous warning');
-		res.redirect(302, process.env.API_URL);
+		return this.authService.loginApi(access_token);
 	}
 
 	@UseGuards(LocalAuthGuard)
