@@ -1,11 +1,16 @@
 import { Body, Controller, Post, UseGuards, Request, Get, Res, Query } from '@nestjs/common';
 import { RegisterDto } from 'src/dto/register.dto';
-import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
+import { AuthService } from './services/auth.service';
+import { ApiService } from './services/api.service';
+import { LocalAuthGuard } from './strategy/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor
+	(
+		private readonly authService: AuthService,
+		private readonly apiService: ApiService,
+	) {}
 
 	@Get('login/42')
 	async RedirApi(@Res() res)
@@ -16,8 +21,8 @@ export class AuthController {
 	@Get('login/api')
 	async GetAccessToken(@Query('code') QueryParams)
 	{
-		const access_token = await this.authService.postApi(QueryParams);
-		return this.authService.loginApi(access_token);
+		const access_token = await this.apiService.postApi(QueryParams);
+		return this.apiService.loginApi(access_token);
 	}
 
 	@UseGuards(LocalAuthGuard)

@@ -19,31 +19,6 @@ export class UserService {
 		return await this.userRepository.find();
 	}
 
-	async createUser(registerDto: RegisterDto) : Promise<UserDto | undefined> 
-	{
-		const user: User = new User();
-
-		user.user_pseudo = registerDto.user_pseudo;
-		user.user_password = registerDto.user_password;
-		user.user_mail = registerDto.user_mail;
-		user.user_elo = 500;
-		user.user_rank = 0;
-		user.user_status = 0;
-		
-		await this.userRepository.save(user);
-
-		const retUserDto: UserDto = new UserDto();
-
-		retUserDto.user_id = user.user_id;
-		retUserDto.user_pseudo = user.user_pseudo;
-		retUserDto.user_password = user.user_password;
-		retUserDto.user_mail = user.user_mail;
-		retUserDto.user_elo = user.user_elo;
-		retUserDto.user_rank = user.user_rank;
-		retUserDto.user_status = user.user_status;
-		return (retUserDto);
-	}
-
 	async findByUsername(pseudo: string) : Promise<UserDto | undefined> 
 	{
 		return await this.userRepository.findOne({ where:{ user_pseudo: pseudo}});
@@ -59,17 +34,6 @@ export class UserService {
 		return await this.userRepository.findOne({ where:{ user_mail: mail}});
 	}
 
-	async removeUser(id: number) : Promise<string> 
-	{
-		const user = await this.findById(id);
-		if(user)
-		{
-			this.userRepository.remove(user);
-			return ('User '+ id +' removed successfully');
-		}
-		return ('User '+ id +' doesnt exist !');
-	}
-
 	async userExist(user_pseudo: string, user_mail: string): Promise<boolean> 
 	{
 		if(await this.findByUsername(user_pseudo))
@@ -78,5 +42,8 @@ export class UserService {
 			return(true);
 		return(false);
 	}
+	async setTwoFactorAuthenticationSecret(user_id : number, secret: string): Promise<void>
+	{
 
+	}
 }

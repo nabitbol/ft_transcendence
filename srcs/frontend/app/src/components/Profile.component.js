@@ -4,7 +4,7 @@ import userService from "../services/user.service";
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
-  const UserInfo = userService.findByUsername(currentUser.user_pseudo);
+  userService.findByUsername(currentUser.user_pseudo);
   	return (
     <div className="container">
       <header className="jumbotron">

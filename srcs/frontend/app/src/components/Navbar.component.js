@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthService from "../services/authReq.service";
-import Login from "./Login.component";
-import Register from "./Register.component";
-import Profile from "./Profile.component";
+
 
 class App extends Component {
 
