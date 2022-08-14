@@ -43,15 +43,18 @@ class AuthService {
   }
 
   async requestQR() {
-    return await axios.get(URL + "generate", { headers: authHeader() }) 
-      .then(response => {
+    return await axios.get(URL + "generate",
+    { headers: authHeader(),
+      responseType: 'blob'
+    })
+    .then(response => {
         if (response.data)
         {
-          console.log(response.data)
-          return response.data
+          console.log(response.data);
+          return response.data;
         }
       }).catch((error) => {
-        console.log(error.config);
+        console.log(error);
         return error;
     });
   }

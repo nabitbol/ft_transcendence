@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { authenticator } from 'otplib';
 import { UserService } from '../../user/user.service';
-import { toString } from 'qrcode';
 import { UserDto } from 'src/dto/user.dto';
+import { toFileStream } from 'qrcode';
+import { Response } from 'express';
 
 @Injectable()
 export class TwoFactorAuthenticationService {
@@ -18,7 +19,13 @@ export class TwoFactorAuthenticationService {
  
     await this.usersService.setTwoFactorAuthenticationSecret(user.user_id, secret);
  
-    return otpauthUrl
+    return {
+      secret,
+      otpauthUrl
+    }
   }
 
+  public async pipeQrCodeStream(stream: Response, otpauthUrl: string) {
+    return await toFileStream(stream, otpauthUrl);
+  }
 }
