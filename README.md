@@ -27,4 +27,4 @@ make
 
 ## Data
 
-![databse image](../assets/notes.assets/project.visualisation.assets/database.png)
+![database image](./assets/notes.assets/project.visualisation.assets/database.png)
