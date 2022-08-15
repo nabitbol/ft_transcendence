@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/user.dto';
 import { RegisterDto } from 'src/dto/register.dto';
@@ -30,11 +30,13 @@ export class AuthService {
 	async validateUser(username: string, pass: string): Promise<any> 
 	{
 		const user: UserDto = await this.usersService.findByUsername(username);
-		if (user && this.compareHash(user.user_password, pass)) {
+		if(!user)
+		 	throw new UnauthorizedException("This username is not associated with any account.");
+		if (user && await this.compareHash(user.user_password, pass)) {
 		  const { user_password, ...result } = user;
 		  return result;
 		}
-		return null;
+		throw new UnauthorizedException("Password incorrect.");
 	}
 
 	async register(registerDto: RegisterDto): Promise<any> 
@@ -66,7 +68,7 @@ export class AuthService {
 
 	async compareHash(hash: string, textToCompare: string): Promise<boolean> 
 	{
-		return await bcrypt.compare(hash, textToCompare);
+		return await bcrypt.compare(textToCompare, hash);
 	}
 
 }

@@ -1,11 +1,13 @@
-import { Body, Controller, Post, UseGuards, Request, Get, Res, Query, Req} from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Res, Query, Req, UnauthorizedException} from '@nestjs/common';
 import { RegisterDto } from 'src/dto/register.dto';
+import { twoFactorAuthenticationDto } from 'src/dto/twoFactorAuthentication.dto';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './services/api.service';
 import { LocalAuthGuard } from './strategy/local-auth.guard';
 import { TwoFactorAuthenticationService } from './services/twoFactorAuthentication.service';
 import { JwtAuthGuard } from './strategy/jwt-auth.guard';
 import { Response } from 'express';
+import { UserService } from '../user/user.service';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +16,7 @@ export class AuthController {
 		private readonly authService: AuthService,
 		private readonly apiService: ApiService,
 		private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService,
+		private readonly userService: UserService
 	) {}
 
 	@Get('login/42')
@@ -31,8 +34,8 @@ export class AuthController {
 
 	@UseGuards(LocalAuthGuard)
 	@Post('login')
-	async Login(@Request() req: any) {
-		return await this.authService.login(req.user);
+	async Login(@Request() request: any) {
+		return await this.authService.login(request.user);
 	}
 
 	@Post('register')
@@ -41,10 +44,23 @@ export class AuthController {
 	}
 
 	@UseGuards(JwtAuthGuard)
-	@Get('generate')
-	async Generate(@Res() response: Response, @Req() request: any) {
+	@Get('generateQR')
+	async Generate(@Res() response: Response, @Request() request: any) {
 		const { otpauthUrl } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post('activateQR')
+	async activateQR( @Request() request: any, @Body() twoFactorAuthenticationCode: twoFactorAuthenticationDto)
+	{
+		const isCodeValid: boolean = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+		twoFactorAuthenticationCode.twoFactorAuthentication, request.user
+	  );
+	  if (!isCodeValid) {
+		throw new UnauthorizedException('Wrong authentication code');
+	  }
+	  await this.userService.setTwoFactorAuthenticationStatus(request.user.user_id, true);
 	}
 }
 

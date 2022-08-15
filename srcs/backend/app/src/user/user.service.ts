@@ -48,4 +48,11 @@ export class UserService {
 			user_2FA_secret: secret
 		  });
 	}
+
+	async setTwoFactorAuthenticationStatus(userId: number, status: boolean) : Promise<any> 
+	{
+		return this.userRepository.update(userId, {
+			user_2FA_on: status
+		});
+	  }
 }

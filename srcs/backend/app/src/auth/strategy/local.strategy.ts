@@ -14,13 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(username: string, password: string): Promise<any> {
-    if(!await this.userService.findByUsername(username)) {
-      throw new UnauthorizedException("This username is not associated with any account.");
-    }
     const user = await this.authService.validateUser(username, password);
-    if (!user) {
-      throw new UnauthorizedException("Password incorrect.");
-    }
     return user;
   }
 }

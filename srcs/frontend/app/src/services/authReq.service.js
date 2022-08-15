@@ -43,7 +43,7 @@ class AuthService {
   }
 
   async requestQR() {
-    return await axios.get(URL + "generate",
+    return await axios.get(URL + "generateQR",
     { headers: authHeader(),
       responseType: 'blob'
     })
