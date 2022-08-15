@@ -6,9 +6,10 @@ import { TwoFactorAuthenticationService } from './services/twoFactorAuthenticati
 import { User } from '../entity/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategy/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './strategy/constants';
+import { LocalStrategy } from './strategy/local.strategy';
+import { JwtTwoFactorStrategy } from './strategy/jwt-two-factor.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { HttpModule } from '@nestjs/axios';
 import { ApiService } from './services/api.service';
@@ -24,10 +25,9 @@ import { ApiService } from './services/api.service';
       signOptions: { expiresIn: '200s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy,
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtTwoFactorStrategy,
   TwoFactorAuthenticationService, ApiService],
-  controllers: [AuthController],
-  exports: [AuthService, ApiService],
+  controllers: [AuthController]
 })
 
 export class AuthModule {}

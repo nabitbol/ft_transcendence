@@ -24,8 +24,8 @@ export class User {
   user_mail: string
 
   @Column({default: ''})
-  user_2FA_secret: string
+  user_TwoFa_secret: string
 
   @Column({default: false})
-  user_2FA_on: boolean
+  user_TwoFa_on: boolean
 }

@@ -4,9 +4,12 @@ import { UserDto } from 'src/dto/user.dto';
 import { RegisterDto } from 'src/dto/register.dto';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
-import { UserService } from '../../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { PassportStrategy } from '@nestjs/passport';
+import { jwtConstants } from '../strategy/constants';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +21,8 @@ export class AuthService {
 		private jwtService: JwtService,
 	){}
 
-	async login(user: any): Promise<any> {
-		const payload = { user_pseudo: user.user_pseudo, sub: user.user_id };
+	async login(user: any, TwoFa_auth : boolean = false): Promise<any> {
+		const payload = { user_pseudo: user.user_pseudo, TwoFa_auth: TwoFa_auth ,sub: user.user_id };
 		const JWT_token = this.jwtService.sign(payload);
 		
 		const { user_password, ... result } = user;
@@ -70,5 +73,4 @@ export class AuthService {
 	{
 		return await bcrypt.compare(textToCompare, hash);
 	}
-
 }

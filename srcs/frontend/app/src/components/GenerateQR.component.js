@@ -2,29 +2,29 @@ import { useState } from 'react';
 import authReqService from '../services/authReq.service'
 import { useEffect } from 'react';
 
-const GenerateQR = () => {
-	const [IsQRLoad, setIsQRLoad] = useState(false);
+const GenerateQr = () => {
+	const [IsQrLoad, setIsQrLoad] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
 	
 	async function render() {
-		const qrData = await authReqService.requestQR();
+		const qrData = await authReqService.requestQr();
 		const file = new File([qrData], { type: "image/png" } ); 
 		setImageUrl(URL.createObjectURL(file)); 
 	}
 
 	useEffect(() => {
         render();
-		setIsQRLoad(true);
+		setIsQrLoad(true);
     }, []);
 
 	return(
 		<div >
 			<span>
-			Generating 2FA QRcode...
+			Generating 2FA Qrcode...
 			</span>
-			{IsQRLoad && <img alt="QR-code" src={imageUrl} />}
+			{IsQrLoad && <img alt="Qr-code" src={imageUrl} />}
 		</div>
 	);
 }
 
-export default GenerateQR
+export default GenerateQr

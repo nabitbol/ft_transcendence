@@ -45,14 +45,14 @@ export class UserService {
 	async setTwoFactorAuthenticationSecret(user_id : number, secret: string): Promise<any> 
 	{
 		return this.userRepository.update(user_id, {
-			user_2FA_secret: secret
+			user_TwoFa_secret: secret
 		  });
 	}
 
 	async setTwoFactorAuthenticationStatus(userId: number, status: boolean) : Promise<any> 
 	{
 		return this.userRepository.update(userId, {
-			user_2FA_on: status
+			user_TwoFa_on: status
 		});
 	  }
 }

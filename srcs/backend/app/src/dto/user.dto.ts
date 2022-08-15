@@ -6,6 +6,6 @@ export class UserDto {
   user_rank: number;
   user_status: boolean;
   user_mail: string;
-  user_2FA_secret: string
-  user_2FA_on: boolean
+  user_TwoFa_secret: string
+  user_TwoFa_on: boolean
 }

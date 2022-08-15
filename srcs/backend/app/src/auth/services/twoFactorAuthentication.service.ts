@@ -32,7 +32,7 @@ export class TwoFactorAuthenticationService {
   public async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: UserDto) {
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
-      secret: user.user_2FA_secret
+      secret: user.user_TwoFa_secret
     })
   }
 }
