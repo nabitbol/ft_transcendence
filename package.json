@@ -1,0 +1,16 @@
+{
+  "name": "ft_transcendence",
+  "version": "1.0.0",
+  "description": "This project is about creating a website for the mighty Pong contest!",
+  "repository": "git@github.com:nabitbol/ft_transcendence.git",
+  "author": "nabitbol",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/**"
+  ],
+  "dependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "nest": "^0.1.6"
+  }
+}
