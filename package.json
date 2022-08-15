@@ -9,8 +9,24 @@
   "workspaces": [
     "packages/**"
   ],
+  "scripts": {
+    "test:backend": "yarn --cwd packages/backend test:pre-commit",
+    "postinstall": "husky install",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "eslint --fix",
+      "yarn test:backend"
+    ]
+  },
   "dependencies": {
     "@nestjs/cli": "^9.0.0",
     "nest": "^0.1.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.7",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
   }
 }
