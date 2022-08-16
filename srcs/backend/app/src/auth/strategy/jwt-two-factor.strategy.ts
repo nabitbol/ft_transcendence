@@ -17,7 +17,7 @@ export class JwtTwoFactorStrategy extends PassportStrategy(Strategy, 'jwt-two-fa
 	async validate(payload: any) {
 		const user = await this.userService.findByUsername(payload.user_pseudo);
 		if (!user)
-		throw new UnauthorizedException("Invalid jwt token.");
+			throw new UnauthorizedException("Invalid jwt token.");
 		if (!user.user_TwoFa_on || payload.TwoFa_auth)
 			return user;
 		throw new UnauthorizedException("Incorrect jwt token, you need to be authenticated with 2FA.");

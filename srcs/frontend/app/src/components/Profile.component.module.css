@@ -1,0 +1,12 @@
+form {
+	font: inherit;
+
+	background-color: rgb(221, 218, 218);
+	padding: 4rem;
+	width: 20rem;
+	z-index: 10;
+	position: fixed;
+	top: 20vh;
+	left: calc(50% - 15rem);
+	margin: 100px;
+}

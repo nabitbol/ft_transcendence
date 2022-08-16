@@ -45,7 +45,7 @@ class AuthService {
   async requestQr() {
     return await axios.get(URL + "generateQr",
     { headers: authHeader(),
-      responseType: 'blob'
+      responseType: 'blob',
     })
     .then(response => {
         if (response.data)
@@ -54,6 +54,17 @@ class AuthService {
           return response.data;
         }
       }).catch((error) => {
+        console.log(error);
+        return error;
+    });
+  }
+
+  async ActivateTwoFa(TwoFaCode) {
+    return await axios.get(URL + "activateTwoFa",
+    { headers: authHeader(),
+      twoFactorAuthentication: TwoFaCode,
+    })
+    .catch((error) => {
         console.log(error);
         return error;
     });

@@ -53,8 +53,8 @@ export class AuthController {
 	}
 
 	@UseGuards(JwtTwoFactorGuard)
-	@Post('activateQr')
-	async activateQr( @Req() request: any, @Body() twoFactorAuthenticationCode: twoFactorAuthenticationDto)
+	@Post('activateTwoFa')
+	async activateTwoFa( @Req() request: any, @Body() twoFactorAuthenticationCode: twoFactorAuthenticationDto)
 	{
 		const isCodeValid: boolean = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
 		twoFactorAuthenticationCode.twoFactorAuthentication, request.user

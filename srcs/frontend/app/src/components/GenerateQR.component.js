@@ -8,8 +8,8 @@ const GenerateQr = () => {
 	
 	async function render() {
 		const qrData = await authReqService.requestQr();
-		const file = new File([qrData], { type: "image/png" } ); 
-		setImageUrl(URL.createObjectURL(file)); 
+		const file = new File([qrData], { type: "image/png" } );
+		setImageUrl(URL.createObjectURL(file));
 	}
 
 	useEffect(() => {
@@ -19,9 +19,6 @@ const GenerateQr = () => {
 
 	return(
 		<div >
-			<span>
-			Generating 2FA Qrcode...
-			</span>
 			{IsQrLoad && <img alt="Qr-code" src={imageUrl} />}
 		</div>
 	);
