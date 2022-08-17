@@ -42,7 +42,7 @@ export class ApiService {
 	})
   }
 
-  async loginApi(access_token : string): Promise<any> 
+  async loginApi(access_token : string): Promise<RegisterDto> 
   {
 	  const base_url = 'https://api.intra.42.fr/v2/me';
 
@@ -53,12 +53,12 @@ export class ApiService {
 			  }),
 		  ),
 	  );
-	  const user = new RegisterDto;
+	  const user: RegisterDto = new RegisterDto;
 	  user.user_mail = data.email;
 	  user.user_password = "";
 	  user.user_pseudo = data.login;
 
-	  return 
+	  return user;
 	  
   }
 

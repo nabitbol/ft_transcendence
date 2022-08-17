@@ -7,16 +7,17 @@ class UserService {
 	getAll() {
 		return axios.get(URL);
 	}
- 	createUser(user_info)
+ 	createUser(user_info: any)
 	{
 		axios.post(URL + 'create', user_info)
 		.then(response => {
 		  console.log(response.data);
 		});
 	}	
-	findByUsername(user_pseudo)
+	findByUsername(user_pseudo: any)
 	{
-		return axios.post(URL + 'name_find', user_pseudo, { headers: authHeader() })
+		const headers = authHeader();
+		return axios.post(URL + 'name_find', user_pseudo, {headers })
 		.then(response => {
 		  console.log(response.data);
 		});

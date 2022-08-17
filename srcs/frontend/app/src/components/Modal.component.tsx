@@ -1,3 +1,4 @@
+import React from 'react';
 import classes from './Modal.component.module.css'
 
 export default function Modal(props) {

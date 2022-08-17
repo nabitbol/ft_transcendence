@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthService from "../services/authReq.service";
 
+type MyState = { currentUser: any };
+class App extends Component<any, MyState> {
 
-class App extends Component {
-
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = { currentUser: undefined };
 	}
 

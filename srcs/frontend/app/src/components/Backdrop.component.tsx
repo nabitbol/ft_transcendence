@@ -1,3 +1,4 @@
+import React from 'react'
 import classes from './Backdrop.component.module.css'
 
 function Backdrop(props) {

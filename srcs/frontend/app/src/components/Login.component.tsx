@@ -10,8 +10,8 @@ import classes from './Login.component.module.css'
 export default function Login(props) {
 
   let navigate = useNavigate();
-  const form = useRef();
-  const checkBtn = useRef();
+  const form = useRef<any>();
+  const checkBtn = useRef<any>();
   const [user_pseudo, setUserPseudo] = useState("");
   const [user_password, setUserPassword] = useState("");
   const [message, setMessage] = useState("");

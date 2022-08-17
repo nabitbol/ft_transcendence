@@ -4,7 +4,7 @@ import authHeader from './authHeader.service';
 const URL = "http://localhost:3333/auth/";
 
 class AuthService {
-  async login(user_pseudo, user_password) {
+  async login(user_pseudo: string, user_password: string) {
     return axios
       .post(URL + "login", {
         user_pseudo,
@@ -21,7 +21,7 @@ class AuthService {
     localStorage.removeItem('userdata');
   }
 
-  async register(user_pseudo, user_mail, user_password) {
+  async register(user_pseudo: string, user_mail: string, user_password: string) {
     return axios.post(URL + "register", {
       user_pseudo,
       user_mail,
@@ -30,21 +30,23 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('userdata'));
+      const tmp = localStorage.getItem('userdata');
+      if (tmp)
+        return JSON.parse(tmp);
   }
 
- async sendApiCode(code) {
+ async sendApiCode(code: any) {
     return await axios.get(URL + "login/api?code=" + code)
       .then(response => {
         if (response.data)
           localStorage.setItem('userdata', JSON.stringify(response.data));
-            return response.data;
+        return response.data;
       })
   }
 
   async requestQr() {
     return await axios.get(URL + "generateQr",
-    { headers: authHeader(),
+    { headers : authHeader(),
       responseType: 'blob',
     })
     .then(response => {
@@ -59,11 +61,10 @@ class AuthService {
     });
   }
 
-  async ActivateTwoFa(TwoFaCode) {
-    return await axios.get(URL + "activateTwoFa",
-    { headers: authHeader(),
-      twoFactorAuthentication: TwoFaCode,
-    })
+  async ActivateTwoFa(TwoFaCode :string ) {
+    const header = { headers: authHeader(),
+      twoFactorAuthentication: TwoFaCode};
+    return await axios.get(URL + "activateTwoFa", header)
     .catch((error) => {
         console.log(error);
         return error;

@@ -31,7 +31,8 @@ export class AuthController {
 	async GetAccessToken(@Query('code') QueryParams: string)
 	{
 		const access_token = await this.apiService.postApi(QueryParams);
-		return this.apiService.loginApi(access_token);
+		const user: RegisterDto = await this.apiService.loginApi(access_token);
+		return await this.apiService.registerApi(user);
 	}
 
 	@UseGuards(LocalAuthGuard)

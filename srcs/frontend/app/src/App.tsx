@@ -5,6 +5,7 @@ import AuthPage from './pages/auth.page';
 import HomePage from './pages/home.page';
 import ProfilePage from './pages/profile.page';
 import AuthApiPage from './pages/authApi.page';
+import React from 'react';
 
 class App extends Component {
 	render() {  

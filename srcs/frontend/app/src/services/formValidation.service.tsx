@@ -1,6 +1,6 @@
-import { isEmail } from "validator";
+import React from "react";
 
-export const vrequired = value => {
+export const vrequired = (value: any) => {
 	if (!value) {
 		return (
 			<div className="alert alert-danger" role="alert">
@@ -10,8 +10,8 @@ export const vrequired = value => {
 	}
 };
 
-export const validEmail = value => {
-	if (!isEmail(value)) {
+export const validEmail = (value: any) => {
+	if (!(value)) {  //check email
 		return (
 			<div className="alert alert-danger" role="alert">
 			This is not a valid email.
@@ -20,7 +20,7 @@ export const validEmail = value => {
 	}
 };
 
-export const vusername_length = value => {
+export const vusername_length = (value: any) => {
 	if (value.length < 3 || value.length > 20) {
 		return (
 			<div className="alert alert-danger" role="alert">
@@ -30,7 +30,7 @@ export const vusername_length = value => {
 	}
 };
 
-export const vpassword_length = value => {
+export const vpassword_length = (value: any) => {
 	if (value.length < 6 || value.length > 40) {
 		return (
 			<div className="alert alert-danger" role="alert">
@@ -41,7 +41,7 @@ export const vpassword_length = value => {
 };
 
 
-export const vregex = value => {
+export const vregex =(value: any) => {
 	var re = new RegExp("^[a-zA-Z0-9_-]+$");
 	if (!re.test(value))
 	{
@@ -53,7 +53,7 @@ export const vregex = value => {
 	}
 }
 
-export const vnumber = value => {
+export const vnumber = (value: any) => {
 	var re = new RegExp ("[0-9]");
 	if (!re.test(value))
 	{
@@ -65,7 +65,7 @@ export const vnumber = value => {
 	}
 }
 
-export const vmaj = value => {
+export const vmaj = (value: any) => {
 	var re = new RegExp ("[A-Z]");
 	if (!re.test(value))
 	{

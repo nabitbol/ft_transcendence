@@ -8,30 +8,30 @@ import classes from './Register.component.module.css'
 
 const Register = () => {
 
-  const form = useRef();
-  const checkBtn = useRef();
+  const form = useRef<any>();
+  const checkBtn = useRef<any>();
   const [user_pseudo, setUserPseudo] = useState("");
   const [user_email, setUserEmail] = useState("");
   const [user_password, setUserPassword] = useState("");
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
   
-  const onChangeUserPseudo = event => {
+  const onChangeUserPseudo = (event: any) => {
     const user_pseudo = event.target.value;
     setUserPseudo(user_pseudo);
   };
   
-  const onChangeUserEmail = event => {
+  const onChangeUserEmail = (event: any) => {
     const user_email = event.target.value;
     setUserEmail(user_email);
   };
   
-  const onChangeUserPassword = event => {
+  const onChangeUserPassword = (event: any) => {
     const user_password = event.target.value;
     setUserPassword(user_password);
   };
   
-  const handleRegister = event => {
+  const handleRegister = (event: any) => {
     event.preventDefault();
     setMessage("");
 	setSuccessful(false);

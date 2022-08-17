@@ -1,33 +1,33 @@
-import React, { useState,useRef } from "react";
+import React from "react";
 import AuthService from "../services/authReq.service";
 //import userService from "../services/user.service";
 import GenerateQr from '../components/GenerateQR.component'
-import Input from "react-validation/build/input";
-import { vrequired } from "../services/formValidation.service";
-import Form from "react-validation/build/form";
-import classes from './Login.component.module.css'
+//import Input from "react-validation/build/input";
+//import { vrequired } from "../services/formValidation.service";
+//import Form from "react-validation/build/form";
+//import classes from './Login.component.module.css'
 
 const Profile = () => {
   //const currentUser = AuthService.getCurrentUser();
   //userService.findByUsername(currentUser.user_pseudo);
-  const form = useRef();
+ // const form = useRef();
 
-  const [buttonOn, setButtonOn] = useState(false);
-  const [isFormOn, setIsFormOn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [twoFaCode, setTwoFaCode] = useState("");
+ // const [buttonOn, setButtonOn] = useState(false);
+ // const [isFormOn, setIsFormOn] = useState(false);
+ // const [errorMessage, setErrorMessage] = useState("");
+ // const [twoFaCode, setTwoFaCode] = useState("");
 
   const handleTwoFa = event => {
     event.preventDefault();
-    setErrorMessage("");
-    AuthService.ActivateTwoFa();
+   // setErrorMessage("");
+    AuthService.ActivateTwoFa("");
 
   }
 
-  const onChangetwoFaCode = event => {
+  /*const onChangetwoFaCode = event => {
       const twoFaCode = event.target.value;
-      setTwoFaCode(twoFaCode);
-  }
+      //setTwoFaCode(twoFaCode);
+  }*/
 
   	return (
     /*<div className="container">
@@ -49,7 +49,7 @@ const Profile = () => {
         
       <div className="card" style={{width: '25rem', margin: '1rem', padding: '3rem'}}>
           <h5 className="card-title">Two-Factor Authentication</h5>
-          <GenerateQr className="card-img-top"/>
+          <GenerateQr/>
           <div className="card-body">
           </div>
           <button className='btn btn-primary btn-block' onClick={handleTwoFa}>Activate</button>

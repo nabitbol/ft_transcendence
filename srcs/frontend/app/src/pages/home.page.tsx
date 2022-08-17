@@ -1,3 +1,4 @@
+import React from 'react'
 import Navbar from '../components/Navbar.component'
 
 function HomePage () {
