@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import authReqService from '../services/authReq.service'
 import { useEffect } from 'react';
-import React from 'react';
 
 const GenerateQr = () => {
 	const [IsQrLoad, setIsQrLoad] = useState(false);

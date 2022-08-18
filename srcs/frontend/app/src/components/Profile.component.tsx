@@ -1,4 +1,3 @@
-import React from "react";
 import AuthService from "../services/authReq.service";
 //import userService from "../services/user.service";
 import GenerateQr from '../components/GenerateQR.component'

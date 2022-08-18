@@ -1,6 +1,6 @@
 import Login from '../components/Login.component';
 import Register from '../components/Register.component';
-import React, { useState } from "react";
+import { useState } from "react";
 import Backdrop from '../components/Backdrop.component';
 import Navbar from '../components/Navbar.component'
 

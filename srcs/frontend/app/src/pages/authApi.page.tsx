@@ -1,4 +1,3 @@
-import React from "react"
 import AuthApi from "../components/AuthApi.component"
 function AuthApiPage () {
 	return(

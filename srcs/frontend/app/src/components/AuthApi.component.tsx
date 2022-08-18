@@ -2,8 +2,6 @@ import { useSearchParams } from 'react-router-dom';
 import authReqService from '../services/authReq.service';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import React from "react";
-
 
 const AuthApi= () => {
     const [searchParams] = useSearchParams();
