@@ -24,6 +24,7 @@ BACK_ENV_PORT=3333
 
 ```
 PORT=3001
+REACT_APP_URL_TO_BACK=http://localhost:3333
 ```
 
 # api

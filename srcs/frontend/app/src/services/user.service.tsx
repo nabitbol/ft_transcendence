@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authHeader from './authHeader.service';
 
-const URL = 'http://localhost:3333/user/';
+const URL =  process.env.REACT_APP_URL_TO_BACK + '/user/';
 
 class UserService {
 	getAll() {
