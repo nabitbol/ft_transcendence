@@ -27,6 +27,8 @@
   "devDependencies": {
     "@types/jest": "^28.1.7",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
+    "lint-staged": "^13.0.3",
+    "nx": "14.7.4",
+    "@nrwl/nx-cloud": "latest"
   }
 }
