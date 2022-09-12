@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@ft_transcendence/frontend",
   "version": "1.0.0",
   "description": "Frontend of the project ft_transcendence",
   "main": "main.ts",
