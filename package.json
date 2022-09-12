@@ -10,6 +10,7 @@
     "packages/**"
   ],
   "scripts": {
+    "backend:dev": "yarn --cwd packages/backend start:dev",
     "test:backend": "yarn --cwd packages/backend test:pre-commit",
     "postinstall": "husky install",
     "lint-staged": "lint-staged"
