@@ -1,25 +1,24 @@
 version: "3"
 
 services:
-    postgres:
-        image: postgres:12.3-alpine
-        restart: always
-        env_file:
-          ./data_base.env
-        volumes:
-            - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+  postgres:
+    container_name: postgres
+    image: postgres:12.3-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
 
-    pgadmin:
-        image: dpage/pgadmin4:4.23
-        env_file:
-          ./adminer.env
-        ports:
-            - 15432:80
-        volumes:
-            - pgadmin:/var/home/noam/Documents/web/todo.app/pgadmin
-        depends_on:
-            - postgres
+  pgadmin:
+    image: dpage/pgadmin4:4.23
+    ports:
+      - 15432:80
+    volumes:
+      - pgadmin:/var/home/noam/Documents/web/todo.app/pgadmin
+    depends_on:
+      - postgres
 
 volumes:
-    postgres:
-    pgadmin:
+  postgres:
+  pgadmin:
