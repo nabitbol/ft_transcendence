@@ -1,3 +1,13 @@
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import {
+  MinLength,
+  MaxLength,
+  IsPositive,
+  IsEmail,
+  IsString,
+  IsOptional,
+} from "class-validator";
+
 export type UserType = {
   name: string;
   email: string;
@@ -10,3 +20,146 @@ export type UserType = {
   level?: number | undefined;
   userRankId?: string | undefined;
 };
+
+export type UserToUpdateType = {
+  name?: string | undefined;
+  email?: string | undefined;
+  password?: string | undefined;
+  image?: string | undefined;
+  doubleAuth?: boolean | undefined;
+  wins?: number | undefined;
+  losses?: number | undefined;
+  draw?: number | undefined;
+  level?: number | undefined;
+  userRankId?: string | undefined;
+};
+
+export class UserDto {
+  @ApiProperty()
+  @IsString()
+  @MinLength(4)
+  @MaxLength(25)
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @MinLength(8)
+  password: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  image: string;
+
+  @ApiPropertyOptional({
+    description: "Status of the 2FA",
+    default: false,
+  })
+  doubleAuth?: boolean | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of won matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  wins?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of lost matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  losses?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of draw matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  draw?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Elo level of the user",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  level?: number | undefined;
+
+  @ApiPropertyOptional()
+  userRankId?: string | undefined;
+}
+
+export class UserToUpdateDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MinLength(4)
+  @MaxLength(25)
+  name: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MinLength(8)
+  password: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  image: string;
+
+  @ApiPropertyOptional({
+    description: "Status of the 2FA",
+    default: false,
+  })
+  doubleAuth?: boolean | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of won matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  wins?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of lost matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  losses?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of draw matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  draw?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Elo level of the user",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  level?: number | undefined;
+
+  @ApiPropertyOptional()
+  userRankId?: string | undefined;
+}
