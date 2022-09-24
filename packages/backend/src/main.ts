@@ -12,13 +12,14 @@ import { AppModule } from "./app/app.module";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const docPrefix = "doc";
   const config = new DocumentBuilder()
     .setTitle("ft-transcendence API")
     .setDescription("The ft-transcendence API description")
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("test", app, document);
+  SwaggerModule.setup(docPrefix, app, document);
 
   const globalPrefix = "api";
   app.setGlobalPrefix(globalPrefix);
@@ -26,6 +27,9 @@ async function bootstrap() {
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+  );
+  Logger.log(
+    `📄 Please find the api documentation on http://localhost:${port}/${globalPrefix}/${docPrefix}`
   );
 }
 
