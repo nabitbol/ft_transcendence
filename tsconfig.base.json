@@ -21,6 +21,9 @@
       "@ft-transcendence/prisma-client": [
         "packages/prisma-client/src/index.ts"
       ],
+      "@ft-transcendence/types": [
+        "packages/types/src/index.ts"
+      ],
       "@ft-transcendence/user": [
         "packages/user/src/index.ts"
       ]

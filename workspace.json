@@ -6,6 +6,7 @@
     "frontend": "packages/frontend",
     "frontend-e2e": "packages/frontend-e2e",
     "prisma-client": "packages/prisma-client",
+    "types": "packages/types",
     "user": "packages/user"
   }
 }
