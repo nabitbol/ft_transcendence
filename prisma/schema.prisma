@@ -14,15 +14,98 @@ datasource db {
 
 model User {
   id         String  @id @default(uuid())
-  username   String  @unique
-  email      String?  @unique
+  name       String  @unique @db.Char(25)
+  email      String? @unique
   password   String
-  doubleAuth Boolean
-  wins       Int
-  losses     Int
-  draw       Int
-  level      Int
-  avatar     String
+  doubleAuth Boolean @default(false)
+  wins       Int     @default(0)
+  losses     Int     @default(0)
+  draw       Int     @default(0)
+  level      Int     @default(0)
+  image      String
 
-  @@index([username])
+  achivements Achievement[]
+
+  //many to many self relation
+  friends   User[] @relation("friends")
+  friendsOf User[] @relation("friends")
+
+  userRank   UserRank? @relation(fields: [userRankId], references: [id])
+  userRankId String?
+
+  match Match[]
+
+  rooms User_Room[]
+
+  messages Message[]
+
+  @@index([name])
+}
+
+model Achievement {
+  id      String @id @default(uuid())
+  title   String @unique @db.Char(25)
+  content String
+  image   String
+
+  users User[]
+}
+
+model UserRank {
+  id          String @id @default(uuid())
+  ladderLevel Int    @unique
+
+  user User[]
+}
+
+model Match {
+  id     String @id @default(uuid())
+  score  String
+  winner String @default("Draw Game")
+
+  players User[]
+}
+
+model User_Room {
+  id     String    @id @default(uuid())
+  role   Room_Role @default(NORMAL)
+  User   User      @relation(fields: [userId], references: [id])
+  userId String
+  Room   Room      @relation(fields: [roomId], references: [id])
+  roomId String
+}
+
+model Room {
+  id       String      @id @default(uuid())
+  name     String      @unique @db.Char(25)
+  password String
+  status   Room_Status @default(PUBLIC)
+
+  users User_Room[]
+
+  messages Message[]
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Room   Room   @relation(fields: [roomId], references: [id])
+  roomId String
+}
+
+enum Room_Role {
+  ADMIN
+  NORMAL
+  MUTED
+  BANNED
+}
+
+enum Room_Status {
+  PUBLIC
+  PROTECTED
+  PRIVATE
 }

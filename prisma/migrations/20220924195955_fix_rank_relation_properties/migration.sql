@@ -1,0 +1,12 @@
+-- DropForeignKey
+ALTER TABLE "User" DROP CONSTRAINT "User_userRankId_fkey";
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "wins" SET DEFAULT 0,
+ALTER COLUMN "losses" SET DEFAULT 0,
+ALTER COLUMN "draw" SET DEFAULT 0,
+ALTER COLUMN "level" SET DEFAULT 0,
+ALTER COLUMN "userRankId" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_userRankId_fkey" FOREIGN KEY ("userRankId") REFERENCES "UserRank"("id") ON DELETE SET NULL ON UPDATE CASCADE;
