@@ -14,7 +14,7 @@ datasource db {
 
 model User {
   id         String  @id @default(uuid())
-  name       String  @unique @db.Char(25)
+  name       String  @unique
   email      String? @unique
   password   String
   doubleAuth Boolean @default(false)
@@ -44,7 +44,7 @@ model User {
 
 model Achievement {
   id      String @id @default(uuid())
-  title   String @unique @db.Char(25)
+  title   String @unique
   content String
   image   String
 
@@ -52,34 +52,40 @@ model Achievement {
 }
 
 model UserRank {
-  id          String @id @default(uuid())
-  ladderLevel Int    @unique
+  id          String   @id @default(uuid())
+  updated_at  DateTime @updatedAt
+  ladderLevel Int      @unique
 
   user User[]
 }
 
 model Match {
-  id     String @id @default(uuid())
-  score  String
-  winner String @default("Draw Game")
+  id         String   @id @default(uuid())
+  score      String
+  winner     String   @default("Draw Game")
+  created_at DateTime @default(now())
 
   players User[]
 }
 
 model User_Room {
-  id     String    @id @default(uuid())
-  role   Room_Role @default(NORMAL)
-  User   User      @relation(fields: [userId], references: [id])
-  userId String
-  Room   Room      @relation(fields: [roomId], references: [id])
-  roomId String
+  id         String    @id @default(uuid())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  role       Room_Role @default(NORMAL)
+  User       User      @relation(fields: [userId], references: [id])
+  userId     String
+  Room       Room      @relation(fields: [roomId], references: [id])
+  roomId     String
 }
 
 model Room {
-  id       String      @id @default(uuid())
-  name     String      @unique @db.Char(25)
-  password String
-  status   Room_Status @default(PUBLIC)
+  id         String      @id @default(uuid())
+  name       String      @unique
+  password   String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  status     Room_Status @default(PUBLIC)
 
   users User_Room[]
 
@@ -87,8 +93,10 @@ model Room {
 }
 
 model Message {
-  id      String @id @default(uuid())
-  content String
+  id         String   @id @default(uuid())
+  content    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
