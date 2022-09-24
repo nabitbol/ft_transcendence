@@ -17,7 +17,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ft-transcendence/prisma-client": [
+        "packages/prisma-client/src/index.ts"
+      ],
+      "@ft-transcendence/user": [
+        "packages/user/src/index.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
