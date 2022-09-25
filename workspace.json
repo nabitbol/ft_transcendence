@@ -5,6 +5,7 @@
     "backend": "packages/backend",
     "frontend": "packages/frontend",
     "frontend-e2e": "packages/frontend-e2e",
+    "match": "packages/match",
     "prisma-client": "packages/prisma-client",
     "types": "packages/types",
     "user": "packages/user"

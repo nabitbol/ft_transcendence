@@ -18,6 +18,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ft-transcendence/match": [
+        "packages/match/src/index.ts"
+      ],
       "@ft-transcendence/prisma-client": [
         "packages/prisma-client/src/index.ts"
       ],
