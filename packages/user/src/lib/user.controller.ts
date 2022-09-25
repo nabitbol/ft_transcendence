@@ -1,7 +1,15 @@
 import { UserDto, UserToUpdateDto } from "@ft-transcendence/types";
-import { Controller, Delete, Get, Post, Put } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Param,
+  Body,
+  ValidationPipe,
+} from "@nestjs/common";
 import { UserService } from "./user.service";
-import { Param, Body, ValidationPipe } from "@nestjs/common";
 import { ApiParam } from "@nestjs/swagger";
 
 @Controller("user")
