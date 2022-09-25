@@ -1,4 +1,5 @@
 import { MatchDto } from "@ft-transcendence/types";
+import { UserService } from "@ft-transcendence/user";
 import {
   Controller,
   Get,
@@ -6,16 +7,16 @@ import {
   Post,
   Body,
   ValidationPipe,
+  Inject,
 } from "@nestjs/common";
 import { MatchService } from "./match.service";
-import { UserService } from "@ft-transcendence/user";
 
 @Controller("match")
 export class MatchController {
-  constructor(
-    private matchService: MatchService,
-    private userSevrice: UserService
-  ) {}
+  constructor(private matchService: MatchService) {}
+
+  @Inject(UserService)
+  private readonly userService: UserService;
 
   @Get()
   public async getMatches() {
@@ -30,7 +31,9 @@ export class MatchController {
   @Get(":name")
   public async getUserMatches(@Param() param) {
     try {
-      const id: string = userService.getUserByName(param.name);
+      const id: string = await (
+        await this.userService.getUserByName(param.name)
+      ).id;
       const matches: MatchDto[] = await this.matchService.getUserMatches(id);
       return { matches };
     } catch (err) {

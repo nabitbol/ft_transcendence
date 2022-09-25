@@ -35,6 +35,10 @@ export type UserToUpdateType = {
 };
 
 export class UserDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  id?: string | undefined;
+
   @ApiProperty()
   @IsString()
   @MinLength(4)
