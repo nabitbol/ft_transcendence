@@ -11,16 +11,5 @@ services:
     volumes:
       - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4:4.23
-    env_file: .env
-    ports:
-      - 15432:80
-    volumes:
-      - pgadmin:/var/home/noam/Documents/web/todo.app/pgadmin
-    depends_on:
-      - postgres
-
 volumes:
   postgres:
-  pgadmin:
