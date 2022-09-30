@@ -1,0 +1,10 @@
+.div {
+	height: 600px;
+	width: 500px;
+	min-width: 500px;
+	border-radius: 10px;
+	box-shadow: 0px 5px 5px lightgray;
+	background-color: rgb(100, 0, 50, 0.5);
+	overflow-y: scroll;
+	position: relative;
+}

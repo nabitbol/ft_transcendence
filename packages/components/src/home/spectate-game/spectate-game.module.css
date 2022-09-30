@@ -1,0 +1,47 @@
+.button_spectate {
+	background-color: rgb(100, 0, 50, 0.5);
+	color: white;
+	height: 75px;
+	width: 150px;
+	border-radius: 5px;
+	position: relative;
+}
+
+.button_spectate:hover {
+	background-color: darkgrey;
+}
+
+
+.div {
+	height: 500px;
+	width: 800px;
+	border-radius: 10px;
+	box-shadow: 0px 5px 5px lightgray;
+	overflow-y: scroll;
+	z-index: 1;
+	top: 20%;
+	position: fixed;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}
+
+.close {
+	padding: 15px 15px;
+	position: absolute;
+	top: 5%;
+	right: 1%;
+	transform: translateY(-50%);
+	border: 2px solid grey;
+	background:
+		linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 43%, #fff 45%, #fff 55%, rgba(0, 0, 0, 0) 57%, rgba(0, 0, 0, 0) 100%),
+		linear-gradient(135deg, grey 0%, grey 43%, #fff 45%, #fff 55%, grey 57%, grey 100%);
+}
+
+.h2_title {
+	position: absolute;
+	top: 5%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}

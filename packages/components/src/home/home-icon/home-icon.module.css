@@ -1,0 +1,8 @@
+.home_icone {
+	position: absolute;
+	top: 5%;
+	left: 4%;
+	transform: translate(-50%, -50%);
+	z-index: 0;
+
+}

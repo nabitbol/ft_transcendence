@@ -1,0 +1,57 @@
+.button {
+	background-color: grey;
+	color: white;
+	height: 50px;
+	width: 100px;
+	border-radius: 5px;
+	margin: 10px;
+}
+
+.button:hover {
+	background-color: darkgrey;
+}
+
+.button_container {
+	display: table;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+
+.h2_title {
+	display: table;
+	margin: 0 auto;
+	font-size: 50px;
+	margin-bottom: 25px;
+}
+
+.input_add_user {
+	border-radius: 2px;
+	margin: 10px;
+}
+
+.friendlist_list {
+	width: 100%;
+	max-height: 60vh;
+	border-radius: 10px;
+	box-shadow: 0px 5px 5px lightgray;
+	background-color: grey;
+	overflow-y: scroll;
+}
+
+.friendlist_content {
+	position: relative;
+	width: 60%;
+	height: 65%;
+	background-color: whitesmoke;
+	max-width: 600px;
+	min-width: 500px;
+	display: table;
+	margin: 0 auto;
+	top: 3%;
+}
+
+.friendlist_container {
+	height: 100vh;
+	background-color: whitesmoke;
+	overflow-y: scroll;
+}

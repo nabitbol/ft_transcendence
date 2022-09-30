@@ -1,0 +1,46 @@
+.register_form {
+	font: inherit;
+	color: black;
+	position: fixed;
+	padding: 2rem;
+	z-index: 10;
+	font-size: 20px;
+	width: 20%;
+	background-color: whitesmoke;
+	border-radius: 10px;
+	top: 20%;
+	min-width: 235px;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}
+
+.register_label {
+	display: table;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.register_btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 4px;
+	background-color: rgb(100, 0, 50);
+	color: white;
+	border: 2px solid rgb(100, 0, 50);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	margin-left: 25%;
+}
+
+
+.register_input {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: table;
+	margin: 0 auto;
+	width: 80%;
+	border-radius: 3px;
+}

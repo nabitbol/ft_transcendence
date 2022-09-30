@@ -1,0 +1,111 @@
+.div {
+	height: 200px;
+	width: 750px;
+	border-width: 5px;
+	border-color: black;
+	background-color: grey;
+	position: relative;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+
+}
+
+.button_spectate {
+	background-color: grey;
+	color: white;
+	height: 50px;
+	width: 100px;
+	border-radius: 5px;
+	outline: 0;
+	cursor: pointer;
+	box-shadow: 0px 2px 2px lightgray;
+	transition: ease background-color 250ms;
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+}
+
+.h2_vs {
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2;
+}
+
+.div_j1 {
+	height: 200px;
+	width: 300px;
+	background-color: grey;
+	z-index: 1;
+	position: absolute;
+	top: 50%;
+	left: 18%;
+	transform: translate(-50%, -50%);
+
+}
+
+.img_j1 {
+	z-index: 2;
+	position: absolute;
+	top: 35%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+}
+
+.p_usr_j1 {
+	z-index: 2;
+	position: absolute;
+	top: 60%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+}
+
+.p_lvl_j1 {
+	z-index: 2;
+	position: absolute;
+	top: 70%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+}
+
+.div_j2 {
+	height: 200px;
+	width: 300px;
+	background-color: grey;
+	z-index: 1;
+	position: absolute;
+	top: 50%;
+	left: 82%;
+	transform: translate(-50%, -50%);
+
+
+}
+
+.img_j2 {
+	z-index: 2;
+	position: absolute;
+	top: 35%;
+	left: 80%;
+	transform: translate(-50%, -50%);
+}
+
+.p_usr_j2 {
+	z-index: 2;
+	position: absolute;
+	top: 60%;
+	left: 80%;
+	transform: translate(-50%, -50%);
+}
+
+.p_lvl_j2 {
+	z-index: 2;
+	position: absolute;
+	top: 70%;
+	left: 80%;
+	transform: translate(-50%, -50%);
+}

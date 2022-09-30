@@ -1,0 +1,39 @@
+.div {
+	height: 100px;
+	background-color: grey;
+	position: relative;
+	border: 2px solid black;
+}
+
+.img {
+	position: absolute;
+	top: 50%;
+	left: 10%;
+	transform: translate(-50%, -50%);
+}
+
+.p_usr {
+	position: absolute;
+	top: 50%;
+	left: 30%;
+	transform: translate(-50%, -50%);
+}
+
+.p_lvl {
+	position: absolute;
+	top: 50%;
+	left: 60%;
+	transform: translate(-50%, -50%);
+}
+
+.close {
+	padding: 5px 5px;
+	position: absolute;
+	top: 20%;
+	right: 1%;
+	transform: translateY(-50%);
+	border: 2px solid grey;
+	background:
+		linear-gradient(45deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 43%, red 45%, red 55%, rgba(0, 0, 0, 0) 57%, rgba(0, 0, 0, 0) 100%),
+		linear-gradient(135deg, grey 0%, grey 43%, red 45%, red 55%, grey 57%, grey 100%);
+}

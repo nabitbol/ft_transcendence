@@ -1,0 +1,49 @@
+.div {
+	height: 100px;
+	background-color: grey;
+	position: relative;
+	border: 2px solid black;
+}
+
+.h2_rank {
+	position: absolute;
+	top: 50%;
+	left: 10%;
+	transform: translate(-50%, -50%);
+}
+
+
+.img {
+	position: absolute;
+	top: 50%;
+	left: 25%;
+	transform: translate(-50%, -50%);
+}
+
+.p_usr {
+	position: absolute;
+	top: 30%;
+	left: 40%;
+	transform: translate(-50%, -50%);
+}
+
+.p_lvl {
+	position: absolute;
+	top: 60%;
+	left: 40%;
+	transform: translate(-50%, -50%);
+}
+
+.p_winrate {
+	position: absolute;
+	top: 50%;
+	left: 60%;
+	transform: translate(-50%, -50%);
+}
+
+.p_elo {
+	position: absolute;
+	top: 50%;
+	left: 85%;
+	transform: translate(-50%, -50%);
+}

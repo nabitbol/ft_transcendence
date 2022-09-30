@@ -1,0 +1,13 @@
+.all_icone {
+	position: relative;
+	min-height: 10%;
+	display: flex;
+	flex-direction: row;
+	top: 0;
+	left: 0;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 15px;
+	background-color: black;
+}

@@ -3,9 +3,12 @@
   "version": 2,
   "projects": {
     "backend": "packages/backend",
+    "components": "packages/components",
     "frontend": "packages/frontend",
     "frontend-e2e": "packages/frontend-e2e",
+    "frontend-services": "packages/frontend-services",
     "match": "packages/match",
+    "pages": "packages/pages",
     "prisma-client": "packages/prisma-client",
     "types": "packages/types",
     "user": "packages/user"

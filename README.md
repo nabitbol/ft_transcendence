@@ -1,30 +1,58 @@
-# Ft_transcendence
+# ft_transcendence
+
 This project is about creating a website for the mighty Pong contest! 
 
-## Quick start
+## Overview
+
+### Run the backend
 
 ```bash
-git clone https://github.com/nabitbol/ft_transcendence.git && cd ft_transcendence
-mkdir environnement && cat notes/templates_env.md > ./environnement/dev.env
-make
+npx nx serve backend
 ```
-## Run the project
 
-> Create at the root of the repository the environnement files:
-> - dev.env
-> - test.env
-> - prod.env
+### Run the frontend
 
-> You can find .env templates by clicking [here](https://github.com/nabitbol/ft_transcendence/notes/templates_env.md)
+```bash
+npx nx serve frontend
+```
+### Get API doc
 
-> Run command: `docker-compose --env-file ./environnement/your_file_name.env up -d`
+> serve the backend then got to hostname:port/doc check the backend
+> logger for precise informations
 
-> Access to your app by going to **hostname:port**
+## About the set up
 
-> Access the pgadmin by going to **hostname:15432** for more informations click [here](https://github.com/nabitbol/ft_transcendence/notes/pgadmin.md)
+> the project use a monorepo system based on nx for more information check nx.md in notes.
 
-## How it works
+### Add a nest lib
 
-## Data
+> use: ` npx nx generate @nrwl/nest:lib lib-name --Options`
+> Example of options could be --controller or --service
+
+### Add a react component
+
+> use: `npx nx g component component-name --project=project-name --directory=directory-name`
+> Example of command coould be: npx nx g component playButton --project=pages --directory=home
+
+## About Prisma
+
+### Connection
+
+> To connect to the postgresql database you have to provid an database url in the .env
+> respecting this standrad : (One exemple is provided in template_env.md)
+> **postgresql://USER:PASSWORD@HOST:PORT/DATABASE?KEY1=VALUE&KEY2=VALUE&KEY3=VALUE**
+` check this like form more information https://www.prisma.io/docs/concepts/database-connectors/postgresql`
+
+### Migration
+
+> To deploy your application you have to migrate to the last version of the database
+> use: `npx prisma migrate dev` (for developpement)
+
+### Data visualisation
+
+> To check the database content
+> use: `npx prisma studio`
+
+## Data Base
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
