@@ -21,7 +21,7 @@ export function LiveGame({ game_id }) {
       </button>
       <div className={classes['div_j1']}>
         <img
-          src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+          src={require("../../../../../assets/img/friend.png")}
           alt={"user avatar"}
           height="75"
           width="75"
@@ -36,7 +36,7 @@ export function LiveGame({ game_id }) {
       </div>
       <div className={classes['div_j2']}>
         <img
-          src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+          src={require("../../../../../assets/img/friend.png")}
           height="75"
           width="75"
           className={classes['img_j2']}

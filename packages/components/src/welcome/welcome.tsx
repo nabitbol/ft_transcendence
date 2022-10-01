@@ -11,7 +11,7 @@ function Welcome() {
       <Auth />
       <img
         id={classes["welcomeimage"]} 
-        src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+        src={require("../../../../assets/img/firechicken.png")}
         alt="welcome"
       ></img>
     </div>

@@ -13,10 +13,11 @@ export function PastGame({ game_id }) {
       <h2 className={classes.h2_vs}>-</h2>
       <div className={classes.div_j1}>
         <img
-          src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+          src={require("../../../../../assets/img/friend.png")}
           height="50"
           width="50"
           className={classes.img_j1}
+          alt='player'
         />
         <p className={classes.p_usr_j1}>
           <strong>{name}</strong>
@@ -30,10 +31,11 @@ export function PastGame({ game_id }) {
       </div>
       <div className={classes.div_j2}>
         <img
-          src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+          src={require("../../../../../assets/img/friend.png")}
           height="50"
           width="50"
           className={classes.img_j2}
+          alt='player'
         />
         <p className={classes.p_usr_j2}>
           <strong>{name_j2}</strong>

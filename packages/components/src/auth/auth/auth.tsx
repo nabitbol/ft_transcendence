@@ -1,10 +1,5 @@
 import { useState } from "react";
 import { Backdrop, TwoFa, Register, Login } from "@ft-transcendence/components";
-/*
- ** here we are doing destructuring but we can also call a object named
- ** Components for exemple and acces imporations using '.' notation
- ** like: components.TwoFa
- */
 import classes from "./auth.module.css";
 
 function Auth() {

@@ -27,7 +27,7 @@ function Profile() {
             <div className={classes['profile_card']}>
               <img
                 className={classes['profile_avatar']}
-                src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+                src={require("../../../../../assets/img/friend.png")}
                 alt="zaeeza"
               />
               <span className={classes['profile_span']}>

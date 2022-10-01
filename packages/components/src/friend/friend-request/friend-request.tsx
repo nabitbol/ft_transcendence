@@ -14,7 +14,7 @@ export function FriendRequest({ user_id }) {
   return (
     <div className={classes.div}>
       <img
-        src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+        src={require("../../../../../assets/img/friend.png")}
         alt={"user avatr"}
         height="60"
         width="60"

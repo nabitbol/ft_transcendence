@@ -13,7 +13,7 @@ function GeneralRank({ user_id, rank }) {
       </h2>
 
       <img
-        src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
+        src={require("../../../../../assets/img/friend.png")}
         alt={"user avatar"}
         height="50"
         width="50"
