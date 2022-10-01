@@ -2,7 +2,7 @@ import classes from "./friend-list.module.css";
 import { Friend } from "@ft-transcendence/components";
 import { useState } from "react";
 
-export default function FriendList() {
+export function FriendList() {
   const [user_name, setUserName] = useState("");
 
   const friend_ID = ["1", "2", "3", "4", "5", "6", "7"];

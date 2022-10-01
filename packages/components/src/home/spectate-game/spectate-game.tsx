@@ -2,7 +2,7 @@ import classes from "./spectate-game.module.css";
 import { Backdrop, LiveGame } from "@ft-transcendence/components";
 import { useState } from "react";
 
-export default function SpectateGame() {
+export function SpectateGame() {
   const [list, setList] = useState(false);
   const ID = ["1", "2"];
 

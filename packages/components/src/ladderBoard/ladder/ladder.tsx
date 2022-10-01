@@ -2,7 +2,7 @@ import classes from "./ladder.module.css";
 import { GeneralRank, FriendRank } from "@ft-transcendence/components";
 import { useState } from "react";
 
-export default function Ladder() {
+export function Ladder() {
   const [ladder_general, setLadderGeneral] = useState(true);
   const general_ID = [
     "1",

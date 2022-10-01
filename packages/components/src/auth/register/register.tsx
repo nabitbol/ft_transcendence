@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import {
-  Auth as AuthService,
+  AuthReq,
   vrequired,
   validEmail,
   vusername_length,
@@ -44,7 +44,7 @@ const Register: React.FC = () => {
     setSuccessful(false);
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(user_pseudo, user_email, user_password).then(
+      AuthReq.register(user_pseudo, user_email, user_password).then(
         () => {
           setMessage("User creation was successful !");
           setSuccessful(true);
@@ -65,18 +65,18 @@ const Register: React.FC = () => {
 
   return (
     <Form
-      className={classes["register_form"]}
+      className={classes.register_form}
       onSubmit={handleRegister}
       ref={form}
     >
       <div>
         <div className="form-group">
-          <label className={classes["register_label"]} htmlFor="user_pseudo">
+          <label className={classes.register_label} htmlFor="user_pseudo">
             Username
           </label>
           <Input
             type="text"
-            className={classes["register_input"]}
+            className={classes.register_input}
             name="user_pseudo"
             value={user_pseudo}
             onChange={onChangeUserPseudo}
@@ -85,12 +85,12 @@ const Register: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label className={classes["register_label"]} htmlFor="user_email">
+          <label className={classes.register_label} htmlFor="user_email">
             Email
           </label>
           <Input
             type="text"
-            className={classes["register_input"]}
+            className={classes.register_input}
             name="user_email"
             value={user_email}
             onChange={onChangeUserEmail}
@@ -99,12 +99,12 @@ const Register: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label className={classes["register_label"]} htmlFor="user_password">
+          <label className={classes.register_label} htmlFor="user_password">
             Password
           </label>
           <Input
             type="password"
-            className={classes["register_input"]}
+            className={classes.register_input}
             name="user_password"
             value={user_password}
             onChange={onChangeUserPassword}
@@ -113,7 +113,7 @@ const Register: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <button className={classes["register_btn"]}>Sign Up</button>
+          <button className={classes.register_btn}>Sign Up</button>
         </div>
 
         {message && (

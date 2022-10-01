@@ -1,5 +1,6 @@
 import classes from "../../ladderBoard/general-rank/general-rank.module.css";
-export default function FriendRank({ user_id, rank }) {
+
+function FriendRank({ user_id, rank }) {
   const name = "erzow";
   const lvl = user_id;
   const winrate = "20";
@@ -12,7 +13,7 @@ export default function FriendRank({ user_id, rank }) {
       </h2>
 
       <img
-        src={require("../../img/avatar2.jpg")}
+        src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
         height="50"
         width="50"
         className={classes.img}
@@ -33,3 +34,5 @@ export default function FriendRank({ user_id, rank }) {
     </div>
   );
 }
+
+export {FriendRank}

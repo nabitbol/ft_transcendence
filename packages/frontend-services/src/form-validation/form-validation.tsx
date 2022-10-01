@@ -8,6 +8,8 @@ export const vrequired = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const validEmail = (value: string) => {
@@ -18,6 +20,8 @@ export const validEmail = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vusername_length = (value: string) => {
@@ -28,6 +32,8 @@ export const vusername_length = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vpassword_length = (value: string) => {
@@ -38,6 +44,8 @@ export const vpassword_length = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vregex = (value: string) => {
@@ -49,6 +57,8 @@ export const vregex = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vnumber = (value: string) => {
@@ -60,6 +70,8 @@ export const vnumber = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vmaj = (value: string) => {
@@ -71,6 +83,8 @@ export const vmaj = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vonly_number = (value: string) => {
@@ -82,6 +96,8 @@ export const vonly_number = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };
 
 export const vonly_letter = (value: string) => {
@@ -93,4 +109,6 @@ export const vonly_letter = (value: string) => {
       </div>
     );
   }
+  else
+    return '';
 };

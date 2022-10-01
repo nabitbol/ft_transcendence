@@ -2,7 +2,7 @@ import classes from "./private-game.module.css";
 import { PrivateGameJoin, Backdrop } from "@ft-transcendence/components";
 import { useState } from "react";
 
-export default function PrivateGame(this: any) {
+export function PrivateGame(this: any) {
   const [find_create, setFindCreate] = useState(false);
   const [join, setJoin] = useState(false);
   const [lobby, setLobby] = useState(false);
@@ -65,7 +65,7 @@ export default function PrivateGame(this: any) {
             <h2 className={classes.h2_vs}>VS</h2>
             <div className={classes.div_j1}>
               <img
-                src={require("../../img/avatar2.jpg")}
+                src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
                 height="100"
                 width="100"
                 alt="private_avatar"
@@ -82,7 +82,7 @@ export default function PrivateGame(this: any) {
             </div>
             <div className={classes.div_j2}>
               <img
-                src={require("../../img/avatar2.jpg")}
+                src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
                 height="100"
                 width="100"
                 alt="private_opponent_avatar"

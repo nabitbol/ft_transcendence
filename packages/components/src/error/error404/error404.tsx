@@ -1,4 +1,4 @@
-export default function Error404() {
+export function Error404() {
   return (
     <div>
       <h3>404 page not found</h3>

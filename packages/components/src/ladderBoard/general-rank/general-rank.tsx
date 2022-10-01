@@ -1,6 +1,6 @@
 import classes from "./general-rank.module.css";
 
-export default function GeneralRank({ user_id, rank }) {
+function GeneralRank({ user_id, rank }) {
   const name = "eswox";
   const lvl = user_id;
   const winrate = "10";
@@ -13,7 +13,7 @@ export default function GeneralRank({ user_id, rank }) {
       </h2>
 
       <img
-        src={require("../../img/avatar2.jpg")}
+        src={require("/home/florian/Bureau/42/ft_transcendence/assets/notes.assets/project.visualisation.assets/database.png")}
         alt={"user avatar"}
         height="50"
         width="50"
@@ -34,3 +34,5 @@ export default function GeneralRank({ user_id, rank }) {
     </div>
   );
 }
+
+export {GeneralRank}

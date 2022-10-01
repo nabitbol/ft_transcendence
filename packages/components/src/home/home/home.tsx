@@ -4,7 +4,6 @@ import {
   PrivateGame,
   SpectateGame,
   MatchHistory,
-  HomeGame,
 } from "@ft-transcendence/components";
 function Home() {
   return (
@@ -21,4 +20,4 @@ function Home() {
   );
 }
 
-export default Home;
+export {Home};

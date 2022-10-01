@@ -1,7 +1,7 @@
 import classes from "./play-button.module.css";
 import { useState } from "react";
 
-export default function PlayButton(props) {
+export function PlayButton(props) {
   const [loading, setLoading] = useState(false);
 
   function clickme() {
