@@ -1,6 +1,6 @@
 import {
   vrequired,
-  Auth as AuthService,
+  AuthReq,
 } from "@ft-transcendence/frontend-services";
 import { useState, useRef } from "react";
 import Input from "react-validation/build/input";
@@ -23,7 +23,7 @@ const TwoFa: React.FC = () => {
     setSuccessful(false);
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.ValidateTwoFa(twoFaCode).then(
+      AuthReq.ValidateTwoFa(twoFaCode).then(
         () => {
           console.log("CODE =" + twoFaCode);
           setErrorMessage("Correct 2FA code");

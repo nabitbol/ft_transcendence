@@ -73,4 +73,4 @@ const PrivateGameJoin = () => {
   );
 };
 
-export default PrivateGameJoin;
+export {PrivateGameJoin};

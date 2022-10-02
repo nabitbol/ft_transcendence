@@ -2,7 +2,7 @@ import classes from "./private-game.module.css";
 import { PrivateGameJoin, Backdrop } from "@ft-transcendence/components";
 import { useState } from "react";
 
-export default function PrivateGame(this: any) {
+export function PrivateGame(this: any) {
   const [find_create, setFindCreate] = useState(false);
   const [join, setJoin] = useState(false);
   const [lobby, setLobby] = useState(false);
@@ -41,18 +41,18 @@ export default function PrivateGame(this: any) {
       {find_create && (
         <div>
           <Backdrop closeBackdrop={clickme_backdrop} />
-          <div className={classes.button_container}>
-            <button className={classes.button} onClick={clickme_create_button}>
+          <div className={classes["button_container"]}>
+            <button className={classes["button"]} onClick={clickme_create_button}>
               Create private game
             </button>
-            <button className={classes.button} onClick={clickme_join_button}>
+            <button className={classes["button"]} onClick={clickme_join_button}>
               Join private game
             </button>
           </div>
         </div>
       )}
       <button
-        className={classes.button_private}
+        className={classes["button_private"]}
         onClick={clickme_private_button}
       >
         Private Game
@@ -60,17 +60,17 @@ export default function PrivateGame(this: any) {
       {lobby && (
         <div>
           <Backdrop closeBackdrop={clickme_backdrop} />
-          <div className={classes.private_game}>
-            <h2 className={classes.h2_title}>Private game</h2>
-            <h2 className={classes.h2_vs}>VS</h2>
-            <div className={classes.div_j1}>
+          <div className={classes["private_game"]}>
+            <h2 className={classes["h2_title"]}>Private game</h2>
+            <h2 className={classes["h2_vs"]}>VS</h2>
+            <div className={classes["div_j1"]}>
               <img
-                src={require("../../img/avatar2.jpg")}
+                src={require("../../../../../assets/img/friend.png")}
                 height="100"
                 width="100"
                 alt="private_avatar"
               />
-              <p className={classes.p_usr_j1}>
+              <p className={classes["p_usr_j1"]}>
                 <strong>{name}</strong>
               </p>
               <p>
@@ -80,14 +80,14 @@ export default function PrivateGame(this: any) {
                 <strong>Win %:</strong> {winrate}
               </p>
             </div>
-            <div className={classes.div_j2}>
+            <div className={classes["div_j2"]}>
               <img
-                src={require("../../img/avatar2.jpg")}
+                src={require("../../../../../assets/img/friend.png")}
                 height="100"
                 width="100"
                 alt="private_opponent_avatar"
               />
-              <p className={classes.p_usr_j2}>
+              <p className={classes["p_usr_j2"]}>
                 <strong>{name_j2}</strong>
               </p>
               <p>
@@ -97,9 +97,9 @@ export default function PrivateGame(this: any) {
                 <strong>Win %:</strong> {winrate_j2}
               </p>
             </div>
-            <button className={classes.button_start}>Start</button>
-            <button className={classes.button_invite}>Invite friend</button>
-            <button className={classes.close} onClick={clickme_close}></button>
+            <button className={classes["button_start"]}>Start</button>
+            <button className={classes["button_invite"]}>Invite friend</button>
+            <button className={classes["close"]} onClick={clickme_close}></button>
           </div>
         </div>
       )}

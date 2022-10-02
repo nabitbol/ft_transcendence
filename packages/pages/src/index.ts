@@ -1,19 +1,19 @@
-export * from "./welcome/welcome";
+export * from "./welcome";
 
-export * from "./profil/profil";
+export * from "./profile";
 
-export * from "./not-fund/not-fund";
+export * from "./not-fund";
 
-export * from "./ladder/ladder";
+export * from "./ladder";
 
-export * from "./home/home";
+export * from "./home";
 
-export * from "./friend-request/firend-request";
+export * from "./friend-request";
 
-export * from "./friend/firend";
+export * from "./friend";
 
-export * from "./error/error";
+export * from "./errorPage";
 
-export * from "./achievement/achievement";
+export * from "./achievementPage";
 
-export * from "./auth-api/auth-api";
+export * from "./auth-apiPage";

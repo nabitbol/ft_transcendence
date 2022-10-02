@@ -1,6 +1,6 @@
 import classes from "./friend.module.css";
 
-export default function Friend({ user_id }) {
+export function Friend({ user_id }) {
   const name = "erzow";
   const lvl = user_id;
 
@@ -11,7 +11,7 @@ export default function Friend({ user_id }) {
   return (
     <div className={classes.div}>
       <img
-        src={require("../../img/avatar2.jpg")}
+        src={require("../../../../../assets/img/friend.png")}
         height="60"
         width="60"
         className={classes.img}

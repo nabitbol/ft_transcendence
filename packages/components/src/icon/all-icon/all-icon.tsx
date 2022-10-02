@@ -1,6 +1,7 @@
 import classes from "./all-icon.module.css";
+
 import {
-  ProfilIcon,
+  ProfileIcon,
   LadderIcon,
   HomeIcon,
   FriendIcon,
@@ -11,16 +12,16 @@ import {
 function AllIcon() {
   return (
     <div>
-      <HomeIcone />
+      <HomeIcon />
       <div className={classes.all_icone}>
-        <ProfileIcone />
-        <LadderIcone />
-        <FriendIcone />
-        <FriendRequestIcone />
-        <AchievementIcone />
+        <ProfileIcon />
+        <LadderIcon />
+        <FriendIcon />
+        <FriendRequestIcon />
+        <AchievementIcon />
       </div>
     </div>
   );
 }
 
-export default AllIcone;
+export {AllIcon};

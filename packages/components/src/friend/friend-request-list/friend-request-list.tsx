@@ -1,7 +1,7 @@
 import classes from "./friend-request-list.module.css";
 import { FriendRequest } from "@ft-transcendence/components";
 
-export default function FriendRequestList() {
+export function FriendRequestList() {
   const user_ID = ["1", "2", "3", "4", "5", "6"];
 
   return (

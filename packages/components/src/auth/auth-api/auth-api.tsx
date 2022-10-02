@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { Auth as AuthService } from "@ft-transcendence/frontend-services";
+import { AuthReq } from "@ft-transcendence/frontend-services";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -9,7 +9,7 @@ const AuthApi = () => {
 
   const handleLogin = () => {
     const code = searchParams.get("code");
-    AuthService.sendApiCode(code).then(() => {
+    AuthReq.sendApiCode(code).then(() => {
       navigate("/home");
       window.location.reload();
     });
@@ -26,4 +26,4 @@ const AuthApi = () => {
   );
 };
 
-export default AuthApi;
+export {AuthApi};

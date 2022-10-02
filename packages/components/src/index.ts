@@ -1,3 +1,8 @@
+
+export * from './achievement/achievement/achievement';
+
+export * from './achievement/achievement-list/achievement-list';
+
 export * from "./auth/auth/auth";
 
 export * from "./auth/auth-api/auth-api";
@@ -8,7 +13,7 @@ export * from "./auth/register/register";
 
 export * from "./auth/two-fa/two-fa";
 
-export * from "./auth/welcome/welcome";
+export * from "./welcome/welcome";
 
 export * from "./error/error404/error404";
 
@@ -32,9 +37,13 @@ export * from "./home/past-game/past-game";
 
 export * from "./home/private-game/private-game";
 
+export * from "./home/play-button/play-button";
+
 export * from "./home/private-game-join/private-game-join";
 
 export * from "./home/spectate-game/spectate-game";
+
+export * from "./achievement/achievement/achievement";
 
 export * from "./icon/achievement-icon/achievement-icon";
 
@@ -42,9 +51,13 @@ export * from "./icon/all-icon/all-icon";
 
 export * from "./icon/friendrequest-icon/friendrequest-icon";
 
+export * from "./icon/friend-icon/friend-icon";
+
+export * from "./icon/ladder-icon/ladder-icon";
+
 export * from "./icon/home-icon/home-icon";
 
-export * from "./icon/profil-icon/profil-icon";
+export * from "./icon/profile-icon/profile-icon";
 
 export * from "./ladderBoard/general-rank/general-rank";
 
@@ -54,8 +67,8 @@ export * from "./layout/backdrop/backdrop";
 
 export * from "./layout/modal/modal";
 
-export * from "./profil/generate-qr/generate-qr";
+export * from "./profile/generate-qr/generate-qr";
 
-export * from "./profil/profil/profil";
+export * from "./profile/profile/profile";
 
-export * from "./profil/qr-module/qr-module";
+export * from "./profile/qr-module/qr-module";

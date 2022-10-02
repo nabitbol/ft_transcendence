@@ -17,22 +17,22 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
   const [user_pseudo, setUserPseudo] = useState("");
   const [user_password, setUserPassword] = useState("");
   const [message, setMessage] = useState("");
-  const onChangeUserPseudo = (event: React.FormEvent<HTMLFormElement>) => {
+  const onChangeUserPseudo = (event: any) => {
     const user_pseudo = event.currentTarget["value"];
     setUserPseudo(user_pseudo);
   };
 
-  const onChangeUserPassword = (event: React.FormEvent<HTMLFormElement>) => {
+  const onChangeUserPassword = (event: any) => {
     const password = event.currentTarget["value"];
     setUserPassword(password);
   };
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (event: any) => {
     event.preventDefault();
     setMessage("");
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      Service.Auth.login(user_pseudo, user_password).then(
+      Service.AuthReq.login(user_pseudo, user_password).then(
         () => {
           const user_data = localStorage.getItem("userdata");
           if (user_data) {

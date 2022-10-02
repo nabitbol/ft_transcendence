@@ -1,9 +1,9 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 
-const URL = process.env.REACT_APP_URL_TO_BACK + "/auth/";
+const URL = process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
 
-class AuthService {
+class AuthReqService {
   async login(user_pseudo: string, user_password: string) {
     return axios
       .post(URL + "login", {
@@ -78,6 +78,6 @@ class AuthService {
   }
 }
 
-const Auth = new AuthService();
+const AuthReq = new AuthReqService();
 
-export { Auth };
+export { AuthReq };

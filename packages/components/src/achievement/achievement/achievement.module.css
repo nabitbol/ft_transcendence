@@ -1,0 +1,41 @@
+.div {
+    height: 100px;
+    background-color: grey;
+    position: relative;
+    border: 2px solid black;
+}
+
+.color {
+    height: 100px;
+    background-color: rgb(80, 79, 79);
+}
+
+.img{
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+}
+
+.p_description{
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkmark {
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 25px;
+    width: 12px;
+    margin-left: 60%; 
+    border-bottom: 7px solid #78b13f;
+    border-right: 7px solid #78b13f;
+    z-index: 2;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+  }

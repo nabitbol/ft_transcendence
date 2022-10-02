@@ -1,6 +1,6 @@
 import classes from "./friend-request.module.css";
 
-export default function FriendRequest({ user_id }) {
+export function FriendRequest({ user_id }) {
   const name = "erzow";
 
   function clickme_decline() {
@@ -14,7 +14,7 @@ export default function FriendRequest({ user_id }) {
   return (
     <div className={classes.div}>
       <img
-        src={require("../../img/avatar2.jpg")}
+        src={require("../../../../../assets/img/friend.png")}
         alt={"user avatr"}
         height="60"
         width="60"
