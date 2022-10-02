@@ -2,15 +2,15 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "backend": "packages/backend",
-    "components": "packages/components",
-    "frontend": "packages/frontend",
-    "frontend-e2e": "packages/frontend-e2e",
-    "frontend-services": "packages/frontend-services",
-    "match": "packages/match",
-    "pages": "packages/pages",
-    "prisma-client": "packages/prisma-client",
-    "types": "packages/types",
-    "user": "packages/user"
+    "apps-backend": "packages/apps/backend",
+    "apps-frontend": "packages/apps/frontend",
+    "libs-backend-match": "packages/libs/backend/match",
+    "libs-backend-prisma-client": "packages/libs/backend/prisma-client",
+    "libs-backend-user": "packages/libs/backend/user",
+    "libs-frontend-components": "packages/libs/frontend/components",
+    "libs-frontend-pages": "packages/libs/frontend/pages",
+    "libs-frontend-services": "packages/libs/frontend/services",
+    "libs-shared-get-config": "packages/libs/shared/get-config",
+    "libs-shared-types": "packages/libs/shared/types"
   }
 }

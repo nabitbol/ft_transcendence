@@ -68,7 +68,7 @@
     "appsDir": "packages",
     "libsDir": "packages"
   },
-  "defaultProject": "backend",
+  "defaultProject": "apps-backend",
   "generators": {
     "@nrwl/react": {
       "application": {

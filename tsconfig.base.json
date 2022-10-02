@@ -18,26 +18,29 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ft-transcendence/components": [
-        "packages/components/src/index.ts"
+      "@ft-transcendence/libs-backend-match": [
+        "packages/libs/backend/match/src/index.ts"
       ],
-      "@ft-transcendence/frontend-services": [
-        "packages/frontend-services/src/index.ts"
+      "@ft-transcendence/libs-backend-prisma-client": [
+        "packages/libs/backend/prisma-client/src/index.ts"
       ],
-      "@ft-transcendence/match": [
-        "packages/match/src/index.ts"
+      "@ft-transcendence/libs-backend-user": [
+        "packages/libs/backend/user/src/index.ts"
       ],
-      "@ft-transcendence/pages": [
-        "packages/pages/src/index.ts"
+      "@ft-transcendence/libs-frontend-components": [
+        "packages/libs/frontend/components/src/index.ts"
       ],
-      "@ft-transcendence/prisma-client": [
-        "packages/prisma-client/src/index.ts"
+      "@ft-transcendence/libs-frontend-pages": [
+        "packages/libs/frontend/pages/src/index.ts"
       ],
-      "@ft-transcendence/types": [
-        "packages/types/src/index.ts"
+      "@ft-transcendence/libs-frontend-services": [
+        "packages/libs/frontend/services/src/index.ts"
       ],
-      "@ft-transcendence/user": [
-        "packages/user/src/index.ts"
+      "@ft-transcendence/libs-shared-get-config": [
+        "packages/libs/shared/get-config/src/index.ts"
+      ],
+      "@ft-transcendence/libs-shared-types": [
+        "packages/libs/shared/types/src/index.ts"
       ]
     }
   },
