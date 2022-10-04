@@ -14,6 +14,7 @@ export type UserType = {
   password: string;
   image: string;
   doubleAuth?: boolean | undefined;
+  doubleAuthSecret?: string | undefined;
   wins?: number | undefined;
   losses?: number | undefined;
   draw?: number | undefined;
@@ -27,6 +28,7 @@ export type UserToUpdateType = {
   password?: string | undefined;
   image?: string | undefined;
   doubleAuth?: boolean | undefined;
+  doubleAuthSecret?: string | undefined;
   wins?: number | undefined;
   losses?: number | undefined;
   draw?: number | undefined;
@@ -64,6 +66,9 @@ export class UserDto {
     default: false,
   })
   doubleAuth?: boolean | undefined;
+
+  @ApiPropertyOptional()
+  doubleAuthSecret?: string | undefined;
 
   @ApiPropertyOptional({
     description: "Number of won matchs",
@@ -131,6 +136,9 @@ export class UserToUpdateDto {
     default: false,
   })
   doubleAuth?: boolean | undefined;
+
+  @ApiPropertyOptional()
+  doubleAuthSecret?: string | undefined;
 
   @ApiPropertyOptional({
     description: "Number of won matchs",

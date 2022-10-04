@@ -24,6 +24,18 @@ export class UserService {
     }
   }
 
+  public async getUserByEmail(email: string): Promise<UserDto> {
+    try {
+      return await prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+      });
+    } catch (err) {
+      throw Error("User not found");
+    }
+  }
+
   public async getUserByName(name: string): Promise<UserDto> {
     try {
       return await prisma.user.findFirst({
@@ -116,4 +128,18 @@ export class UserService {
       throw Error("Couldn't remove friend");
     }
   }
+
+  async setTwoFactorAuthenticationStatus(name: string, status: boolean) : Promise<any> 
+	{
+    const user : UserToUpdateDto = new UserToUpdateDto();
+    user.doubleAuth = status;
+		return this.updateUser(name, user);
+	  }
+
+    async setTwoFactorAuthenticationSecret(name: string, secret: string) : Promise<any> 
+	{
+    const user : UserToUpdateDto = new UserToUpdateDto();
+    user.doubleAuthSecret = secret;
+		return this.updateUser(name, user);
+	  }
 }
