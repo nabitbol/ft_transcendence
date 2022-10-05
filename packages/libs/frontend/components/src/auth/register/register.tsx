@@ -54,7 +54,7 @@ const Register: React.FC = () => {
 
           {errors.user_name && errors.user_name.type === "length" && (
             <div className="alert alert-danger" role="alert">
-              The password must be between 3 and 20 characters.
+              The username must be between 3 and 20 characters.
             </div>
           )}
           {errors.user_name && errors.user_name.type === "regex" && (
