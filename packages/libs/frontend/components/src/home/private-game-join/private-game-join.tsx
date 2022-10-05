@@ -1,76 +1,42 @@
 import classes from "./private-game-join.module.css";
-import { vonly_number, vrequired } from "@ft-transcendence/libs-frontend-services";
-import { useState, useRef } from "react";
-import Input from "react-validation/build/input";
-import Form from "react-validation/build/form";
-import CheckButton from "react-validation/build/button";
+import { vonly_number } from "@ft-transcendence/libs-frontend-services";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const PrivateGameJoin = () => {
-  const form = useRef<any>();
-  const checkBtn = useRef<any>();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [Code, setCode] = useState("");
-  const [successful, setSuccessful] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [message, setMessage] = useState("");
 
-  const handleTwoFa = (event: any) => {
-    event.preventDefault();
-    setErrorMessage("");
-    setSuccessful(false);
-    form.current.validateAll();
-    if (checkBtn.current.context._errors.length === 0) {
-      /*AuthService.ActivateTwoFa(Code).then(
-          () => {
-            setErrorMessage('2FA is now activated !');
-            setSuccessful(true);
-            navigate("/");
-            window.location.reload();
-          },
-          (error) => {
-          const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-            setErrorMessage(resMessage);
-          setSuccessful(false);
-          }
-        );*/
-    }
-  };
-
-  const onChangeCode = (event: any) => {
-    const Code = event.target.value;
-    setCode(Code);
+  const handleTwoFa = (data) => {
+    console.log(data);
   };
 
   return (
-    <Form className={classes.pg_join_form} onSubmit={handleTwoFa} ref={form}>
-      <h5 className={classes.pg_join_label}>Enter game id</h5>
-      <Input
-        type="text"
-        className={classes.pg_join_input}
-        name="Code"
-        value={Code}
-        onChange={onChangeCode}
-        validations={[vrequired, vonly_number]}
+    <form className={classes.pg_join_form} onSubmit={handleSubmit(handleTwoFa)}>
+      <span className={classes.pg_span}>Enter game id</span>
+      <input placeholder="Password" type="text"
+        className={errors.room_code ? classes.input_red : classes.input}
+        {...register("room_code", {
+          required: true,
+          validate: { num: vonly_number }
+        })}
       />
-      <button className={classes.pg_join_btn}>Activate</button>
-      {errorMessage && (
-        <div className="form-group">
-          <div
-            className={
-              successful ? "alert alert-success" : "alert alert-danger"
-            }
-            role="alert"
-          >
-            {errorMessage}
+      {errors.room_code && errors.room_code.type === "num" && (
+          <div className="alert alert-danger" role="alert">
+              This field must contain only number.
           </div>
-        </div>
       )}
-      <CheckButton style={{ display: "none" }} ref={checkBtn} />
-    </Form>
+
+      {message && (
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+      )}
+
+    <input type="submit" className={classes.pg_join_btn} />
+
+    </form>
   );
 };
 
-export {PrivateGameJoin};
+export { PrivateGameJoin };
