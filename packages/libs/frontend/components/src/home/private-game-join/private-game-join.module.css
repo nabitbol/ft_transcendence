@@ -17,10 +17,10 @@
 	right: 0;
 }
 
-.pg_join_label {
-	text-align: center;
-	font-size: 4vw;
-	margin-bottom: 50px;
+.pg_span {
+	display: table;
+	margin: 1% auto;
+	font-size: 30px;
 }
 
 .pg_join_btn {
@@ -38,7 +38,24 @@
 	margin: 0 auto;
 }
 
-.pg_join_input {
+.input {
+	margin-top: 10px;
 	margin-bottom: 10px;
-	width: 100%;
+	display: table;
+	margin: 5% auto;
+	width: 80%;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+
+.input_red {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: table;
+	margin: 5% auto;
+	width: 80%;
+	border-radius: 3px;
+	background-color: pink;
+	border: 2px solid rgb(151, 13, 13);
 }
