@@ -56,15 +56,11 @@ class AuthReqService {
   async ActivateTwoFa(TwoFaCode: string) {
     const twoFactorAuthentication: string = TwoFaCode;
     const headers = authHeader();
-    try {
       return await axios.post(
         URL + "activateTwoFa",
         { twoFactorAuthentication },
         { headers }
       );
-    } catch (err) {
-      throw Error("Users not found");
-    }
   }
 
   async ValidateTwoFa(TwoFaCode: string) {

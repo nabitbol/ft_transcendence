@@ -4,6 +4,7 @@ import { GenerateQr } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { vonly_number } from "@ft-transcendence/libs-frontend-services"
 
 const QrModule = (props: any) => {
   const navigate = useNavigate();
@@ -12,23 +13,23 @@ const QrModule = (props: any) => {
 
   const handleTwoFa = (data) => {
     setMessage("");
-    console.log("test");
-    try {
-      AuthReq.ActivateTwoFa(data.twoFaCode).then( () => {
-        AuthReq.logout();
-        navigate("/");
-        window.location.reload();
-      })
-    } catch (err) {
-      const resMessage =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString();
-      setMessage(resMessage);
-    }
-  };
+    console.log(data.twofa_code);
+    AuthReq.ActivateTwoFa(data.twofa_code).then(() => {
+      AuthReq.logout();
+      navigate("/");
+      window.location.reload();
+    },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      }
+    );
+  }
 
   return (
     <form className={classes['qr_module_form']} onSubmit={handleSubmit(handleTwoFa)}>
@@ -38,9 +39,16 @@ const QrModule = (props: any) => {
       <input placeholder="code" type="text"
         className={errors.twofa_code ? classes.qr_module_input_red : classes.qr_module_input}
         {...register("twofa_code", {
-          required: true
+          required: true,
+          validate: { number: vonly_number }
         })}
       />
+
+      {errors.twofa_code && errors.twofa_code.type === "number" && (
+        <div className="alert alert-danger" role="alert">
+          This field must contain only number.
+        </div>
+      )}
 
       {message && (
         <div className="alert alert-danger" role="alert">

@@ -29,7 +29,7 @@ function Profile() {
             <img
               className={classes["profile_avatar"]}
               src={getPathToImage("friend")}
-              alt="zaeeza"
+              alt="avatar_image"
             />
             <span className={classes["profile_span"]}>
               <strong>{name}</strong>
