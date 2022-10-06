@@ -1,81 +1,56 @@
 import classes from "./qr-module.module.css";
 import { AuthReq, vrequired } from "@ft-transcendence/libs-frontend-services";
-import {GenerateQr} from "@ft-transcendence/libs-frontend-components";
-import { useState, useRef } from "react";
-import Input from "react-validation/build/input";
-import Form from "react-validation/build/form";
-import CheckButton from "react-validation/build/button";
+import { GenerateQr } from "@ft-transcendence/libs-frontend-components";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const QrModule = (props: any) => {
   const navigate = useNavigate();
-  const form = useRef<any>();
-  const checkBtn = useRef<any>();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [twoFaCode, setTwoFaCode] = useState("");
-  const [successful, setSuccessful] = useState(false);
+  const [message, setMessage] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const handleTwoFa = (event: any) => {
-    event.preventDefault();
-    setErrorMessage("");
-    setSuccessful(false);
-    form.current.validateAll();
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthReq.ActivateTwoFa(twoFaCode).then(
-        () => {
-          setErrorMessage("2FA is now activated !");
-          setSuccessful(true);
-          AuthReq.logout();
-          navigate("/");
-          window.location.reload();
-        },
-        (error: any) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setErrorMessage(resMessage);
-          setSuccessful(false);
-        }
-      );
+  const handleTwoFa = (data) => {
+    setMessage("");
+    console.log("test");
+    try {
+      AuthReq.ActivateTwoFa(data.twoFaCode).then( () => {
+        AuthReq.logout();
+        navigate("/");
+        window.location.reload();
+      })
+    } catch (err) {
+      const resMessage =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString();
+      setMessage(resMessage);
     }
   };
 
-  const onChangetwoFaCode = (event: any) => {
-    const twoFaCode = event.target.value;
-    setTwoFaCode(twoFaCode);
-  };
-
   return (
-    <Form className={classes['qr_module_form']} onSubmit={handleTwoFa} ref={form}>
+    <form className={classes['qr_module_form']} onSubmit={handleSubmit(handleTwoFa)}>
       <h5 className={classes['qr_module_label']}>Two-Factor Authentication</h5>
-      <GenerateQr/>
-      <Input
-        type="text"
-        className={classes['qr_module_input']}
-        name="twoFaCode"
-        value={twoFaCode}
-        onChange={onChangetwoFaCode}
-        validations={[vrequired]}
+      <GenerateQr />
+
+      <input placeholder="code" type="text"
+        className={errors.twofa_code ? classes.qr_module_input_red : classes.qr_module_input}
+        {...register("twofa_code", {
+          required: true
+        })}
       />
-      <button className={classes['qr_module_btn']}>Activate</button>
-      {errorMessage && (
-        <div className="form-group">
-          <div
-            className={
-              successful ? "alert alert-success" : "alert alert-danger"
-            }
-            role="alert"
-          >
-            {errorMessage}
-          </div>
+
+      {message && (
+        <div className="alert alert-danger" role="alert">
+          {message}
         </div>
       )}
-      <CheckButton style={{ display: "none" }} ref={checkBtn} />
-    </Form>
+
+      <input type="submit" className={classes.qr_module_btn} />
+    </form>
   );
 };
 
-export {QrModule};
+export { QrModule };

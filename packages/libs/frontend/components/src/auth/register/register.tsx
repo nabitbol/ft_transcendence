@@ -1,10 +1,8 @@
 import classes from "./register.module.css";
-import { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   AuthReq,
-  vrequired,
   validEmail,
   vusername_length,
   vpassword_length,
@@ -12,126 +10,118 @@ import {
   vnumber,
   vmaj,
 } from "@ft-transcendence/libs-frontend-services";
-import CheckButton from "react-validation/build/button";
 
 const Register: React.FC = () => {
-  const form = useRef<any>();
-  const checkBtn = useRef<any>();
-  const [user_pseudo, setUserPseudo] = useState("");
-  const [user_email, setUserEmail] = useState("");
-  const [user_password, setUserPassword] = useState("");
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
 
-  const onChangeUserPseudo = (event: any) => {
-    const user_pseudo = event.target.value;
-    setUserPseudo(user_pseudo);
-  };
-
-  const onChangeUserEmail = (event: any) => {
-    const user_email = event.target.value;
-    setUserEmail(user_email);
-  };
-
-  const onChangeUserPassword = (event: any) => {
-    const user_password = event.target.value;
-    setUserPassword(user_password);
-  };
-
-  const handleRegister = (event: any) => {
-    event.preventDefault();
+  const handleRegister = (data) => {
     setMessage("");
     setSuccessful(false);
-    form.current.validateAll();
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthReq.register(user_pseudo, user_email, user_password).then(
-        () => {
-          setMessage("User creation was successful !");
-          setSuccessful(true);
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setMessage(resMessage);
-          setSuccessful(false);
-        }
-      );
-    }
+    AuthReq.register(data.user_pseudo, data.user_email, data.user_password).then(
+      () => {
+        setMessage("User creation was successfull !");
+        setSuccessful(true);
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+        setSuccessful(false);
+      }
+    );
   };
 
   return (
-    <Form
-      className={classes.register_form}
-      onSubmit={handleRegister}
-      ref={form}
-    >
-      <div>
-        <div className="form-group">
-          <label className={classes.register_label} htmlFor="user_pseudo">
-            Username
-          </label>
-          <Input
-            type="text"
-            className={classes.register_input}
-            name="user_pseudo"
-            value={user_pseudo}
-            onChange={onChangeUserPseudo}
-            validations={[vrequired, vusername_length, vregex]}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className={classes.register_label} htmlFor="user_email">
-            Email
-          </label>
-          <Input
-            type="text"
-            className={classes.register_input}
-            name="user_email"
-            value={user_email}
-            onChange={onChangeUserEmail}
-            validations={[vrequired, validEmail]}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className={classes.register_label} htmlFor="user_password">
-            Password
-          </label>
-          <Input
-            type="password"
-            className={classes.register_input}
-            name="user_password"
-            value={user_password}
-            onChange={onChangeUserPassword}
-            validations={[vrequired, vpassword_length, vnumber, vmaj]}
-          />
-        </div>
-
-        <div className="form-group">
-          <button className={classes.register_btn}>Sign Up</button>
-        </div>
-
-        {message && (
-          <div className="form-group">
-            <div
-              className={
-                successful ? "alert alert-success" : "alert alert-danger"
+    <div className={classes.register_form}>
+      <span className={classes.register_span}>Register</span>
+      <form onSubmit={handleSubmit(handleRegister)}>
+          <input placeholder="Username" type="text"
+            className={errors.user_name ? classes.register_input_red : classes.register_input}
+            {...register("user_name", {
+              required: true,
+              validate: {
+                length: vusername_length,
+                regex: vregex,
               }
-              role="alert"
-            >
-              {message}
-            </div>
-          </div>
-        )}
+            })}
+          />
 
-        <CheckButton style={{ display: "none" }} ref={checkBtn} />
-      </div>
-    </Form>
+          {errors.user_name && errors.user_name.type === "length" && (
+            <div className="alert alert-danger" role="alert">
+              The password must be between 3 and 20 characters.
+            </div>
+          )}
+          {errors.user_name && errors.user_name.type === "regex" && (
+            <div className="alert alert-danger" role="alert">
+              This field must only contain alphanumeric characters.
+            </div>
+          )}
+
+          <input placeholder="Email" type="text"
+            className={errors.user_email ? classes.register_input_red : classes.register_input}
+            {...register("user_email", {
+              required: true,
+              validate: { email: validEmail }
+            })}
+          />
+          {errors.user_email && errors.user_email.type === "email" && (
+            <div className="alert alert-danger" role="alert">
+              This is not a valid email.
+            </div>
+          )}
+          <input placeholder="Password" type="password"
+            className={errors.user_password ? classes.register_input_red : classes.register_input}
+            {...register("user_password", {
+              required: true,
+              validate: {
+                length: vpassword_length,
+                regex: vregex,
+                number: vnumber,
+                maj: vmaj,
+              }
+            })}
+          />
+          {errors.user_password && errors.user_password.type === "length" && (
+            <div className="alert alert-danger" role="alert">
+              The password must be between 6 and 40 characters.
+            </div>
+          )}
+          {errors.user_password && errors.user_password.type === "regex" && (
+            <div className="alert alert-danger" role="alert">
+              This field must only contain alphanumeric characters.
+            </div>
+          )}
+          {errors.user_password && errors.user_password.type === "number" && (
+            <div className="alert alert-danger" role="alert">
+              This field must container at least 1 number.
+            </div>
+          )}
+          {errors.user_password && errors.user_password.type === "maj" && (
+            <div className="alert alert-danger" role="alert">
+              This field must container at least 1 maj character.
+            </div>
+          )}
+
+          {message && (
+              <div
+                className={
+                  successful ? "alert alert-success" : "alert alert-danger"
+                }
+                role="alert"
+              >
+                {message}
+              </div>
+          )}
+
+          <input type="submit" className={classes.register_btn} />
+      </form>
+    </div>
   );
 };
 
