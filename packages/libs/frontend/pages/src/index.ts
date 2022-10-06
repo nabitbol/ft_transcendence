@@ -1,5 +1,7 @@
 export * from "./welcome";
 
+export * from "./gamePage";
+
 export * from "./profile";
 
 export * from "./not-fund";
