@@ -4,8 +4,8 @@ import {AllIcon, Home} from "@ft-transcendence/libs-frontend-components"
 function HomePage () {
 	return(
 		<div >
-			<AllIcon/>
 			<Home/>
+			<AllIcon/>
 		</div>
 	)
 }
