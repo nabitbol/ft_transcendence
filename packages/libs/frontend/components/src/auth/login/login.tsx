@@ -13,7 +13,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
-  const handleLogin = (data) => {
+  const handleLogin = (data: any) => {
     setMessage("");
     AuthReq.login(data.user_pseudo, data.user_password).then(
       () => {
@@ -41,18 +41,18 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
   }
   
   return (
-    <div className={classes.login_form}>
-    <span className={classes.login_span}>Login</span>
+    <div className={classes['login_form']}>
+    <span className={classes['login_span']}>Login</span>
     <form onSubmit={handleSubmit(handleLogin)}>
       <input placeholder="Username" type="text"
-            className={errors.user_name ? classes.login_input_red : classes.login_input}
+            className={errors['user_name'] ? classes['login_input_red'] : classes['login_input']}
             {...register("user_name", {
               required: true
             })}
       />
 
       <input placeholder="Password" type="text"
-        className={errors.user_password ? classes.login_input_red : classes.login_input}
+        className={errors['user_password'] ? classes['login_input_red'] : classes['login_input']}
         {...register("user_password", {
           required: true
         })}
@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
           </div>
       )}
 
-      <input type="submit" className={classes.login_btn} />
+      <input type="submit" className={classes['login_btn']} />
     </form>
   </div>
   );

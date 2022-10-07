@@ -10,7 +10,7 @@ const QrModule = (props: any) => {
   const [message, setMessage] = useState("");
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const handleTwoFa = (data) => {
+  const handleTwoFa = (data: any) => {
     setMessage("");
     console.log("test");
     try {
@@ -36,7 +36,7 @@ const QrModule = (props: any) => {
       <GenerateQr />
 
       <input placeholder="code" type="text"
-        className={errors.twofa_code ? classes.qr_module_input_red : classes.qr_module_input}
+        className={errors['twofa_code'] ? classes['qr_module_input_red']: classes['qr_module_input']}
         {...register("twofa_code", {
           required: true
         })}
@@ -48,7 +48,7 @@ const QrModule = (props: any) => {
         </div>
       )}
 
-      <input type="submit" className={classes.qr_module_btn} />
+      <input type="submit" className={classes['qr_module_btn']} />
     </form>
   );
 };

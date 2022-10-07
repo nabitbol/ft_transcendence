@@ -5,7 +5,7 @@ import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 export function HomeIcon() {
   return (
     <div>
-      <Link to={"/home"} className={classes.home_icone}>
+      <Link to={"/home"} className={classes['home_icone']}>
         <img
           src={getPathToImage("friend")}
           height="75"

@@ -1,14 +1,19 @@
 import classes from "./modal.module.css";
 
-export default function Modal(props) {
+type ModalProps = {
+  removeFunction: () => void;
+  closeModal: () => void;
+};
+
+const Modal: React.FC<ModalProps> = (props: ModalProps) => {
   return (
-    <div className={classes.modal}>
+    <div className={classes['modal']}>
       <p>Are you sure ?</p>
-      <button className={classes.btn} onClick={props.closeModal}>
+      <button className={classes['btn']} onClick={props.closeModal}>
         Cancel
       </button>
       <button
-        className={classes.btn_alt}
+        className={classes['btn_alt']}
         onClick={() => {
           props.removeFunction();
           props.closeModal();
@@ -19,3 +24,5 @@ export default function Modal(props) {
     </div>
   );
 }
+
+export {Modal}

@@ -7,11 +7,11 @@
     "allowSyntheticDefaultImports": false,
     "forceConsistentCasingInFileNames": false,
     "strict": false,
-    "noImplicitOverride": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "noImplicitReturns": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true
   },
   "files": [],
   "include": [],
