@@ -42,6 +42,6 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	gap: 10px;
+	gap: 20px;
 	padding: 15px;
 }
