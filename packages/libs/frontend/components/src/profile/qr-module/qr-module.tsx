@@ -13,21 +13,22 @@ const QrModule = (props: any) => {
   const handleTwoFa = (data: any) => {
     setMessage("");
     console.log("test");
-    try {
-      AuthReq.ActivateTwoFa(data.twoFaCode).then( () => {
+    AuthReq.ActivateTwoFa(data.twoFaCode).then(
+      () => {
         AuthReq.logout();
         navigate("/");
         window.location.reload();
-      })
-    } catch (err) {
-      const resMessage =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString();
-      setMessage(resMessage);
-    }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      }
+    ); 
   };
 
   return (
@@ -36,7 +37,7 @@ const QrModule = (props: any) => {
       <GenerateQr />
 
       <input placeholder="code" type="text"
-        className={errors['twofa_code'] ? classes['qr_module_input_red']: classes['qr_module_input']}
+        className={errors['twofa_code'] ? classes['qr_module_input_red'] : classes['qr_module_input']}
         {...register("twofa_code", {
           required: true
         })}
