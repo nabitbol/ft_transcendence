@@ -175,3 +175,72 @@ export class UserToUpdateDto {
   @ApiPropertyOptional()
   userRankId?: string | undefined;
 }
+
+export class ResponseUserDto {
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  id?: string | undefined;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MinLength(4)
+  @MaxLength(25)
+  name?: string | undefined;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @IsEmail()
+  email?: string | undefined;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  image?: string | undefined;
+
+  @ApiPropertyOptional({
+    description: "Status of the 2FA",
+    default: false,
+  })
+  doubleAuth?: boolean | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of won matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  wins?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of lost matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  losses?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Number of draw matchs",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  draw?: number | undefined;
+
+  @ApiPropertyOptional({
+    description: "Elo level of the user",
+    minimum: 0,
+  })
+  @IsOptional()
+  @IsPositive()
+  level?: number | undefined;
+
+  @ApiPropertyOptional()
+  userRankId?: string | undefined;
+
+  @ApiPropertyOptional()
+  jwtToken?: string | undefined;
+}

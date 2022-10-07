@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { UserService } from '@ft-transcendence/libs-backend-user';
+import { ResponseUserDto } from '@ft-transcendence/libs-shared-types';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -13,7 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(username: string, password: string): Promise<any> {
+  async validate(username: string, password: string): Promise<ResponseUserDto> {
     const user = await this.authService.validateUser(username, password);
     return user;
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios from "axios";
 import { firstValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { JwtDto, ResponseUserDto, UserDto } from "@ft-transcendence/libs-shared-types";
 import { UserService } from '@ft-transcendence/libs-backend-user';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ export class ApiService {
 	private jwtService: JwtService,
   ) {}
  
-  async postApi(code : string): Promise<any> 
+  async postApi(code : string): Promise<string> 
   {
 	  const grant_type = 'authorization_code';
 	  const client_id = process.env.CLIENT_ID;
@@ -57,11 +57,11 @@ export class ApiService {
 	  
   }
 
-  async registerApi(registerDto: UserDto): Promise<any> 
+  async registerApi(registerDto: UserDto): Promise<ResponseUserDto> 
   {
 	  const newUser: UserDto = new UserDto();
-	  let payload: any;
-	  let ret: any;
+	  let payload: JwtDto;
+	  let ret: ResponseUserDto;
 
 	  if(!(await this.usersService.getUserByName(registerDto.name) && await this.usersService.getUserByEmail(registerDto.email)))
 	  {
@@ -69,16 +69,16 @@ export class ApiService {
 		  newUser.password = await this.authService.hashString(registerDto.password);
 		  newUser.email = registerDto.email;
 		  await this.usersService.addUser(newUser);
-		  payload = { name: newUser.name, sub: newUser.id };
+		  payload = { name: newUser.name, TwoFa_auth: newUser.doubleAuth, sub: newUser.id };
 		  ret = newUser;
 	  }
 	  else
 	  {
 		  const oldUser = await this.usersService.getUserByName(registerDto.name);
-		  payload = { name: oldUser.name, sub: oldUser.id };
+		  payload = { name: oldUser.name, TwoFa_auth: newUser.doubleAuth, sub: oldUser.id };
 		  ret = oldUser;
 	  }
-	  ret.user_JWT = this.jwtService.sign(payload);
+	  ret.jwtToken = this.jwtService.sign(payload);
 	  return(ret);
   }
 }

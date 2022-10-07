@@ -1,5 +1,5 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
-import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { JwtDto, ResponseUserDto, UserDto } from "@ft-transcendence/libs-shared-types";
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '@ft-transcendence/libs-backend-user';
@@ -12,28 +12,27 @@ export class AuthService {
 		private jwtService: JwtService,
 	){}
 
-	async login(user: any, TwoFa_auth : boolean = false): Promise<any> {
-		const payload = { user_pseudo: user.user_pseudo, TwoFa_auth: TwoFa_auth ,sub: user.user_id };
+	async login(user: UserDto, TwoFa_auth : boolean = false): Promise<ResponseUserDto> {
+		const payload : JwtDto = {	name: user.name, TwoFa_auth: TwoFa_auth ,sub: user.id };
 		const JWT_token = this.jwtService.sign(payload);
 		
-		const { user_password, user_TwoFa_secret, ...result } = user;
-		result.user_JWT = JWT_token;
+		const result : ResponseUserDto = { name: user.name, id: user.id, jwtToken: JWT_token };
 		return(result);
 	}
 
-	async validateUser(username: string, pass: string): Promise<any> 
+	async validateUser(username: string, pass: string): Promise<ResponseUserDto> 
 	{
 		const user: UserDto = await this.usersService.getUserByName(username);
 		if(!user)
 		 	throw new UnauthorizedException("This username is not associated with any account.");
 		if (user && await this.compareHash(user.password, pass)) {
-		  const { password, doubleAuthSecret, ...result } = user;
+		  const result : ResponseUserDto = user;
 		  return result;
 		}
 		throw new UnauthorizedException("Password incorrect.");
 	}
 
-	async register(registerDto: UserDto): Promise<any> 
+	async register(registerDto: UserDto): Promise<ResponseUserDto> 
 	{
 		if(await this.usersService.getUserByName(registerDto.name))
 			throw new ConflictException("This username is already associated with an account.")
@@ -47,7 +46,7 @@ export class AuthService {
 		user.email = registerDto.email;
 
 		await this.usersService.addUser(user);
-		const { password, doubleAuthSecret, ...retUserDto } = user;
+		const retUserDto : ResponseUserDto = user;
 
 		return (retUserDto);
 	}

@@ -20,7 +20,7 @@ export class AuthController {
 	) {}
 
 	@Get('login/42')
-	async RedirApi(@Res() res: any)
+	async RedirApi(@Res() res: Response)
 	{
 		return res.redirect(302, process.env.API_URL);
 	}
@@ -28,15 +28,15 @@ export class AuthController {
 	@Get('login/api')
 	async GetAccessToken(@Query('code') QueryParams: string)
 	{
-		const access_token = await this.apiService.postApi(QueryParams);
+		const access_token : string = await this.apiService.postApi(QueryParams);
 		const user: UserDto = await this.apiService.loginApi(access_token);
 		return await this.apiService.registerApi(user);
 	}
 
 	@UseGuards(LocalAuthGuard)
 	@Post('login')
-	async Login(@Req() request: any) {
-		return await this.authService.login(request.user);
+	async Login(@Body() user: UserDto) {
+		return await this.authService.login(user);
 	}
 
 	@Post('register')
@@ -47,7 +47,7 @@ export class AuthController {
 	@UseGuards(JwtTwoFactorGuard)
 	@Get('generateQr')
 	async GenerateQr(@Res() response: Response, @Req() request: any) {
-		const { otpauthUrl } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
+		const { otpauthUrl  } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
 	}
 

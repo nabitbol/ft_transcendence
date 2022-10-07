@@ -22,7 +22,7 @@ export class TwoFactorAuthenticationService {
     return {
       secret,
       otpauthUrl
-    }
+    } // question florian
   }
 
   public async pipeQrCodeStream(stream: Response, otpauthUrl: string) {

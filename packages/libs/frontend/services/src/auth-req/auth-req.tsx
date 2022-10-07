@@ -1,14 +1,15 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 
 const URL = process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
 
 class AuthReqService {
   async login(user_pseudo: string, user_password: string) {
+    const user : UserDto = { name: user_pseudo, password: user_password, email: "", image: ""};
     return axios
       .post(URL + "login", {
-        user_pseudo,
-        user_password,
+        user
       })
       .then((response) => {
         if (response.data)
@@ -21,15 +22,10 @@ class AuthReqService {
     localStorage.removeItem("userdata");
   }
 
-  async register(
-    user_pseudo: string,
-    user_mail: string,
-    user_password: string
-  ) {
+  async register(user_pseudo: string, user_mail: string, user_password: string) {
+    const user : UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: ""};
     return axios.post(URL + "register", {
-      user_pseudo,
-      user_mail,
-      user_password,
+      user
     });
   }
 
@@ -38,7 +34,7 @@ class AuthReqService {
     if (tmp) return JSON.parse(tmp);
   }
 
-  async sendApiCode(code: any) {
+  async sendApiCode(code: string) {
     return await axios.get(URL + "login/api?code=" + code).then((response) => {
       if (response.data)
         localStorage.setItem("userdata", JSON.stringify(response.data));
