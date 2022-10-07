@@ -24,7 +24,8 @@ import { ApiService } from './api.service';
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, JwtTwoFactorStrategy,
   TwoFactorAuthenticationService, ApiService],
-  controllers: [AuthController]
+  controllers: [AuthController],
+  exports: [AuthService, TwoFactorAuthenticationService, ApiService]
 })
 
 export class AuthModule {}
