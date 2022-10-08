@@ -1,0 +1,16 @@
+.canvas{
+	display: block;
+	margin: 0px auto;
+	background: black;
+	position: absolute;
+	font-size: 30px;
+	font: 300;
+}
+
+.span{
+	font-size: 30px;
+	color: white;
+	top: 40vh;
+	display: table;
+	margin: 0 auto;
+}

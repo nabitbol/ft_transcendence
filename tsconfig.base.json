@@ -41,6 +41,9 @@
       ],
       "@ft-transcendence/libs-shared-types": [
         "packages/libs/shared/types/src/index.ts"
+      ],
+      "@ft-transcendence/libs/shared/game": [
+        "packages/libs/shared/game/src/index.ts"
       ]
     }
   },
