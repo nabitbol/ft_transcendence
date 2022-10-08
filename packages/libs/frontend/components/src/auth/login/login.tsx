@@ -19,8 +19,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
       () => {
         const user_data = localStorage.getItem("userdata");
         const user = JSON.parse(user_data);
-
-        if (user && user.user_TwoFa_on)
+        if (user && user.doubleAuth)
           props.activateTwoFaForm();
         else {
           console.log('here');

@@ -17,7 +17,7 @@ export class AuthService {
 		const payload : JwtDto = {	name: user.name, TwoFa_auth: TwoFa_auth ,sub: user.id };
 		const JWT_token = this.jwtService.sign(payload);
 		
-		const result : ResponseUserDto = { jwtToken: JWT_token };
+		const result : ResponseUserDto = { jwtToken: JWT_token, doubleAuth: user.doubleAuth  };
 		return(result);
 	}
 
