@@ -12,17 +12,14 @@ export class TwoFactorAuthenticationService {
     private readonly usersService: UserService
   ) {}
  
-  public async generateTwoFactorAuthenticationSecret(user: UserDto): Promise<any> {
+  public async generateTwoFactorAuthenticationSecret(user: UserDto): Promise<string> {
     const secret: string = authenticator.generateSecret();
  
     const otpauthUrl: string = authenticator.keyuri(user.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME, secret);
  
     await this.usersService.setTwoFactorAuthenticationSecret(user.name, secret);
  
-    return {
-      secret,
-      otpauthUrl
-    } // question florian
+    return (otpauthUrl);
   }
 
   public async pipeQrCodeStream(stream: Response, otpauthUrl: string) {

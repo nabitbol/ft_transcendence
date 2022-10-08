@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, Post, UseGuards, Get, Res, Query, Req, UnauthorizedException} from '@nestjs/common';
+import { Body, Controller, ValidationPipe, Post, UseGuards, Get, Res, Query, Req, UnauthorizedException} from '@nestjs/common';
 import { UserDto, TwofaDto } from "@ft-transcendence/libs-shared-types";
 import { ApiService } from './api.service';
 import { TwoFactorAuthenticationService } from './twoFactorAuthentification.service';
@@ -40,14 +40,14 @@ export class AuthController {
 	}
 
 	@Post('register')
-	async Register(@Body() registerDto: UserDto) {
+	async Register(@Body(new ValidationPipe()) registerDto: UserDto) {
 		return await this.authService.register(registerDto);
 	}
 
 	@UseGuards(JwtTwoFactorGuard)
 	@Get('generateQr')
 	async GenerateQr(@Res() response: Response, @Req() request: any) {
-		const { otpauthUrl  } = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
+		const otpauthUrl   = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
 	}
 
