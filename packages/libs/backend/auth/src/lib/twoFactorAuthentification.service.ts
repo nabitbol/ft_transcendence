@@ -15,7 +15,7 @@ export class TwoFactorAuthenticationService {
   public async generateTwoFactorAuthenticationSecret(user: UserDto): Promise<string> {
     const secret: string = authenticator.generateSecret();
  
-    const otpauthUrl: string = authenticator.keyuri(user.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME, secret);
+    const otpauthUrl: string = authenticator.keyuri(user.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME || 'chicken', secret);
  
     await this.usersService.setTwoFactorAuthenticationSecret(user.name, secret);
  
@@ -27,6 +27,7 @@ export class TwoFactorAuthenticationService {
   }
 
   public async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: UserDto) {
+    console.log(twoFactorAuthenticationCode + ' and ' + user.doubleAuthSecret);
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
       secret: user.doubleAuthSecret

@@ -12,11 +12,12 @@ export class AuthService {
 		private jwtService: JwtService,
 	){}
 
-	async login(user: UserDto, TwoFa_auth : boolean = false): Promise<ResponseUserDto> {
+	async login(logged_user: UserDto, TwoFa_auth = false): Promise<ResponseUserDto> {
+		const user: UserDto = await this.usersService.getUserByName(logged_user.name);
 		const payload : JwtDto = {	name: user.name, TwoFa_auth: TwoFa_auth ,sub: user.id };
 		const JWT_token = this.jwtService.sign(payload);
 		
-		const result : ResponseUserDto = { name: user.name, id: user.id, jwtToken: JWT_token };
+		const result : ResponseUserDto = { jwtToken: JWT_token };
 		return(result);
 	}
 

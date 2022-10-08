@@ -19,7 +19,7 @@ const Register: React.FC = () => {
   const handleRegister = (data) => {
     setMessage("");
     setSuccessful(false);
-    AuthReq.register(data.user_pseudo, data.user_email, data.user_password).then(
+    AuthReq.register(data.user_name, data.user_email, data.user_password).then(
       () => {
         setMessage("User creation was successfull !");
         setSuccessful(true);
@@ -54,7 +54,7 @@ const Register: React.FC = () => {
 
           {errors.user_name && errors.user_name.type === "length" && (
             <div className="alert alert-danger" role="alert">
-              The password must be between 3 and 20 characters.
+              The username must be between 4 and 25 characters.
             </div>
           )}
           {errors.user_name && errors.user_name.type === "regex" && (
@@ -89,7 +89,7 @@ const Register: React.FC = () => {
           />
           {errors.user_password && errors.user_password.type === "length" && (
             <div className="alert alert-danger" role="alert">
-              The password must be between 6 and 40 characters.
+              The password must be between 8 and 40 characters.
             </div>
           )}
           {errors.user_password && errors.user_password.type === "regex" && (

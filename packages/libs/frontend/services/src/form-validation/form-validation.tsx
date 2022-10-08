@@ -17,7 +17,7 @@ export const validEmail = (value: string) => {
 };
 
 export const vusername_length = (value: string) => {
-  if (value.length < 3 || value.length > 20) {
+  if (value.length < 4 || value.length > 25) {
     return (false);
   }
   else
@@ -25,7 +25,7 @@ export const vusername_length = (value: string) => {
 };
 
 export const vpassword_length = (value: string) => {
-  if (value.length < 6 || value.length > 40) {
+  if (value.length < 8 || value.length > 40) {
     return (false);
   }
   else

@@ -9,9 +9,9 @@ import { JwtDto } from '@ft-transcendence/libs-shared-types';
 export class JwtTwoFactorStrategy extends PassportStrategy(Strategy, 'jwt-two-factor') {
 	constructor(private userService: UserService) {
 		super({
-		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-		ignoreExpiration: false,
-		secretOrKey: jwtConstants.secret,
+			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			ignoreExpiration: false,
+			secretOrKey: jwtConstants.secret,
 		});
 	}
 

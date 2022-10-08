@@ -35,8 +35,8 @@ export class AuthController {
 
 	@UseGuards(LocalAuthGuard)
 	@Post('login')
-	async Login(@Body() user: UserDto) {
-		return await this.authService.login(user);
+	async Login(@Req() request: any) {
+		return await this.authService.login(request.user);
 	}
 
 	@Post('register')
@@ -47,7 +47,7 @@ export class AuthController {
 	@UseGuards(JwtTwoFactorGuard)
 	@Get('generateQr')
 	async GenerateQr(@Res() response: Response, @Req() request: any) {
-		const otpauthUrl   = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
+		const otpauthUrl = await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(request.user);
 		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
 	}
 
@@ -56,7 +56,7 @@ export class AuthController {
 	async activateTwoFa( @Req() request: any, @Body() twoFactorAuthenticationCode: TwofaDto)
 	{
 		const isCodeValid: boolean = await this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
-		twoFactorAuthenticationCode.twoFA, request.user
+			twoFactorAuthenticationCode.twoFA, request.user
 		);
 		if (!isCodeValid) {
 			throw new UnauthorizedException('Wrong authentication code');

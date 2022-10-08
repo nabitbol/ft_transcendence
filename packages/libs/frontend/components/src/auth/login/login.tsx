@@ -15,15 +15,15 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
 
   const handleLogin = (data) => {
     setMessage("");
-    AuthReq.login(data.user_pseudo, data.user_password).then(
+    AuthReq.login(data.user_name, data.user_password).then(
       () => {
         const user_data = localStorage.getItem("userdata");
-        if (user_data) {
-          const user = JSON.parse(user_data);
-          if (user && user.user_TwoFa_on)
-            props.activateTwoFaForm();
-        }
+        const user = JSON.parse(user_data);
+
+        if (user && user.user_TwoFa_on)
+          props.activateTwoFaForm();
         else {
+          console.log('here');
           navigate("/home");
           window.location.reload();
         }
@@ -51,7 +51,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
             })}
       />
 
-      <input placeholder="Password" type="text"
+      <input placeholder="Password" type="password"
         className={errors.user_password ? classes.login_input_red : classes.login_input}
         {...register("user_password", {
           required: true

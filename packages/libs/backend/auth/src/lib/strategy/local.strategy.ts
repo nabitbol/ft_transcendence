@@ -9,13 +9,13 @@ import { ResponseUserDto } from '@ft-transcendence/libs-shared-types';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService, private userService: UserService) {
     super({
-      usernameField: 'user_pseudo',
-      passwordField: 'user_password',
+      usernameField: 'name',
+      passwordField: 'password',
     });
   }
 
-  async validate(username: string, password: string): Promise<ResponseUserDto> {
-    const user = await this.authService.validateUser(username, password);
+  async validate(name: string, password: string): Promise<ResponseUserDto> {
+    const user = await this.authService.validateUser(name, password);
     return user;
   }
 }

@@ -12,22 +12,22 @@ const QrModule = (props: any) => {
 
   const handleTwoFa = (data) => {
     setMessage("");
-    console.log("test");
-    try {
-      AuthReq.ActivateTwoFa(data.twoFaCode).then( () => {
+    AuthReq.ActivateTwoFa(data.twofa_code).then(
+      () => {
         AuthReq.logout();
         navigate("/");
         window.location.reload();
-      })
-    } catch (err) {
-      const resMessage =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString();
-      setMessage(resMessage);
-    }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      }
+    );
   };
 
   return (

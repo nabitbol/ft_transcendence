@@ -19,7 +19,7 @@ import { ApiService } from './api.service';
     HttpModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '200s' },
+      signOptions: { expiresIn: '20000s' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, JwtTwoFactorStrategy,

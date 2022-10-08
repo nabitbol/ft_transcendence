@@ -2,15 +2,13 @@ import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 
-const URL = process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
+const URL = "http://localhost:3333/auth/"//process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
 
 class AuthReqService {
   async login(user_pseudo: string, user_password: string) {
-    const user : UserDto = { name: user_pseudo, password: user_password, email: "", image: ""};
+    const user = { name: user_pseudo, password: user_password };
     return axios
-      .post(URL + "login", {
-        user
-      })
+      .post(URL + "login", user)
       .then((response) => {
         if (response.data)
           localStorage.setItem("userdata", JSON.stringify(response.data));
@@ -24,9 +22,8 @@ class AuthReqService {
 
   async register(user_pseudo: string, user_mail: string, user_password: string) {
     const user : UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: ""};
-    return axios.post(URL + "register", {
-      user
-    });
+
+    return axios.post(URL + "register", user);
   }
 
   getCurrentUser() {
@@ -50,24 +47,20 @@ class AuthReqService {
   }
 
   async ActivateTwoFa(TwoFaCode: string) {
-    const twoFactorAuthentication: string = TwoFaCode;
+    const twoFA: string = TwoFaCode;
     const headers = authHeader();
-    try {
       return await axios.post(
         URL + "activateTwoFa",
-        { twoFactorAuthentication },
+        { twoFA },
         { headers }
       );
-    } catch (err) {
-      throw Error("Users not found");
-    }
   }
 
   async ValidateTwoFa(TwoFaCode: string) {
-    const twoFactorAuthentication: string = TwoFaCode;
+    const twoFA: string = TwoFaCode;
     const headers = authHeader();
     return await axios
-      .post(URL + "TwoFa", { twoFactorAuthentication }, { headers })
+      .post(URL + "TwoFa", { twoFA }, { headers })
       .then((response) => {
         if (response.data) {
           this.logout();
