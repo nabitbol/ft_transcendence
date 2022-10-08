@@ -4,6 +4,10 @@ This project is about creating a website for the mighty Pong contest!
 
 ## Overview
 
+## Run Data Base
+
+sudo docker-compose -f docker-compose.yml up -d --build
+
 ### Run the backend
 
 ```bash
@@ -56,3 +60,7 @@ npx nx serve frontend
 ## Data Base
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
+
+## Fix sync for 2fa
+
+sudo hwclock -s
