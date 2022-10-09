@@ -10,11 +10,14 @@ import {
   ValidationPipe,
   NotFoundException,
   ForbiddenException,
+  UseGuards,
 } from "@nestjs/common";
+import { JwtTwoFactorGuard } from "@ft-transcendence/libs-backend-auth";
 import { UserService } from "./user.service";
 import { ApiParam } from "@nestjs/swagger";
 
 @Controller("user")
+@UseGuards(JwtTwoFactorGuard)
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -42,6 +45,7 @@ export class UserController {
     }
   }
 
+  // Todo in the futur delete this function
   @Post("/")
   public async createUser(@Body(new ValidationPipe()) user: UserDto) {
     try {
