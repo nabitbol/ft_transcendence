@@ -1,37 +1,36 @@
 import classes from "./generate-qr.module.css";
-import {AuthReq} from "@ft-transcendence/libs-frontend-services";
+import { AuthReq } from "@ft-transcendence/libs-frontend-services";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const GenerateQr = (props: any) => {
-  const [IsQrLoad, setIsQrLoad] = useState(false);
+function GenerateQr(props: any) {
   const [imageUrl, setImageUrl] = useState("");
+  const navigate = useNavigate();
 
-  async function render() {
+  const getQr = async () => {
     const type = "image/png";
     try {
-      const qrData = await AuthReq.requestQr();
-      if (qrData.data) {
-        const file = new File([qrData.data], type);
+      const qrData: any= await AuthReq.requestQr();
+      if (qrData) {
+        const file = new File([qrData], type);
         setImageUrl(URL.createObjectURL(file));
       }
     } catch (err) {
-      console.log('error');
+      navigate("/error");
+      window.location.reload();
     }
   }
 
   useEffect(() => {
-    render();
-    setIsQrLoad(true);
+    getQr();
   }, []);
 
-  return (
+  return !imageUrl ? null :(
     <div>
-      {IsQrLoad && (
         <img className={classes['qr_img']} alt="Qr-code" src={imageUrl} />
-      )}
     </div>
   );
 };
 
-export {GenerateQr};
+export { GenerateQr };

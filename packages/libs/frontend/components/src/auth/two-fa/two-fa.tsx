@@ -25,7 +25,6 @@ const TwoFa: React.FC = () => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthReq.ValidateTwoFa(twoFaCode).then(
         () => {
-          console.log("CODE =" + twoFaCode);
           setErrorMessage("Correct 2FA code");
           setSuccessful(true);
           navigate("/home");

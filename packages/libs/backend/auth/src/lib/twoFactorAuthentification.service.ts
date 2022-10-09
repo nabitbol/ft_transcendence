@@ -27,7 +27,6 @@ export class TwoFactorAuthenticationService {
   }
 
   public async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: UserDto) {
-    console.log(twoFactorAuthenticationCode + ' and ' + user.doubleAuthSecret);
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
       secret: user.doubleAuthSecret

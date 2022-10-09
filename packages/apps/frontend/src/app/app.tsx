@@ -1,4 +1,4 @@
-import { WelcomePage, ProfilePage, AuthApiPage, NotFundPage,
+import { WelcomePage, ProfilePage, AuthApiPage, ErrorPage,
   LadderPage, HomePage, FriendPage, FriendRequestPage, AchievementPage}
    from "@ft-transcendence/libs-frontend-pages";
 import { Component } from 'react';
@@ -19,7 +19,8 @@ class App extends Component {
         <Route path='/friend' element={<FriendPage />} />
         <Route path='/friend_request' element={<FriendRequestPage />} />
         <Route path='/achievement' element={<AchievementPage />} />
-        <Route path='*' element={<NotFundPage />} />
+        <Route path='/error' element={<ErrorPage />} />
+        <Route path='*' element={<ErrorPage message="This page doesnt exist !"/>} />
       </Routes>
     )
   }

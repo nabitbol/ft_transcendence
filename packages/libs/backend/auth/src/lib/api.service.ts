@@ -50,7 +50,6 @@ export class ApiService {
 	  );
 	  const user:UserDto = new UserDto;
 	  user.email = data.email;
-	  user.password = "";
 	  user.name = data.login;
 
 	  return user;

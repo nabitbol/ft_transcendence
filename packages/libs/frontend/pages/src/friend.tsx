@@ -1,12 +1,9 @@
-import {AllIcon,FriendList} from '@ft-transcendence/libs-frontend-components'
+import { FriendList } from '@ft-transcendence/libs-frontend-components'
 
-function FriendPage () {
-	return(
-		<div>
-            <AllIcon/>
-			<FriendList/>
-		</div>
+function FriendPage() {
+	return (
+		<FriendList />
 	)
 }
 
-export {FriendPage}
+export { FriendPage }

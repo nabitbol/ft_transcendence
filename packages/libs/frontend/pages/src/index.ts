@@ -2,8 +2,6 @@ export * from "./welcome";
 
 export * from "./profile";
 
-export * from "./not-fund";
-
 export * from "./ladder";
 
 export * from "./home";

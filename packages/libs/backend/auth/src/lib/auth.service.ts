@@ -13,22 +13,26 @@ export class AuthService {
 	){}
 
 	async login(logged_user: UserDto, TwoFa_auth = false): Promise<ResponseUserDto> {
-		const user: UserDto = await this.usersService.getUserByName(logged_user.name);
-		const payload : JwtDto = {	name: user.name, TwoFa_auth: TwoFa_auth ,sub: user.id };
-		const JWT_token = this.jwtService.sign(payload);
-		
-		const result : ResponseUserDto = { jwtToken: JWT_token, doubleAuth: user.doubleAuth  };
-		return(result);
+		try {
+			const user: UserDto = await this.usersService.getUserByName(logged_user.name);
+			const payload : JwtDto = {	name: user.name, TwoFa_auth: TwoFa_auth ,sub: user.id };
+			const JWT_token = this.jwtService.sign(payload);
+			
+			const result : ResponseUserDto = { jwtToken: JWT_token, doubleAuth: user.doubleAuth, name: user.name };
+			return(result);
+		} catch (err) {
+			throw Error(err);
+		}
 	}
 
 	async validateUser(username: string, pass: string): Promise<ResponseUserDto> 
 	{
-		const user: UserDto = await this.usersService.getUserByName(username);
-		if(!user)
-		 	throw new UnauthorizedException("This username is not associated with any account.");
+		let user: UserDto;
+		if(!(user = await this.usersService.getUserByName(username)))
+			throw new UnauthorizedException("This username is not associated with any account.");
 		if (user && await this.compareHash(user.password, pass)) {
-		  const result : ResponseUserDto = user;
-		  return result;
+			const result : ResponseUserDto = user;
+			return result;
 		}
 		throw new UnauthorizedException("Password incorrect.");
 	}

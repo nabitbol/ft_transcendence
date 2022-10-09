@@ -21,14 +21,15 @@ class AuthReqService {
   }
 
   async register(user_pseudo: string, user_mail: string, user_password: string) {
-    const user : UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: ""};
+    const user: UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: ""};
 
     return axios.post(URL + "register", user);
   }
 
   getCurrentUser() {
     const tmp = localStorage.getItem("userdata");
-    if (tmp) return JSON.parse(tmp);
+    if (tmp)
+      return JSON.parse(tmp);
   }
 
   async sendApiCode(code: string) {
@@ -39,21 +40,26 @@ class AuthReqService {
     });
   }
 
-  async requestQr() {
-    return axios.get(URL + "generateQr", {
-      headers: authHeader(),
-      responseType: "blob",
-    });
+  async requestQr(): Promise<any> {
+    try {
+      const ret = await axios.get(URL + "generateQr", {
+        headers: authHeader(),
+        responseType: "blob",
+      });
+      return ret.data;
+    } catch (err) {
+      throw Error(err);
+    }
   }
 
   async ActivateTwoFa(TwoFaCode: string) {
     const twoFA: string = TwoFaCode;
     const headers = authHeader();
-      return await axios.post(
-        URL + "activateTwoFa",
-        { twoFA },
-        { headers }
-      );
+    return await axios.post(
+      URL + "activateTwoFa",
+      { twoFA },
+      { headers }
+    );
   }
 
   async ValidateTwoFa(TwoFaCode: string) {

@@ -1,14 +1,15 @@
 import classes from "./past-game.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { MatchDto } from "@ft-transcendence/libs-shared-types";
 
-export function PastGame({ game_id }) {
+export function PastGame(props: {game_info: MatchDto}) {
+  console.log(props.game_info);
   const name = "Eswox";
-  const score = game_id;
+  const score = props.game_info.score;
   const result = "Win";
   const name_j2 = "Erzow";
   const score_j2 = "0";
   const result_j2 = "Lose";
-
   return (
     <div className={classes.div}>
       <h2 className={classes.h2_vs}>-</h2>

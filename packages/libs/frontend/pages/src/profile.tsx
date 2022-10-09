@@ -1,12 +1,9 @@
-import {AllIcon, Profile} from "@ft-transcendence/libs-frontend-components"
+import { Profile } from "@ft-transcendence/libs-frontend-components"
 
 function ProfilePage() {
-	return(
-		<div>
-			<AllIcon/>
-			<Profile/>
-		</div>
+	return (
+		<Profile />
 	)
 }
 
-export {ProfilePage}
+export { ProfilePage }

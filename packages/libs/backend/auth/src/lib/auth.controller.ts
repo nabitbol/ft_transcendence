@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, ValidationPipe, Post, UseGuards, Get, Res, Query, Req, UnauthorizedException} from '@nestjs/common';
+import { Body, Controller, ValidationPipe, Post, UseGuards, Get, Res, Query, Req, UnauthorizedException } from '@nestjs/common';
 import { UserDto, TwofaDto } from "@ft-transcendence/libs-shared-types";
 import { ApiService } from './api.service';
 import { TwoFactorAuthenticationService } from './twoFactorAuthentification.service';

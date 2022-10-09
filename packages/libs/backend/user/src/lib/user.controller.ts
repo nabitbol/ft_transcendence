@@ -35,7 +35,7 @@ export class UserController {
   })
   public async getUser(@Param() param) {
     try {
-      const user: UserDto = await this.userService.getUserById(param.name);
+      const user: UserDto = await this.userService.getUserByName(param.name);
       return { user };
     } catch (err) {
       return new NotFoundException(err);
@@ -73,7 +73,7 @@ export class UserController {
   })
   public async addFriend(@Param() param) {
     try {
-      await this.userService.getUserById(param.name);
+      await this.userService.getUserByName(param.name);
       return { response: "added friend sucessfuly" };
     } catch (err) {
       return new NotFoundException(err);
@@ -87,7 +87,6 @@ export class UserController {
   })
   public async deleteUser(@Param() param) {
     try {
-      console.log(param.name);
       await this.userService.deleteUser(param.name);
       return { response: "deleted sucessfuly" };
     } catch (err) {
