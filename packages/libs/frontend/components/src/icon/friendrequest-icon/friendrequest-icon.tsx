@@ -6,7 +6,7 @@ export function FriendRequestIcon() {
     <div>
       <Link to={"/friend_request"}>
         <img
-          src={getPathToImage("friend")}
+          src={getPathToImage("friend_request")}
           height="75"
           width="75"
           alt="FriendRequest_picture"

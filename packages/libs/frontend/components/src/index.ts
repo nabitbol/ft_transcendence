@@ -1,4 +1,6 @@
 
+export * from './game/game';
+
 export * from './achievement/achievement/achievement';
 
 export * from './achievement/achievement-list/achievement-list';

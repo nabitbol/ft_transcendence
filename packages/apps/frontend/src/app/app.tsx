@@ -1,5 +1,5 @@
 import { WelcomePage, ProfilePage, AuthApiPage, NotFundPage,
-  LadderPage, HomePage, FriendPage, FriendRequestPage, AchievementPage}
+  LadderPage, HomePage, FriendPage, FriendRequestPage, AchievementPage, GamePage}
    from "@ft-transcendence/libs-frontend-pages";
 import { Component } from 'react';
 import { Route, Routes } from 'react-router-dom'
@@ -19,6 +19,7 @@ class App extends Component{
         <Route path='/friend' element={<FriendPage />} />
         <Route path='/friend_request' element={<FriendRequestPage />} />
         <Route path='/achievement' element={<AchievementPage />} />
+        <Route path='/game' element={<GamePage />} />
         <Route path='*' element={<NotFundPage />} />
       </Routes>
     )

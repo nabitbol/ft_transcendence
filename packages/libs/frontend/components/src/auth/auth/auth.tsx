@@ -40,8 +40,7 @@ function Auth() {
       </a>
       <br />
       <span className={classes["auth_span"]}>
-        {" "}
-        You already have an account ?{" "}
+        You already have an account ?
       </span>
       <button className={classes["auth_btn"]} onClick={activateLoginForm}>
         Login here

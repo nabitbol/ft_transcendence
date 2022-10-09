@@ -6,7 +6,7 @@ export function AchievementIcon() {
     <div>
       <Link to={"/achievement"}>
         <img
-          src={getPathToImage("friend")}
+          src={getPathToImage("achievement")}
           height="75"
           width="75"
           alt="Achievement_picture"

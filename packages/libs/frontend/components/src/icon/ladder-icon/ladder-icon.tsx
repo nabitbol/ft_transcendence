@@ -6,7 +6,7 @@ export function LadderIcon() {
     <div>
       <Link to={"/ladder"}></Link>
       <img
-        src={getPathToImage("friend")}
+        src={getPathToImage("ladder")}
         height="75"
         width="75"
         alt="LadderIcone_picture"
