@@ -1,19 +1,19 @@
 import classes from "./achievement.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 
-export default function Achievement({ id }) {
+export default function Achievement(props: { id: string; key: string; }) {
   const description = "do something specific";
-  const bool = id % 2;
+  const bool = +props.id % 2;
 
   return (
-    <div className={classes.div}>
+    <div className={classes['div']}>
       {bool ? (
         <div>
           <img
             src={getPathToImage("achievement")}
             height="60"
             width="60"
-            className={classes.img}
+            className={classes['img']}
             alt="achievement_avatar"
           />
           <p className={classes["p_description"]}>
@@ -27,7 +27,7 @@ export default function Achievement({ id }) {
             src={getPathToImage("achievement")}
             height="60"
             width="60"
-            className={classes.img}
+            className={classes['img']}
             alt="achievement_avatar"
           />
           <p className={classes["p_description"]}>

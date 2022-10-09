@@ -5,7 +5,7 @@ export function MatchHistory() {
   const ID = ["1", "2", "3", "4", "5"];
 
   return (
-    <div className={classes.div}>
+    <div className={classes['div']}>
       {ID.map((ID) => (
         <PastGame game_id={ID} key={ID} />
       ))}
