@@ -11,6 +11,7 @@
     "libs-frontend-components": "packages/libs/frontend/components",
     "libs-frontend-pages": "packages/libs/frontend/pages",
     "libs-frontend-services": "packages/libs/frontend/services",
+    "libs-shared--game": "packages/libs/shared/game",
     "libs-shared-get-config": "packages/libs/shared/get-config",
     "libs-shared-types": "packages/libs/shared/types"
   }

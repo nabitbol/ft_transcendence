@@ -4,17 +4,17 @@ import {
   PrivateGame,
   SpectateGame,
   MatchHistory,
+  AllIcon,
 } from "@ft-transcendence/libs-frontend-components";
-import { AllIcon } from "@ft-transcendence/libs-frontend-components";
 
 function Home() {
   return (
-    <div>
-      <AllIcon />
-      <div className={classes.home_container}>
-        <div className={classes.home_flex}>
+    <div className={classes["home_container"]}>
+      <div className={classes["blur_component"]}>
+        <AllIcon />
+        <div className={classes["home_flex"]}>
           <MatchHistory />
-          <div className={classes.home_button_flex}>
+          <div className={classes["home_button_flex"]}>
             <PlayButton />
             <PrivateGame />
             <SpectateGame />

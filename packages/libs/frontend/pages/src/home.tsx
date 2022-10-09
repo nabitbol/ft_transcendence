@@ -1,10 +1,7 @@
-import { Home } from "@ft-transcendence/libs-frontend-components"
-
+import { Home } from "@ft-transcendence/libs-frontend-components";
 
 function HomePage() {
-	return (
-		<Home />
-	)
+  return <Home />;
 }
 
-export { HomePage }
+export { HomePage };

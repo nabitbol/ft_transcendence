@@ -1,10 +1,12 @@
-import { Ladder } from "@ft-transcendence/libs-frontend-components"
-
+import { AllIcon, Ladder } from "@ft-transcendence/libs-frontend-components";
 
 function LadderPage() {
-	return (
-		<Ladder />
-	)
+  return (
+    <div>
+      <AllIcon />
+      <Ladder />
+    </div>
+  );
 }
 
-export { LadderPage }
+export { LadderPage };

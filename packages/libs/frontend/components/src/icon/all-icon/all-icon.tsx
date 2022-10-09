@@ -13,7 +13,7 @@ function AllIcon() {
   return (
     <div>
       <HomeIcon />
-      <div className={classes.all_icone}>
+      <div className={classes['all_icone']}>
         <ProfileIcon />
         <LadderIcon />
         <FriendIcon />
