@@ -30,7 +30,7 @@ export class UserController {
 
   @Get(":name")
   @ApiParam({
-    name: "identifier",
+    name: "name",
     required: true,
   })
   public async getUser(@Param() param) {
@@ -54,7 +54,7 @@ export class UserController {
 
   @Put("/:name")
   @ApiParam({
-    name: "identifier",
+    name: "name",
     required: true,
   })
   public async updateUser(@Param() param, @Body() toUpdate: UserToUpdateDto) {
@@ -68,7 +68,7 @@ export class UserController {
 
   @Post("/:name/friend")
   @ApiParam({
-    name: "identifier",
+    name: "name",
     required: true,
   })
   public async addFriend(@Param() param) {
@@ -82,7 +82,7 @@ export class UserController {
 
   @Delete("/:name")
   @ApiParam({
-    name: "identifier",
+    name: "name",
     required: true,
   })
   public async deleteUser(@Param() param) {
