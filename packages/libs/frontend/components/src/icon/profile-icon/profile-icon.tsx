@@ -6,7 +6,7 @@ export function ProfileIcon() {
     <div>
       <Link to={"/profile"}>
         <img
-          src={getPathToImage("friend")}
+          src={getPathToImage("utilisateur")}
           height="75"
           width="75"
           alt="ProfileIcon_picture"

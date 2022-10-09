@@ -8,16 +8,18 @@ import {
 function Home() {
   return (
     <div className={classes.home_container}>
-      <div className={classes.home_flex}>
-        <MatchHistory />
-        <div className={classes.home_button_flex}>
-          <PlayButton />
-          <PrivateGame />
-          <SpectateGame />
+        <div className={classes.blur_component}>
+        <div className={classes.home_flex}>
+          <MatchHistory />
+          <div className={classes.home_button_flex}>
+            <PlayButton />
+            <PrivateGame />
+            <SpectateGame />
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export {Home};
+export { Home };

@@ -7,7 +7,7 @@ export function HomeIcon() {
     <div>
       <Link to={"/home"} className={classes.home_icone}>
         <img
-          src={getPathToImage("friend")}
+          src={getPathToImage("home")}
           height="75"
           width="75"
           alt="HomeIcon_picture"

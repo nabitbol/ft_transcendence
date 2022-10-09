@@ -10,5 +10,6 @@ export default {
     home: "home",
     ladder: "ladder",
     land: "land",
+    utilisateur: "utilisateur",
   },
 };
