@@ -119,7 +119,7 @@ function Game() {
   });
 
   return (
-    <div className={classes.background}>
+    <div className={classes["background"]}>
       {!isGameOver && <canvas ref={canvasRef} />}
       {isGameOver && <span>Game over</span>}
     </div>

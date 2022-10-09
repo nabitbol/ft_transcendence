@@ -8,9 +8,12 @@ import {
   Body,
   ValidationPipe,
   Inject,
+  UseGuards
 } from "@nestjs/common";
 import { MatchService } from "./match.service";
+import { JwtTwoFactorGuard } from '@ft-transcendence/libs-backend-auth';
 
+@UseGuards(JwtTwoFactorGuard)
 @Controller("match")
 export class MatchController {
   constructor(private matchService: MatchService) {}
@@ -18,13 +21,14 @@ export class MatchController {
   @Inject(UserService)
   private readonly userService: UserService;
 
+  
   @Get()
   public async getMatches() {
     try {
       const matches: MatchDto[] = await this.matchService.getAllMatches();
       return { matches };
     } catch (err) {
-      throw Error("Users not found");
+        throw Error("Users not found");
     }
   }
 
@@ -37,17 +41,18 @@ export class MatchController {
       const matches: MatchDto[] = await this.matchService.getUserMatches(id);
       return { matches };
     } catch (err) {
-      throw Error("Users not found");
+        throw Error("Users not found");
     }
   }
 
+  
   @Post()
   public async addMatches(@Body(new ValidationPipe()) match: MatchDto) {
     try {
       await this.matchService.addMatches(match);
       return { response: "Match added sucessfully" };
     } catch (err) {
-      throw Error("Users not found");
+        throw Error("Users not found");
     }
   }
 }

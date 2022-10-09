@@ -8,3 +8,16 @@
 	background-color: gainsboro;
 	color: black;
 }
+
+.matchhistory_span {
+	display: table;
+	margin: 1% auto;
+	font-size: 30px;
+}
+
+.matchhistory_label{
+	display: table;
+	margin: 1% auto;
+	font-size: 20px;
+	text-align: center;
+}

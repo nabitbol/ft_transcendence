@@ -4,6 +4,12 @@ This project is about creating a website for the mighty Pong contest!
 
 ## Overview
 
+## Run Data Base
+
+```bash
+sudo docker-compose -f docker-compose.yml up -d --build
+```
+
 ### Run the backend
 
 ```bash
@@ -56,3 +62,13 @@ npx nx serve frontend
 ## Data Base
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
+
+## Fix sync for 2fa
+
+```bash
+sudo hwclock -s
+```
+
+## Port already in use
+> Scan port: `netstat -lnp | grep 8080`
+> Kill process: `kill -9 process_id`

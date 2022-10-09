@@ -17,8 +17,6 @@ export * from "./auth/two-fa/two-fa";
 
 export * from "./welcome/welcome";
 
-export * from "./error/error404/error404";
-
 export * from "./friend/friend/friend";
 
 export * from "./friend/friend-list/friend-list";

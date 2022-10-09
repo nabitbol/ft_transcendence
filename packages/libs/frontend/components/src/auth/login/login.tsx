@@ -9,20 +9,21 @@ type LoginProps = {
 };
 
 const Login: React.FC<LoginProps> = (props: LoginProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
   const handleLogin = (data: any) => {
     setMessage("");
-    AuthReq.login(data.user_pseudo, data.user_password).then(
+    AuthReq.login(data.user_name, data.user_password).then(
       () => {
         const user_data = localStorage.getItem("userdata");
-        if (user_data) {
-          const user = JSON.parse(user_data);
-          if (user && user.user_TwoFa_on)
-            props.activateTwoFaForm();
-        }
+        const user = JSON.parse(user_data);
+        if (user && user.doubleAuth) props.activateTwoFaForm();
         else {
           navigate("/home");
           window.location.reload();
@@ -38,37 +39,48 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
         setMessage(resMessage);
       }
     );
-  }
-  
+  };
+
   return (
-    <div className={classes['login_form']}>
-    <span className={classes['login_span']}>Login</span>
-    <form onSubmit={handleSubmit(handleLogin)}>
-      <input placeholder="Username" type="text"
-            className={errors['user_name'] ? classes['login_input_red'] : classes['login_input']}
-            {...register("user_name", {
-              required: true
-            })}
-      />
+    <div className={classes["login_form"]}>
+      <span className={classes["login_span"]}>Login</span>
+      <form onSubmit={handleSubmit(handleLogin)}>
+        <input
+          placeholder="Username"
+          type="text"
+          className={
+            errors["user_name"]
+              ? classes["login_input_red"]
+              : classes["login_input"]
+          }
+          {...register("user_name", {
+            required: true,
+          })}
+        />
 
-      <input placeholder="Password" type="text"
-        className={errors['user_password'] ? classes['login_input_red'] : classes['login_input']}
-        {...register("user_password", {
-          required: true
-        })}
-      />
+        <input
+          placeholder="Password"
+          type="password"
+          className={
+            errors["user_password"]
+              ? classes["login_input_red"]
+              : classes["login_input"]
+          }
+          {...register("user_password", {
+            required: true,
+          })}
+        />
 
-      {message && (
+        {message && (
           <div className="alert alert-danger" role="alert">
             {message}
           </div>
-      )}
+        )}
 
-      <input type="submit" className={classes['login_btn']} />
-    </form>
-  </div>
+        <input type="submit" className={classes["login_btn"]} />
+      </form>
+    </div>
   );
 };
-
 
 export { Login };

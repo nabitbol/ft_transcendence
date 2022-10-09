@@ -1,36 +1,38 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
+import { AuthReq } from '@ft-transcendence/libs-frontend-services'
+import { UserDto, MatchDto } from "@ft-transcendence/libs-shared-types";
 
-const URL = process.env['REACT_APP_URL_TO_BACK'] + "/user/";
+const URL = "http://localhost:3333/"//process.env['REACT_APP_URL_TO_BACK'] ;
 
 class UserService {
 
-  getAll() {
-    return axios.get(URL);
-  }
-  createUser(user_info: any) {
-    axios.post(URL + "create", user_info).then((response) => {
-      console.log(response.data);
-    });
-  }
-  findByUsername(user_pseudo: any) {
-    const headers = authHeader();
-    return axios
-      .post(URL + "name_find", user_pseudo, { headers })
-      .then((response) => {
-        console.log(response.data);
+  async requestUserMatchInfo() : Promise<MatchDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "match/" + user_info.name, {
+        headers: authHeader()
       });
+      return ret.data.matches;
+    } catch (err) {
+        console.log('error ici');
+        throw Error(err);
+    }
   }
-  /*findById(@Body('user_id') user_id: number)
-	{
-		return this.userService.findById(user_id);
-	}	
-	RemoveUser(@Body('user_id') user_id: number)
-	{
-		return this.userService.removeUser(user_id);
-	}	
-	getProfile(@Request() req) {
-	  return req.user;
-	}*/
+
+  async requestUserInfo(): Promise<UserDto> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "user/" + user_info.name, {
+        headers: authHeader()
+      });
+      return ret.data.user;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
 }
-export default new UserService();
+
+const User = new UserService();
+
+export { User };

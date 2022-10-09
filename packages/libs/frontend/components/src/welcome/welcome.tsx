@@ -4,7 +4,7 @@ import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 
 function Welcome() {
   return (
-    <div>
+    <div className={classes['welcome_body']}>
       <div className={`${classes["space"]} ${classes["stars1"]}`}></div>
       <div className={`${classes["space"]} ${classes["stars2"]}`}></div>
       <div className={`${classes["space"]} ${classes["stars3"]}`}></div>
