@@ -1,15 +1,7 @@
-import {
-  AllIcon,
-  FriendRequestList,
-} from "@ft-transcendence/libs-frontend-components";
+import { FriendRequestList } from "@ft-transcendence/libs-frontend-components";
 
 function FriendRequestPage() {
-  return (
-    <div>
-      <AllIcon />
-      <FriendRequestList />
-    </div>
-  );
+  return <FriendRequestList />
 }
 
 export { FriendRequestPage };
