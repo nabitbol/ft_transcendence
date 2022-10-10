@@ -24,9 +24,10 @@ import { JwtTwoFactorGuard } from "./strategy/jwt-two-factor.guard";
 import { Response } from "express";
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { UserService } from "@ft-transcendence/libs-backend-user";
-import { ApiBody } from "@nestjs/swagger";
+import { ApiBody, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
 @Controller("auth")
+@ApiTags("Login")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -61,6 +62,7 @@ export class AuthController {
 
   @UseGuards(JwtTwoFactorGuard)
   @Get("generateQr")
+  @ApiSecurity("JWT-auth")
   async GenerateQr(@Res() response: Response, @Req() request: any) {
     const otpauthUrl =
       await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(
@@ -74,6 +76,7 @@ export class AuthController {
 
   @UseGuards(JwtTwoFactorGuard)
   @Post("activateTwoFa")
+  @ApiSecurity("JWT-auth")
   async activateTwoFa(
     @Req() request: any,
     @Body() twoFactorAuthenticationCode: TwofaDto
@@ -100,6 +103,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post("twoFa")
+  @ApiSecurity("JWT-auth")
   async TwoFa(
     @Req() request: any,
     @Body() twoFactorAuthenticationCode: TwofaDto

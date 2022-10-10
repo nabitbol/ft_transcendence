@@ -17,11 +17,12 @@ import {
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { JwtAuthGuard } from "../../../auth/src/lib/strategy/jwt-auth.guard";
 import { UserService } from "./user.service";
-import { ApiParam, ApiSecurity } from "@nestjs/swagger";
+import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
 @Controller("user")
 @UseGuards(JwtAuthGuard)
 @ApiSecurity("JWT-auth")
+@ApiTags("User")
 export class UserController {
   constructor(private userService: UserService) {}
 
