@@ -19,9 +19,9 @@ export function SpectateGame() {
       {list && (
         <div>
           <Backdrop closeBackdrop={clickme_close} />
-          <div className={classes.div}>
-            <h2 className={classes.h2_title}>Live Game</h2>
-            <button className={classes.close} onClick={clickme_close}></button>
+          <div className={classes['div']}>
+            <h2 className={classes['h2_title']}>Live Game</h2>
+            <button className={classes['close']} onClick={clickme_close}></button>
             {ID.map((ID) => (
               <LiveGame game_id={ID} key={ID} />
             ))}
@@ -29,7 +29,7 @@ export function SpectateGame() {
         </div>
       )}
       <button
-        className={classes.button_spectate}
+        className={classes['button_spectate']}
         onClick={clickme_spectate_button}
       >
         Spectate Game

@@ -1,4 +1,6 @@
 
+export * from './game/game';
+
 export * from './achievement/achievement/achievement';
 
 export * from './achievement/achievement-list/achievement-list';
@@ -14,8 +16,6 @@ export * from "./auth/register/register";
 export * from "./auth/two-fa/two-fa";
 
 export * from "./welcome/welcome";
-
-export * from "./error/error404/error404";
 
 export * from "./friend/friend/friend";
 

@@ -1,8 +1,8 @@
 export * from "./welcome";
 
-export * from "./profile";
+export * from "./gamePage";
 
-export * from "./not-fund";
+export * from "./profile";
 
 export * from "./ladder";
 

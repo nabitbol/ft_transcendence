@@ -1,7 +1,7 @@
 import classes from "./play-button.module.css";
 import { useState } from "react";
 
-export function PlayButton(props) {
+export function PlayButton() {
   const [loading, setLoading] = useState(false);
 
   function clickme() {
@@ -12,11 +12,11 @@ export function PlayButton(props) {
   return (
     <div>
       {loading ? (
-        <button className={classes.button_play} onClick={clickme}>
-          <div className={classes.ldsdualring}></div>
+        <button className={classes['button_play']} onClick={clickme}>
+          <div className={classes['ldsdualring']}></div>
         </button>
       ) : (
-        <button className={classes.button_play} onClick={clickme}>
+        <button className={classes['button_play']} onClick={clickme}>
           Play
         </button>
       )}

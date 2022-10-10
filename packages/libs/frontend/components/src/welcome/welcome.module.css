@@ -4,10 +4,9 @@
 	width: 50%;
 }
 
-body {
+.welcome_body {
 	height: 100vh;
 	background: radial-gradient(circle, rgb(0, 0, 10) 40%, rgb(10, 0, 20), rgb(20, 0, 30), rgb(25, 0, 40), rgb(20, 0, 50), rgb(10, 0, 60), rgb(20, 20, 90));
-	overflow: hidden;
 }
 
 .space {

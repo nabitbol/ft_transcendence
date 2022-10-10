@@ -1,76 +1,87 @@
 import classes from "./profile.module.css";
-import { QrModule } from "@ft-transcendence/libs-frontend-components";
+import { QrModule, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
+import { UserDto } from '@ft-transcendence/libs-shared-types'
+import { User } from '@ft-transcendence/libs-frontend-services'
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const [QrOn, setQrOn] = useState(true);
 
-  const handleLogin = () => {
-    const user_data = localStorage.getItem("userdata");
-    let user: any;
-    if (user_data) user = JSON.parse(user_data);
-    if (user && !user.user_TwoFa_on) setQrOn(true);
+  const [userInfo, setUserInfo] = useState<UserDto>();
+  const [userWinrate, setUserWinrate] = useState<number>();
+  const navigate = useNavigate();
+
+  const getAnswer = async () => {
+    try {
+      const response: UserDto = await User.requestUserInfo();
+      if (response.losses === 0 || response.wins === 0)
+        setUserWinrate(0);
+      else
+        setUserWinrate((response.wins / (response.losses + response.wins)));
+      setUserInfo(response);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
   };
 
-  const name = "ESwox";
-  const lvl = "55";
-
   useEffect(() => {
-    handleLogin();
-  }, []);
+    getAnswer();
+  }, [])
 
-  return (
-    <div>
-      <div className={classes["profile_container"]}>
+  return !userInfo ? null : (
+    <div className={classes["profile_container"]}>
+      <div className={classes["blur_component"]}>
+        <AllIcon />
         <div className={classes["profile_left_box"]}>
           <div className={classes["profile_card"]}>
             <img
               className={classes["profile_avatar"]}
               src={getPathToImage("friend")}
-              alt="avatar_image"
+              alt="avatar"
             />
             <span className={classes["profile_span"]}>
-              <strong>{name}</strong>
+              <strong>{userInfo.name}</strong>
             </span>
             <br />
             <span className={classes["profile_span"]}>
-              <strong>Lvl:</strong> {lvl}
+              <strong>Lvl:</strong> {userInfo.level}
             </span>
           </div>
-          {QrOn && <QrModule />}
+          <QrModule />
         </div>
         <div className={classes["profile_cascade"]}>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Played games:</strong> 7
+            <strong className={classes['strong_cascade']}>Name:</strong> {userInfo.name}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Winrate:</strong> 54%
+            <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Elo:</strong> 54%
+            <strong className={classes['strong_cascade']}>Elo:</strong> {userInfo.level}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Victory:</strong> 4
+            <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Defeat:</strong>3
+            <strong className={classes['strong_cascade']}>Winrate:</strong> {userWinrate}%
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Draw:</strong> 0
+            <strong className={classes['strong_cascade']}>Game won:</strong> {userInfo.wins}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Cocacola:</strong> {"54%"}
+            <strong className={classes['strong_cascade']}>Game lost:</strong> {userInfo.losses}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Fanta:</strong> {"54%"}
+            <strong className={classes['strong_cascade']}>Achievement:</strong> 1/10 "not dynamic yet"
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Pepsi:</strong> {"54%"}
+            <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong>Orangina:</strong> {"54%"}
+            <strong className={classes['strong_cascade']}>Ladder Rank:</strong> 5 "not dynamic yet"
           </span>
         </div>
       </div>

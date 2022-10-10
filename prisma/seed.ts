@@ -8,6 +8,7 @@ type UserType = {
   password: string;
   image: string;
   doubleAuth?: boolean | undefined;
+  doubleAuthSecret?: string | undefined;
   wins?: number | undefined;
   losses?: number | undefined;
   draw?: number | undefined;
@@ -28,7 +29,6 @@ const main = async () => {
 
 main()
   .catch((err) => {
-    console.log(err);
     process.exit(1);
   })
   .finally(() => {

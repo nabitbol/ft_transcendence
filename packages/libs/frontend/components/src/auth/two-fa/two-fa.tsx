@@ -1,81 +1,61 @@
-import {
-  vrequired,
-  AuthReq,
-} from "@ft-transcendence/libs-frontend-services";
-import { useState, useRef } from "react";
-import Input from "react-validation/build/input";
-import Form from "react-validation/build/form";
-import CheckButton from "react-validation/build/button";
+import { AuthReq } from "@ft-transcendence/libs-frontend-services";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./two-fa.module.css";
+import { useForm } from "react-hook-form";
 
 const TwoFa: React.FC = () => {
   const navigate = useNavigate();
-  const form = useRef<any>();
-  const checkBtn = useRef<any>();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [twoFaCode, setTwoFaCode] = useState("");
-  const [successful, setSuccessful] = useState(false);
+  const [message, setMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleTwoFa = (event: any) => {
-    event.preventDefault();
-    setErrorMessage("");
-    setSuccessful(false);
-    form.current.validateAll();
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthReq.ValidateTwoFa(twoFaCode).then(
-        () => {
-          console.log("CODE =" + twoFaCode);
-          setErrorMessage("Correct 2FA code");
-          setSuccessful(true);
-          navigate("/home");
-          window.location.reload();
-        },
-        (error: any) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setErrorMessage(resMessage);
-          setSuccessful(false);
-        }
-      );
-    }
-  };
-
-  const onChangetwoFaCode = (event: any) => {
-    const twoFaCode = event.target.value;
-    setTwoFaCode(twoFaCode);
+  const handleTwoFa = (data: any) => {
+    setMessage("");
+    AuthReq.ValidateTwoFa(data.twofa_code).then(
+      () => {
+        navigate("/home");
+        window.location.reload();
+      },
+      (error: any) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      }
+    );
   };
 
   return (
-    <Form className={classes["twofa"]} onSubmit={handleTwoFa} ref={form}>
+    <form className={classes["twofa"]} onSubmit={handleSubmit(handleTwoFa)}>
       <h5 className={classes["twofa_label"]}>Two-Factor Authentication</h5>
-      <Input
+      <input
+        placeholder="Code"
         type="text"
-        className={classes["twofa_input"]}
-        name="twoFaCode"
-        value={twoFaCode}
-        onChange={onChangetwoFaCode}
-        validations={[vrequired]}
+        className={
+          errors["twofa_code"]
+            ? classes["twofa_input_red"]
+            : classes["twofa_input"]
+        }
+        {...register("twofa_code", {
+          required: true,
+        })}
       />
-      <button className={classes["twofa_btn"]}>Send code</button>
-      {errorMessage && (
-        <div className="form-group">
-          <div
-            className={
-              successful ? "alert alert-success" : "alert alert-danger"
-            }
-            role="alert"
-          >
-            {errorMessage}
-          </div>
+
+      {message && (
+        <div className="alert alert-danger" role="alert">
+          {message}
         </div>
       )}
-      <CheckButton style={{ display: "none" }} ref={checkBtn} />
-    </Form>
+
+      <input type="submit" className={classes["twofa_btn"]}/>
+    </form>
   );
 };
 export { TwoFa };

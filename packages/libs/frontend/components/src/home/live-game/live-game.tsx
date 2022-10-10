@@ -1,11 +1,11 @@
 import classes from "./live-game.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 
-export function LiveGame({ game_id }) {
+export function LiveGame(props: { game_id: string }) {
   const name = "eswox";
-  const lvl = game_id;
+  const lvl = props.game_id;
   const name_j2 = "erzow";
-  const lvl_j2 = game_id;
+  const lvl_j2 = props.game_id;
 
   function clickme_spectate_button() {
     console.log("click");

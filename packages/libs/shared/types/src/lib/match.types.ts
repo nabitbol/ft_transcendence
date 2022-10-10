@@ -1,3 +1,4 @@
+import { Optional } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
@@ -8,13 +9,13 @@ export class MatchDto {
 
   @ApiProperty({
     description: "Winner name to print",
-    default: "Draw Game",
   })
   @IsString()
   winner: string;
 
+  @Optional()
   @ApiProperty({
-    description: "Time the match was desipute",
+    description: "Time the match was disputed",
   })
   created_at?: Date | undefined;
 
@@ -23,4 +24,4 @@ export class MatchDto {
     each: true,
   })
   players?: string[];
-}
+}0

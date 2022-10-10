@@ -1,13 +1,7 @@
-import {AllIcon, Home} from "@ft-transcendence/libs-frontend-components"
+import { Home } from "@ft-transcendence/libs-frontend-components";
 
-
-function HomePage () {
-	return(
-		<div >
-			<AllIcon/>
-			<Home/>
-		</div>
-	)
+function HomePage() {
+  return <Home />;
 }
 
-export {HomePage}
+export { HomePage };

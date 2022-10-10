@@ -4,12 +4,14 @@
   "projects": {
     "apps-backend": "packages/apps/backend",
     "apps-frontend": "packages/apps/frontend",
+    "libs-backend-auth": "packages/libs/backend/auth",
     "libs-backend-match": "packages/libs/backend/match",
     "libs-backend-prisma-client": "packages/libs/backend/prisma-client",
     "libs-backend-user": "packages/libs/backend/user",
     "libs-frontend-components": "packages/libs/frontend/components",
     "libs-frontend-pages": "packages/libs/frontend/pages",
     "libs-frontend-services": "packages/libs/frontend/services",
+    "libs-shared--game": "packages/libs/shared/game",
     "libs-shared-get-config": "packages/libs/shared/get-config",
     "libs-shared-types": "packages/libs/shared/types"
   }

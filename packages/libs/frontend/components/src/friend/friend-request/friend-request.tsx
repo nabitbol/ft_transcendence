@@ -1,7 +1,7 @@
 import classes from "./friend-request.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 
-export function FriendRequest({ user_id }) {
+export function FriendRequest() {
   const name = "erzow";
 
   function clickme_decline() {
@@ -13,21 +13,21 @@ export function FriendRequest({ user_id }) {
   }
 
   return (
-    <div className={classes.div}>
+    <div className={classes['div']}>
       <img
         src={getPathToImage("friend")}
         alt={"user avatr"}
         height="60"
         width="60"
-        className={classes.img}
+        className={classes['img']}
       />
-      <p className={classes.p_usr}>
+      <p className={classes['p_usr']}>
         <strong>{name}</strong>
       </p>
-      <button className={classes.button_accept} onClick={clickme_accept}>
+      <button className={classes['button_accept']} onClick={clickme_accept}>
         Accept
       </button>
-      <button className={classes.button_decline} onClick={clickme_decline}>
+      <button className={classes['button_decline']} onClick={clickme_decline}>
         Decline
       </button>
     </div>

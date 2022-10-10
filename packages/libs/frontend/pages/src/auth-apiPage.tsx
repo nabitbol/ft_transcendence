@@ -1,11 +1,9 @@
-import {AuthApi} from "@ft-transcendence/libs-frontend-components"
+import { AuthApi } from "@ft-transcendence/libs-frontend-components"
 
-function AuthApiPage () {
-	return(
-		<div>
-			<AuthApi/>
-		</div>
+function AuthApiPage() {
+	return (
+		<AuthApi />
 	)
 }
 
-export {AuthApiPage}
+export { AuthApiPage }

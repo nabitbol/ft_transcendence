@@ -1,0 +1,22 @@
+.canvas{
+	display: block;
+	margin: 0px auto;
+	background: black;
+	position: absolute;
+	font-size: 30px;
+	font: 300;
+}
+
+.span{
+	font-size: 30px;
+	color: white;
+	top: 40vh;
+	display: table;
+	margin: 0 auto;
+}
+
+.background {
+	height: 100%;
+	width: 100%;
+	background: radial-gradient(circle, rgb(0, 0, 10) 40%, rgb(10, 0, 20), rgb(20, 0, 30), rgb(25, 0, 40), rgb(20, 0, 50), rgb(10, 0, 60), rgb(20, 20, 90));
+}
