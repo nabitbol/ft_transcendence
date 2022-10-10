@@ -31,7 +31,25 @@ class UserService {
         throw Error(err);
     }
   }
+
+
+  async sendFriendRequest(name_receiver: string): Promise<any> {
+    const user_info: any = AuthReq.getCurrentUser();
+    const data: any = {name_receiver, name_sender: user_info.name};
+    const headers = authHeader();
+
+      return axios.post(
+        URL + "user/" + user_info.name + "/friend_request",
+        { data },
+        { headers }
+      ).then((response) => {
+        return response.data;
+      });
+
+
+  }
 }
+
 
 const User = new UserService();
 

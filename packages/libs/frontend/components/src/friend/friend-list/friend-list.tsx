@@ -1,18 +1,33 @@
 import classes from "./friend-list.module.css";
 import { Friend } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { User } from "@ft-transcendence/libs-frontend-services"
 import { AllIcon } from "@ft-transcendence/libs-frontend-components";
 
 export function FriendList() {
   const [user_name, setUserName] = useState("");
-
+  const [message, setMessage] = useState("");
   const friend_ID = ["1", "2", "3", "4", "5", "6", "7"];
   const onChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
 
   function clickme_add_user() {
-    console.log(user_name);
+    User.sendFriendRequest(user_name).then(
+      () => {
+        setMessage("");
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+      }
+    );
     setUserName("");
   }
 
@@ -33,6 +48,11 @@ export function FriendList() {
             onChange={onChangeUserName}
             className={classes["input_add_user"]}
           />
+          {message && (
+            <div className="alert alert-danger" role="alert">
+              {message}
+            </div>
+        )}
         </div>
         <div className={classes["friendlist_list"]}>
           {friend_ID.map((friend_ID) => (

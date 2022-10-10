@@ -80,6 +80,23 @@ export class UserService {
     }
   }
 
+  public async addFriendRequest(name_sender: string, user : UserDto): Promise<UserDto> {
+    try {
+      return await prisma.user.update({
+        where: {
+          name: user.name,
+        },
+        data: {
+          firendsRequest: {
+            push: name_sender,
+          },
+        },
+      });
+    } catch (err) {
+      throw Error("Couldn't send friend request");
+    }
+  }
+
   public async updateUser(name: string, toUpdate: UserToUpdateDto) {
     try {
       await prisma.user.update({

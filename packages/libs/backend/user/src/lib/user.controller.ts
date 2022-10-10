@@ -10,6 +10,7 @@ import {
   ValidationPipe,
   NotFoundException,
   ForbiddenException,
+  Req,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiParam } from "@nestjs/swagger";
@@ -78,6 +79,23 @@ export class UserController {
     } catch (err) {
       return new NotFoundException(err);
     }
+  }
+
+  @Post("/:name/friend_request")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async addFriendRequest(@Body() request: any) {
+    let user: UserDto;
+      user = await this.userService.getUserByName(request.data.name_receiver);
+      if (!user)
+        throw new NotFoundException("This username is not associated with any account.");
+      user = await this.userService.addFriendRequest(request.data.name_sender, user);
+      if (!user)
+        throw new ForbiddenException("You can't update this user");
+      return { response: "friend request send sucessfuly" };
+
   }
 
   @Delete("/:name")
