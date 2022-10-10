@@ -38,6 +38,19 @@ export type UserToUpdateType = {
   friendsRequest?: string[] | undefined
 };
 
+export class LoginDto {
+  @ApiProperty()
+  @IsString()
+  @MinLength(4)
+  @MaxLength(25)
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @MinLength(8)
+  password: string;
+}
+
 export class UserDto {
   @ApiPropertyOptional()
   @IsOptional()
@@ -185,7 +198,6 @@ export class UserToUpdateDto {
 }
 
 export class ResponseUserDto {
-
   @ApiPropertyOptional()
   @IsOptional()
   id?: string | undefined;

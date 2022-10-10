@@ -17,6 +17,17 @@ async function bootstrap() {
     .setTitle("ft-transcendence API")
     .setDescription("The ft-transcendence API description")
     .setVersion("1.0")
+    .addBearerAuth(
+      {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        name: "JWT",
+        description: "Enter JWT token here",
+        in: "header",
+      },
+      "JWT-auth"
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(docPrefix, app, document);

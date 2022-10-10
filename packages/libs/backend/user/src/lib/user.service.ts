@@ -56,6 +56,20 @@ export class UserService {
     }
   }
 
+  public async getFriends(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .friends();
+    } catch (err) {
+      throw Error("Couldn't find friends");
+    }
+  }
+
   public async addFriend(name: string, firendId: string, userId: string) {
     try {
       await prisma.user.update({
@@ -146,17 +160,21 @@ export class UserService {
     }
   }
 
-  async setTwoFactorAuthenticationStatus(name: string, status: boolean) : Promise<any> 
-	{
-    const user : UserToUpdateDto = new UserToUpdateDto();
+  async setTwoFactorAuthenticationStatus(
+    name: string,
+    status: boolean
+  ): Promise<any> {
+    const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuth = status;
-		return this.updateUser(name, user);
-	  }
+    return this.updateUser(name, user);
+  }
 
-    async setTwoFactorAuthenticationSecret(name: string, secret: string) : Promise<any> 
-	{
-    const user : UserToUpdateDto = new UserToUpdateDto();
+  async setTwoFactorAuthenticationSecret(
+    name: string,
+    secret: string
+  ): Promise<any> {
+    const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
-		return this.updateUser(name, user);
-	  }
+    return this.updateUser(name, user);
+  }
 }
