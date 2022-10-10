@@ -36,6 +36,17 @@ export class UserController {
     }
   }
 
+  // Todo in the futur delete this function
+  @Post("/")
+  public async createUser(@Body(new ValidationPipe()) user: UserDto) {
+    try {
+      await this.userService.addUser(user);
+      return { response: "created sucessfuly" };
+    } catch (err) {
+      return new ForbiddenException(err);
+    }
+  }
+
   @Get(":name")
   @ApiParam({
     name: "name",
@@ -50,18 +61,7 @@ export class UserController {
     }
   }
 
-  // Todo in the futur delete this function
-  @Post("/")
-  public async createUser(@Body(new ValidationPipe()) user: UserDto) {
-    try {
-      await this.userService.addUser(user);
-      return { response: "created sucessfuly" };
-    } catch (err) {
-      return new ForbiddenException(err);
-    }
-  }
-
-  @Put("/:name")
+  @Put(":name")
   @ApiParam({
     name: "name",
     required: true,
@@ -81,21 +81,7 @@ export class UserController {
     }
   }
 
-  @Post("/:name/friend")
-  @ApiParam({
-    name: "name",
-    required: true,
-  })
-  public async addFriend(@Param() param) {
-    try {
-      await this.userService.getUserByName(param.name);
-      return { response: "added friend sucessfuly" };
-    } catch (err) {
-      return new NotFoundException(err);
-    }
-  }
-
-  @Delete("/:name")
+  @Delete(":name")
   @ApiParam({
     name: "name",
     required: true,
@@ -105,6 +91,58 @@ export class UserController {
       if (req.user.name !== param.name)
         throw new Error("You can't delete this user");
       await this.userService.deleteUser(param.name);
+      return { response: "deleted sucessfuly" };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Get(":name/friend")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getFriends(@Param() param) {
+    try {
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      const friends: UserDto[] = await this.userService.getFriends(user.name);
+      friends.pop();
+      return { response: friends };
+    } catch (err) {
+      return new NotFoundException(err);
+    }
+  }
+
+  @Post(":name/friend")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async addFriend(@Req() req, @Param() param) {
+    try {
+      const user: UserDto = await this.userService.getUserByName(req.user.name);
+      const userToAdd: UserDto = await this.userService.getUserByName(
+        param.name
+      );
+      await this.userService.addFriend(user.name, userToAdd.id, user.id);
+      return { response: "added friend sucessfuly" };
+    } catch (err) {
+      return new NotFoundException(err);
+    }
+  }
+
+  @Delete(":name/friend")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async deleteFirend(@Req() req, @Param() param) {
+    try {
+      const user: UserDto = await this.userService.getUserByName(req.user.name);
+      const userToAdd: UserDto = await this.userService.getUserByName(
+        param.name
+      );
+      await this.userService.removeFriend(user.name, userToAdd.id, user.id);
       return { response: "deleted sucessfuly" };
     } catch (err) {
       return new UnauthorizedException(err);
