@@ -5,19 +5,23 @@ import {
   Get,
   Post,
   Put,
+  Req,
   Param,
   Body,
   ValidationPipe,
+  UnauthorizedException,
   NotFoundException,
   ForbiddenException,
   UseGuards,
 } from "@nestjs/common";
-import { JwtTwoFactorGuard } from "@ft-transcendence/libs-backend-auth";
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { JwtAuthGuard } from "../../../auth/src/lib/strategy/jwt-auth.guard";
 import { UserService } from "./user.service";
-import { ApiParam } from "@nestjs/swagger";
+import { ApiParam, ApiSecurity } from "@nestjs/swagger";
 
 @Controller("user")
-@UseGuards(JwtTwoFactorGuard)
+@UseGuards(JwtAuthGuard)
+@ApiSecurity("JWT-auth")
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -61,8 +65,14 @@ export class UserController {
     name: "name",
     required: true,
   })
-  public async updateUser(@Param() param, @Body() toUpdate: UserToUpdateDto) {
+  public async updateUser(
+    @Req() req,
+    @Param() param,
+    @Body() toUpdate: UserToUpdateDto
+  ) {
     try {
+      if (req.user.name !== param.name)
+        throw new Error("You can't update this user");
       await this.userService.updateUser(param.name, toUpdate);
       return { response: "updated sucessfuly" };
     } catch (err) {
@@ -89,12 +99,14 @@ export class UserController {
     name: "name",
     required: true,
   })
-  public async deleteUser(@Param() param) {
+  public async deleteUser(@Req() req, @Param() param) {
     try {
+      if (req.user.name !== param.name)
+        throw new Error("You can't delete this user");
       await this.userService.deleteUser(param.name);
       return { response: "deleted sucessfuly" };
     } catch (err) {
-      return new ForbiddenException(err);
+      return new UnauthorizedException(err);
     }
   }
 }
