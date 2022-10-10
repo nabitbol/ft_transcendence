@@ -98,6 +98,18 @@ export class UserController {
 
   }
 
+  @Get("/:name/friend_request")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getFriendRequest(@Param() param) {
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      if (!user)
+        throw new NotFoundException("This username is not associated with any account.");
+      return { friendsRequest: user.friendsRequest };
+  }
+
   @Delete("/:name")
   @ApiParam({
     name: "name",

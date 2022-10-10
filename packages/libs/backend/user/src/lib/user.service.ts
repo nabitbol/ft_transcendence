@@ -87,7 +87,7 @@ export class UserService {
           name: user.name,
         },
         data: {
-          firendsRequest: {
+          friendsRequest: {
             push: name_sender,
           },
         },

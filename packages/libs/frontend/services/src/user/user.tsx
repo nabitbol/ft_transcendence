@@ -48,6 +48,18 @@ class UserService {
 
 
   }
+  
+  async requestUserFriendRequest() : Promise<string[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "user/" + user_info.name + "/friend_request",{
+        headers: authHeader()
+      });
+      return ret.data.friendsRequest;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
 }
 
 

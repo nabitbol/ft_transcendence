@@ -1,16 +1,38 @@
 import classes from "./friend-request-list.module.css";
 import { FriendRequest } from "@ft-transcendence/libs-frontend-components";
+import { useState } from "react";
+import { useEffect } from "react";
+import { User } from "@ft-transcendence/libs-frontend-services";
+import { useNavigate } from "react-router-dom";
 
 export function FriendRequestList() {
-  const user_ID = ["1", "2", "3", "4", "5", "6"];
+  const [friendRequest_ID, setFriendRequest] = useState<string[]>(undefined);
+  const navigate = useNavigate();
 
-  return (
+  const getAnswer = async () => {
+    try {
+      console.log("noice");
+      const response: string[] = await User.requestUserFriendRequest();
+      console.log(response);
+      console.log("HERE");
+      setFriendRequest(response);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    getAnswer();
+  }, []);
+
+  return !friendRequest_ID ? null :(
     <div className={classes["friendrequest_container"]}>
       <div className={classes["friendrequest_content"]}>
         <h2 className={classes["h2_title"]}>Friend request</h2>
         <div className={classes["friendrequest_list"]}>
-          {user_ID.map(() => (
-            <FriendRequest />
+          {friendRequest_ID.map((ID) => (
+            <FriendRequest friend_request={ID}/>
           ))}
         </div>
       </div>

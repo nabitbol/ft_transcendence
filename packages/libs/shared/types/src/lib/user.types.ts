@@ -20,7 +20,7 @@ export type UserType = {
   draw?: number | undefined;
   level?: number | undefined;
   userRankId?: string | undefined;
-  friendRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined
 };
 
 export type UserToUpdateType = {
@@ -35,7 +35,7 @@ export type UserToUpdateType = {
   draw?: number | undefined;
   level?: number | undefined;
   userRankId?: string | undefined;
-  friendRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined
 };
 
 export class UserDto {
