@@ -1,9 +1,7 @@
 import { AchievementList } from "@ft-transcendence/libs-frontend-components"
 
 function AchievementPage() {
-	return (
-		<AchievementList />
-	)
+	return <AchievementList />
 }
 
 export { AchievementPage }

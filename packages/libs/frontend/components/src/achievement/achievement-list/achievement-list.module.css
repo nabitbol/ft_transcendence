@@ -3,6 +3,7 @@
     margin: 0 auto;
     font-size: 50px;
     margin-bottom: 25px;
+    color: white;
 }
 
 .achievement_list {
@@ -14,11 +15,19 @@
     overflow-y: scroll;
 }
 
+.blur_component {
+	-webkit-backdrop-filter: blur(15px);
+	backdrop-filter: blur(15px);
+	height: 100vh;
+	width: 100%;
+	overflow:auto;
+	background: linear-gradient(to top right, rgb(0, 0, 0, 0) 40%, black);
+}
+
 .achievement_content {
     position: relative;
     width: 60%;
     height: 65%;
-	background-color: whitesmoke;
     max-width: 600px;
     min-width: 500px;
     display: table;
@@ -27,6 +36,11 @@
 }
 
 .achievement_container {
-	height: 100vh;
 	background-color: whitesmoke;
+	height: 100vh;
+	overflow-y: auto;
+	background-image: url("../../../../../../../assets/img/background.png");
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
 }

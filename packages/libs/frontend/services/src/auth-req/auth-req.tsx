@@ -21,7 +21,7 @@ class AuthReqService {
   }
 
   async register(user_pseudo: string, user_mail: string, user_password: string) {
-    const user: UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: ""};
+    const user: UserDto = { name: user_pseudo, password: user_password, email: user_mail, image: "" };
 
     return axios.post(URL + "register", user);
   }
