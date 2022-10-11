@@ -13,7 +13,7 @@ const Chat: React.FC = () => {
   const socketRef = useRef(io("ws://localhost:3000"));
 
   const sendMessage = useCallback((data) => {
-    socketRef.current.emit('chat message', data.message);
+    socketRef.current.emit('chat:message', data.message);
     reset();
   }, [reset]);
   
@@ -21,12 +21,8 @@ const Chat: React.FC = () => {
 
     const socket = socketRef.current;
     socketRef.current.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
-    
-    socket.on("hello from server", (...args) => {
-      console.log("The server has accepted connexion");
-    });
 
-    socket.on('chat message', (msg: string) => {
+    socket.on('chat:message', (msg: string) => {
       console.log("Someone sent:" + msg);
     });
 
