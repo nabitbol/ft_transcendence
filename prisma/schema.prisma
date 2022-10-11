@@ -13,17 +13,17 @@ datasource db {
 // models
 
 model User {
-  id                  String  @id @default(uuid())
-  name                String  @unique
-  email               String? @unique
-  password            String
-  doubleAuth          Boolean @default(false)
-  doubleAuthSecret    String?
-  wins                Int     @default(0)
-  losses              Int     @default(0)
-  draw                Int     @default(0)
-  level               Int     @default(0)
-  image               String
+  id               String  @id @default(uuid())
+  name             String  @unique
+  email            String? @unique
+  password         String
+  doubleAuth       Boolean @default(false)
+  doubleAuthSecret String?
+  wins             Int     @default(0)
+  losses           Int     @default(0)
+  draw             Int     @default(0)
+  level            Int     @default(0)
+  image            String
 
   achivements Achievement[]
 
@@ -61,10 +61,13 @@ model UserRank {
 }
 
 model Match {
-  id         String   @id @default(uuid())
-  score      String
-  winner     String   @default("Draw Game")
-  created_at DateTime @default(now())
+  id          String   @id @default(uuid())
+  winnerScore Int      @default(0)
+  looserScore Int      @default(0)
+  looser      String
+  winner      String
+  created_at  DateTime @default(now())
+  playersName String[]
 
   players User[]
 }

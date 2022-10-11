@@ -1,11 +1,26 @@
 import { Optional } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class MatchDto {
   @ApiProperty()
+  @IsOptional()
   @IsString()
-  score: string;
+  id?: string | undefined;
+
+  @ApiProperty()
+  @IsNumber()
+  winnerScore: number;
+
+  @ApiProperty()
+  @IsNumber()
+  looserScore: number;
+
+  @ApiProperty({
+    description: "Looser name to print",
+  })
+  @IsString()
+  looser: string;
 
   @ApiProperty({
     description: "Winner name to print",
@@ -23,5 +38,11 @@ export class MatchDto {
   @IsString({
     each: true,
   })
+  playersName: string[];
+
+  @ApiProperty()
+  @IsString({
+    each: true,
+  })
   players?: string[];
-}0
+}
