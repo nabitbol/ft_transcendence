@@ -70,5 +70,5 @@ sudo hwclock -s
 ```
 
 ## Port already in use
-> Scan port: `netstat -lnp | grep 8080`
+> Scan port: `netstat -lnp | grep 4200`
 > Kill process: `kill -9 process_id`
