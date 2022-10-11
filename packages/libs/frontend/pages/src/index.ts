@@ -1,3 +1,5 @@
+export * from './chat-page';
+
 export * from "./welcome";
 
 export * from "./gamePage";

@@ -1,3 +1,4 @@
+export * from './chat/chat/chat';
 
 export * from './game/game';
 
