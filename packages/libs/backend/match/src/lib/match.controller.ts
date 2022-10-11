@@ -46,7 +46,8 @@ export class MatchController {
   public async getMatchesByUser(@Param() param) {
     try {
       const id: string = (await this.userService.getUserByName(param.name)).id;
-      if (!id) throw Error("Users not found");
+      if (!id)
+        throw Error("Users not found");
       const matches: MatchDto[] = await this.matchService.getMatchesByUser(id);
       return { matches };
     } catch (err) {
@@ -57,14 +58,21 @@ export class MatchController {
   @Post()
   public async addMatches(@Body(new ValidationPipe()) match: MatchDto) {
     try {
+
+      if(!await this.userService.getUserByName(match.looser) || 
+          !await this.userService.getUserByName(match.winner))
+      {
+        throw Error("Winner or looser not found");
+      }
+
       for (let index = 0; index < match.playersName.length; index++) {
         const tmp: UserDto = await this.userService.getUserByName(
           match.playersName[index]
         );
-        if (!tmp) throw Error("User not found");
+        if (!tmp)
+          throw Error("User not found");
         match.players[index] = tmp["id"];
       }
-      console.log(match.players);
       await this.matchService.addMatches(match);
       return { response: "Match added sucessfully" };
     } catch (err) {
