@@ -13,13 +13,11 @@ const Chat: React.FC = () => {
   const socketRef = useRef(io("ws://localhost:3000"));
 
   const sendMessage = useCallback((data) => {
-    console.log("pressed");
     socketRef.current.emit('chat message', data.message);
     reset();
   }, [reset]);
   
   useEffect(() => {
-    const messages = document.getElementById('messages');
 
     const socket = socketRef.current;
     socketRef.current.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
@@ -30,10 +28,6 @@ const Chat: React.FC = () => {
 
     socket.on('chat message', (msg: string) => {
       console.log("Someone sent:" + msg);
-      const item = document.createElement('li');
-      item.textContent = msg;
-      messages.appendChild(item);
-      window.scrollTo(0, document.body.scrollHeight);
     });
 
   }, [sendMessage])

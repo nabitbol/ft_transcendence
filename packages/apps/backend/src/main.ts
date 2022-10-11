@@ -28,12 +28,9 @@ async function bootstrap() {
   ////////////SOCKET_IO SERVER////////////////////
   const httpServer = createServer();
   const io = new Server(httpServer, {
-    cors: {
-      credentials: true,
-      origin: "http://localhost:4200",
-      methods: ["GET", "POST"]
-    }
+    cors: corsOptions
   });
+
   io.on("connection", (socket) => {
     // send a message to the client
     socket.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
