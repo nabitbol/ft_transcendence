@@ -15,12 +15,12 @@ import {
   UseGuards,
 } from "@nestjs/common";
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { JwtAuthGuard } from "../../../auth/src/lib/strategy/jwt-auth.guard";
+import { JwtTwoFactorGuard } from "../../../auth/src/lib/strategy/jwt-two-factor.guard";
 import { UserService } from "./user.service";
 import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
+@UseGuards(JwtTwoFactorGuard)
 @Controller("user")
-@UseGuards(JwtAuthGuard)
 @ApiSecurity("JWT-auth")
 @ApiTags("User")
 export class UserController {
@@ -73,7 +73,11 @@ export class UserController {
   ) {
     try {
       if (req.user.name !== param.name)
+      {
+        if(!await this.userService.getUserByName(param.name))
+          throw new Error("This user doesn't exist !");
         throw new Error("You can't update this user");
+      }
       await this.userService.updateUser(param.name, toUpdate);
       return { response: "updated sucessfuly" };
     } catch (err) {
@@ -89,7 +93,11 @@ export class UserController {
   public async deleteUser(@Req() req, @Param() param) {
     try {
       if (req.user.name !== param.name)
+      {
+        if(!await this.userService.getUserByName(param.name))
+          throw new Error("This user doesn't exist !");
         throw new Error("You can't delete this user");
+      }
       await this.userService.deleteUser(param.name);
       return { response: "deleted sucessfuly" };
     } catch (err) {
@@ -136,7 +144,7 @@ export class UserController {
     name: "name",
     required: true,
   })
-  public async deleteFirend(@Req() req, @Param() param) {
+  public async deleteFriend(@Req() req, @Param() param) {
     try {
       const user: UserDto = await this.userService.getUserByName(req.user.name);
       const userToAdd: UserDto = await this.userService.getUserByName(
