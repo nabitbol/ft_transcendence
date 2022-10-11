@@ -20,7 +20,7 @@ async function bootstrap() {
   const cors = await import("cors");
   const corsOptions = {
     origin: "http://localhost:" + 4200,
-    credentials: true, //access-control-allow-credentials:true
+    credentials: true,
     optionSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
@@ -29,6 +29,7 @@ async function bootstrap() {
   const httpServer = createServer();
   const io = new Server(httpServer, {
     cors: {
+      credentials: true,
       origin: "http://localhost:4200",
       methods: ["GET", "POST"]
     }
@@ -40,6 +41,16 @@ async function bootstrap() {
     // receive a message from the client
     socket.on("hello from client", (...args) => {
          console.log("Client has connected");
+
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+
+    socket.on('chat message', (...msg) => {
+      console.log('message: ' + msg);
+      io.emit('chat message', msg);
+    });
+
   });
   ////////////////////////////////////////////////
 });
