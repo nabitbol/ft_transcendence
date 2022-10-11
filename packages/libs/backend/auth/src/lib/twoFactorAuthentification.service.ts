@@ -13,12 +13,15 @@ export class TwoFactorAuthenticationService {
   ) {}
  
   public async generateTwoFactorAuthenticationSecret(user: UserDto): Promise<string> {
-    const secret: string = authenticator.generateSecret();
- 
+    let secret: string;
+    if(user.doubleAuthSecret)
+     secret = user.doubleAuthSecret;
+    else
+    {
+      secret = authenticator.generateSecret();
+      await this.usersService.setTwoFactorAuthenticationSecret(user.name, secret);
+    }
     const otpauthUrl: string = authenticator.keyuri(user.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME || 'chicken', secret);
- 
-    await this.usersService.setTwoFactorAuthenticationSecret(user.name, secret);
- 
     return (otpauthUrl);
   }
 

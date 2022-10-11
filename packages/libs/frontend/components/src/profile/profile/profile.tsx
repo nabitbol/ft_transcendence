@@ -32,48 +32,60 @@ function Profile() {
   }, [])
 
   return !userInfo ? null : (
-    <div>
+    <div className={classes["profile_container"]}>
+      <div className={classes["blur_component"]}>
         <AllIcon />
-        <div className={classes["profile_container"]}>
-          <div className={classes["profile_left_box"]}>
-            <div className={classes["profile_card"]}>
-              <img
-                className={classes["profile_avatar"]}
-                src={getPathToImage("friend")}
-                alt="zaeeza"
-              />
-              <span className={classes["profile_span"]}>
-                <strong>{userInfo.name}</strong>
-              </span>
-              <br />
-              <span className={classes["profile_span"]}>
-                <strong>Lvl:</strong> {userInfo.level}
-              </span>
-            </div>
-            <QrModule />
-          </div>
-          <div className={classes["profile_cascade"]}>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Played games:</strong> {userInfo.losses + userInfo.wins}
+        <div className={classes["profile_left_box"]}>
+          <div className={classes["profile_card"]}>
+            <img
+              className={classes["profile_avatar"]}
+              src={getPathToImage("friend")}
+              alt="avatar"
+            />
+            <span className={classes["profile_span"]}>
+              <strong>{userInfo.name}</strong>
             </span>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Email:</strong> {userInfo.email}
-            </span>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Winrate:</strong> {userWinrate}%
-            </span>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Elo:</strong> {userInfo.level}
-            </span>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Victory:</strong> {userInfo.wins}
-            </span>
-            <span className={classes["profile_span_cascade"]}>
-              <strong>Defeat:</strong> {userInfo.losses}
+            <br />
+            <span className={classes["profile_span"]}>
+              <strong>Lvl:</strong> {userInfo.level}
             </span>
           </div>
+          <QrModule />
+        </div>
+        <div className={classes["profile_cascade"]}>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Name:</strong> {userInfo.name}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Elo:</strong> {userInfo.level}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Winrate:</strong> {userWinrate}%
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Game won:</strong> {userInfo.wins}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Game lost:</strong> {userInfo.losses}
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Achievement:</strong> 1/10 "not dynamic yet"
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
+          </span>
+          <span className={classes["profile_span_cascade"]}>
+            <strong className={classes['strong_cascade']}>Ladder Rank:</strong> 5 "not dynamic yet"
+          </span>
         </div>
       </div>
+    </div>
   );
 }
 

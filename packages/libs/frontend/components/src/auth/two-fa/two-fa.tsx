@@ -15,7 +15,7 @@ const TwoFa: React.FC = () => {
 
   const handleTwoFa = (data: any) => {
     setMessage("");
-    AuthReq.ValidateTwoFa(data.twoFaCode).then(
+    AuthReq.ValidateTwoFa(data.twofa_code).then(
       () => {
         navigate("/home");
         window.location.reload();
@@ -54,9 +54,7 @@ const TwoFa: React.FC = () => {
         </div>
       )}
 
-      <input type="submit" className={classes["twofa_btn"]}>
-        Send code
-      </input>
+      <input type="submit" className={classes["twofa_btn"]}/>
     </form>
   );
 };
