@@ -106,8 +106,6 @@ export class UserController {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
       const friends: UserDto[] = await this.userService.getFriends(user.name);
-      const i: number = friends.indexOf(user);
-      friends.splice(i, 1);
       return { response: friends };
     } catch (err) {
       return new NotFoundException(err);
@@ -196,9 +194,6 @@ export class UserController {
   })
   public async deleteFirend(@Body() request, @Param() param) {
     try {
-      console.log("HERE");
-      console.log(param.name);
-      console.log(request.name);
       const user: UserDto = await this.userService.getUserByName(param.name);
       const userToDel: UserDto = await this.userService.getUserByName(request.name);
       await this.userService.removeFriend(user.name, userToDel.id);
