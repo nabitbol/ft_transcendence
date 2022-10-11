@@ -48,6 +48,21 @@ class UserService {
 
 
   }
+
+  async removeFriendRequest(name_to_delete: string): Promise<any> {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+      return axios.post(
+        URL + "user/" + user_info.name + "/remove_friend_request",
+        { name_to_delete },
+        { headers }
+      ).then((response) => {
+        return response.data;
+      });
+
+
+  }
   
   async requestUserFriendRequest() : Promise<string[]> {
     const user_info: any = AuthReq.getCurrentUser();
@@ -60,6 +75,49 @@ class UserService {
         throw Error(err);
     }
   }
+
+  async addFriend(name: string): Promise<any> {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+      return axios.post(
+        URL + "user/" + user_info.name + "/friend",
+        {name},
+        { headers }
+      ).then((response) => {
+        return response.data;
+      });
+
+
+  }
+
+  async removeFriend(name: string): Promise<any> {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+      return axios.post(
+        URL + "user/" + user_info.name + "/remove_friend",
+        { name },
+        { headers }
+      ).then((response) => {
+        return response.data;
+      });
+
+
+  }
+
+  async requestUserFriend() : Promise<UserDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "user/" + user_info.name + "/friend",{
+        headers: authHeader()
+      });
+      return ret.data.response;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
 }
 
 

@@ -70,7 +70,7 @@ export class UserService {
     }
   }
 
-  public async addFriend(name: string, firendId: string, userId: string) {
+  public async addFriend(name: string, friendId: string, userId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -79,12 +79,12 @@ export class UserService {
         data: {
           friends: {
             connect: {
-              id: firendId,
+              id: friendId,
             },
           },
           friendsOf: {
             connect: {
-              id: userId,
+              id: friendId,
             },
           },
         },
@@ -108,6 +108,38 @@ export class UserService {
       });
     } catch (err) {
       throw Error("Couldn't send friend request");
+    }
+  }
+
+  public async removeFriendRequest(name_to_delete: string, user : UserDto): Promise<UserDto> {
+    let i: number = 0;
+    let j: number = 0;
+    while (user.friendsRequest[i])
+    {
+      if (user.friendsRequest[i] != name_to_delete)
+        j++;
+      i++;
+    }
+    const tmp : string[] = new Array(j);
+    i = 0;
+    j = 0;
+    while (user.friendsRequest[i])
+    {
+      if (user.friendsRequest[i] != name_to_delete)
+        tmp[j++] = user.friendsRequest[i];
+      i++;
+    }
+    try {
+      return await prisma.user.update({
+        where: {
+          name: user.name,
+        },
+        data: {
+          friendsRequest: tmp,
+        },
+      });
+    } catch (err) {
+      throw Error("Couldn't remove friend request");
     }
   }
 
@@ -136,7 +168,7 @@ export class UserService {
     }
   }
 
-  public async removeFriend(name: string, firendId: string, userId: string) {
+  public async removeFriend(name: string, friendId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -145,16 +177,12 @@ export class UserService {
         data: {
           friends: {
             disconnect: {
-              id: firendId,
+              id: friendId,
             },
           },
-          friendsOf: {
-            disconnect: {
-              id: userId,
-            },
           },
         },
-      });
+      );
     } catch (err) {
       throw Error("Couldn't remove friend");
     }

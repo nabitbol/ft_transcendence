@@ -1,15 +1,18 @@
 import classes from "./friend-request.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { User } from "@ft-transcendence/libs-frontend-services";
 
 export function FriendRequest(props: {friend_request: string}) {
   const name = props.friend_request;
 
   function clickme_decline() {
-    console.log("friend no more");
+    User.removeFriendRequest(name);
+    window.location.reload();
   }
 
   function clickme_accept() {
-    console.log("got a new friend");
+    User.addFriend(name);
+    window.location.reload();
   }
 
   return (

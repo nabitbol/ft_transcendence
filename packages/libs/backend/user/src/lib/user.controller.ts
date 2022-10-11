@@ -106,7 +106,8 @@ export class UserController {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
       const friends: UserDto[] = await this.userService.getFriends(user.name);
-      friends.pop();
+      const i: number = friends.indexOf(user);
+      friends.splice(i, 1);
       return { response: friends };
     } catch (err) {
       return new NotFoundException(err);
@@ -118,13 +119,12 @@ export class UserController {
     name: "name",
     required: true,
   })
-  public async addFriend(@Req() req, @Param() param) {
+  public async addFriend(@Body() request, @Param() param) {
     try {
-      const user: UserDto = await this.userService.getUserByName(req.user.name);
-      const userToAdd: UserDto = await this.userService.getUserByName(
-        param.name
-      );
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      const userToAdd: UserDto = await this.userService.getUserByName(request.name);
       await this.userService.addFriend(user.name, userToAdd.id, user.id);
+      await this.userService.removeFriendRequest(userToAdd.name, user);
       return { response: "added friend sucessfuly" };
     } catch (err) {
       return new NotFoundException(err);
@@ -137,11 +137,40 @@ export class UserController {
     required: true,
   })
   public async addFriendRequest(@Body() request: any) {
-    let user: UserDto;
+      let user: UserDto;
+      if (request.data.name_receiver == request.data.name_sender)
+        throw new ForbiddenException("You can't send yourself a friend request");
+
+
+      let i: number = 0;
+      const friends: UserDto[] = await this.userService.getFriends(request.data.name_sender);
+      while (friends[i])
+      {
+        if (friends[i].name == request.data.name_receiver)
+          throw new ForbiddenException("This user is already your friend");
+      }
+
       user = await this.userService.getUserByName(request.data.name_receiver);
       if (!user)
         throw new NotFoundException("This username is not associated with any account.");
       user = await this.userService.addFriendRequest(request.data.name_sender, user);
+      if (!user)
+        throw new ForbiddenException("You can't update this user");
+      return { response: "friend request send sucessfuly" };
+
+  }
+
+  @Post("/:name/remove_friend_request")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async removeFriendRequest(@Body() request: any, @Param() param) {
+    let user: UserDto;
+      user = await this.userService.getUserByName(param.name);
+      if (!user)
+        throw new NotFoundException("This username is not associated with any account.");
+      user = await this.userService.removeFriendRequest(request.name_to_delete, user);
       if (!user)
         throw new ForbiddenException("You can't update this user");
       return { response: "friend request send sucessfuly" };
@@ -160,18 +189,19 @@ export class UserController {
       return { friendsRequest: user.friendsRequest };
   }
 
-  @Delete(":name/friend")
+  @Post(":name/remove_friend")
   @ApiParam({
     name: "name",
     required: true,
   })
-  public async deleteFirend(@Req() req, @Param() param) {
+  public async deleteFirend(@Body() request, @Param() param) {
     try {
-      const user: UserDto = await this.userService.getUserByName(req.user.name);
-      const userToAdd: UserDto = await this.userService.getUserByName(
-        param.name
-      );
-      await this.userService.removeFriend(user.name, userToAdd.id, user.id);
+      console.log("HERE");
+      console.log(param.name);
+      console.log(request.name);
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      const userToDel: UserDto = await this.userService.getUserByName(request.name);
+      await this.userService.removeFriend(user.name, userToDel.id);
       return { response: "deleted sucessfuly" };
     } catch (err) {
       return new UnauthorizedException(err);

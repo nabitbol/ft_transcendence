@@ -1,14 +1,17 @@
 import classes from "./friend-list.module.css";
 import { Friend } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { User } from "@ft-transcendence/libs-frontend-services"
 import { AllIcon } from "@ft-transcendence/libs-frontend-components";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function FriendList() {
   const [user_name, setUserName] = useState("");
   const [message, setMessage] = useState("");
-  const friend_ID = ["1", "2", "3", "4", "5", "6", "7"];
+  const [friend_ID, setFriend] = useState<UserDto[]>(undefined);
+  const navigate = useNavigate();
   const onChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
@@ -31,7 +34,21 @@ export function FriendList() {
     setUserName("");
   }
 
-  return (
+  const getAnswer = async () => {
+    try {
+      const response: UserDto[] = await User.requestUserFriend();
+      setFriend(response);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    getAnswer();
+  }, []);
+
+  return !friend_ID ? null :(
     <div className={classes["friendlist_container"]}>
       <div className={classes["friendlist_content"]}>
         <h2 className={classes["h2_title"]}>Friend list</h2>
@@ -55,8 +72,8 @@ export function FriendList() {
         )}
         </div>
         <div className={classes["friendlist_list"]}>
-          {friend_ID.map((friend_ID) => (
-            <Friend user_id={friend_ID} key={friend_ID} />
+          {friend_ID.map((ID) => (
+            <Friend user={ID}/>
           ))}
         </div>
       </div>

@@ -11,10 +11,7 @@ export function FriendRequestList() {
 
   const getAnswer = async () => {
     try {
-      console.log("noice");
       const response: string[] = await User.requestUserFriendRequest();
-      console.log(response);
-      console.log("HERE");
       setFriendRequest(response);
     } catch (err) {
       navigate("/error");
