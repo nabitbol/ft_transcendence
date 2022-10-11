@@ -20,6 +20,7 @@ export type UserType = {
   draw?: number | undefined;
   level?: number | undefined;
   userRankId?: string | undefined;
+  friendsRequest?: string[] | undefined
 };
 
 export type UserToUpdateType = {
@@ -34,6 +35,7 @@ export type UserToUpdateType = {
   draw?: number | undefined;
   level?: number | undefined;
   userRankId?: string | undefined;
+  friendsRequest?: string[] | undefined
 };
 
 export class LoginDto {
@@ -117,6 +119,9 @@ export class UserDto {
 
   @ApiPropertyOptional()
   userRankId?: string | undefined;
+
+  @ApiPropertyOptional()
+  friendsRequest?: string[] | undefined;
 }
 
 export class UserToUpdateDto {
@@ -187,6 +192,9 @@ export class UserToUpdateDto {
 
   @ApiPropertyOptional()
   userRankId?: string | undefined;
+
+  @ApiPropertyOptional()
+  friendsRequest?: string[] | undefined;
 }
 
 export class ResponseUserDto {
@@ -255,4 +263,7 @@ export class ResponseUserDto {
 
   @ApiPropertyOptional()
   jwtToken?: string | undefined;
+
+  @ApiPropertyOptional()
+  friendsRequest?: string[] | undefined;
 }
