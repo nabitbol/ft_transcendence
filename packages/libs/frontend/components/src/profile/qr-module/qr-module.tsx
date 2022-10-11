@@ -4,6 +4,7 @@ import { GenerateQr } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { vonly_number } from "@ft-transcendence/libs-frontend-services"
 
 const QrModule = (props: any) => {
   const navigate = useNavigate();
@@ -16,13 +17,12 @@ const QrModule = (props: any) => {
 
   const handleTwoFa = (data: any) => {
     setMessage("");
-    console.log("test");
-    AuthReq.ActivateTwoFa(data.twoFaCode).then(
-      () => {
-        AuthReq.logout();
-        navigate("/");
-        window.location.reload();
-      },
+    console.log(data.twofa_code);
+    AuthReq.ActivateTwoFa(data.twofa_code).then(() => {
+      AuthReq.logout();
+      navigate("/");
+      window.location.reload();
+    },
       (error) => {
         const resMessage =
           (error.response &&
@@ -33,7 +33,7 @@ const QrModule = (props: any) => {
         setMessage(resMessage);
       }
     );
-  };
+  }
 
   return (
     <div>
@@ -46,24 +46,25 @@ const QrModule = (props: any) => {
         </h5>
         <GenerateQr />
 
-        <input
-          placeholder="code"
-          type="text"
-          className={
-            errors["twofa_code"]
-              ? classes["qr_module_input_red"]
-              : classes["qr_module_input"]
-          }
-          {...register("twofa_code", {
-            required: true,
-          })}
-        />
+      <input placeholder="code" type="text"
+        className={errors['twofa_code'] ? classes['qr_module_input_red'] : classes['qr_module_input']}
+        {...register("twofa_code", {
+          required: true,
+          validate: { number: vonly_number }
+        })}
+      />
 
-        {message && (
-          <div className="alert alert-danger" role="alert">
-            {message}
-          </div>
-        )}
+      {errors['twofa_code'] && errors['twofa_code'].type === "number" && (
+        <div className="alert alert-danger" role="alert">
+          This field must contain only number.
+        </div>
+      )}
+
+      {message && (
+        <div className="alert alert-danger" role="alert">
+          {message}
+        </div>
+      )}
 
         <input type="submit" className={classes["qr_module_btn"]} />
       </form>

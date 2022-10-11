@@ -70,7 +70,7 @@ export class UserService {
     }
   }
 
-  public async addFriend(name: string, friendId: string, userId: string) {
+  public async addFriend(name: string, friendId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -112,8 +112,8 @@ export class UserService {
   }
 
   public async removeFriendRequest(name_to_delete: string, user : UserDto): Promise<UserDto> {
-    let i: number = 0;
-    let j: number = 0;
+    let i = 0;
+    let j = 0;
     while (user.friendsRequest[i])
     {
       if (user.friendsRequest[i] != name_to_delete)

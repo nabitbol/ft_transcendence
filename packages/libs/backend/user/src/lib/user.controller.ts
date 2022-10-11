@@ -15,12 +15,12 @@ import {
   UseGuards,
 } from "@nestjs/common";
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { JwtAuthGuard } from "../../../auth/src/lib/strategy/jwt-auth.guard";
+import { JwtTwoFactorGuard } from "../../../auth/src/lib/strategy/jwt-two-factor.guard";
 import { UserService } from "./user.service";
 import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
+@UseGuards(JwtTwoFactorGuard)
 @Controller("user")
-@UseGuards(JwtAuthGuard)
 @ApiSecurity("JWT-auth")
 @ApiTags("User")
 export class UserController {
@@ -73,7 +73,11 @@ export class UserController {
   ) {
     try {
       if (req.user.name !== param.name)
+      {
+        if(!await this.userService.getUserByName(param.name))
+          throw new Error("This user doesn't exist !");
         throw new Error("You can't update this user");
+      }
       await this.userService.updateUser(param.name, toUpdate);
       return { response: "updated sucessfuly" };
     } catch (err) {
@@ -89,7 +93,11 @@ export class UserController {
   public async deleteUser(@Req() req, @Param() param) {
     try {
       if (req.user.name !== param.name)
+      {
+        if(!await this.userService.getUserByName(param.name))
+          throw new Error("This user doesn't exist !");
         throw new Error("You can't delete this user");
+      }
       await this.userService.deleteUser(param.name);
       return { response: "deleted sucessfuly" };
     } catch (err) {
@@ -121,7 +129,7 @@ export class UserController {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
       const userToAdd: UserDto = await this.userService.getUserByName(request.name);
-      await this.userService.addFriend(user.name, userToAdd.id, user.id);
+      await this.userService.addFriend(user.name, userToAdd.id);
       await this.userService.removeFriendRequest(userToAdd.name, user);
       return { response: "added friend sucessfuly" };
     } catch (err) {
@@ -139,13 +147,13 @@ export class UserController {
       if (request.data.name_receiver == request.data.name_sender)
         throw new ForbiddenException("You can't send yourself a friend request");
 
-
-      let i: number = 0;
+      let i = 0;
       const friends: UserDto[] = await this.userService.getFriends(request.data.name_sender);
       while (friends[i])
       {
         if (friends[i].name == request.data.name_receiver)
           throw new ForbiddenException("This user is already your friend");
+        i++;
       }
 
       user = await this.userService.getUserByName(request.data.name_receiver);
@@ -192,7 +200,7 @@ export class UserController {
     name: "name",
     required: true,
   })
-  public async deleteFirend(@Body() request, @Param() param) {
+  public async deleteFriend(@Body() request, @Param() param) {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
       const userToDel: UserDto = await this.userService.getUserByName(request.name);

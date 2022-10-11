@@ -6,9 +6,9 @@ export function AchievementList() {
   const achievement_ID = ["1", "2"];
 
   return (
-    <div>
-      <AllIcon />
-      <div className={classes["achievement_container"]}>
+    <div className={classes["achievement_container"]}>
+      <div className={classes["blur_component"]}>
+        <AllIcon />
         <div className={classes["achievement_content"]}>
           <h2 className={classes["h2_title"]}>Achievement</h2>
           <div className={classes["achievement_list"]}>

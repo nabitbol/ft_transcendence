@@ -46,7 +46,6 @@ class UserService {
         return response.data;
       });
 
-
   }
 
   async removeFriendRequest(name_to_delete: string): Promise<any> {
