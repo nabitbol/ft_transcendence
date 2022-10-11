@@ -48,7 +48,7 @@ function Auth() {
       {LoginForm && <Login activateTwoFaForm={activateTwoFaForm} />}
       {TwoFaForm && <TwoFa />}
       {RegisterForm && <Register />}
-      {(LoginForm || RegisterForm) && (
+      {(LoginForm || RegisterForm || TwoFaForm) && (
         <Backdrop closeBackdrop={desactivateForm} />
       )}
     </div>
