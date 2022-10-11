@@ -70,7 +70,7 @@ export class UserService {
     }
   }
 
-  public async addFriend(name: string, firendId: string, userId: string) {
+  public async addFriend(name: string, friendId: string, userId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -79,7 +79,7 @@ export class UserService {
         data: {
           friends: {
             connect: {
-              id: firendId,
+              id: friendId,
             },
           },
           friendsOf: {
@@ -119,7 +119,7 @@ export class UserService {
     }
   }
 
-  public async removeFriend(name: string, firendId: string, userId: string) {
+  public async removeFriend(name: string, friendId: string, userId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -128,7 +128,7 @@ export class UserService {
         data: {
           friends: {
             disconnect: {
-              id: firendId,
+              id: friendId,
             },
           },
           friendsOf: {
