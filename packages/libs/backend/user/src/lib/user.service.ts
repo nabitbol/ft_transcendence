@@ -56,7 +56,21 @@ export class UserService {
     }
   }
 
-  public async addFriend(name: string, firendId: string, userId: string) {
+  public async getFriends(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .friends();
+    } catch (err) {
+      throw Error("Couldn't find friends");
+    }
+  }
+
+  public async addFriend(name: string, friendId: string, userId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -65,7 +79,7 @@ export class UserService {
         data: {
           friends: {
             connect: {
-              id: firendId,
+              id: friendId,
             },
           },
           friendsOf: {
@@ -105,7 +119,7 @@ export class UserService {
     }
   }
 
-  public async removeFriend(name: string, firendId: string, userId: string) {
+  public async removeFriend(name: string, friendId: string, userId: string) {
     try {
       await prisma.user.update({
         where: {
@@ -114,7 +128,7 @@ export class UserService {
         data: {
           friends: {
             disconnect: {
-              id: firendId,
+              id: friendId,
             },
           },
           friendsOf: {
@@ -129,17 +143,21 @@ export class UserService {
     }
   }
 
-  async setTwoFactorAuthenticationStatus(name: string, status: boolean) : Promise<any> 
-	{
-    const user : UserToUpdateDto = new UserToUpdateDto();
+  async setTwoFactorAuthenticationStatus(
+    name: string,
+    status: boolean
+  ): Promise<any> {
+    const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuth = status;
-		return this.updateUser(name, user);
-	  }
+    return this.updateUser(name, user);
+  }
 
-    async setTwoFactorAuthenticationSecret(name: string, secret: string) : Promise<any> 
-	{
-    const user : UserToUpdateDto = new UserToUpdateDto();
+  async setTwoFactorAuthenticationSecret(
+    name: string,
+    secret: string
+  ): Promise<any> {
+    const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
-		return this.updateUser(name, user);
-	  }
+    return this.updateUser(name, user);
+  }
 }
