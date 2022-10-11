@@ -12,11 +12,15 @@ export class MatchService {
     }
   }
 
-  public async getUserMatches(id: string): Promise<MatchDto[]> {
+  public async getMatchesByUser(id: string): Promise<MatchDto[]> {
     try {
       return await prisma.match.findMany({
         where: {
-          id: id,
+          players: {
+            some: {
+              id: id,
+            },
+          },
         },
       });
     } catch (err) {
@@ -26,13 +30,27 @@ export class MatchService {
 
   public async addMatches(match: MatchDto) {
     try {
-      return await prisma.match.create({
+      const addedMatch: MatchDto = await prisma.match.create({
         data: {
           winner: match.winner,
-          score: match.score,
+          looser: match.looser,
+          winnerScore: match.winnerScore,
+          looserScore: match.looserScore,
           players: {
             connect: match.players.map((element) => ({ id: element })),
           },
+        },
+      });
+      if (addedMatch)
+        match.playersName.map((element) =>
+          addedMatch.playersName.push(element)
+        );
+      await prisma.match.update({
+        where: {
+          id: addedMatch.id,
+        },
+        data: {
+          playersName: addedMatch.playersName,
         },
       });
     } catch (err) {

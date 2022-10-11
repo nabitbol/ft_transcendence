@@ -1,4 +1,4 @@
-import { MatchDto } from "@ft-transcendence/libs-shared-types";
+import { MatchDto, UserDto } from "@ft-transcendence/libs-shared-types";
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import {
   Controller,
@@ -9,10 +9,11 @@ import {
   ValidationPipe,
   Inject,
   UseGuards,
+  NotFoundException,
 } from "@nestjs/common";
 import { MatchService } from "./match.service";
 import { JwtTwoFactorGuard } from "@ft-transcendence/libs-backend-auth";
-import { ApiSecurity, ApiTags } from "@nestjs/swagger";
+import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
 @UseGuards(JwtTwoFactorGuard)
 @Controller("match")
@@ -28,32 +29,46 @@ export class MatchController {
   public async getMatches() {
     try {
       const matches: MatchDto[] = await this.matchService.getAllMatches();
+      matches.map((element) => {
+        console.log(element.playersName);
+      });
       return { matches };
     } catch (err) {
-      throw Error("Users not found");
+      return new NotFoundException(err);
     }
   }
 
   @Get(":name")
-  public async getUserMatches(@Param() param) {
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getMatchesByUser(@Param() param) {
     try {
-      const id: string = await (
-        await this.userService.getUserByName(param.name)
-      ).id;
-      const matches: MatchDto[] = await this.matchService.getUserMatches(id);
+      const id: string = (await this.userService.getUserByName(param.name)).id;
+      if (!id) throw Error("Users not found");
+      const matches: MatchDto[] = await this.matchService.getMatchesByUser(id);
       return { matches };
     } catch (err) {
-      throw Error("Users not found");
+      return new NotFoundException(err);
     }
   }
 
   @Post()
   public async addMatches(@Body(new ValidationPipe()) match: MatchDto) {
     try {
+      for (let index = 0; index < match.playersName.length; index++) {
+        const tmp: UserDto = await this.userService.getUserByName(
+          match.playersName[index]
+        );
+        if (!tmp) throw Error("User not found");
+        match.players[index] = tmp["id"];
+      }
+      console.log(match.players);
       await this.matchService.addMatches(match);
       return { response: "Match added sucessfully" };
     } catch (err) {
-      throw Error("Users not found");
+      return new NotFoundException(err);
     }
   }
 }
