@@ -21,6 +21,9 @@
       "@ft-transcendence/libs-backend-auth": [
         "packages/libs/backend/auth/src/index.ts"
       ],
+      "@ft-transcendence/libs-backend-chat": [
+        "packages/libs/backend/chat/src/index.ts"
+      ],
       "@ft-transcendence/libs-backend-match": [
         "packages/libs/backend/match/src/index.ts"
       ],
