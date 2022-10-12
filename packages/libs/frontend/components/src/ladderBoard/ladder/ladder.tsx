@@ -12,8 +12,6 @@ export function Ladder() {
   const [friend_ID, setFriend] = useState<UserDto[]>(undefined);
   const navigate = useNavigate();
 
-  let tmp = 1;
-
   function clickme_general_button() {
     setLadderGeneral(true);
   }
