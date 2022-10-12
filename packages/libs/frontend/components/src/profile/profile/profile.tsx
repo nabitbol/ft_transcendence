@@ -16,10 +16,10 @@ function Profile() {
   const getAnswer = async () => {
     try {
       const response: UserDto = await User.requestUserInfo();
-      if (response.losses === 0 || response.wins === 0)
+      if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else
-        setUserWinrate((response.wins / (response.losses + response.wins)));
+        setUserWinrate((response.wins / (response.losses + response.wins))* 100);
       setUserInfo(response);
     } catch (err) {
       navigate("/error");
