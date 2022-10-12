@@ -17,8 +17,7 @@ export type UserType = {
   doubleAuthSecret?: string | undefined;
   wins?: number | undefined;
   losses?: number | undefined;
-  draw?: number | undefined;
-  level?: number | undefined;
+  ladder_level?: number | undefined;
   userRankId?: string | undefined;
   friendsRequest?: string[] | undefined
 };
@@ -32,8 +31,7 @@ export type UserToUpdateType = {
   doubleAuthSecret?: string | undefined;
   wins?: number | undefined;
   losses?: number | undefined;
-  draw?: number | undefined;
-  level?: number | undefined;
+  ladder_level?: number | undefined;
   userRankId?: string | undefined;
   friendsRequest?: string[] | undefined
 };
@@ -102,20 +100,12 @@ export class UserDto {
   losses?: number | undefined;
 
   @ApiPropertyOptional({
-    description: "Number of draw matchs",
-    minimum: 0,
+    description: "Ladder level of the user",
+    minimum: 1,
   })
   @IsOptional()
   @IsPositive()
-  draw?: number | undefined;
-
-  @ApiPropertyOptional({
-    description: "Elo level of the user",
-    minimum: 0,
-  })
-  @IsOptional()
-  @IsPositive()
-  level?: number | undefined;
+  ladder_level?: number | undefined;
 
   @ApiPropertyOptional()
   userRankId?: string | undefined;
@@ -175,20 +165,12 @@ export class UserToUpdateDto {
   losses?: number | undefined;
 
   @ApiPropertyOptional({
-    description: "Number of draw matchs",
-    minimum: 0,
+    description: "Ladder level of the user",
+    minimum: 1,
   })
   @IsOptional()
   @IsPositive()
-  draw?: number | undefined;
-
-  @ApiPropertyOptional({
-    description: "Elo level of the user",
-    minimum: 0,
-  })
-  @IsOptional()
-  @IsPositive()
-  level?: number | undefined;
+  ladder_level?: number | undefined;
 
   @ApiPropertyOptional()
   userRankId?: string | undefined;
@@ -243,20 +225,12 @@ export class ResponseUserDto {
   losses?: number | undefined;
 
   @ApiPropertyOptional({
-    description: "Number of draw matchs",
-    minimum: 0,
+    description: "Ladder level of the user",
+    minimum: 1,
   })
   @IsOptional()
   @IsPositive()
-  draw?: number | undefined;
-
-  @ApiPropertyOptional({
-    description: "Elo level of the user",
-    minimum: 0,
-  })
-  @IsOptional()
-  @IsPositive()
-  level?: number | undefined;
+  ladder_level?: number | undefined;
 
   @ApiPropertyOptional()
   userRankId?: string | undefined;

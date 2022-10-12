@@ -47,7 +47,7 @@ function Profile() {
             </span>
             <br />
             <span className={classes["profile_span"]}>
-              <strong>Lvl:</strong> {userInfo.level}
+              <strong>Ladder rank:</strong> {userInfo.ladder_level}
             </span>
           </div>
           <QrModule />
@@ -58,9 +58,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Elo:</strong> {userInfo.level}
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
@@ -79,9 +76,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Ladder Rank:</strong> 5 "not dynamic yet"
           </span>
         </div>
       </div>
