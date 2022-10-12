@@ -41,7 +41,7 @@ async function bootstrap() {
   const io = new Server(3000, {cors: corsOptions});
 
   const onConnection = (socket) => {
-
+    console.log('user connected');
     const userDisconnect = () => {
       console.log('user disconnected');
     }
