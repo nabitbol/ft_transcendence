@@ -22,13 +22,10 @@ export function Ladder() {
 
   const getAnswer = async () => {
     try {
-      console.log("Start ladder");
       const response_general: UserDto[] = await User.requestGeneralLadder();
       setGeneral(response_general);
-      console.log("General done");
       const response_friend: UserDto[] = await User.requestFriendLadder();
       setFriend(response_friend);
-      console.log("Friend done");
     } catch (err) {
       navigate("/error");
       window.location.reload();

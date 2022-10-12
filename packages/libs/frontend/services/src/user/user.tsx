@@ -15,7 +15,6 @@ class UserService {
       });
       return ret.data.matches;
     } catch (err) {
-        console.log('error ici');
         throw Error(err);
     }
   }
@@ -120,11 +119,9 @@ class UserService {
   async requestGeneralLadder() : Promise<UserDto[]> {
     const user_info: any = AuthReq.getCurrentUser();
     try {
-      console.log("send request");
       const ret = await axios.get(URL + "user/" + user_info.name + "/general_ladder",{
         headers: authHeader()
       });
-      console.log("get request");
       return ret.data.response;
     } catch (err) {
         throw Error(err);
@@ -134,11 +131,9 @@ class UserService {
   async requestFriendLadder() : Promise<UserDto[]> {
     const user_info: any = AuthReq.getCurrentUser();
     try {
-      console.log("send request");
       const ret = await axios.get(URL + "user/" + user_info.name + "/friend_ladder",{
         headers: authHeader()
       });
-      console.log("get request");
       return ret.data.response;
     } catch (err) {
         throw Error(err);
