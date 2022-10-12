@@ -9,6 +9,7 @@ import {
   FriendRequestPage,
   AchievementPage,
   GamePage,
+  ChatPage,
 } from "@ft-transcendence/libs-frontend-pages";
 import { Component } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -29,6 +30,7 @@ class App extends Component {
         <Route path="/achievement" element={<AchievementPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/error" element={<ErrorPage />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route
           path="*"
           element={<ErrorPage message="This page doesnt exist !" />}

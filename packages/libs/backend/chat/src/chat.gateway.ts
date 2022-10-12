@@ -1,4 +1,3 @@
-import { UseGuards } from "@nestjs/common";
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,11 +6,14 @@ import {
 } from "@nestjs/websockets";
 import { Socket } from "dgram";
 
-@WebSocketGateway(8080, { cors: { origin: "https://hoppscotch.io" } })
+@WebSocketGateway(8080, {
+  cors: { origin: ["https://hoppscotch.io", "http://localhost:4200"] },
+})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  @SubscribeMessage("message")
-  handleMessage(client: Socket, payload: any): string {
-    return "Hello world!";
+  @SubscribeMessage("chat:message")
+  handleMessage(client: Socket, payload: string) {
+    console.log(payload);
+    client.emit("chat:message", "Hello world!");
   }
 
   handleConnection(client: Socket, ...args: any[]) {
