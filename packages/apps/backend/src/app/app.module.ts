@@ -8,9 +8,10 @@ import {
   MatchService,
 } from "@ft-transcendence/libs-backend-match";
 import { AuthModule } from "@ft-transcendence/libs-backend-auth";
+import { ChatModule } from "@ft-transcendence/libs-backend-chat";
 
 @Module({
-  imports: [UserModule, MatchModule, AuthModule],
+  imports: [UserModule, MatchModule, AuthModule, ChatModule],
   controllers: [AppController],
   providers: [AppService, UserService, MatchService],
 })

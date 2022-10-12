@@ -1,9 +1,10 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
+import { Socket } from "dgram";
 
-@WebSocketGateway()
+@WebSocketGateway(8080, { cors: { origin: "https://hoppscotch.io" } })
 export class ChatGateway {
-  @SubscribeMessage('message')
+  @SubscribeMessage("message")
   handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
+    return "Hello world!";
   }
 }

@@ -45,6 +45,7 @@ async function bootstrap() {
   Logger.log(
     `📄 Please find the api documentation on http://localhost:${port}/${docPrefix}`
   );
+  Logger.log(`💬 The chat socket is listening on http://localhost:8080`);
 }
 
 bootstrap();
