@@ -42,12 +42,12 @@ function Profile() {
               src={getPathToImage("friend")}
               alt="avatar"
             />
-            <span className={classes["profile_span"]}>
+            <span className={classes["user_name"]}>
               <strong>{userInfo.name}</strong>
             </span>
             <br />
             <span className={classes["profile_span"]}>
-              <strong>Ladder rank:</strong> {userInfo.ladder_level}
+              <strong>Rank:</strong> {userInfo.ladder_level}
             </span>
           </div>
           <QrModule />
