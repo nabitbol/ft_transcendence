@@ -188,6 +188,91 @@ export class UserService {
     }
   }
 
+  public async swap(items: UserDto[], leftIndex: number, rightIndex: number) {
+    var temp = items[leftIndex];
+    items[leftIndex] = items[rightIndex];
+    items[rightIndex] = temp;
+    return items;
+  }
+
+  public async partition(items: UserDto[], left: number, right: number) {
+    var pivot: UserDto  = items[Math.floor((right + left) / 2)],
+    i: number   = left,
+    j: number   = right;
+    while (i <= j) {
+        while (items[i].wins > pivot.wins) {
+            i++;
+        }
+        while (items[j].wins < pivot.wins) {
+            j--;
+        }
+        if (i <= j) {
+            items = await this.swap(items, j, i);
+            i++;
+            j--;
+        }
+    }
+    return i;
+  }
+
+    public async quickSort(items: UserDto[], left: number, right: number) {
+    let index: number;
+    if (items.length > 1) {
+        index = await this.partition(items, left, right);
+        if (left < index - 1) {
+            await this.quickSort(items, left, index - 1);
+        }
+        if (index < right) {
+            await this.quickSort(items, index, right);
+        }
+    }
+    return items;
+}
+
+
+  public async getGeneralLadder() {
+    try {
+      const tmp: UserDto[] = await prisma.user.findMany();
+      const response : UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1)
+      return response;
+    } catch (err) {
+      throw Error("Couldn't remove friend");
+    }
+  }
+
+  public async getFriendLadder(name: string) {
+    try {
+      const tmp: UserDto[] = await this.getFriends(name);
+      tmp.push(await this.getUserByName(name));
+      const response : UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1)
+      return response;
+    } catch (err) {
+      throw Error("Couldn't remove friend");
+    }
+  }
+
+  public async updateLadderLevel(users: UserDto[]) {
+    try {
+      let i = 0;
+      while (users[i])
+      {
+        users[i].ladder_level = i + 1;
+        await prisma.user.update({
+          where: {
+            name: users[i].name,
+          },
+          data: {
+            ladder_level: users[i].ladder_level
+            }
+          });
+        i++;
+      }
+      return users;
+    } catch (err) {
+      throw Error("Couldn't remove friend");
+    }
+  }
+
   async setTwoFactorAuthenticationStatus(
     name: string,
     status: boolean

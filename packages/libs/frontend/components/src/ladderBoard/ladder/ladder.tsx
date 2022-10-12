@@ -1,30 +1,16 @@
 import classes from "./ladder.module.css";
-import {
-  GeneralRank,
-  FriendRank,
-  AllIcon,
-} from "@ft-transcendence/libs-frontend-components";
+import { GeneralRank, FriendRank, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { User } from "@ft-transcendence/libs-frontend-services"
 
 export function Ladder() {
   const [ladder_general, setLadderGeneral] = useState(true);
-  const general_ID = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ];
-
-  const friend_ID = ["3", "4"];
-  let tmp = 1;
+  const [general_ID, setGeneral] = useState<UserDto[]>(undefined);
+  const [friend_ID, setFriend] = useState<UserDto[]>(undefined);
+  const navigate = useNavigate();
 
   function clickme_general_button() {
     setLadderGeneral(true);
@@ -34,7 +20,23 @@ export function Ladder() {
     setLadderGeneral(false);
   }
 
-  return (
+  const getAnswer = async () => {
+    try {
+      const response_general: UserDto[] = await User.requestGeneralLadder();
+      setGeneral(response_general);
+      const response_friend: UserDto[] = await User.requestFriendLadder();
+      setFriend(response_friend);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {
+    getAnswer();
+  }, []);
+
+  return !friend_ID ? null : (
     <div className={classes["ladder_container"]}>
       <div className={classes["blur_component"]}>
         <AllIcon />
@@ -53,14 +55,14 @@ export function Ladder() {
           </div>
           {ladder_general ? (
             <div className={classes["ladder_list"]}>
-              {general_ID.map((general_ID) => (
-                <GeneralRank user_id={general_ID} rank={tmp++} key={general_ID} />
+              {general_ID.map((ID_g) => (
+                <GeneralRank user={ID_g}/>
               ))}
             </div>
           ) : (
             <div className={classes["ladder_list"]}>
-              {friend_ID.map((friend_ID) => (
-                <FriendRank user_id={friend_ID} rank={tmp++} key={friend_ID} />
+              {friend_ID.map((ID_f) => (
+                <FriendRank user={ID_f} />
               ))}
             </div>
           )}

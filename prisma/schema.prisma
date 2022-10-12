@@ -21,8 +21,7 @@ model User {
   doubleAuthSecret    String?
   wins                Int     @default(0)
   losses              Int     @default(0)
-  draw                Int     @default(0)
-  level               Int     @default(0)
+  ladder_level        Int     @default(1)
   image               String
   friendsRequest      String[]
 
@@ -31,9 +30,6 @@ model User {
   //many to many self relation
   friends   User[] @relation("friends")
   friendsOf User[] @relation("friends")
-
-  userRank   UserRank? @relation(fields: [userRankId], references: [id])
-  userRankId String?
 
   match Match[]
 
@@ -51,14 +47,6 @@ model Achievement {
   image   String
 
   users User[]
-}
-
-model UserRank {
-  id          String   @id @default(uuid())
-  updated_at  DateTime @updatedAt
-  ladderLevel Int      @unique
-
-  user User[]
 }
 
 model Match {

@@ -210,4 +210,40 @@ export class UserController {
       return new UnauthorizedException(err);
     }
   }
+
+  @Get(":name/general_ladder")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getGeneralLadder() {
+    try {
+      const response : UserDto[] = await this.userService.getGeneralLadder();
+      await this.userService.updateLadderLevel(response);
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Get(":name/friend_ladder")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getFriendLadder(@Param() param) {
+    try {
+      let i = 0;
+      const response : UserDto[] = await this.userService.getFriendLadder(param.name);
+      while (response[i])
+      {
+        response[i].ladder_level = i + 1;
+        i++;
+      }
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
 }

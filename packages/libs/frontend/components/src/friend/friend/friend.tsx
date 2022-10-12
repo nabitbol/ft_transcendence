@@ -5,7 +5,7 @@ import { User } from "@ft-transcendence/libs-frontend-services";
 
 export function Friend(props: { user: UserDto }) {
   const name = props.user.name;
-  const lvl = props.user.level;
+  const lvl = props.user.ladder_level;
 
   function clickme_delete() {
     User.removeFriend(name);
@@ -25,7 +25,7 @@ export function Friend(props: { user: UserDto }) {
         <strong>{name}</strong>
       </p>
       <p className={classes['p_lvl']}>
-        <strong>Lvl: {lvl}</strong>
+        <strong>Ladder rank: {lvl}</strong>
       </p>
       <button className={classes['close']} onClick={clickme_delete}></button>
     </div>

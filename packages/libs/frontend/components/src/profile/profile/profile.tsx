@@ -16,10 +16,10 @@ function Profile() {
   const getAnswer = async () => {
     try {
       const response: UserDto = await User.requestUserInfo();
-      if (response.losses === 0 || response.wins === 0)
+      if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else
-        setUserWinrate((response.wins / (response.losses + response.wins)));
+        setUserWinrate((response.wins / (response.losses + response.wins))* 100);
       setUserInfo(response);
     } catch (err) {
       navigate("/error");
@@ -42,12 +42,12 @@ function Profile() {
               src={getPathToImage("friend")}
               alt="avatar"
             />
-            <span className={classes["profile_span"]}>
+            <span className={classes["user_name"]}>
               <strong>{userInfo.name}</strong>
             </span>
             <br />
             <span className={classes["profile_span"]}>
-              <strong>Lvl:</strong> {userInfo.level}
+              <strong>Rank:</strong> {userInfo.ladder_level}
             </span>
           </div>
           <QrModule />
@@ -58,9 +58,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Elo:</strong> {userInfo.level}
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
@@ -79,9 +76,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Ladder Rank:</strong> 5 "not dynamic yet"
           </span>
         </div>
       </div>
