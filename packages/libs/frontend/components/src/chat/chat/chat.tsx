@@ -4,29 +4,28 @@ import { io } from "socket.io-client";
 import { useEffect, useRef, useCallback } from "react";
 
 const Chat: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
-  
-  const socketRef = useRef(io("ws://localhost:3000"));
+  const { register, handleSubmit, reset } = useForm();
 
-  const sendMessage = useCallback((data) => {
-    socketRef.current.emit('chat:message', data.message);
-    reset();
-  }, [reset]);
-  
+  const socketRef = useRef(io("ws://localhost:8080"));
+
+  const sendMessage = useCallback(
+    (data) => {
+      socketRef.current.emit("chat:message", data.message);
+      reset();
+    },
+    [reset]
+  );
+
   useEffect(() => {
-
     const socket = socketRef.current;
-    socketRef.current.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
-
-    socket.on('chat:message', (msg: string) => {
-      console.log("Someone sent:" + msg);
+    socketRef.current.emit("hello from client", 5, "6", {
+      7: Uint8Array.from([8]),
     });
 
-  }, [sendMessage])
+    socket.on("chat:message", (msg: string) => {
+      console.log("Someone sent:" + msg);
+    });
+  }, [sendMessage]);
 
   return (
     <div className={classes["chat_form"]}>
@@ -45,7 +44,7 @@ const Chat: React.FC = () => {
           <input type="submit" className={classes["chat_btn"]} />
         </div>
       </form>
-    </div >
+    </div>
   );
 };
 

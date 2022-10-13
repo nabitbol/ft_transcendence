@@ -7,12 +7,14 @@ import {
 import { Socket } from "dgram";
 
 @WebSocketGateway(8080, {
-  cors: { origin: ["https://hoppscotch.io", "http://localhost:4200"] },
+  cors: {
+    origin: ["https://hoppscotch.io", "http://localhost:4200"],
+    credentials: true,
+  },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("chat:message")
   handleMessage(client: Socket, payload: string) {
-    console.log(payload);
     client.emit("chat:message", "Hello world!");
   }
 

@@ -38,22 +38,21 @@ async function bootstrap() {
   app.use(cors(corsOptions));
 
   ////////////SOCKET_IO SERVER////////////////////
-  const io = new Server(3000, {cors: corsOptions});
+  // const io = new Server(3000, {cors: corsOptions});
 
-  const onConnection = (socket) => {
+  // const onConnection = (socket) => {
 
-    const userDisconnect = () => {
-      console.log('user disconnected');
-    }
-    registerChatHandlers(io, socket);
-    registerGameHandlers(io, socket);
-    socket.on("disconnect", userDisconnect);
-  }
-  io.on("connection", onConnection);
+  //   const userDisconnect = () => {
+  //     console.log('user disconnected');
+  //   }
+  //   registerChatHandlers(io, socket);
+  //   registerGameHandlers(io, socket);
+  //   socket.on("disconnect", userDisconnect);
+  // }
+  // io.on("connection", onConnection);
   ////////////////////////////////////////////////
 
-
-  io.listen(3001);
+  // io.listen(3001);
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}/`);
   Logger.log(

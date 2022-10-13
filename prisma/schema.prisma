@@ -13,17 +13,17 @@ datasource db {
 // models
 
 model User {
-  id                  String  @id @default(uuid())
-  name                String  @unique
-  email               String? @unique
-  password            String
-  doubleAuth          Boolean @default(false)
-  doubleAuthSecret    String?
-  wins                Int     @default(0)
-  losses              Int     @default(0)
-  ladder_level        Int     @default(1)
-  image               String
-  friendsRequest      String[]
+  id               String   @id @default(uuid())
+  name             String   @unique
+  email            String?  @unique
+  password         String
+  doubleAuth       Boolean  @default(false)
+  doubleAuthSecret String?
+  wins             Int      @default(0)
+  losses           Int      @default(0)
+  ladder_level     Int      @default(1)
+  image            String
+  friendsRequest   String[]
 
   achivements Achievement[]
 
@@ -75,7 +75,7 @@ model User_Room {
 model Room {
   id         String      @id @default(uuid())
   name       String      @unique
-  password   String
+  password   String?
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
   status     Room_Status @default(PUBLIC)
