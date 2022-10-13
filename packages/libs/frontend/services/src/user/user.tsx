@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 import { AuthReq } from '@ft-transcendence/libs-frontend-services'
-import { UserDto, MatchDto } from "@ft-transcendence/libs-shared-types";
+import { UserDto, MatchDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 
 const URL = "http://localhost:3333/"//process.env['REACT_APP_URL_TO_BACK'] ;
 
@@ -132,6 +132,18 @@ class UserService {
     const user_info: any = AuthReq.getCurrentUser();
     try {
       const ret = await axios.get(URL + "user/" + user_info.name + "/friend_ladder",{
+        headers: authHeader()
+      });
+      return ret.data.response;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
+  async requestAchievement() : Promise<AchievementDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "user/" + user_info.name + "/achievement",{
         headers: authHeader()
       });
       return ret.data.response;

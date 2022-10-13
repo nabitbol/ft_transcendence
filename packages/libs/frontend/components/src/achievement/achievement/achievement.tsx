@@ -1,7 +1,8 @@
 import classes from "./achievement.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { AchievementDto } from "@ft-transcendence/libs-shared-types";
 
-export default function Achievement(props: { id: string; key: string; }) {
+export default function Achievement(props: { id: AchievementDto; }) {
   const description = "do something specific";
   const bool = +props.id % 2;
 

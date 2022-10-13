@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { UserToUpdateDto, UserDto } from "@ft-transcendence/libs-shared-types";
+import { UserToUpdateDto, UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
 
 @Injectable()
@@ -270,6 +270,42 @@ export class UserService {
       return users;
     } catch (err) {
       throw Error("Couldn't remove friend");
+    }
+  }
+
+  public async getAchievement(): Promise<AchievementDto[]> {
+    try {
+      return await prisma.achievement.findMany();
+    } catch (err) {
+      throw Error("Users not found");
+    }
+  }
+
+  public async updateUserAchievement(achievement: AchievementDto[], user: UserDto) {
+    if (achievement.length == user.achievement.length)
+      return ;
+    let tmp: AchievementDto[];
+    let i = 0;
+    while (achievement[i])
+    {
+      if (achievement[i].condition <= user.wins)
+        tmp.push(achievement[i]);
+      i++;
+    }
+    user.achievement = tmp;
+    try {
+      await prisma.user.update({
+        where: {
+          name: user.name,
+        },
+        data: {
+          achievements:{
+            connect: user.achievement
+          },
+          }
+        });
+    } catch (err) {
+      throw Error("Users not found");
     }
   }
 
