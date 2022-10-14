@@ -11,7 +11,7 @@ import { UnauthorizedException } from "@nestjs/common";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require("jsonwebtoken");
 
-@WebSocketGateway(8080, {
+@WebSocketGateway(5555, {
   cors: {
     origin: ["https://hoppscotch.io", "http://localhost:4200"],
     credentials: true,
@@ -20,9 +20,9 @@ const jwt = require("jsonwebtoken");
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private userService: UserService) {}
 
-  @SubscribeMessage("message")
+  @SubscribeMessage("chat:message")
   handleMessage(client: Socket, payload: string) {
-    client.emit("message", "Hello world!");
+    client.emit("chat:message", "Hello world!");
     return "hello";
   }
 
@@ -39,6 +39,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
+    console.log("deco");
     this.disconnect(client);
   }
 

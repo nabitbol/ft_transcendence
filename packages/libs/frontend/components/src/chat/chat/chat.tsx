@@ -10,7 +10,7 @@ const Chat: React.FC = () => {
   const config = {
     extraHeaders: authHeader(),
   };
-  const socketRef = useRef(io("ws://localhost:8080", config));
+  const socketRef = useRef(io("ws://localhost:5555", config));
 
   const sendMessage = useCallback(
     (data) => {
@@ -20,8 +20,8 @@ const Chat: React.FC = () => {
     [reset]
   );
 
+  const socket = socketRef.current;
   useEffect(() => {
-    const socket = socketRef.current;
     socketRef.current.emit("hello from client", 5, "6", {
       7: Uint8Array.from([8]),
     });
