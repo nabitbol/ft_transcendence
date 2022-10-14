@@ -20,8 +20,8 @@ export type UserType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
-  achievement?: AchievementDto[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export type UserToUpdateType = {
@@ -35,8 +35,8 @@ export type UserToUpdateType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
-  achievement?: AchievementDto[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export class LoginDto {
@@ -117,7 +117,7 @@ export class UserDto {
   friendsRequest?: string[] | undefined;
 
   @ApiPropertyOptional()
-  achievement?: AchievementDto[] | undefined
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class UserToUpdateDto {
@@ -185,7 +185,7 @@ export class UserToUpdateDto {
   friendsRequest?: string[] | undefined;
 
   @ApiPropertyOptional()
-  achievement?: AchievementDto[] | undefined
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class ResponseUserDto {
@@ -251,5 +251,5 @@ export class ResponseUserDto {
   friendsRequest?: string[] | undefined;
 
   @ApiPropertyOptional()
-  achievement?: AchievementDto[] | undefined
+  achievement?: AchievementDto[] | undefined;
 }

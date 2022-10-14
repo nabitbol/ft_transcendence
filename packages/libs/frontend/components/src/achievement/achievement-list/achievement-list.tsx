@@ -8,13 +8,14 @@ import { User } from "@ft-transcendence/libs-frontend-services"
 import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 
 export function AchievementList() {
-  const [user_achievement_ID, setUserAchievement] = useState<UserDto>(undefined);
+  const [user_achievement_ID, setUserAchievement] = useState<AchievementDto[]>(undefined);
   const [achievement_ID, setAchievement] = useState<AchievementDto[]>(undefined);
   const navigate = useNavigate();
 
   const getAnswer = async () => {
     try {
-      const response_user: UserDto = await User.requestUserInfo();
+      await User.updateUserAchievement();
+      const response_user: AchievementDto[] = await User.requestUserAchievement();
       setUserAchievement(response_user);
       const response_achievement: AchievementDto[] = await User.requestAchievement();
       setAchievement(response_achievement);
@@ -35,8 +36,8 @@ export function AchievementList() {
         <div className={classes["achievement_content"]}>
           <h2 className={classes["h2_title"]}>Achievement</h2>
           <div className={classes["achievement_list"]}>
-            {user_achievement_ID.achievement.map((achievement_ID) => (
-              <Achievement id={achievement_ID} />
+            {achievement_ID.map((ID) => (
+              <Achievement achievement={ID} user_achievement={user_achievement_ID} />
             ))}
           </div>
         </div>

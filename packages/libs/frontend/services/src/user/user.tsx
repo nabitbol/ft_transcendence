@@ -140,10 +140,34 @@ class UserService {
     }
   }
 
+  async updateUserAchievement() {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+    try {
+      await axios.get(URL + "user/" + user_info.name + "/update_achievement",
+      { headers }
+      );
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
   async requestAchievement() : Promise<AchievementDto[]> {
     const user_info: any = AuthReq.getCurrentUser();
     try {
       const ret = await axios.get(URL + "user/" + user_info.name + "/achievement",{
+        headers: authHeader()
+      });
+      return ret.data.response;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
+  async requestUserAchievement() : Promise<AchievementDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(URL + "user/" + user_info.name + "/user_achievement",{
         headers: authHeader()
       });
       return ret.data.response;

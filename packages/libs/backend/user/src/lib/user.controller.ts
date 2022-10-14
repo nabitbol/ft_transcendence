@@ -247,19 +247,49 @@ export class UserController {
   }
 
 
-  @Post(":name/update_achievement")
+  @Get(":name/update_achievement")
   @ApiParam({
     name: "name",
     required: true,
   })
   public async updateUserAchievement(@Param() param) {
+
     try {
-      const achievement: AchievementDto[] = await this.userService.getAchievement()
+      const achievement: AchievementDto[] = await this.userService.getAchievement();
       const user: UserDto = await this.userService.getUserByName(param.name);
       await this.userService.updateUserAchievement(achievement, user);
     } catch (err) {
       return new UnauthorizedException(err);
     }
   }
+
+  @Get(":name/achievement")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getAchievement() {
+    try {
+      const response: AchievementDto[] = await this.userService.getAchievement();
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Get(":name/user_achievement")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getUserAchievement(@Param() param) {
+    try {
+      const response: AchievementDto[] = await this.userService.getUserAchievement(param.name);
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
 
 }
