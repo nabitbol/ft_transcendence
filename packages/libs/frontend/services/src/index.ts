@@ -1,4 +1,6 @@
-// export * from "./socket/socket";
+export * from "./chat/chat";
+
+export * from "./socket/socket";
 
 export * from "./user/user";
 
