@@ -1,4 +1,18 @@
-.rooms {
+.roomList {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+}
+
+.roomName {
+	padding: 1vh;
+	cursor: pointer;
+}
+
+.roomName:hover {
+	background-color: rgb(199, 199, 199);
+}
+
+.roomStatus {
+	padding-left: 10%;
+	font-weight: 500;
 }

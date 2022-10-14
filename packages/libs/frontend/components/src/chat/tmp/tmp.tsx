@@ -1,4 +1,5 @@
 import ChatForms from "../chat-forms/chat-forms";
+import CreateRoom from "../create-room/create-room";
 import Rooms from "../rooms/rooms";
 import styles from "./tmp.module.css";
 
@@ -11,6 +12,7 @@ export function Tmp(props: TmpProps) {
       <div className={styles["chatRooms"]}>
         <div className={styles["chatRoomsWrapper"]}>
           <Rooms />
+          <CreateRoom />
         </div>
       </div>
       <div className={styles["chatBox"]}>

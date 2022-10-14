@@ -27,6 +27,15 @@ class chatServices {
       throw Error(err);
     }
   }
+
+  async createRoom(name: string, password?: string | undefined) {
+    const data = { name: name, password: password };
+    const ret = await axios.get(URL + "chat/user_rooms", {
+      headers: authHeader(),
+      data,
+    });
+    return ret.data.response;
+  }
 }
 
 const Chat = new chatServices();

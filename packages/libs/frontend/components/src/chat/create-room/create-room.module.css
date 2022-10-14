@@ -1,0 +1,20 @@
+.auth_btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 4px;
+	background-color: rgb(100, 0, 50);
+	color: white;
+	border: 2px solid rgb(100, 0, 50);
+	margin-top: 10px;
+	width: 50%;
+	margin-left: 25%;
+	font-size: 20px;
+}
+
+.auth_box {
+	width: 40%;
+	margin: 5%;
+	float: right;
+	position: relative;
+	top: 30vh;
+}

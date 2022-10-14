@@ -27,14 +27,15 @@ export function Rooms(props: RoomsProps) {
   }, []);
 
   return !rooms ? null : (
-    <div className={styles["rooms"]}>
-      <ul>
-        {rooms.map((element) => (
-          <li>
-            {element.name} {element.status}
-          </li>
-        ))}
-      </ul>
+    <div className={styles["roomList"]}>
+      {rooms.map((element) => (
+        <p className={styles["roomName"]}>
+          {element.name.toString().toLocaleUpperCase()}
+          <span className={styles["roomStatus"]}>
+            {"status: " + element.status.toString().toLowerCase()}
+          </span>
+        </p>
+      ))}
     </div>
   );
 }
