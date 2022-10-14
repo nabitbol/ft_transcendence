@@ -1,0 +1,23 @@
+.chat {
+	height: 100vh;
+	display: flex;
+}
+
+.chatRooms {
+	flex: 3;
+}
+
+.chatBox {
+	flex: 4.5;
+}
+
+.chatRoom {
+	flex: 3;
+}
+
+.chatBoxWrapper,
+.chatRoomsWrapper,
+.chatRoomWrapper {
+	padding: 10px;
+	height: 100%;
+}

@@ -1,8 +1,6 @@
-import { Chat } from "@ft-transcendence/libs-frontend-components"
+import { Tmp } from "@ft-transcendence/libs-frontend-components";
 
 function ChatPage() {
-	return (
-		<Chat />
-	)
+  return <Tmp />;
 }
-export { ChatPage }
+export { ChatPage };
