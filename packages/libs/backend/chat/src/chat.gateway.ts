@@ -4,7 +4,12 @@ import {
   SubscribeMessage,
   WebSocketGateway,
 } from "@nestjs/websockets";
-import { Socket } from "dgram";
+import { Socket } from "socket.io";
+import { jwtConstants } from "@ft-transcendence/libs-backend-auth";
+import { UserService } from "@ft-transcendence/libs-backend-user";
+import { UnauthorizedException } from "@nestjs/common";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const jwt = require("jsonwebtoken");
 
 @WebSocketGateway(8080, {
   cors: {
@@ -13,17 +18,32 @@ import { Socket } from "dgram";
   },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  @SubscribeMessage("chat:message")
+  constructor(private userService: UserService) {}
+
+  @SubscribeMessage("message")
   handleMessage(client: Socket, payload: string) {
-    client.emit("chat:message", "Hello world!");
+    client.emit("message", "Hello world!");
+    return "hello";
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    console.log(client + "connected");
+  async handleConnection(client: Socket, ...args: any[]) {
+    try {
+      const bearerToken = client.handshake.headers.authorization.split(" ")[1];
+      const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
+      const user = await this.userService.getUserByName(decoded.name);
+      if (!user) return this.disconnect(client);
+      console.log("User: " + user.name + " join the chat");
+    } catch (err) {
+      return this.disconnect(client);
+    }
   }
 
   handleDisconnect(client: Socket) {
-    console.log(client + "disconnected");
+    this.disconnect(client);
+  }
+
+  private disconnect(client: Socket) {
+    client.emit("Error", new UnauthorizedException());
     client.disconnect();
   }
 }

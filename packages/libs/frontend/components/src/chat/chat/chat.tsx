@@ -2,11 +2,15 @@ import classes from "./chat.module.css";
 import { useForm } from "react-hook-form";
 import { io } from "socket.io-client";
 import { useEffect, useRef, useCallback } from "react";
+import authHeader from "packages/libs/frontend/services/src/auth-header/auth-header";
 
 const Chat: React.FC = () => {
   const { register, handleSubmit, reset } = useForm();
 
-  const socketRef = useRef(io("ws://localhost:8080"));
+  const config = {
+    extraHeaders: authHeader(),
+  };
+  const socketRef = useRef(io("ws://localhost:8080", config));
 
   const sendMessage = useCallback(
     (data) => {
