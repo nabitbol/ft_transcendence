@@ -8,8 +8,11 @@ import {
   MatchService,
 } from "@ft-transcendence/libs-backend-match";
 import { AuthModule } from "@ft-transcendence/libs-backend-auth";
-import { ChatModule, ChatService } from "@ft-transcendence/libs-backend-chat";
-import { RoomService } from "packages/libs/backend/chat/src/lib/room/room.service";
+import {
+  ChatModule,
+  ChatService,
+  RoomService,
+} from "@ft-transcendence/libs-backend-chat";
 
 @Module({
   imports: [UserModule, MatchModule, AuthModule, ChatModule],

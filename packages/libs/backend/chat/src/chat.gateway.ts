@@ -3,11 +3,14 @@ import {
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from "@nestjs/websockets";
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { jwtConstants } from "@ft-transcendence/libs-backend-auth";
 import { UserService } from "@ft-transcendence/libs-backend-user";
-import { UnauthorizedException } from "@nestjs/common";
+import { RoomService } from "./lib/room/room.service";
+import { NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { RoomDto } from "@ft-transcendence/libs-shared-types";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require("jsonwebtoken");
 
@@ -18,13 +21,13 @@ const jwt = require("jsonwebtoken");
   },
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private roomService: RoomService
+  ) {}
 
-  @SubscribeMessage("chat:message")
-  handleMessage(client: Socket, payload: string) {
-    client.emit("chat:message", "Hello world!");
-    return "hello";
-  }
+  @WebSocketServer()
+  server: Server;
 
   async handleConnection(client: Socket, ...args: any[]) {
     try {
@@ -32,6 +35,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
       const user = await this.userService.getUserByName(decoded.name);
       if (!user) return this.disconnect(client);
+      client.data.user = user;
       console.log("User: " + user.name + " join the chat");
     } catch (err) {
       return this.disconnect(client);
@@ -46,5 +50,24 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private disconnect(client: Socket) {
     client.emit("Error", new UnauthorizedException());
     client.disconnect();
+  }
+
+  @SubscribeMessage("chat:message")
+  handleMessage(client: Socket, payload: string) {
+    client.emit("chat:message", "Hello world!");
+    return "hello";
+  }
+
+  @SubscribeMessage("paginationRoom")
+  async onPaginationRoom(client: Socket) {
+    try {
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      if (!rooms) throw Error("No rooms found");
+      this.server.to(client.id).emit("room", rooms);
+    } catch (err) {
+      client.emit("Error", new NotFoundException(err));
+    }
   }
 }

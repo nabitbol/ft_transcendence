@@ -8,7 +8,7 @@ import { UserModule } from "@ft-transcendence/libs-backend-user";
 @Module({
   imports: [UserModule],
   controllers: [ChatController],
-  providers: [ChatService, ChatGateway, RoomService],
-  exports: [ChatService, ChatGateway, RoomService],
+  providers: [ChatService, RoomService, ChatGateway],
+  exports: [ChatService, RoomService, ChatGateway],
 })
 export class ChatModule {}
