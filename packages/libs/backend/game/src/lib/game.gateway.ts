@@ -21,22 +21,24 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   
   afterInit(server: Server): void
   {
-    console.log("Init server");
     this.lobbyManager.server = server;
   }
 
   async handleConnection(client: Socket): Promise<void>
   {
-    console.log("New client connected");
     this.lobbyManager.initializeSocket(client);
   }
 
   async handleDisconnect(client: Socket): Promise<void>
   {
-    console.log("A client disconnected");
     this.lobbyManager.terminateSocket(client);
   }
 
+  @SubscribeMessage(ClientEvents.EnterMatchMaking)
+  onEnterMatchmaking(client: Socket)
+  {
+    this.lobbyManager.enterMatchMaking(client);
+  }
 
   @SubscribeMessage(ClientEvents.CreateRoom)
   onLobbyCreate(client: Socket): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
@@ -54,7 +56,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   onLobbyJoin(client: Socket, data): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
   {
     this.lobbyManager.joinLobby(data.lobbyId, client);
-    
     return {
       event:ServerEvents.GameMessage,
       data: {
@@ -66,6 +67,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(ClientEvents.LeaveRoom)
   onLobbyLeave(client: Socket): void
   {
-    client.data.lobby?.removeClient(client);
+    this.lobbyManager.terminateSocket(client);
   }
 }

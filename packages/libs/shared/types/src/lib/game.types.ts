@@ -5,6 +5,8 @@ export enum ClientEvents
 	JoinRoom = 'client.joinroom',
 	CreateRoom = 'client.createroom',
 	LeaveRoom = 'client.leaveroom',
+	EnterMatchMaking = 'client.entermatchmaking',
+	LeaveMatchMaking = 'client.leavematchmaking',
 }
 
 export enum ServerEvents

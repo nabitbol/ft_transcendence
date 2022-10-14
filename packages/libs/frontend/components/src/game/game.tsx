@@ -1,5 +1,5 @@
 import classes from "./game.module.css";
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import useWindowSize from "./useWindowSize";
 import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
 import { io } from "socket.io-client";
@@ -9,7 +9,6 @@ function Game() {
   console.log("Load game component");
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isGameOver, setIsGameOver] = useState(false);
   const [width, height] = useWindowSize();
   const socketRef = useRef(io("ws://localhost:3030"));
   let gameInfo: GameInfo;
@@ -112,18 +111,16 @@ function Game() {
     };
 
     initContext();
-    if (!isGameOver)
-      render();
+    render();
 
     return () => {
       endCanvas();
     };
-  }, [sendInput, isGameOver, height, width, gameInfo, keyDown, keyUp]);
+  }, [sendInput, height, width, gameInfo, keyDown, keyUp]);
 
   return (
     <div className={classes["background"]}>
-      {!isGameOver && <canvas className={classes["game"]} ref={canvasRef} />}
-      {isGameOver && <span>Game over</span>}
+      <canvas className={classes["game"]} ref={canvasRef} />
     </div>
   );
 }

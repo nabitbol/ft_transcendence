@@ -20,6 +20,7 @@ export class Lobby
 
   public addClient(client: Socket): void
   {
+    console.log("Add client to lobby");
     this.clients.set(client.id, client);
     client.join(this.id);
     client.data.lobby = this;
@@ -31,6 +32,7 @@ export class Lobby
 
   public removeClient(client: Socket): void
   {
+    console.log("Removed client from lobby");
     this.clients.delete(client.id);
     client.leave(this.id);
     client.data.lobby = null;

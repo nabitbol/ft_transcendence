@@ -14,28 +14,30 @@ export class GameInstance
 
 	public startGame(): void
 	{
-	  if (this.gameInfo.has_started) {
-		return;
-	  }
-  
-	  this.gameInfo.has_started = true;
-  
-	  this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
-		message: 'Game started !',
-	  });
+		console.log("Start game");
+		if (this.gameInfo.has_started) {
+			return;
+		}
+	
+		this.gameInfo.has_started = true;
+		this.launchGame();
+		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+			message: 'Game started !',
+		});
 	}
   
 	public endGame(): void
 	{
-	  if (this.gameInfo.has_ended || !this.gameInfo.has_started) {
-		return;
-	  }
-  
-	  this.gameInfo.has_ended = true;
-  
-	  this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
-		message: 'Game finished !',
-	  });
+		console.log("End game");
+		if (this.gameInfo.has_ended || !this.gameInfo.has_started) {
+			return;
+		}
+	
+		this.gameInfo.has_ended = true;
+	
+		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+			message: 'Game finished !',
+		});
 	}
 
 	public delay(ms: number) {

@@ -14,6 +14,24 @@ export class LobbyManager
     client.data.lobby = null;
   }
 
+  public getRandomLobbyId(): string
+  {
+    return this.lobbies.keys().next().value;
+  }
+
+  public enterMatchMaking(client: Socket): void
+  {
+    console.log("Enter matchMaking !");
+    console.log("There is currently: " + this.lobbies.size + ' lobbies');
+    if (this.lobbies.size <= 0) {
+      this.createLobby(client);
+    }
+    else {
+      console.log(this.getRandomLobbyId());
+      this.joinLobby(this.getRandomLobbyId(), client);
+    }
+  }
+  
   public terminateSocket(client: Socket): void
   {
     client.data.lobby?.removeClient(client)
@@ -21,6 +39,7 @@ export class LobbyManager
 
   public createLobby(client: Socket): void
   {
+    console.log("Create new lobby");
     const lobby = new Lobby(this.server);
     this.lobbies.set(lobby.getId(), lobby);
     lobby.addClient(client);
@@ -29,7 +48,7 @@ export class LobbyManager
   public joinLobby(lobbyId: string, client: Socket): void
   {
     const lobby = this.lobbies.get(lobbyId);
-
+    console.log("Lobby joined");
     if (!lobby) {
       throw new Error('Lobby not found');
       }
@@ -44,6 +63,7 @@ export class LobbyManager
   @Cron('*/5 * * * *')
   private lobbiesCleaner(): void
   {
+    console.log("Cleanup lobby");
     for (const [lobbyId, lobby] of this.lobbies) {
       const now = (new Date()).getTime();
       const lobbyCreatedAt = lobby.createdAt.getTime();
