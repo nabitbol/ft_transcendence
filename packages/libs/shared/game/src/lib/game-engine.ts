@@ -7,7 +7,8 @@ export class GameInfo {
 	player_a_score: number;
 	player_b_score: number;
 	end_score: number;
-	end_game: boolean;
+	has_started: boolean;
+	has_ended: boolean;
 	constructor(canvasDimensions: {width: number, height: number} ) {
 
 		this.canvasDimensions = canvasDimensions;
@@ -35,7 +36,7 @@ export class GameInfo {
 		this.player_a_score = 0;
 		this.player_b_score = 0;
 		this.end_score = 5;
-		this.end_game = false;
+		this.has_ended = false;
 	}
 }
 
@@ -120,7 +121,7 @@ export class Engine {
 
 	render()
 	{
-		if(this.gameInfo.end_game === true)
+		if(this.gameInfo.has_ended === true)
 			return ;
 		this.ball_tick();
 		this.paddle_tick();
@@ -168,7 +169,7 @@ export class Engine {
 		{
 			this.gameInfo.player_a_score++;
 			if(this.gameInfo.player_a_score >= this.gameInfo.end_score)
-				this.gameInfo.end_game = true;
+				this.gameInfo.has_ended = true;
 			this.gameInfo.ball.reset();
 		}
 
@@ -176,7 +177,7 @@ export class Engine {
 		{
 			this.gameInfo.player_b_score++;
 			if(this.gameInfo.player_b_score >= this.gameInfo.end_score)
-				this.gameInfo.end_game = true;
+				this.gameInfo.has_ended = true;
 			this.gameInfo.ball.reset();
 		}
 		if((this.gameInfo.ball.y_pos + this.gameInfo.ball.circle_radius + this.gameInfo.ball.y_velocity) >= this.gameInfo.canvasDimensions.height - this.gameInfo.boxDimensions.box_y - this.gameInfo.boxDimensions.box_border_width/2 ||

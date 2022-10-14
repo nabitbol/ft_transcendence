@@ -11,7 +11,7 @@ function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const [width, height] = useWindowSize();
-  const socketRef = useRef(io("ws://localhost:3000"));
+  const socketRef = useRef(io("ws://localhost:3030"));
   let gameInfo: GameInfo;
 
   //Setup socket io event
@@ -111,14 +111,10 @@ function Game() {
       animationFrameId = window.requestAnimationFrame(render);
     };
 
-    //Start the game
-      console.log("In start game");
-      initContext();
-      socketRef.current.emit('game:launch');
-      if (!isGameOver)
-        render();
+    initContext();
+    if (!isGameOver)
+      render();
 
-    //Remove event listener when unmounting component
     return () => {
       endCanvas();
     };

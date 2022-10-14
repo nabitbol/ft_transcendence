@@ -21,26 +21,29 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   
   afterInit(server: Server): void
   {
+    console.log("Init server");
     this.lobbyManager.server = server;
   }
 
-  async handleConnection(client: Socket, ...args: any[]): Promise<void>
+  async handleConnection(client: Socket): Promise<void>
   {
+    console.log("New client connected");
     this.lobbyManager.initializeSocket(client);
   }
 
   async handleDisconnect(client: Socket): Promise<void>
   {
+    console.log("A client disconnected");
     this.lobbyManager.terminateSocket(client);
   }
 
 
   @SubscribeMessage(ClientEvents.CreateRoom)
-  onLobbyCreate(client: Socket): WsResponse<ServerPayloads[ServerEvents.gameMessage]>
+  onLobbyCreate(client: Socket): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
   {
     this.lobbyManager.createLobby(client);
     return {
-      event: ServerEvents.gameMessage,
+      event: ServerEvents.GameMessage,
       data: {
         message: 'Room created',
       },
@@ -48,12 +51,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage(ClientEvents.JoinRoom)
-  onLobbyJoin(client: Socket, data): WsResponse<ServerPayloads[ServerEvents.gameMessage]>
+  onLobbyJoin(client: Socket, data): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
   {
     this.lobbyManager.joinLobby(data.lobbyId, client);
     
     return {
-      event:ServerEvents.gameMessage,
+      event:ServerEvents.GameMessage,
       data: {
         message: 'Successfully joined',
       },

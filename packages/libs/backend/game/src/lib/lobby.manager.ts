@@ -1,12 +1,13 @@
 import { Socket, Server } from 'socket.io';
 import { Cron } from '@nestjs/schedule';
-import { Lobby } from './lobby';
+import { Lobby } from './lobby'
+import { ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
 
 export class LobbyManager
 {
-  private server: Server;
+  public server: Server;
 
-  private lobbies: Map<Lobby['id'], Lobby> = new Map<Lobby['id'], Lobby>();
+  private readonly lobbies: Map<Lobby['id'], Lobby> = new Map<Lobby['id'], Lobby>();
 
   public initializeSocket(client: Socket): void
   {
@@ -21,7 +22,7 @@ export class LobbyManager
   public createLobby(client: Socket): void
   {
     const lobby = new Lobby(this.server);
-    this.lobbies.set(lobby.id, lobby);
+    this.lobbies.set(lobby.getId(), lobby);
     lobby.addClient(client);
   }
 
@@ -33,7 +34,7 @@ export class LobbyManager
       throw new Error('Lobby not found');
       }
     
-    if (lobby.clients.size >= 2) {
+    if (lobby.getClients().size >= 2) {
       throw new Error('Lobby already full');
       }
       
@@ -48,15 +49,14 @@ export class LobbyManager
       const lobbyCreatedAt = lobby.createdAt.getTime();
       const lobbyLifetime = now - lobbyCreatedAt;
 
-      if (lobbyLifetime > LOBBY_MAX_LIFETIME) {
-        lobby.dispatchToLobby<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
-          color: 'blue',
+      if (lobbyLifetime > 3_600_000) {
+        lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
           message: 'Game timed out',
         });
 
-        lobby.instance.triggerFinish();
-
-        this.lobbies.delete(lobby.id);
+        lobby.getGameInstance().endGame();
+0
+        this.lobbies.delete(lobby.getId());
       }
     }
   }
