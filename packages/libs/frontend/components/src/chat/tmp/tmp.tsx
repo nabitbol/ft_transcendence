@@ -1,5 +1,6 @@
 import ChatForms from "../chat-forms/chat-forms";
 import CreateRoom from "../create-room/create-room";
+import Message from "../message/message";
 import Rooms from "../rooms/rooms";
 import styles from "./tmp.module.css";
 
@@ -16,7 +17,13 @@ export function Tmp(props: TmpProps) {
         </div>
       </div>
       <div className={styles["chatBox"]}>
-        <div className={styles["chatBoxWrapper"]}>toto</div>
+        <div className={styles["chatBoxWrapper"]}>
+          <div className={styles["chatBoxTop"]}>
+            <Message own={false} />
+            <Message own={true} />
+          </div>
+          <div className={styles["chatBoxBottom"]}></div>
+        </div>
       </div>
       <div className={styles["chatRoom"]}>
         <div className={styles["chatRoomWrapper"]}></div>

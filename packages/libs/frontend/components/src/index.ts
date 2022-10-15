@@ -1,4 +1,6 @@
 
+export * from './chat/message/message';
+
 export * from './chat/room-form/room-form';
 
 export * from './chat/create-room/create-room';
