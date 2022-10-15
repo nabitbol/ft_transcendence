@@ -7,6 +7,7 @@ import {
   IsString,
   IsOptional,
 } from "class-validator";
+import { AchievementDto } from "./achievement.types";
 
 export type UserType = {
   name: string;
@@ -19,7 +20,8 @@ export type UserType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export type UserToUpdateType = {
@@ -33,7 +35,8 @@ export type UserToUpdateType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export class LoginDto {
@@ -112,6 +115,9 @@ export class UserDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class UserToUpdateDto {
@@ -177,6 +183,9 @@ export class UserToUpdateDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class ResponseUserDto {
@@ -240,4 +249,7 @@ export class ResponseUserDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }

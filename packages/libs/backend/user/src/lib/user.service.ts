@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { UserToUpdateDto, UserDto } from "@ft-transcendence/libs-shared-types";
+import { UserToUpdateDto, UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
 
 @Injectable()
@@ -270,6 +270,75 @@ export class UserService {
       return users;
     } catch (err) {
       throw Error("Couldn't remove friend");
+    }
+  }
+
+  public async getAchievement(): Promise<AchievementDto[]> {
+    try {
+      return await prisma.achievement.findMany();
+    } catch (err) {
+      throw Error("Achievement not found");
+    }
+  }
+
+  public async updateUserAchievement(achievement: AchievementDto[], user: UserDto) {
+    if (user.achievement != undefined)
+    {
+      if (achievement.length == user.achievement.length)
+        return ;
+    }
+    let i = 0;
+    let j = 0;
+    while (achievement[i])
+    {
+      if (achievement[i].condition <= user.wins)
+        j++;
+      i++;
+    }
+    i = 0;
+    j = 0;
+    let tmp: AchievementDto[] = new Array(j);
+    while (achievement[i])
+    {
+      if (achievement[i].condition <= user.wins)
+        tmp[j++] = achievement[i];
+      i++;
+    }
+    user.achievement = tmp;
+    try {
+      i = 0;
+      while (user.achievement[i])
+      {
+        await prisma.user.update({
+          where: {
+            name: user.name,
+          },
+          data: {
+           achievements:{
+            connect: {
+              id: user.achievement[i].id,
+            },
+            },
+            }
+          });
+          i++;
+      }
+    } catch (err) {
+      throw Error("Failed update User");
+    }
+  }
+
+  public async getUserAchievement(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .achievements();
+    } catch (err) {
+      throw Error("Couldn't find achievement");
     }
   }
 

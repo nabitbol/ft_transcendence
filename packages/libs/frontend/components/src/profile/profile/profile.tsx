@@ -3,7 +3,7 @@ import { QrModule, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
-import { UserDto } from '@ft-transcendence/libs-shared-types'
+import { UserDto, AchievementDto } from '@ft-transcendence/libs-shared-types'
 import { User } from '@ft-transcendence/libs-frontend-services'
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +11,23 @@ function Profile() {
 
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
+  const [user_achievement, setUserAchievement] = useState<string>(undefined);
   const navigate = useNavigate();
 
   const getAnswer = async () => {
     try {
+      await User.updateUserAchievement();
+      const response_user: AchievementDto[] = await User.requestUserAchievement();
+      let tmp = "";
+      let i = 0;
+      while (response_user[i])
+      {
+        tmp += response_user[i].title;
+        if (response_user[i+ 1])
+          tmp += ", ";
+        i++;
+      }
+      setUserAchievement(tmp);
       const response: UserDto = await User.requestUserInfo();
       if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
@@ -72,7 +85,7 @@ function Profile() {
             <strong className={classes['strong_cascade']}>Game lost:</strong> {userInfo.losses}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Achievement:</strong> 1/10 "not dynamic yet"
+            <strong className={classes['strong_cascade']}>Achievement:</strong> {user_achievement}
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"

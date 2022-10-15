@@ -25,7 +25,7 @@ model User {
   image               String
   friendsRequest      String[]
 
-  achivements Achievement[]
+  achievements Achievement[]
 
   //many to many self relation
   friends   User[] @relation("friends")
@@ -41,12 +41,14 @@ model User {
 }
 
 model Achievement {
-  id      String @id @default(uuid())
-  title   String @unique
-  content String
-  image   String
+  id        String @id @default(uuid())
+  title     String @unique
+  content   String
+  image     String
+  condition Int    @default(0)
 
-  users User[]
+  users     User[]
+
 }
 
 model Match {
