@@ -26,6 +26,9 @@ export default function Achievement(props: { achievement: AchievementDto, user_a
             className={classes['img']}
             alt="achievement_avatar"
           />
+          <p className={classes["p_title"]}>
+            <strong>{props.achievement.title}</strong>
+          </p>
           <p className={classes["p_description"]}>
             <strong>{props.achievement.content}</strong>
           </p>
@@ -40,6 +43,9 @@ export default function Achievement(props: { achievement: AchievementDto, user_a
             className={classes['img']}
             alt="achievement_avatar"
           />
+          <p className={classes["p_title"]}>
+            <strong>{props.achievement.title}</strong>
+          </p>
           <p className={classes["p_description"]}>
             <strong>{props.achievement.content}</strong>
           </p>
