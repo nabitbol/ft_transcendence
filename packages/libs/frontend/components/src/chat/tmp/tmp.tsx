@@ -13,10 +13,12 @@ export function Tmp(props: TmpProps) {
     <div className={styles["chat"]}>
       <div className={styles["chatRooms"]}>
         <div className={styles["chatRoomsWrapper"]}>
-          <div className={styles["chatRoomTop"]}>
+          <div className={styles["chatRoomsTop"]}>
             <Rooms />
           </div>
-          <div className={styles["chatRoomBottom"]}>{/* <CreateRoom /> */}</div>
+          <div className={styles["chatRoomsBottom"]}>
+            <CreateRoom />
+          </div>
         </div>
       </div>
       <div className={styles["chatBox"]}>
@@ -33,8 +35,8 @@ export function Tmp(props: TmpProps) {
           </div>
         </div>
       </div>
-      <div className={styles["chatRoom"]}>
-        <div className={styles["chatRoomWrapper"]}></div>
+      <div className={styles["chatUsers"]}>
+        <div className={styles["chatUsersWrapper"]}>toto</div>
       </div>
     </div>
   );

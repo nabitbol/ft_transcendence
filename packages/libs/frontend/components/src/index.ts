@@ -1,4 +1,6 @@
 
+export * from './chat/user-list/user-list';
+
 export * from './chat/message-input/message-input';
 
 export * from './chat/message/message';

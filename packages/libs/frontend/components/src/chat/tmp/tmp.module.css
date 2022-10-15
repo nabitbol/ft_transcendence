@@ -11,8 +11,14 @@
 	flex: 4.5;
 }
 
-.chatRoom {
+.chatUsers {
 	flex: 3;
+}
+
+.chatRoomsWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .chatBoxWrapper {
@@ -21,9 +27,16 @@
 	justify-content: space-between;
 }
 
-.chatRoomTop {
+.chatRoomsTop {
+	flex: 10;
 	height: 100%;
 	overflow-y: scroll;
+}
+
+.chatRoomsBottom {
+	flex: 1;
+	height: 100%;
+	margin-top: 15%;
 }
 
 .chatBoxBottom {
@@ -43,7 +56,13 @@
 
 .chatBoxWrapper,
 .chatRoomsWrapper,
-.chatRoomWrapper {
+.chatUsersWrapper {
 	padding: 10px;
 	height: 100%;
+}
+
+@media (max-width: 40rem) {
+	.chat {
+		flex-direction: column;
+	}
 }

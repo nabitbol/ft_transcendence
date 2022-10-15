@@ -1,19 +1,23 @@
 .roomList {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 }
 
-.roomName {
+.roomLine {
+	display: flex;
 	margin: 1%;
-	padding: 5%;
+	padding: 3%;
 	cursor: pointer;
+	justify-content: space-between;
 }
 
-.roomName:hover {
+.roomName {}
+
+.roomLine:hover {
 	background-color: rgb(199, 199, 199);
 }
 
 .roomStatus {
-	margin-left: 10%;
-	font-weight: 500;
+	font-weight: 700;
 }

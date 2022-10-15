@@ -19,13 +19,40 @@ export function CreateRoom(props: CreateRoomProps) {
   };
 
   return (
-    <div className={styles["auth_box"]}>
-      <button className={styles["auth_btn"]} onClick={activateRoomForm}>
-        Create a room
-      </button>
-      <br />
-      {RoomFormState && <RoomForm />}
-      {RoomFormState && <Backdrop closeBackdrop={desactivateForm} />}
+    <div className={styles["roomActions"]}>
+      <div className={styles["createRoomBox"]}>
+        <button
+          className={styles["createRoomButton"]}
+          onClick={activateRoomForm}
+        >
+          Create room
+        </button>
+        <br />
+        {RoomFormState && <RoomForm />}
+        {RoomFormState && <Backdrop closeBackdrop={desactivateForm} />}
+      </div>
+      <div className={styles["createRoomBox"]}>
+        <button
+          className={styles["createRoomButton"]}
+          onClick={activateRoomForm}
+        >
+          Join room
+        </button>
+        <br />
+        {RoomFormState && <RoomForm />}
+        {RoomFormState && <Backdrop closeBackdrop={desactivateForm} />}
+      </div>
+      <div className={styles["createRoomBox"]}>
+        <button
+          className={styles["createRoomButton"]}
+          onClick={activateRoomForm}
+        >
+          Leave room
+        </button>
+        <br />
+        {RoomFormState && <RoomForm />}
+        {RoomFormState && <Backdrop closeBackdrop={desactivateForm} />}
+      </div>
     </div>
   );
 }

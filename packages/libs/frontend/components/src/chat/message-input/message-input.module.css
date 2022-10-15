@@ -2,6 +2,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
 }
 
 .chatMessageInput {
@@ -11,17 +12,28 @@
 }
 
 .chatSubmitButton {
-	width: 4vw;
-	height: 5vh;
+	width: 10%;
+	height: 25%;
 	border: none;
 	cursor: pointer;
 	border-radius: 5px;
 	margin-left: 2vw;
-	background-color: rgb(141, 5, 73);
+	background-color: rgb(190, 1, 96);
 	color: white;
 }
 
 .chatSubmitButton:hover {
-	background-color: rgba(141, 5, 73, 0.87);
+	transform: translateY(-4%);
+	background-color: rgba(190, 1, 95, 0.747);
 	color: white;
+}
+
+@media (max-width: 40rem) {
+	.chatSendBox {
+		flex-direction: column;
+	}
+
+	.chatSubmitButton {
+		margin-top: 2vh;
+	}
 }

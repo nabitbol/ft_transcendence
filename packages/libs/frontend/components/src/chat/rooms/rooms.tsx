@@ -29,12 +29,12 @@ export function Rooms(props: RoomsProps) {
   return !rooms ? null : (
     <div className={styles["roomList"]}>
       {rooms.map((element) => (
-        <p className={styles["roomName"]}>
-          {element.name.toString().toLocaleUpperCase()}
-          <span className={styles["roomStatus"]}>
-            {"status: " + element.status.toString().toLowerCase()}
-          </span>
-        </p>
+        <div className={styles["roomLine"]}>
+          <p className={styles["roomName"]}>{element.name}</p>
+          <p className={styles["roomStatus"]}>
+            {element.status.toString().toLowerCase()}
+          </p>
+        </div>
       ))}
     </div>
   );
