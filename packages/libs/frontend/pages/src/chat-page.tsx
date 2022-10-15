@@ -1,6 +1,11 @@
-import { Tmp } from "@ft-transcendence/libs-frontend-components";
+import { AllIcon, Tmp } from "@ft-transcendence/libs-frontend-components";
 
 function ChatPage() {
-  return <Tmp />;
+  return (
+    <div>
+      <AllIcon />
+      <Tmp />
+    </div>
+  );
 }
 export { ChatPage };

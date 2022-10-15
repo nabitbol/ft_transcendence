@@ -1,0 +1,27 @@
+.chatSendBox {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.chatMessageInput {
+	width: 40vw;
+	height: 20vh;
+	padding: 10px;
+}
+
+.chatSubmitButton {
+	width: 4vw;
+	height: 5vh;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	margin-left: 2vw;
+	background-color: rgb(141, 5, 73);
+	color: white;
+}
+
+.chatSubmitButton:hover {
+	background-color: rgba(141, 5, 73, 0.87);
+	color: white;
+}
