@@ -44,26 +44,25 @@ export class Lobby
     const payload: ServerPayloads[ServerEvents.GameInfo] = {
      info: this.gameInstance.getGameInfo(),
     };
-
     this.sendMessage(ServerEvents.GameInfo, payload);
   }
 
   public sendMessage<T>(event: ServerEvents, payload: T): void
   {
-    this.server.emit(event, payload);
+    this.server.volatile.to(this.id).emit(event, payload);
   }
 
-  public getId()
+  public getId() : string
   {
     return this.id;
   }
 
-  public getClients()
+  public getClients() : Map<Socket['id'], Socket>
   {
     return this.clients;
   }
 
-  public getGameInstance()
+  public getGameInstance() : GameInstance
   {
     return this.gameInstance;
   }

@@ -7,6 +7,7 @@ export enum ClientEvents
 	LeaveRoom = 'client.leaveroom',
 	EnterMatchMaking = 'client.entermatchmaking',
 	LeaveMatchMaking = 'client.leavematchmaking',
+	GameInput = 'client.gameinput',
 }
 
 export enum ServerEvents

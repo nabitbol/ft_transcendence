@@ -9,10 +9,9 @@ export function PlayButton() {
   const navigate = useNavigate();
 
   const socket: Socket = useContext(SocketContext);
-  console.log("Playbutton socket" + socket.data);
 
   useEffect(() => {
-    console.log("UseEffect");
+    console.log("UseEffect PlayButton");
     socket.on('server.gamestart', () => {
       navigate("/game");
       //window.location.reload();

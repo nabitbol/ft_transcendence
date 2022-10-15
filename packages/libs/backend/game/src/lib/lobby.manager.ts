@@ -19,6 +19,11 @@ export class LobbyManager
     return this.lobbies.keys().next().value;
   }
 
+  public gameInput(client: Socket, data)
+  {
+    client.data.lobby?.getGameInstance().inputGame(client, data);
+  }
+
   public enterMatchMaking(client: Socket): void
   {
     console.log("Enter matchMaking !");
@@ -78,7 +83,7 @@ export class LobbyManager
           message: 'Game timed out',
         });
 
-        lobby.getGameInstance().endGame();
+        lobby.getGameInstance().getGameInfo().has_ended = true;
 0
         this.deleteLobby(lobby.getId());
       }

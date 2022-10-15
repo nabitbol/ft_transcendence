@@ -40,6 +40,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.lobbyManager.enterMatchMaking(client);
   }
 
+  @SubscribeMessage(ClientEvents.GameInput)
+  oninput(client: Socket, data): void
+  {
+    this.lobbyManager.gameInput(client, data);
+  }
+
   @SubscribeMessage(ClientEvents.CreateRoom)
   onLobbyCreate(client: Socket): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
   {

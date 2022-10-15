@@ -9,12 +9,16 @@ export class GameInfo {
 	end_score: number;
 	has_started: boolean;
 	has_ended: boolean;
+
 	copyInfo(other: GameInfo) {
 		this.ball = other.ball;
 		this.paddle_a = other.paddle_a;
 		this.paddle_b = other.paddle_b;
-		this.boxDimensions = other.boxDimensions;
-		this.canvasDimensions = other.canvasDimensions;
+		this.player_a_score = other.player_a_score;
+		this.player_b_score = other.player_b_score;
+		this.end_score = other.end_score;
+		this.has_started = other.has_started;
+		this.has_ended = other.has_ended;
 	}
 
 	constructor(canvasDimensions: {width: number, height: number} ) {
@@ -38,12 +42,12 @@ export class GameInfo {
         this.boxDimensions.box_width + this.boxDimensions.box_x - 40,
         canvasDimensions.height / 2,
         20,
-        this.boxDimensions.box_height - 30
+        this.boxDimensions.box_height * 0.1
       );
 
 		this.player_a_score = 0;
 		this.player_b_score = 0;
-		this.end_score = 5;
+		this.end_score = 100;
 		this.has_ended = false;
 	}
 }
@@ -147,6 +151,18 @@ export class Engine {
 		{
 			if(this.gameInfo.paddle_a.y_pos - this.gameInfo.paddle_a.paddle_speed <= this.gameInfo.boxDimensions.box_height)
 				this.gameInfo.paddle_a.y_pos += this.gameInfo.paddle_a.paddle_speed;
+		}
+
+		if(this.gameInfo.paddle_b.up === 1)
+		{
+			if(this.gameInfo.paddle_b.y_pos - this.gameInfo.paddle_b.paddle_speed >= this.gameInfo.boxDimensions.box_y)
+				this.gameInfo.paddle_b.y_pos -= this.gameInfo.paddle_b.paddle_speed;
+		}
+
+		if(this.gameInfo.paddle_b.down === 1)
+		{
+			if(this.gameInfo.paddle_b.y_pos - this.gameInfo.paddle_b.paddle_speed <= this.gameInfo.boxDimensions.box_height)
+				this.gameInfo.paddle_b.y_pos += this.gameInfo.paddle_b.paddle_speed;
 		}
 
 		if(this.gameInfo.ball.x_pos + this.gameInfo.ball.circle_radius + this.gameInfo.ball.x_velocity >= this.gameInfo.paddle_b.x_pos)
