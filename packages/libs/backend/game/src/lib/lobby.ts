@@ -22,11 +22,12 @@ export class Lobby
   {
     console.log("Add client to lobby");
     this.clients.set(client.id, client);
+    console.log("Client " + client.id +" join: " + this.id);
     client.join(this.id);
     client.data.lobby = this;
 
-    if (this.clients.size === 2) {
-      this.gameInstance.launchGame();
+    if (this.clients.size >= 2) {
+      this.gameInstance.startGame();
     }
   }
 
@@ -49,7 +50,7 @@ export class Lobby
 
   public sendMessage<T>(event: ServerEvents, payload: T): void
   {
-    this.server.to(this.id).emit(event, payload);
+    this.server.emit(event, payload);
   }
 
   public getId()

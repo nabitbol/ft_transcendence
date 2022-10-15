@@ -21,7 +21,7 @@ export class GameInstance
 	
 		this.gameInfo.has_started = true;
 		this.launchGame();
-		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameStart]>(ServerEvents.GameStart, {
 			message: 'Game started !',
 		});
 	}
@@ -53,8 +53,7 @@ export class GameInstance
 				this.lobby.sendGameInfo();
 				await this.delay(20);
 			}
-			console.log("End game");
-		})
+		})();
 	}
 
 	public inputGame = (input) => {

@@ -1,29 +1,25 @@
 import classes from "./game.module.css";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useContext } from "react";
 import useWindowSize from "./useWindowSize";
 import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
-import { io } from "socket.io-client";
+import { Socket } from 'socket.io';
+import { SocketContext } from '@ft-transcendence/libs-frontend-services';
 
 function Game() {
-
-  console.log("Load game component");
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, height] = useWindowSize();
-  const socketRef = useRef(io("ws://localhost:3030"));
   let gameInfo: GameInfo;
-
+  const boxRef = useRef<boxDimensions>();
+  const socket: Socket = useContext(SocketContext);
+  console.log("Game socket" + socket.data);
   //Setup socket io event
   const sendInput = useCallback((input: { up: number, down: number }) => {
-    socketRef.current.emit('game:input', input);
-  }, []);
-
-  socketRef.current.on('game:info', (info: GameInfo) => {
-    gameInfo = info;
-  });
+    socket.emit('game.input', input);
+  }, [socket]);
 
   //Setup key event
-  const keyDown = useCallback(function (event: any) {
+  const keyDown = useCallback(function (event) {
     if (event.repeat)
       return
     const input = { up: 0, down: 0 };
@@ -35,7 +31,7 @@ function Game() {
       sendInput(input);
   }, [sendInput]);
 
-  const keyUp = useCallback(function (event: any) {
+  const keyUp = useCallback(function (event) {
     if (event.repeat)
       return
     const input = { down: 0, up: 0 };
@@ -48,23 +44,30 @@ function Game() {
   }, [sendInput]);
 
   useEffect(() => {
-    console.log("In useEffect");
+    console.log("In useEffect game");
+
+    socket.on('server.gameinfo', (info: GameInfo) => {
+      console.log('test');
+      console.log(info);
+      gameInfo.copyInfo(info);
+    });
+  
+    socket.on('server.message', (message: string) => {
+      console.log(message);
+    });
+
     let canvas: HTMLCanvasElement | null;
     let context: CanvasRenderingContext2D | null;
     let animationFrameId: number;
-    const endCanvas = () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("keydown", keyDown);
-      window.removeEventListener("keyup", keyUp);
-    };
 
     function draw(gameInfo: GameInfo) {
+      console.log("DRAW");
       if (context != null) {
-        context.clearRect(gameInfo.boxDimensions.box_x + gameInfo.boxDimensions.box_border_width / 2, gameInfo.boxDimensions.box_y + gameInfo.boxDimensions.box_border_width / 2, gameInfo.boxDimensions.box_width - gameInfo.boxDimensions.box_border_width, gameInfo.boxDimensions.box_height - gameInfo.boxDimensions.box_border_width);
+        context.clearRect(boxRef.current.box_x + boxRef.current.box_border_width / 2, boxRef.current.box_y + boxRef.current.box_border_width / 2, boxRef.current.box_width - boxRef.current.box_border_width, boxRef.current.box_height - boxRef.current.box_border_width);
         context.fillRect(gameInfo.paddle_a.x_pos, gameInfo.paddle_a.y_pos, gameInfo.paddle_a.width, gameInfo.paddle_a.height);
         context.fillRect(gameInfo.paddle_b.x_pos, gameInfo.paddle_b.y_pos, gameInfo.paddle_b.width, gameInfo.paddle_b.height);
-        context.fillText(gameInfo.player_a_score.toString(), gameInfo.boxDimensions.box_x + gameInfo.boxDimensions.box_width / 2 - 100, gameInfo.boxDimensions.box_y + 100);
-        context.fillText(gameInfo.player_b_score.toString(), gameInfo.boxDimensions.box_x + gameInfo.boxDimensions.box_width / 2 + 100, gameInfo.boxDimensions.box_y + 100);
+        context.fillText(gameInfo.player_a_score.toString(), boxRef.current.box_x + boxRef.current.box_width / 2 - 100, boxRef.current.box_y + 100);
+        context.fillText(gameInfo.player_b_score.toString(), boxRef.current.box_x + boxRef.current.box_width / 2 + 100, boxRef.current.box_y + 100);
         context.beginPath()
         context.arc(gameInfo.ball.x_pos, gameInfo.ball.y_pos, gameInfo.ball.circle_radius, 0, 2 * Math.PI)
         context.fill()
@@ -85,21 +88,21 @@ function Game() {
       context = canvas.getContext("2d");
       if (context == null)
         return;
-      const box = new boxDimensions(
+      //Predraw box
+      context.font = "48px serif";
+      context.fillStyle = "#FFFFFF";
+      boxRef.current = new boxDimensions(
         0.8 * canvas.width,
         0.8 * canvas.height,
         0.1 * canvas.width,
         0.1 * canvas.height,
         20
       )
-      //Predraw box
-      context.font = "48px serif";
-      context.fillStyle = "#FFFFFF";
       context.fillRect(
-        box.box_x,
-        box.box_y,
-        box.box_width,
-        box.box_height
+        boxRef.current.box_x,
+        boxRef.current.box_y,
+        boxRef.current.box_width,
+        boxRef.current.box_height
       );
     }
 
@@ -110,13 +113,21 @@ function Game() {
       animationFrameId = window.requestAnimationFrame(render);
     };
 
+    const endCanvas = () => {
+      /*socket.off('server.gameinfo', '');
+      socket.off('server.message', (message: string));*/
+      window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("keydown", keyDown);
+      window.removeEventListener("keyup", keyUp);
+    };
+
     initContext();
     render();
 
     return () => {
       endCanvas();
     };
-  }, [sendInput, height, width, gameInfo, keyDown, keyUp]);
+  }, [height, width, gameInfo, keyDown, keyUp, socket]);
 
   return (
     <div className={classes["background"]}>

@@ -48,7 +48,6 @@ export class LobbyManager
   public joinLobby(lobbyId: string, client: Socket): void
   {
     const lobby = this.lobbies.get(lobbyId);
-    console.log("Lobby joined");
     if (!lobby) {
       throw new Error('Lobby not found');
       }
@@ -58,6 +57,11 @@ export class LobbyManager
       }
       
     lobby.addClient(client);
+  }
+
+  public deleteLobby(lobbyId: string): void
+  {
+    this.lobbies.delete(lobbyId);
   }
 
   @Cron('*/5 * * * *')
@@ -76,7 +80,7 @@ export class LobbyManager
 
         lobby.getGameInstance().endGame();
 0
-        this.lobbies.delete(lobby.getId());
+        this.deleteLobby(lobby.getId());
       }
     }
   }

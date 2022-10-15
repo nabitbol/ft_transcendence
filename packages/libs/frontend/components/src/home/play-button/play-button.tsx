@@ -1,21 +1,34 @@
 import classes from "./play-button.module.css";
-import { useState, useRef } from "react";
-import { io } from "socket.io-client";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import {SocketContext} from '@ft-transcendence/libs-frontend-services';
+import { Socket } from 'socket.io';
+
 export function PlayButton() {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const socketRef = useRef(io("ws://localhost:3030"));
+  const socket: Socket = useContext(SocketContext);
+  console.log("Playbutton socket" + socket.data);
+
+  useEffect(() => {
+    console.log("UseEffect");
+    socket.on('server.gamestart', () => {
+      navigate("/game");
+      //window.location.reload();
+    });
+
+
+  }, [navigate, socket]);
 
   const matchMaking = () => {
-    if (loading)
-    {
+    if (loading) {
       setLoading(false);
-      socketRef.current.emit('client.leaveroom');
+      socket.emit('client.leaveroom');
     }
-    else
-    {
+    else {
       setLoading(true);
-      socketRef.current.emit('client.entermatchmaking');
+      socket.emit('client.entermatchmaking');
     }
   }
 

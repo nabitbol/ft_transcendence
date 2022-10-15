@@ -9,6 +9,14 @@ export class GameInfo {
 	end_score: number;
 	has_started: boolean;
 	has_ended: boolean;
+	copyInfo(other: GameInfo) {
+		this.ball = other.ball;
+		this.paddle_a = other.paddle_a;
+		this.paddle_b = other.paddle_b;
+		this.boxDimensions = other.boxDimensions;
+		this.canvasDimensions = other.canvasDimensions;
+	}
+
 	constructor(canvasDimensions: {width: number, height: number} ) {
 
 		this.canvasDimensions = canvasDimensions;

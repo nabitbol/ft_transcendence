@@ -1,3 +1,5 @@
+export * from './socket-manager/socket-manager';
+
 export * from "./user/user";
 
 export * from "./form-validation/form-validation";

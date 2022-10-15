@@ -12,7 +12,8 @@ export enum ClientEvents
 export enum ServerEvents
 {
 	GameMessage = 'server.message',
-	GameInfo = 'server.gameinfo'
+	GameInfo = 'server.gameinfo',
+	GameStart = 'server.gamestart'
 }
 
 export type ServerPayloads = {
@@ -23,12 +24,17 @@ export type ServerPayloads = {
 	[ServerEvents.GameInfo]: {
 		info: GameInfo;
 	  };
-	
+
+	  [ServerEvents.GameStart]: {
+		message: string;
+	  };
+
 	[ClientEvents.JoinRoom]: {
 		message: string;
 		roomId: number;
 	};
 
+	
 	[ClientEvents.CreateRoom]: {
 		message: string;
 		roomId: number;
