@@ -6,6 +6,7 @@ import Rooms from "../rooms/rooms";
 import styles from "./tmp.module.css";
 import ReactSwitch from "react-switch";
 import { useState } from "react";
+import UserList from "../user-list/user-list";
 
 /* eslint-disable-next-line */
 export interface TmpProps {}
@@ -61,12 +62,25 @@ export function Tmp(props: TmpProps) {
                     {userTypeList}
                   </label>
                 </div>
-                <p className={styles["userNumber"]}>{"12 Users"}</p>
+                <span className={styles["userNumber"]}>{"12 Users"}</span>
               </div>
               <div className={styles["chatUsersFilterBottom"]}>
                 <ChatForms roomName={"room1"} />
               </div>
             </div>
+          </div>
+          <div className={styles["chatUsersBottom"]}>
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
+            <UserList />
           </div>
         </div>
       </div>

@@ -1,7 +1,58 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.userLine {
+	display: flex;
+	margin-top: 8%;
+	width: 90%;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.userInfos {
+	display: flex;
+	align-items: center;
+}
+
+.userImgContainer {
+	position: relative;
+	margin-right: 15px;
+}
+
+.userImg {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid white;
+}
+
+.userBadge {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: lime;
+	position: absolute;
+	top: -2px;
+	right: -2px;
+}
+
+.userActionUp {
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 3px;
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+}
+
+.userActionDown {
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 3px;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+}
+
+.userActionUp:hover,
+.userActionDown:hover {
+	cursor: pointer;
+}

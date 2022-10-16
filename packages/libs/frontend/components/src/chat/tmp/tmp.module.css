@@ -15,13 +15,9 @@
 	flex: 3;
 }
 
-.chatRoomsWrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
-
-.chatBoxWrapper {
+.chatRoomsWrapper,
+.chatBoxWrapper,
+.chatUsersWrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -29,14 +25,18 @@
 
 .chatRoomsTop {
 	flex: 10;
+	margin-left: 3%;
+	width: 90%;
 	height: 100%;
 	overflow-y: scroll;
 }
 
 .chatRoomsBottom {
-	flex: 1;
+	flex: 1.5;
+	margin-left: 3%;
+	width: 90%;
 	height: 100%;
-	margin-top: 15%;
+	margin-top: 10%;
 }
 
 .chatBoxBottom {
@@ -52,6 +52,12 @@
 .chatBoxBottom {
 	display: flex;
 	margin-top: 5px;
+}
+
+.chatUsersTop {
+	display: flex;
+	flex: 1;
+	height: 100%;
 }
 
 .chatUsersFilter {
@@ -90,8 +96,16 @@
 }
 
 .userNumber {
-	margin-top: 4%;
 	color: rgba(190, 1, 95, 0.747);
+}
+
+.chatUsersBottom {
+	display: flex;
+	flex: 4;
+	height: 100%;
+	margin-left: 5%;
+	flex-direction: column;
+	overflow-y: scroll;
 }
 
 .chatBoxWrapper,

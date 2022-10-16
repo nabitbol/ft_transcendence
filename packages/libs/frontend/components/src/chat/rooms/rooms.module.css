@@ -1,12 +1,13 @@
 .roomList {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: 90%;
 }
 
 .roomLine {
 	display: flex;
 	padding: 2%;
+	margin: 1%;
 	cursor: pointer;
 	justify-content: space-between;
 }
