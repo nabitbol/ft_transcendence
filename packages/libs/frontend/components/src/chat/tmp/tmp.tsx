@@ -4,11 +4,20 @@ import MessageInput from "../message-input/message-input";
 import Message from "../message/message";
 import Rooms from "../rooms/rooms";
 import styles from "./tmp.module.css";
+import ReactSwitch from "react-switch";
+import { useState } from "react";
 
 /* eslint-disable-next-line */
 export interface TmpProps {}
 
 export function Tmp(props: TmpProps) {
+  const toggleOnColor = "#d3046b";
+  const [userTypeList, setUserTypeList] = useState("Room");
+
+  const toggleTypeList = () => {
+    setUserTypeList((cur) => (cur === "All" ? "Room" : "All"));
+  };
+
   return (
     <div className={styles["chat"]}>
       <div className={styles["chatRooms"]}>
@@ -36,7 +45,30 @@ export function Tmp(props: TmpProps) {
         </div>
       </div>
       <div className={styles["chatUsers"]}>
-        <div className={styles["chatUsersWrapper"]}>Users List</div>
+        <div className={styles["chatUsersWrapper"]}>
+          <div className={styles["chatUsersTop"]}>
+            <div className={styles["chatUsersFilter"]}>
+              <div className={styles["chatUsersFilterTop"]}>
+                <div className={styles["toggleFilter"]}>
+                  <ReactSwitch
+                    onChange={toggleTypeList}
+                    checked={userTypeList === "Room"}
+                    onColor={toggleOnColor}
+                    checkedIcon={false}
+                    uncheckedIcon={false}
+                  />
+                  <label className={styles["toggleLabel"]}>
+                    {userTypeList}
+                  </label>
+                </div>
+                <p className={styles["userNumber"]}>{"12 Users"}</p>
+              </div>
+              <div className={styles["chatUsersFilterBottom"]}>
+                <ChatForms roomName={"room1"} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

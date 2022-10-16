@@ -27,13 +27,13 @@ export function ChatForms(props: ChatMessageFormsProps) {
     GetUsersInRoom();
   }, []);
 
-  return (
+  return !users ? null : (
     <form>
       <input
         placeholder="Search for user"
         type="text"
         list="data"
-        className={styles[".chatSearchInput"]}
+        className={styles["chatSearchInput"]}
       />
 
       <datalist id="data">

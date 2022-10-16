@@ -54,6 +54,46 @@
 	margin-top: 5px;
 }
 
+.chatUsersFilter {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.chatUsersFilter:hover {
+	box-shadow: 0 8px 8px rgb(0 0 0 / 0.2);
+}
+
+.chatUsersFilterTop {
+	margin-left: 7%;
+	display: flex;
+	width: 85%;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.chatUsersFilterBottom {
+	display: flex;
+	margin-left: 7%;
+	margin-top: 5%;
+	width: 90%;
+	justify-content: left;
+}
+
+.toggleFilter {
+	display: flex;
+	align-items: center;
+}
+
+.toggleLabel {
+	margin: 10px;
+}
+
+.userNumber {
+	margin-top: 4%;
+	color: rgba(190, 1, 95, 0.747);
+}
+
 .chatBoxWrapper,
 .chatRoomsWrapper,
 .chatUsersWrapper {
@@ -61,8 +101,12 @@
 	height: 100%;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 50rem) {
 	.chat {
+		flex-direction: column;
+	}
+
+	.chatUsersTop {
 		flex-direction: column;
 	}
 }
