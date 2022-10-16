@@ -12,10 +12,11 @@ export class Lobby
 
   private clients: Map<Socket['id'], Socket> = new Map<Socket['id'], Socket>();
 
-  private gameInstance: GameInstance = new GameInstance(this);
+  private gameInstance: GameInstance;
 
-  constructor( private server: Server)
+  constructor( private server: Server, private mode: 'simple' | 'double')
   {
+    this.gameInstance = new GameInstance(this, this.mode); 
   }
 
   public addClient(client: Socket): void
@@ -33,10 +34,17 @@ export class Lobby
 
   public removeClient(client: Socket): void
   {
-    console.log("Removed client from lobby");
-    this.clients.delete(client.id);
-    client.leave(this.id);
-    client.data.lobby = null;
+    this.gameInstance.endGame();
+
+    for (const [clientId, client] of this.clients) {
+        console.log("Removed client from lobby");
+        this.clients.delete(client.id);
+        client.leave(this.id);
+        client.data.lobby = null;
+      }
+      if (this.gameInstance.getGameInfo().has_started) {
+        this.gameInstance.resetGame();
+      }
   }
 
   public sendGameInfo(): void
@@ -44,10 +52,15 @@ export class Lobby
     const payload: ServerPayloads[ServerEvents.GameInfo] = {
      info: this.gameInstance.getGameInfo(),
     };
-    this.sendMessage(ServerEvents.GameInfo, payload);
+    this.sendVolatileMessage(ServerEvents.GameInfo, payload);
   }
 
   public sendMessage<T>(event: ServerEvents, payload: T): void
+  {
+    this.server.to(this.id).emit(event, payload);
+  }
+
+  public sendVolatileMessage<T>(event: ServerEvents, payload: T): void
   {
     this.server.volatile.to(this.id).emit(event, payload);
   }
@@ -65,5 +78,10 @@ export class Lobby
   public getGameInstance() : GameInstance
   {
     return this.gameInstance;
+  }
+
+  public getMode() : 'simple' | 'double'
+  {
+    return this.mode;
   }
 }

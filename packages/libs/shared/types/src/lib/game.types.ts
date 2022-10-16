@@ -2,19 +2,20 @@ import { GameInfo } from "@ft-transcendence/libs/shared/game";
 
 export enum ClientEvents
 {
-	JoinRoom = 'client.joinroom',
-	CreateRoom = 'client.createroom',
-	LeaveRoom = 'client.leaveroom',
 	EnterMatchMaking = 'client.entermatchmaking',
-	LeaveMatchMaking = 'client.leavematchmaking',
 	GameInput = 'client.gameinput',
+	CreateRoom = 'client.createroom',
+	JoinRoom = 'client.joinroom',
+	LeaveRoom = 'client.leaveroom',
 }
 
 export enum ServerEvents
 {
 	GameMessage = 'server.message',
 	GameInfo = 'server.gameinfo',
-	GameStart = 'server.gamestart'
+	GameStart = 'server.gamestart',
+	LobbyJoined = 'server.lobbyjoined',
+	lobbyCreated = 'server.lobbycreated'
 }
 
 export type ServerPayloads = {
@@ -22,22 +23,20 @@ export type ServerPayloads = {
 	  message: string;
 	};
 
+	[ServerEvents.LobbyJoined]: {
+		message: string;
+	  };
+
+	[ServerEvents.lobbyCreated]: {
+		message: string;
+		lobbyId: number;
+	  };
+
 	[ServerEvents.GameInfo]: {
 		info: GameInfo;
 	  };
 
-	  [ServerEvents.GameStart]: {
+	[ServerEvents.GameStart]: {
 		message: string;
 	  };
-
-	[ClientEvents.JoinRoom]: {
-		message: string;
-		roomId: number;
-	};
-
-	
-	[ClientEvents.CreateRoom]: {
-		message: string;
-		roomId: number;
-	};
   };

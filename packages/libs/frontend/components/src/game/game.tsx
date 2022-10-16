@@ -12,7 +12,7 @@ function Game() {
   const gameInfoRef = useRef<GameInfo>();
   const boxRef = useRef<boxDimensions>();
   const socket: Socket = useContext(SocketContext);
-  const inputRef = useRef<{up: number, down: number}>({up: 0, down: 0});
+  const inputRef = useRef<{ up: number, down: number }>({ up: 0, down: 0 });
   //Setup socket io event
   const sendInput = useCallback((input: { up: number, down: number }) => {
     socket.emit('client.gameinput', input);
@@ -44,12 +44,8 @@ function Game() {
   useEffect(() => {
     console.log("In useEffect game");
 
-    socket.on('server.gameinfo', (response: {info: GameInfo}) => {
+    socket.on('server.gameinfo', (response: { info: GameInfo }) => {
       gameInfoRef.current = response.info;
-    });
-  
-    socket.on('server.message', (message: string) => {
-      console.log(message);
     });
 
     let canvas: HTMLCanvasElement | null;
@@ -57,15 +53,18 @@ function Game() {
     let animationFrameId: number;
 
     function draw(box: boxDimensions, gameInfo: GameInfo) {
+      console.log(gameInfo);
       if (context != null && gameInfo) {
         context.clearRect(box.box_x + box.box_border_width / 2, box.box_y + box.box_border_width / 2, box.box_width - box.box_border_width, box.box_height - box.box_border_width);
         context.fillRect(gameInfo.paddle_a.x_pos, gameInfo.paddle_a.y_pos, gameInfo.paddle_a.width, gameInfo.paddle_a.height);
         context.fillRect(gameInfo.paddle_b.x_pos, gameInfo.paddle_b.y_pos, gameInfo.paddle_b.width, gameInfo.paddle_b.height);
         context.fillText(gameInfo.player_a_score.toString(), box.box_x + box.box_width / 2 - 100, box.box_y + 100);
         context.fillText(gameInfo.player_b_score.toString(), box.box_x + box.box_width / 2 + 100, box.box_y + 100);
-        context.beginPath()
-        context.arc(gameInfo.ball.x_pos, gameInfo.ball.y_pos, gameInfo.ball.circle_radius, 0, 2 * Math.PI)
-        context.fill()
+        for (const ball of gameInfo.ball) {
+          context.beginPath()
+          context.arc(ball.x_pos, ball.y_pos, ball.circle_radius, 0, 2 * Math.PI)
+          context.fill()
+        }
       }
     }
 
@@ -103,17 +102,15 @@ function Game() {
 
     //Tick function to draw game
     const render = () => {
-      if (gameInfoRef.current)
-      {
-        if(gameInfoRef.current.has_ended)
-          return ;
+      if (gameInfoRef.current) {
+        if (gameInfoRef.current.has_ended)
+          return;
         draw(boxRef.current, gameInfoRef.current);
       }
       animationFrameId = window.requestAnimationFrame(render);
     };
 
     const endCanvas = () => {
-      console.log("END");
       window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener("keydown", keyDown);
       window.removeEventListener("keyup", keyUp);
@@ -121,8 +118,8 @@ function Game() {
 
     initContext();
     render();
-    if(gameInfoRef.current && gameInfoRef.current.has_ended)
-      endCanvas(); ;
+    if (gameInfoRef.current && gameInfoRef.current.has_ended)
+      endCanvas();;
     return () => {
       endCanvas();
     };

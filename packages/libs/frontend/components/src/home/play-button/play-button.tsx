@@ -1,47 +1,29 @@
 import classes from "./play-button.module.css";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import {SocketContext} from '@ft-transcendence/libs-frontend-services';
-import { Socket } from 'socket.io';
+import { useState } from "react";
+import { PlayModule, Backdrop } from "@ft-transcendence/libs-frontend-components";
 
 export function PlayButton() {
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [isOn, setIsOn] = useState(false);
 
-  const socket: Socket = useContext(SocketContext);
+  const clickMe = () => {
+    setIsOn(true);
+  }
 
-  useEffect(() => {
-    console.log("UseEffect PlayButton");
-    socket.on('server.gamestart', () => {
-      navigate("/game");
-      //window.location.reload();
-    });
-
-
-  }, [navigate, socket]);
-
-  const matchMaking = () => {
-    if (loading) {
-      setLoading(false);
-      socket.emit('client.leaveroom');
-    }
-    else {
-      setLoading(true);
-      socket.emit('client.entermatchmaking');
-    }
+  function clickme_close() {
+    setIsOn(false);
   }
 
   return (
     <div>
-      {loading ? (
-        <button className={classes['button_play']} onClick={matchMaking}>
-          <div className={classes['ldsdualring']}></div>
-        </button>
-      ) : (
-        <button className={classes['button_play']} onClick={matchMaking}>
-          Play
-        </button>
+      {isOn && (
+        <div>
+          <Backdrop closeBackdrop={clickme_close} />
+          <PlayModule />
+        </div>
       )}
+      <button className={classes['button_play']} onClick={clickMe}>
+        Play
+      </button>
     </div>
   );
 }

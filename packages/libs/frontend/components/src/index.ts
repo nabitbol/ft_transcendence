@@ -1,3 +1,5 @@
+
+export * from './home/play-module/play-module';
 export * from './chat/chat/chat';
 
 export * from './game/game';
@@ -36,11 +38,7 @@ export * from "./home/match-history/match-history";
 
 export * from "./home/past-game/past-game";
 
-export * from "./home/private-game/private-game";
-
 export * from "./home/play-button/play-button";
-
-export * from "./home/private-game-join/private-game-join";
 
 export * from "./home/spectate-game/spectate-game";
 

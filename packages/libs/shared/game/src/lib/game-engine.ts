@@ -1,7 +1,7 @@
 export class GameInfo {
 	canvasDimensions: {width: number, height: number};
 	boxDimensions: boxDimensions;
-	ball: Ball;
+	ball: Array<Ball> = new Array<Ball>();
 	paddle_a: Paddle;
 	paddle_b: Paddle;
 	player_a_score: number;
@@ -9,6 +9,7 @@ export class GameInfo {
 	end_score: number;
 	has_started: boolean;
 	has_ended: boolean;
+	mode: 'simple' | 'double';
 
 	copyInfo(other: GameInfo) {
 		this.ball = other.ball;
@@ -21,16 +22,19 @@ export class GameInfo {
 		this.has_ended = other.has_ended;
 	}
 
-	constructor(canvasDimensions: {width: number, height: number} ) {
-
+	constructor(canvasDimensions: {width: number, height: number},  mode: 'simple' | 'double') {
+		this.mode = mode;
 		this.canvasDimensions = canvasDimensions;
 		this.boxDimensions = new boxDimensions((0.8 * canvasDimensions.width),
 			(0.8 * canvasDimensions.height),
 			(0.1 * canvasDimensions.width),
 			(0.1 * canvasDimensions.height), 20);
-
-		this.ball = new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
-		this.boxDimensions.box_height * 0.02);
+	
+		this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
+		this.boxDimensions.box_height * 0.02));
+		if(this.mode === 'double')
+			this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
+		this.boxDimensions.box_height * 0.02));
 		this.paddle_a = new Paddle(
 			this.boxDimensions.box_x + 20,
 			canvasDimensions.height / 2,
@@ -42,7 +46,7 @@ export class GameInfo {
         this.boxDimensions.box_width + this.boxDimensions.box_x - 40,
         canvasDimensions.height / 2,
         20,
-        this.boxDimensions.box_height * 0.1
+        this.boxDimensions.box_height
       );
 
 		this.player_a_score = 0;
@@ -79,28 +83,35 @@ export class Ball {
 	y_acceleration: number;
 	x_velocity: number;
 	y_velocity: number;
-	min_velocity: number;
-	max_velocity: number;
+	min_velocity_x: number;
+	max_velocity_x: number;
+	min_velocity_y: number;
+	max_velocity_y: number;
 	constructor(x_start: number, y_start: number, radius: number) {
 		this.circle_radius = radius;
 		this.x_pos = x_start;
 		this.y_pos = y_start;
 		this.start_x_pos = x_start;
 		this.start_y_pos = y_start;
-		this.x_acceleration = 1.1;
-		this.y_acceleration = 1.1;
-		this.x_velocity = -5;
-		this.y_velocity = 1;
-		this.min_velocity = -25;
-		this.max_velocity = 25;
+		this.x_acceleration = 1.2;
+		this.y_acceleration = 1.2;
+		this.min_velocity_x = -20;
+		this.max_velocity_x = 20;
+		this.min_velocity_y = -15;
+		this.max_velocity_y = 15;
+		this.reset();
 	}
 
 	reset()
 	{
 		this.x_pos = this.start_x_pos;
 		this.y_pos = this.start_y_pos;
-		this.x_velocity = -5;
-		this.y_velocity = 1;
+		this.x_velocity = Math.random() * (8 - 5) + 5;
+		if(Math.round(Math.random()))
+			this.x_velocity *= -1;
+		this.y_velocity = Math.random() * (8 - 5) + 5;
+		if(Math.round(Math.random()))
+			this.y_velocity *= -1;
 	}
 }
 
@@ -165,51 +176,58 @@ export class Engine {
 				this.gameInfo.paddle_b.y_pos += this.gameInfo.paddle_b.paddle_speed;
 		}
 
-		if(this.gameInfo.ball.x_pos + this.gameInfo.ball.circle_radius + this.gameInfo.ball.x_velocity >= this.gameInfo.paddle_b.x_pos)
+		for(const ball of this.gameInfo.ball)
 		{
-			if(this.gameInfo.ball.y_pos + this.gameInfo.ball.circle_radius >= this.gameInfo.paddle_b.y_pos && this.gameInfo.ball.y_pos - this.gameInfo.ball.circle_radius <= this.gameInfo.paddle_b.y_pos + this.gameInfo.paddle_b.height)
+
+			if(ball.x_pos + ball.circle_radius + ball.x_velocity >= this.gameInfo.paddle_b.x_pos)
 			{
-				if(this.gameInfo.ball.x_velocity >= this.gameInfo.ball.min_velocity && this.gameInfo.ball.x_velocity <= this.gameInfo.ball.max_velocity)
-					this.gameInfo.ball.x_velocity *= this.gameInfo.ball.x_acceleration;
-				this.gameInfo.ball.x_velocity *= -1;
+				if(ball.y_pos + ball.circle_radius >= this.gameInfo.paddle_b.y_pos && ball.y_pos - ball.circle_radius <= this.gameInfo.paddle_b.y_pos + this.gameInfo.paddle_b.height)
+				{
+					if(ball.x_velocity >= ball.min_velocity_x && ball.x_velocity <= ball.max_velocity_x)
+						ball.x_velocity *= ball.x_acceleration;
+					
+					if(ball.y_velocity >= ball.min_velocity_y && ball.y_velocity <= ball.max_velocity_y)
+						ball.y_velocity *= ball.y_acceleration;
+
+						ball.x_velocity *= -1;
+				}
 			}
-		}
-		if(this.gameInfo.ball.x_pos - this.gameInfo.ball.circle_radius + this.gameInfo.ball.x_velocity <= this.gameInfo.paddle_a.x_pos + this.gameInfo.paddle_a.width)
-		{
-			if(this.gameInfo.ball.y_pos + this.gameInfo.ball.circle_radius >= this.gameInfo.paddle_a.y_pos && this.gameInfo.ball.y_pos - this.gameInfo.ball.circle_radius <= this.gameInfo.paddle_a.y_pos + this.gameInfo.paddle_a.height)
+			if(ball.x_pos - ball.circle_radius + ball.x_velocity <= this.gameInfo.paddle_a.x_pos + this.gameInfo.paddle_a.width)
 			{
-				if(this.gameInfo.ball.x_velocity >= this.gameInfo.ball.min_velocity && this.gameInfo.ball.x_velocity <= this.gameInfo.ball.max_velocity)
-					this.gameInfo.ball.x_velocity *= this.gameInfo.ball.x_acceleration;
-				this.gameInfo.ball.x_velocity *= -1;
+				if(ball.y_pos + ball.circle_radius >= this.gameInfo.paddle_a.y_pos && ball.y_pos - ball.circle_radius <= this.gameInfo.paddle_a.y_pos + this.gameInfo.paddle_a.height)
+				{
+					if(ball.x_velocity >= ball.min_velocity_x && ball.x_velocity <= ball.max_velocity_x)
+					ball.x_velocity *= ball.x_acceleration;
+					ball.x_velocity *= -1;
+				}
 			}
 		}
 	}
 
 	ball_tick()
 	{
-		this.gameInfo.ball.x_pos += this.gameInfo.ball.x_velocity;
-		this.gameInfo.ball.y_pos += this.gameInfo.ball.y_velocity;
-		if((this.gameInfo.ball.x_pos + this.gameInfo.ball.circle_radius + this.gameInfo.ball.x_velocity) >= this.gameInfo.canvasDimensions.width - this.gameInfo.boxDimensions.box_x - this.gameInfo.boxDimensions.box_border_width/2)
+		for(const ball of this.gameInfo.ball)
 		{
-			this.gameInfo.player_a_score++;
-			if(this.gameInfo.player_a_score >= this.gameInfo.end_score)
-				this.gameInfo.has_ended = true;
-			this.gameInfo.ball.reset();
-		}
+			ball.x_pos += ball.x_velocity;
+			ball.y_pos += ball.y_velocity;
+			if((ball.x_pos + ball.circle_radius + ball.x_velocity) >= this.gameInfo.canvasDimensions.width - this.gameInfo.boxDimensions.box_x - this.gameInfo.boxDimensions.box_border_width/2)
+			{
+				this.gameInfo.player_a_score++;
+				if(this.gameInfo.player_a_score >= this.gameInfo.end_score)
+					this.gameInfo.has_ended = true;
+				ball.reset();
+			}
 
-		else if((this.gameInfo.ball.x_pos - this.gameInfo.ball.circle_radius + this.gameInfo.ball.x_velocity) <= this.gameInfo.boxDimensions.box_x + this.gameInfo.boxDimensions.box_border_width/2)
-		{
-			this.gameInfo.player_b_score++;
-			if(this.gameInfo.player_b_score >= this.gameInfo.end_score)
-				this.gameInfo.has_ended = true;
-			this.gameInfo.ball.reset();
-		}
-		if((this.gameInfo.ball.y_pos + this.gameInfo.ball.circle_radius + this.gameInfo.ball.y_velocity) >= this.gameInfo.canvasDimensions.height - this.gameInfo.boxDimensions.box_y - this.gameInfo.boxDimensions.box_border_width/2 ||
-		(this.gameInfo.ball.y_pos - this.gameInfo.ball.circle_radius + this.gameInfo.ball.y_velocity) <= this.gameInfo.boxDimensions.box_y + this.gameInfo.boxDimensions.box_border_width/2)
-		{
-			if(this.gameInfo.ball.y_velocity >= this.gameInfo.ball.min_velocity && this.gameInfo.ball.y_velocity <= this.gameInfo.ball.max_velocity)
-				this.gameInfo.ball.y_velocity *= this.gameInfo.ball.y_acceleration;
-			this.gameInfo.ball.y_velocity *= -1;
+			else if((ball.x_pos - ball.circle_radius + ball.x_velocity) <= this.gameInfo.boxDimensions.box_x + this.gameInfo.boxDimensions.box_border_width/2)
+			{
+				this.gameInfo.player_b_score++;
+				if(this.gameInfo.player_b_score >= this.gameInfo.end_score)
+					this.gameInfo.has_ended = true;
+				ball.reset();
+			}
+			if((ball.y_pos + ball.circle_radius + ball.y_velocity) >= this.gameInfo.canvasDimensions.height - this.gameInfo.boxDimensions.box_y - this.gameInfo.boxDimensions.box_border_width/2 ||
+			(ball.y_pos - ball.circle_radius + ball.y_velocity) <= this.gameInfo.boxDimensions.box_y + this.gameInfo.boxDimensions.box_border_width/2)
+				ball.y_velocity *= -1;
 		}
 	}
 }

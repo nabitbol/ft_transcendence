@@ -35,9 +35,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage(ClientEvents.EnterMatchMaking)
-  onEnterMatchmaking(client: Socket)
+  onEnterMatchmaking(client: Socket, mode: 'simple' | 'double')
   {
-    this.lobbyManager.enterMatchMaking(client);
+    console.log(mode);
+    this.lobbyManager.enterMatchMaking(client, mode);
   }
 
   @SubscribeMessage(ClientEvents.GameInput)
@@ -47,13 +48,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage(ClientEvents.CreateRoom)
-  onLobbyCreate(client: Socket): WsResponse<ServerPayloads[ServerEvents.GameMessage]>
+  onLobbyCreate(client: Socket, mode: 'simple' | 'double'): WsResponse<ServerPayloads[ServerEvents.lobbyCreated]>
   {
-    this.lobbyManager.createLobby(client);
+    this.lobbyManager.createLobby(client, mode);
     return {
-      event: ServerEvents.GameMessage,
+      event: ServerEvents.lobbyCreated,
       data: {
         message: 'Room created',
+        lobbyId: client.data.lobby?.getId(),
       },
     };
   }
@@ -63,7 +65,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   {
     this.lobbyManager.joinLobby(data.lobbyId, client);
     return {
-      event:ServerEvents.GameMessage,
+      event:ServerEvents.LobbyJoined,
       data: {
         message: 'Successfully joined',
       },

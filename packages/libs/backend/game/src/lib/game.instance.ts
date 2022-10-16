@@ -7,10 +7,9 @@ export class GameInstance
 {
 	private gameInfo: GameInfo;
 	private gameEngine: Engine;
-	constructor(private lobby: Lobby)
+	constructor(private lobby: Lobby, private mode: 'simple' | 'double')
 	{
-		this.gameInfo = new GameInfo({width: 1920, height: 1016});
-		this.gameEngine = new Engine(this.gameInfo);
+		this.resetGame();
 	}
 
 	public startGame(): void
@@ -28,6 +27,25 @@ export class GameInstance
 	}
   
 
+	public resetGame(): void
+	{
+		this.gameInfo = new GameInfo({width: 1920, height: 1016}, this.mode)
+		this.gameEngine = new Engine(this.gameInfo);
+	}
+
+	public async endGame(): Promise<void>
+	{
+		console.log("End game");
+		if (this.gameInfo.has_ended || !this.gameInfo.has_started) {
+			return;
+		}
+	
+		this.gameInfo.has_ended = true;
+		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameStart]>(ServerEvents.GameStart, {
+			message: 'Game ended !',
+		});
+	}
+
 	public delay(ms: number) {
 		return new Promise( resolve => setTimeout(resolve, ms) );
 	};
@@ -35,16 +53,18 @@ export class GameInstance
 	public async launchGame(): Promise<void>
 	{
 		(async () => { 
-			while(this.gameInfo.has_ended === false)
+			while(this.gameInfo.has_ended === false && this.gameInfo.has_started === true)
 			{
 				this.gameEngine.render();
 				this.lobby.sendGameInfo();
 				await this.delay(20);
 			}
+			console.log("End while game");
 			this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
 				message: 'Game finished !',
 			});
 		})();
+		console.log("End render game");
 		
 	}
 
