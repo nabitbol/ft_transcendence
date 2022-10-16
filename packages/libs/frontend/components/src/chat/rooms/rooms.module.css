@@ -6,13 +6,14 @@
 
 .roomLine {
 	display: flex;
-	margin: 1%;
-	padding: 3%;
+	padding: 2%;
 	cursor: pointer;
 	justify-content: space-between;
 }
 
-.roomName {}
+.roomName {
+	color: rgba(190, 1, 95, 0.747);
+}
 
 .roomLine:hover {
 	background-color: rgb(199, 199, 199);

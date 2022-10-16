@@ -28,7 +28,7 @@ export function Tmp(props: TmpProps) {
             <Message own={true} />
             <Message own={false} />
             <Message own={false} />
-            <Message own={false} />
+            <Message own={true} />
           </div>
           <div className={styles["chatBoxBottom"]}>
             <MessageInput />
@@ -36,7 +36,7 @@ export function Tmp(props: TmpProps) {
         </div>
       </div>
       <div className={styles["chatUsers"]}>
-        <div className={styles["chatUsersWrapper"]}>toto</div>
+        <div className={styles["chatUsersWrapper"]}>Users List</div>
       </div>
     </div>
   );
