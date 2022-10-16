@@ -8,9 +8,9 @@
 	display: flex;
 	flex-direction: column;
 	margin-top: 20px;
+	margin-right: 20px;
 	align-items: flex-end;
 	flex-direction: column;
-	margin-top: 20px;
 }
 
 .messageTop {

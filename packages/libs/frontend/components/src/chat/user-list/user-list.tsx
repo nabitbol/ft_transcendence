@@ -1,18 +1,33 @@
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./user-list.module.css";
 
 /* eslint-disable-next-line */
 export interface UserListProps {}
 
 export function UserList(props: UserListProps) {
-  const [userAction, setUserAction] = useState("userActionDown");
+  const [userAction, setUserAction] = useState<string>("userActionDown");
+  const [userActionList, setUserActionList] = useState<boolean>(false);
+  const actionRef = useRef<HTMLDivElement>(null);
 
-  const switchUserAction = () => {
+  const openUserActionList = (state: boolean) => {
+    setUserActionList(!state);
     setUserAction((cur) =>
       cur === "userActionDown" ? "userActionUp" : "userActionDown"
     );
   };
+  const handleClickOutsideActionList = (e) => {
+    if (
+      userActionList &&
+      userAction === "userActionUp" &&
+      !actionRef.current?.contains(e.target as Node)
+    ) {
+      setUserActionList(false);
+      setUserAction("userActionDown");
+    }
+  };
+  window.addEventListener("click", handleClickOutsideActionList);
+
   return (
     <div className={styles["userList"]}>
       <div className={styles["userLine"]}>
@@ -27,7 +42,21 @@ export function UserList(props: UserListProps) {
           </div>
           <span className={styles["userName"]}>{"nabitbol"}</span>
         </div>
-        <span className={styles[userAction]} onClick={switchUserAction}></span>
+        <div className={styles["actionContainer"]} ref={actionRef}>
+          <span
+            className={styles[userAction]}
+            onClick={(e) => openUserActionList(userActionList)}
+          ></span>
+          <div>
+            {userActionList && (
+              <ul className={styles["actionList"]}>
+                <li className={styles["actionItem"]}>item1</li>
+                <li className={styles["actionItem"]}>item2</li>
+                <li className={styles["actionItem"]}>item3</li>
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
