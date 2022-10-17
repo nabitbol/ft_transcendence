@@ -1,3 +1,5 @@
+export * from "./socket-manager/socket-manager";
+
 export * from "./chat/chat";
 
 export * from "./socket/socket";
