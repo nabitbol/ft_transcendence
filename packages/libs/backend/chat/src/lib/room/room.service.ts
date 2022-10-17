@@ -5,10 +5,22 @@ import {
   UserRoomDto,
 } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
-import { Room_Role, Room_Status, User_Room } from "@prisma/client";
+import { Room_Role, Room_Status } from "@prisma/client";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class RoomService {
+  /* ---------------------------------- utils --------------------------------- */
+
+  async hashString(textToEncrypt: string): Promise<string> {
+    const saltRounds = 10;
+
+    const salt = await bcrypt.genSalt(saltRounds);
+    return await bcrypt.hash(textToEncrypt, salt);
+  }
+
+  /* --------------------------------- methods -------------------------------- */
+
   public async getPublicRooms() {
     const status: Room_Status = Room_Status.PUBLIC;
     try {
@@ -64,6 +76,7 @@ export class RoomService {
   public async createRoom(room: RoomDto, creator: UserDto, users?: UserDto[]) {
     if (room.status === Room_Status.PROTECTED) {
       if (!room.password) throw Error("No password provided");
+      room.password = await this.hashString(room.password);
     }
     try {
       await prisma.room.create({
