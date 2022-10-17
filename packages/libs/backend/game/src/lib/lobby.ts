@@ -1,8 +1,7 @@
 import { v4 } from 'uuid';
 import { Server, Socket } from 'socket.io';
 import { GameInstance } from './game.instance';
-import { ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
-
+import { PlayersName, ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
 
 export class Lobby
 {
@@ -12,10 +11,14 @@ export class Lobby
 
   private clients: Map<Socket['id'], Socket> = new Map<Socket['id'], Socket>();
 
+  private clients_spectator: Map<Socket['id'], Socket> = new Map<Socket['id'], Socket>();
+
+  private players_name: PlayersName;
   private gameInstance: GameInstance;
 
   constructor( private server: Server, private mode: 'simple' | 'double')
   {
+    this.gameInstance = new GameInstance(this, this.mode); 
     this.gameInstance = new GameInstance(this, this.mode); 
   }
 
@@ -27,12 +30,25 @@ export class Lobby
     client.join(this.id);
     client.data.lobby = this;
 
+
+    if(!this.players_name.left)
+      this.players_name.left = client.data.user.name;
+    else
+      this.players_name.right = client.data.user.name;
     if (this.clients.size >= 2) {
-      this.gameInstance.startGame();
+      this.gameInstance.startGame(this.players_name);
     }
   }
 
-  public removeClient(client: Socket): void
+  public addSpectator(client: Socket): void
+  {
+    console.log("Add spectator to lobby");
+    this.clients_spectator.set(client.id, client);
+    console.log("Client " + client.id +" join: " + this.id);
+    client.join(this.id);
+  }
+
+  public removeClient(): void
   {
     this.gameInstance.endGame();
 

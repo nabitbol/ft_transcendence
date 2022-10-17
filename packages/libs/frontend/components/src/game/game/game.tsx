@@ -1,13 +1,16 @@
 import classes from "./game.module.css";
-import { useRef, useEffect, useCallback, useContext } from "react";
+import { useRef, useEffect, useCallback, useContext, useState } from "react";
 import useWindowSize from "./useWindowSize";
 import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
 import { Socket } from 'socket.io';
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
+import { ResultScreen } from "@ft-transcendence/libs-frontend-components";
+import { ResultGame } from "@ft-transcendence/libs-shared-types"
 
 function Game() {
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isResultOn, setIsResultOn] = useState<boolean>(false);
   const [width, height] = useWindowSize();
   const gameInfoRef = useRef<GameInfo>();
   const boxRef = useRef<boxDimensions>();
@@ -41,13 +44,19 @@ function Game() {
       sendInput(inputRef.current);
   }, [sendInput]);
 
+  const listenerGameInfo = (response: { info: GameInfo }) => {
+    gameInfoRef.current = response.info;
+  }
+
+  const listenerGameEnd = (result: ResultGame ) => {
+    setIsResultOn(true);
+  }
+
   useEffect(() => {
     console.log("In useEffect game");
 
-    socket.on('server.gameinfo', (response: { info: GameInfo }) => {
-      gameInfoRef.current = response.info;
-    });
-
+    socket.on('server.gameinfo', listenerGameInfo);
+    socket.on('server.gameend', listenerGameEnd);
     let canvas: HTMLCanvasElement | null;
     let context: CanvasRenderingContext2D | null;
     let animationFrameId: number;
@@ -60,6 +69,8 @@ function Game() {
         context.fillRect(gameInfo.paddle_b.x_pos, gameInfo.paddle_b.y_pos, gameInfo.paddle_b.width, gameInfo.paddle_b.height);
         context.fillText(gameInfo.player_a_score.toString(), box.box_x + box.box_width / 2 - 100, box.box_y + 100);
         context.fillText(gameInfo.player_b_score.toString(), box.box_x + box.box_width / 2 + 100, box.box_y + 100);
+        context.fillText(gameInfo.players_name.left, canvas.width / 2 - 150, 100)
+        context.fillText(gameInfo.players_name.right, canvas.width / 2 + 150, 100)
         for (const ball of gameInfo.ball) {
           context.beginPath()
           context.arc(ball.x_pos, ball.y_pos, ball.circle_radius, 0, 2 * Math.PI)
@@ -98,6 +109,9 @@ function Game() {
         boxRef.current.box_width,
         boxRef.current.box_height
       );
+      context.fillStyle = "rgb(0, 0, 0)";
+      context.fillText("No connection...", canvas.width / 2 - 150, canvas.height / 2);
+      context.fillStyle = "#FFFFFF";
     }
 
     //Tick function to draw game
@@ -111,6 +125,8 @@ function Game() {
     };
 
     const endCanvas = () => {
+      socket.off('server.gameinfo', listenerGameInfo);
+      socket.off('server.gameend', listenerGameEnd);
       window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener("keydown", keyDown);
       window.removeEventListener("keyup", keyUp);
@@ -127,7 +143,8 @@ function Game() {
 
   return (
     <div className={classes["background"]}>
-      <canvas className={classes["game"]} ref={canvasRef} />
+      {!isResultOn && <canvas className={classes["game"]} ref={canvasRef} />}
+      {isResultOn && <div>pipi</div>}
     </div>
   );
 }

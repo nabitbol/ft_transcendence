@@ -1,8 +1,12 @@
+export * from './game/result-screen/result-screen';
 
-export * from './home/play-module/play-module';
+export * from './home/all-live-game/all-live-game';
+
 export * from './chat/chat/chat';
 
-export * from './game/game';
+export * from './home/play-module/play-module';
+
+export * from './game/game/game'
 
 export * from './achievement/achievement/achievement';
 

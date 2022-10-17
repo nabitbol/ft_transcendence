@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { authenticator } from 'otplib';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from '@ft-transcendence/libs-backend-user';
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 import { toFileStream } from 'qrcode';

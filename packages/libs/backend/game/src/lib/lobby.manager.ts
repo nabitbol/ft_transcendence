@@ -2,6 +2,7 @@ import { Socket, Server } from 'socket.io';
 import { Cron } from '@nestjs/schedule';
 import { Lobby } from './lobby'
 import { WsException } from '@nestjs/websockets'
+ 
 import { ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
 
 export class LobbyManager
@@ -28,7 +29,7 @@ export class LobbyManager
   public getRandomLobby(mode: 'simple' | 'double') : Lobby | undefined
   {
     for (const [lobbyId, lobby] of this.lobbies) {
-      if(lobby.getMode() ===  mode)
+      if(lobby.getMode() ===  mode && lobby.getClients().size < 2)
         return lobby;
     }
     return undefined;
@@ -47,7 +48,7 @@ export class LobbyManager
   
   public terminateSocket(client: Socket): void
   {
-    client.data.lobby?.removeClient(client)
+    client.data.lobby?.removeClient();
   }
 
   public createLobby(client: Socket, data: 'simple' | 'double'): void
@@ -60,7 +61,7 @@ export class LobbyManager
 
   public joinLobby(lobbyId: string, client: Socket): void
   {
-    console.log(lobbyId);
+
     const lobby = this.lobbies.get(lobbyId);
     if (!lobby) {
       throw new WsException('Lobby not found');
@@ -71,6 +72,12 @@ export class LobbyManager
       }
       
     lobby.addClient(client);
+  }
+
+  public spectateLobby(lobbyId: string, client: Socket): void
+  {
+    console.log("Spectate lobby: " + lobbyId);
+    client.join(lobbyId);
   }
 
   public deleteLobby(lobbyId: string): void
@@ -97,6 +104,11 @@ export class LobbyManager
         this.deleteLobby(lobby.getId());
       }
     }
+  }
+
+  public getLobbies(client: Socket): Map<Lobby['id'], Lobby>
+  {
+    return this.lobbies;
   }
 }
 

@@ -1,6 +1,6 @@
 import { Engine, GameInfo } from "@ft-transcendence/libs/shared/game";
 import { Lobby } from './lobby';
-import { ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
+import { ServerEvents, ServerPayloads, ResultGame } from "@ft-transcendence/libs-shared-types"
 import { Socket } from 'socket.io';
 
 export class GameInstance
@@ -12,13 +12,14 @@ export class GameInstance
 		this.resetGame();
 	}
 
-	public startGame(): void
+	public startGame(players_name: {right: string, left: string}): void
 	{
-		console.log("Start game");
+		console.log("Start game:" + players_name.left + ' VS ' + players_name.right);
 		if (this.gameInfo.has_started) {
 			return;
 		}
-	
+		this.gameInfo.players_name.left = players_name.left;
+		this.gameInfo.players_name.right = players_name.right;
 		this.gameInfo.has_started = true;
 		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameStart]>(ServerEvents.GameStart, {
 			message: 'Game started !',
@@ -33,16 +34,27 @@ export class GameInstance
 		this.gameEngine = new Engine(this.gameInfo);
 	}
 
+	public createResult(): ResultGame
+	{
+		const result: ResultGame = {
+			winner: "hardcodead",
+			loser: "hardcodead",
+			score: {left: 666, right: 69}
+		}
+		return result;
+	}
+
 	public async endGame(): Promise<void>
 	{
-		console.log("End game");
-		if (this.gameInfo.has_ended || !this.gameInfo.has_started) {
+		if (!this.gameInfo.has_started) {
 			return;
 		}
-	
+		
+		console.log("End game");
 		this.gameInfo.has_ended = true;
-		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameStart]>(ServerEvents.GameStart, {
-			message: 'Game ended !',
+		const result: ResultGame = this.createResult()
+		this.lobby.sendMessage<ServerPayloads[ServerEvents.GameEnd]>(ServerEvents.GameEnd, {
+			result: result,
 		});
 	}
 
@@ -53,24 +65,18 @@ export class GameInstance
 	public async launchGame(): Promise<void>
 	{
 		(async () => { 
-			while(this.gameInfo.has_ended === false && this.gameInfo.has_started === true)
+			while(this.gameInfo.has_started === true)
 			{
 				this.gameEngine.render();
+				if(this.gameInfo.has_ended === true)
+					return this.endGame();
 				this.lobby.sendGameInfo();
 				await this.delay(20);
 			}
-			console.log("End while game");
-			this.lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
-				message: 'Game finished !',
-			});
-		})();
-		console.log("End render game");
-		
+		})();	
 	}
 
 	public inputGame = (client: Socket, input) => {
-		console.log(this.lobby.getClients().values().next().value.id);
-		console.log(client.id);
 		if(this.lobby.getClients().values().next().value.id === client.id)
 		{
 			this.gameInfo.paddle_a.up = input.up;

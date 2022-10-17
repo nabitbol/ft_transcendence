@@ -1,3 +1,6 @@
+ 
+import { PlayersName } from '@ft-transcendence/libs-shared-types'
+
 export class GameInfo {
 	canvasDimensions: {width: number, height: number};
 	boxDimensions: boxDimensions;
@@ -10,6 +13,7 @@ export class GameInfo {
 	has_started: boolean;
 	has_ended: boolean;
 	mode: 'simple' | 'double';
+	players_name: PlayersName;
 
 	copyInfo(other: GameInfo) {
 		this.ball = other.ball;
@@ -29,12 +33,15 @@ export class GameInfo {
 			(0.8 * canvasDimensions.height),
 			(0.1 * canvasDimensions.width),
 			(0.1 * canvasDimensions.height), 20);
-	
+		this.end_score = 5;
 		this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
 		this.boxDimensions.box_height * 0.02));
 		if(this.mode === 'double')
+		{
+			this.end_score = 10;
 			this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
-		this.boxDimensions.box_height * 0.02));
+			this.boxDimensions.box_height * 0.02));
+		}
 		this.paddle_a = new Paddle(
 			this.boxDimensions.box_x + 20,
 			canvasDimensions.height / 2,
@@ -46,12 +53,11 @@ export class GameInfo {
         this.boxDimensions.box_width + this.boxDimensions.box_x - 40,
         canvasDimensions.height / 2,
         20,
-        this.boxDimensions.box_height
+        this.boxDimensions.box_height * 0.1
       );
 
 		this.player_a_score = 0;
 		this.player_b_score = 0;
-		this.end_score = 100;
 		this.has_ended = false;
 	}
 }
@@ -132,11 +138,8 @@ export class Paddle {
 }
 
 export class Engine {
-	gameInfo: GameInfo;
 
-	constructor(gameInfo: GameInfo) {
-		this.gameInfo = gameInfo;
-	}
+	constructor(private gameInfo: GameInfo) {}
 
 	getGameInfo(): GameInfo {
 		return this.gameInfo;
@@ -214,7 +217,7 @@ export class Engine {
 			{
 				this.gameInfo.player_a_score++;
 				if(this.gameInfo.player_a_score >= this.gameInfo.end_score)
-					this.gameInfo.has_ended = true;
+					return this.gameInfo.has_ended = true;
 				ball.reset();
 			}
 
@@ -222,7 +225,7 @@ export class Engine {
 			{
 				this.gameInfo.player_b_score++;
 				if(this.gameInfo.player_b_score >= this.gameInfo.end_score)
-					this.gameInfo.has_ended = true;
+					return this.gameInfo.has_ended = true;
 				ball.reset();
 			}
 			if((ball.y_pos + ball.circle_radius + ball.y_velocity) >= this.gameInfo.canvasDimensions.height - this.gameInfo.boxDimensions.box_y - this.gameInfo.boxDimensions.box_border_width/2 ||

@@ -1,31 +1,43 @@
 import classes from "./spectate-game.module.css";
-import { Backdrop, LiveGame } from "@ft-transcendence/libs-frontend-components";
-import { useState } from "react";
+import { Backdrop, AllLiveGame } from "@ft-transcendence/libs-frontend-components";
+import { Socket } from 'socket.io';
+import { SocketContext } from '@ft-transcendence/libs-frontend-services';
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Lobby } from "@ft-transcendence/libs/backend/game"
 
 export function SpectateGame() {
-  const [list, setList] = useState(false);
-  const ID = ["1", "2"];
+  const navigate = useNavigate();
+  const [specateOn, setSpecateOn] = useState<boolean>(false);
+  const [allGame, setAllGame] = useState<Map<Lobby['id'], Lobby>>(undefined);
+  const socket: Socket = useContext(SocketContext);
 
   function clickme_spectate_button() {
-    setList(true);
+    setSpecateOn(true);
   }
 
   function clickme_close() {
-    setList(false);
+    setSpecateOn(false);
   }
 
-  return (
+  const listenerLobbyList = (data) => {
+    setAllGame(data.lobbies);
+  }
+
+  useEffect(() => {
+    socket.on('server.lobbylist', listenerLobbyList);
+    socket.emit('client.lobbylist');
+    return () => {
+      socket.off('server.lobbylist', listenerLobbyList);
+    };
+  }, [navigate, socket]);
+
+  return !allGame ? null : (
     <div>
-      {list && (
+      {specateOn && (
         <div>
           <Backdrop closeBackdrop={clickme_close} />
-          <div className={classes['div']}>
-            <h2 className={classes['h2_title']}>Live Game</h2>
-            <button className={classes['close']} onClick={clickme_close}></button>
-            {ID.map((ID) => (
-              <LiveGame game_id={ID} key={ID} />
-            ))}
-          </div>
+          <AllLiveGame allGame={allGame} />
         </div>
       )}
       <button

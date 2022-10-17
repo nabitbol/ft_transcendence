@@ -1,4 +1,15 @@
 import { GameInfo } from "@ft-transcendence/libs/shared/game";
+import { Lobby } from "../../../../../libs/backend/game/src/lib/lobby";
+
+export type PlayersName = {
+	left: string;
+	right: string;
+};
+
+export type ScoreGame = {
+	left: number;
+	right: number;
+};
 
 export enum ClientEvents
 {
@@ -7,6 +18,7 @@ export enum ClientEvents
 	CreateRoom = 'client.createroom',
 	JoinRoom = 'client.joinroom',
 	LeaveRoom = 'client.leaveroom',
+	LobbyList = 'client.lobbylist'
 }
 
 export enum ServerEvents
@@ -14,8 +26,16 @@ export enum ServerEvents
 	GameMessage = 'server.message',
 	GameInfo = 'server.gameinfo',
 	GameStart = 'server.gamestart',
+	GameEnd = 'server.gameend',
 	LobbyJoined = 'server.lobbyjoined',
-	lobbyCreated = 'server.lobbycreated'
+	LobbyCreated = 'server.lobbycreated',
+	LobbyList =  'server.lobbylist',
+}
+
+export type ResultGame = {
+	winner: string;
+	loser: string;
+	score: ScoreGame;
 }
 
 export type ServerPayloads = {
@@ -27,7 +47,7 @@ export type ServerPayloads = {
 		message: string;
 	  };
 
-	[ServerEvents.lobbyCreated]: {
+	[ServerEvents.LobbyCreated]: {
 		message: string;
 		lobbyId: number;
 	  };
@@ -38,5 +58,13 @@ export type ServerPayloads = {
 
 	[ServerEvents.GameStart]: {
 		message: string;
+	  };
+
+	[ServerEvents.GameEnd]: {
+		result: ResultGame;
+	  };
+
+	[ServerEvents.LobbyList]: {
+		lobbies: Map<Lobby['id'], Lobby>;
 	  };
   };
