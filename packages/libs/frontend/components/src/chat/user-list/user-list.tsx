@@ -1,5 +1,6 @@
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useRef, useState } from "react";
+import UserAction from "../user-action/user-action";
 import styles from "./user-list.module.css";
 
 /* eslint-disable-next-line */
@@ -47,15 +48,7 @@ export function UserList(props: UserListProps) {
             className={styles[userAction]}
             onClick={(e) => openUserActionList(userActionList)}
           ></span>
-          <div>
-            {userActionList && (
-              <ul className={styles["actionList"]}>
-                <li className={styles["actionItem"]}>item1</li>
-                <li className={styles["actionItem"]}>item2</li>
-                <li className={styles["actionItem"]}>item3</li>
-              </ul>
-            )}
-          </div>
+          <div>{userActionList && <UserAction />}</div>
         </div>
       </div>
     </div>

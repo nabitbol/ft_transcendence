@@ -1,0 +1,19 @@
+.actionList {
+	position: absolute;
+	top: 20px;
+	right: 5px;
+	z-index: 1;
+	background-color: white;
+	list-style-type: none;
+}
+
+.actionItem {
+	padding: 6px 25px;
+	white-space: nowrap;
+	border: 1px solid lightgrey;
+}
+
+.actionItem:hover {
+	cursor: pointer;
+	background-color: lightgray;
+}

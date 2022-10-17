@@ -38,26 +38,6 @@
 	position: relative;
 }
 
-.actionList {
-	position: absolute;
-	top: 20px;
-	right: 5px;
-	z-index: 1;
-	background-color: white;
-	list-style-type: none;
-}
-
-.actionItem {
-	padding: 5px 20px;
-	align-items: center;
-	border: 1px solid lightgrey;
-}
-
-.actionItem:hover {
-	cursor: pointer;
-	background-color: lightgray;
-}
-
 .userActionUp {
 	border: solid black;
 	border-width: 0 3px 3px 0;
