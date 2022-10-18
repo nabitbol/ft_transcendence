@@ -1,12 +1,14 @@
 import {
   Chat,
+  SocketContext,
   vnumber,
   vpassword_length,
   vregex,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Socket } from "socket.io-client";
 import styles from "./room-form.module.css";
 
 /* eslint-disable-next-line */
@@ -20,26 +22,14 @@ export function RoomForm(props: RoomFormProps) {
   } = useForm();
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
+  const socket: Socket = useContext(SocketContext);
 
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
-    Chat.createRoom(data.room_name, data.room_password).then(
-      () => {
-        setMessage("Room creation was successfull !");
-        setSuccessful(true);
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setMessage(resMessage);
-        setSuccessful(false);
-      }
-    );
+    const test = { name: data.room_name, password: data.room_password };
+    console.log(test);
+    socket.emit("client:createRoom", test);
   };
 
   return (

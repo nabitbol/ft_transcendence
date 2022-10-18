@@ -19,6 +19,10 @@ export class RoomService {
     return await bcrypt.hash(textToEncrypt, salt);
   }
 
+  async compareHash(hash: string, textToCompare: string): Promise<boolean> {
+    return await bcrypt.compare(textToCompare, hash);
+  }
+
   /* --------------------------------- methods -------------------------------- */
 
   public async getPublicRooms() {
@@ -59,7 +63,7 @@ export class RoomService {
   }
 
   public async addUsers(roomId: string, users: UserDto[]) {
-    let tmp: UserRoomDto[];
+    const tmp: UserRoomDto[] = [];
     users.map((element, index) => {
       tmp[index] = {
         role: Room_Role.NORMAL,
