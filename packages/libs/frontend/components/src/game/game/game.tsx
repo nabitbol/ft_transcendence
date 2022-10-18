@@ -10,12 +10,13 @@ import { ResultGame } from "@ft-transcendence/libs-shared-types"
 function Game() {
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isResultOn, setIsResultOn] = useState<boolean>(false);
+  const [isResultOn, setIsResultOn] = useState<ResultGame>(undefined);
   const [width, height] = useWindowSize();
   const gameInfoRef = useRef<GameInfo>();
   const boxRef = useRef<boxDimensions>();
   const socket: Socket = useContext(SocketContext);
   const inputRef = useRef<{ up: number, down: number }>({ up: 0, down: 0 });
+
   //Setup socket io event
   const sendInput = useCallback((input: { up: number, down: number }) => {
     socket.emit('client.gameinput', input);
@@ -49,7 +50,7 @@ function Game() {
   }
 
   const listenerGameEnd = (result: ResultGame ) => {
-    setIsResultOn(true);
+    setIsResultOn(result);
   }
 
   useEffect(() => {
@@ -62,15 +63,18 @@ function Game() {
     let animationFrameId: number;
 
     function draw(box: boxDimensions, gameInfo: GameInfo) {
-      console.log(gameInfo);
       if (context != null && gameInfo) {
         context.clearRect(box.box_x + box.box_border_width / 2, box.box_y + box.box_border_width / 2, box.box_width - box.box_border_width, box.box_height - box.box_border_width);
         context.fillRect(gameInfo.paddle_a.x_pos, gameInfo.paddle_a.y_pos, gameInfo.paddle_a.width, gameInfo.paddle_a.height);
         context.fillRect(gameInfo.paddle_b.x_pos, gameInfo.paddle_b.y_pos, gameInfo.paddle_b.width, gameInfo.paddle_b.height);
         context.fillText(gameInfo.player_a_score.toString(), box.box_x + box.box_width / 2 - 100, box.box_y + 100);
         context.fillText(gameInfo.player_b_score.toString(), box.box_x + box.box_width / 2 + 100, box.box_y + 100);
-        context.fillText(gameInfo.players_name.left, canvas.width / 2 - 150, 100)
-        context.fillText(gameInfo.players_name.right, canvas.width / 2 + 150, 100)
+        context.textAlign = 'center';
+        context.fillText("VS", canvas.width / 2 - 20, 70);
+        context.textAlign = 'left';
+        context.fillText(gameInfo.players_name.left, 0, 70)
+        context.textAlign = 'right';
+        context.fillText(gameInfo.players_name.right, canvas.width, 70)
         for (const ball of gameInfo.ball) {
           context.beginPath()
           context.arc(ball.x_pos, ball.y_pos, ball.circle_radius, 0, 2 * Math.PI)
@@ -88,7 +92,7 @@ function Game() {
       canvas = canvasRef.current;
       if (canvas == null)
         return;
-      canvas.width = 1920;//width;
+      canvas.width = 1920;//width; //Translate ratio to remove blur
       canvas.height = 1016;//height;
       context = canvas.getContext("2d");
       if (context == null)
@@ -144,7 +148,7 @@ function Game() {
   return (
     <div className={classes["background"]}>
       {!isResultOn && <canvas className={classes["game"]} ref={canvasRef} />}
-      {isResultOn && <div>pipi</div>}
+      {isResultOn && <ResultScreen result={isResultOn}/>}
     </div>
   );
 }

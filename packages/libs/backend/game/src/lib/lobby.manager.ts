@@ -16,6 +16,19 @@ export class LobbyManager
     client.data.lobby = null;
   }
 
+  public isInRoom(client_name: string): boolean
+  {
+    let clients: Map<Socket['id'], Socket>;;
+    for (const [lobbyId, lobby] of this.lobbies) {
+      clients = lobby.getClients();
+      for (const [clientId, client] of clients) {
+        if(client.data.user.name === client_name)
+          return (true);
+      }
+    }
+    return (false);
+  }
+
   public getRandomLobbyId(mode): string
   {
     return this.getRandomLobby(mode).getId();
@@ -55,8 +68,8 @@ export class LobbyManager
   {
     console.log("Create new lobby: " + data);
     const lobby = new Lobby(this.server, data);
-    this.lobbies.set(lobby.getId(), lobby);
     lobby.addClient(client);
+    this.lobbies.set(lobby.getId(), lobby);
   }
 
   public joinLobby(lobbyId: string, client: Socket): void
@@ -95,7 +108,7 @@ export class LobbyManager
       const lobbyLifetime = now - lobbyCreatedAt;
 
       if (lobbyLifetime > 3_600_000) {
-        lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+        lobby.getGameInstance().sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
           message: 'Game timed out',
         });
 
@@ -106,7 +119,7 @@ export class LobbyManager
     }
   }
 
-  public getLobbies(client: Socket): Map<Lobby['id'], Lobby>
+  public getLobbies(): Map<Lobby['id'], Lobby>
   {
     return this.lobbies;
   }

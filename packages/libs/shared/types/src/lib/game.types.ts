@@ -11,12 +11,20 @@ export type ScoreGame = {
 	right: number;
 };
 
+export type SpectateInfo = {
+	left: string;
+	right: string;
+	game_mode: 'simple' | 'double';
+	id: string;
+};
+
 export enum ClientEvents
 {
 	EnterMatchMaking = 'client.entermatchmaking',
 	GameInput = 'client.gameinput',
 	CreateRoom = 'client.createroom',
 	JoinRoom = 'client.joinroom',
+	SpectateGame = 'client.spectate',
 	LeaveRoom = 'client.leaveroom',
 	LobbyList = 'client.lobbylist'
 }
@@ -65,6 +73,6 @@ export type ServerPayloads = {
 	  };
 
 	[ServerEvents.LobbyList]: {
-		lobbies: Map<Lobby['id'], Lobby>;
+		lobbies: Array<SpectateInfo>;
 	  };
   };

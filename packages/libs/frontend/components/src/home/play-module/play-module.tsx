@@ -1,6 +1,6 @@
 import classes from "./play-module.module.css";
 import { useForm } from "react-hook-form";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
 import { Socket } from 'socket.io';
@@ -10,6 +10,7 @@ const PlayModule = (props: any) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const socket: Socket = useContext(SocketContext);
+  const [message, setMessage] = useState("");
 
   const {
     register,
@@ -17,8 +18,13 @@ const PlayModule = (props: any) => {
     formState: { errors },
   } = useForm();
 
-  const listenerGameStart = () => {
+  const listenerGameStart = useCallback(() => {
     navigate("/game");
+  }, [navigate])
+
+  const listenerException = (error) => {
+    setLoading(false);
+    setMessage(error.message);
   }
 
   function closeBackdrop() {
@@ -29,14 +35,18 @@ const PlayModule = (props: any) => {
 
   useEffect(() => {
     socket.on('server.gamestart', listenerGameStart);
-
+    socket.on('exception', listenerException);
     return () => {
       socket.off('server.gamestart', listenerGameStart);
+      socket.off('exception', listenerException);
     }
-  }, [navigate, socket]);
+  }, [navigate, socket, listenerGameStart]);
 
   const sendFormData = (data: any) => {
-    if (loading) {
+    setMessage("");
+    if(message)
+      setLoading(false);
+    else if (loading) {
       setLoading(false);
       socket.emit('client.leaveroom');
     }
@@ -67,6 +77,13 @@ const PlayModule = (props: any) => {
           {errors.game_mode && (
             <div className="alert alert-danger" role="alert">
               You need to select a game mode
+            </div>
+          )}
+
+
+          {message && (
+            <div className="alert alert-danger" role="alert">
+              {message}
             </div>
           )}
 

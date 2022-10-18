@@ -1,7 +1,25 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.span{
+	font-size: 30px;
+	color: white;
+	display: table;
+	margin: 0 auto;
+}
+
+.background {
+	height: 100vh;
+	overflow-y: auto;
+	background: radial-gradient(circle, rgb(0, 0, 10) 40%, rgb(10, 0, 20), rgb(20, 0, 30), rgb(25, 0, 40), rgb(20, 0, 50), rgb(10, 0, 60), rgb(20, 20, 90));
+}
+
+.btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 4px;
+	background-color: rgb(167, 169, 170);
+	color: rgb(0, 0, 0);
+	border: 2px solid rgb(171, 171, 171);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
+	max-width: 200px;
+}

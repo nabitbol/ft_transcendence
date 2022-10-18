@@ -4,40 +4,48 @@ import { Socket } from 'socket.io';
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { Lobby } from "@ft-transcendence/libs/backend/game"
+import { SpectateInfo } from "@ft-transcendence/libs-shared-types";
 
 export function SpectateGame() {
   const navigate = useNavigate();
-  const [specateOn, setSpecateOn] = useState<boolean>(false);
-  const [allGame, setAllGame] = useState<Map<Lobby['id'], Lobby>>(undefined);
+  const [allGame, setAllGame] = useState<Array<SpectateInfo>>(undefined);
+  const [error, setError] = useState(false);
   const socket: Socket = useContext(SocketContext);
 
   function clickme_spectate_button() {
-    setSpecateOn(true);
+    setError(false);
+    socket.emit('client.lobbylist');
+    setAllGame(Array<SpectateInfo>());
   }
 
   function clickme_close() {
-    setSpecateOn(false);
+    setAllGame(undefined);
   }
 
-  const listenerLobbyList = (data) => {
+  const listenerException = (error) => {
+    console.log("IN ERROR SPECTATE");
+    setError(true);
+  }
+
+  const listenerLobbyList = (data: { lobbies: Array<SpectateInfo> }) => {
     setAllGame(data.lobbies);
   }
 
   useEffect(() => {
     socket.on('server.lobbylist', listenerLobbyList);
-    socket.emit('client.lobbylist');
+    socket.on('exception', listenerException);
     return () => {
       socket.off('server.lobbylist', listenerLobbyList);
+      socket.off('exception', listenerException);
     };
   }, [navigate, socket]);
 
-  return !allGame ? null : (
+  return (
     <div>
-      {specateOn && (
+      {allGame && (
         <div>
           <Backdrop closeBackdrop={clickme_close} />
-          <AllLiveGame allGame={allGame} />
+          <AllLiveGame error={error}allGame={allGame} />
         </div>
       )}
       <button

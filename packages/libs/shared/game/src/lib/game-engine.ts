@@ -13,7 +13,7 @@ export class GameInfo {
 	has_started: boolean;
 	has_ended: boolean;
 	mode: 'simple' | 'double';
-	players_name: PlayersName;
+	players_name: PlayersName = {left: undefined, right: undefined};
 
 	copyInfo(other: GameInfo) {
 		this.ball = other.ball;
@@ -38,7 +38,7 @@ export class GameInfo {
 		this.boxDimensions.box_height * 0.02));
 		if(this.mode === 'double')
 		{
-			this.end_score = 10;
+			this.end_score = 100;
 			this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
 			this.boxDimensions.box_height * 0.02));
 		}

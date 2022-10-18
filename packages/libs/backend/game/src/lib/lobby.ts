@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { Server, Socket } from 'socket.io';
 import { GameInstance } from './game.instance';
-import { PlayersName, ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
+import { PlayersName } from "@ft-transcendence/libs-shared-types"
 
 export class Lobby
 {
@@ -13,28 +13,28 @@ export class Lobby
 
   private clients_spectator: Map<Socket['id'], Socket> = new Map<Socket['id'], Socket>();
 
-  private players_name: PlayersName;
+  private players_name: PlayersName = {left: undefined, right: undefined};
+  
   private gameInstance: GameInstance;
 
   constructor( private server: Server, private mode: 'simple' | 'double')
   {
-    this.gameInstance = new GameInstance(this, this.mode); 
-    this.gameInstance = new GameInstance(this, this.mode); 
+    this.gameInstance = new GameInstance(this.mode, this.id, this.server); 
   }
 
   public addClient(client: Socket): void
   {
-    console.log("Add client to lobby");
-    this.clients.set(client.id, client);
     console.log("Client " + client.id +" join: " + this.id);
+    this.clients.set(client.id, client);
     client.join(this.id);
     client.data.lobby = this;
-
-
+    
+    
     if(!this.players_name.left)
-      this.players_name.left = client.data.user.name;
+    this.players_name.left = client.data.user.name;
     else
-      this.players_name.right = client.data.user.name;
+    this.players_name.right = client.data.user.name;
+    console.log(this.players_name);
     if (this.clients.size >= 2) {
       this.gameInstance.startGame(this.players_name);
     }
@@ -48,8 +48,9 @@ export class Lobby
     client.join(this.id);
   }
 
-  public removeClient(): void
+  public removeClient(client: Socket): void
   {
+    this.players_name = {left: undefined, right: undefined};
     this.gameInstance.endGame();
 
     for (const [clientId, client] of this.clients) {
@@ -61,24 +62,6 @@ export class Lobby
       if (this.gameInstance.getGameInfo().has_started) {
         this.gameInstance.resetGame();
       }
-  }
-
-  public sendGameInfo(): void
-  {
-    const payload: ServerPayloads[ServerEvents.GameInfo] = {
-     info: this.gameInstance.getGameInfo(),
-    };
-    this.sendVolatileMessage(ServerEvents.GameInfo, payload);
-  }
-
-  public sendMessage<T>(event: ServerEvents, payload: T): void
-  {
-    this.server.to(this.id).emit(event, payload);
-  }
-
-  public sendVolatileMessage<T>(event: ServerEvents, payload: T): void
-  {
-    this.server.volatile.to(this.id).emit(event, payload);
   }
 
   public getId() : string

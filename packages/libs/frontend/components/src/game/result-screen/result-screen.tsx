@@ -1,13 +1,32 @@
-import classes from "./chat.module.css";
-import { useForm } from "react-hook-form";
-import { io } from "socket.io-client";
-import { useEffect, useRef, useCallback } from "react";
+import { ResultGame } from "@ft-transcendence/libs-shared-types";
+import classes from "./result-screen.module.css";
+import { useNavigate } from "react-router-dom";
 
-const ResultScreen = () => {
+const ResultScreen = (props) => {
+  const navigate = useNavigate();
+  const result: ResultGame = props.result.result;
+  console.log(result);
+
+  const ButtonPressed = () => {
+    navigate("/home");
+    window.location.reload();
+  };
+
   return (
     <div>
-        YO dude ici t'as peut être gagné ou pas je sais pas
-    </div >
+      <span className={classes["span"]}>
+        {result.score.left} vs {result.score.right}!
+    </span >
+      <span className={classes["span"]}>
+        {result.winner} is the winner !
+      </span >
+      <span className={classes["span"]}>
+        {result.loser} is the loser !
+      </span >
+      <button className={classes["btn"]} onClick={ButtonPressed}>
+        Go back
+      </button>
+    </div>
   );
 };
 
