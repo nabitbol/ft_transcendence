@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
   UnauthorizedException,
   UseGuards,
@@ -85,10 +86,58 @@ export class ChatController {
     try {
       const rooms: RoomDto[] = await this.roomService.getUserRooms(req.user.id);
       if (!rooms) throw Error("No rooms found");
-      console.log(rooms);
       return { response: rooms };
     } catch (err) {
       return new NotFoundException(err);
+    }
+  }
+
+  @Put("/:name/join_room")
+  @ApiParam({ name: "name", required: true })
+  public async joinRoom(
+    @Param() param,
+    @Req() req,
+    @Body() body: { password?: string }
+  ) {
+    try {
+      const joiner: UserDto[] = [];
+      joiner[0] = await this.userService.getUserByName(req.user.name);
+      if (!joiner[0]) throw Error("Joiner not found");
+      const room: RoomDto = await this.roomService.getRoomByName(param.name);
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        joiner[0].id
+      );
+      const check: RoomDto = rooms.find(({ name }) => name === param.name);
+      if (check) throw Error("User already in room");
+      if (!room) throw Error("Room not found");
+      if (
+        (room.status === "PROTECTED" &&
+          (await this.roomService.compareHash(room.password, body.password))) ||
+        room.status !== "PROTECTED"
+      ) {
+        await this.roomService.addUsers(room.id, joiner);
+      } else throw Error("Wrong password");
+      return { response: "Joined room sucessfully" };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Put("/:name/leave_room")
+  @ApiParam({ name: "name", required: true })
+  public async leaveRoom(@Param() param, @Req() req) {
+    try {
+      const leaver: UserDto = await this.userService.getUserByName(
+        req.user.name
+      );
+      if (!leaver) throw Error("Creator not found");
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(leaver.id);
+      const room: RoomDto = rooms.find(({ name }) => name === param.name);
+      if (!room) throw Error("Room not found");
+      await this.roomService.removeUser(room.id, leaver);
+      return { response: "Leaved room sucessfully" };
+    } catch (err) {
+      return new UnauthorizedException(err);
     }
   }
 }
