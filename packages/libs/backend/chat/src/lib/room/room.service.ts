@@ -174,7 +174,7 @@ export class RoomService {
         })
       ).role;
     } catch (err) {
-      throw Error("Can't get user status");
+      throw Error("Can't get user role");
     }
   }
 

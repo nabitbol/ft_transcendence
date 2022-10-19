@@ -7,6 +7,7 @@ import styles from "./tmp.module.css";
 import ReactSwitch from "react-switch";
 import { useState } from "react";
 import UserList from "../user-list/user-list";
+import RoomsButton from "../rooms-button/rooms-button";
 
 /* eslint-disable-next-line */
 export interface TmpProps {}
@@ -27,7 +28,7 @@ export function Tmp(props: TmpProps) {
             <Rooms />
           </div>
           <div className={styles["chatRoomsBottom"]}>
-            <CreateRoom />
+            <RoomsButton />
           </div>
         </div>
       </div>

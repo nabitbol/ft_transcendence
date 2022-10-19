@@ -1,7 +1,7 @@
-import { Chat } from "@ft-transcendence/libs-frontend-services";
+import { SocketContext } from "@ft-transcendence/libs-frontend-services";
 import { RoomDto } from "@ft-transcendence/libs-shared-types";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 import styles from "./rooms.module.css";
 
 /* eslint-disable-next-line */
@@ -9,27 +9,31 @@ export interface RoomsProps {}
 
 export function Rooms(props: RoomsProps) {
   const [rooms, setRooms] = useState<RoomDto[]>(undefined);
-  const navigate = useNavigate();
+  const [user_roles, setUserRoomsRoles] = useState<string[]>(undefined);
+  const socket: Socket = useContext(SocketContext);
 
-  const GetUserRooms = async () => {
-    try {
-      const response: RoomDto[] = await Chat.requestUserRooms();
-      console.log(response);
-      setRooms(response);
-    } catch (err) {
-      navigate("/error");
-      window.location.reload();
-    }
+  const listenerUserRooms = (response: {
+    rooms: RoomDto[];
+    userRole: string[];
+  }) => {
+    setUserRoomsRoles(response.userRole);
+    setRooms(response.rooms);
   };
 
   useEffect(() => {
-    GetUserRooms();
-  }, []);
+    socket.on("server:getuserrooms", listenerUserRooms);
+    socket.on("server:createroom", listenerUserRooms);
+    socket.emit("client:getuserrooms");
+    return () => {
+      socket.off("server:getuserrooms", listenerUserRooms);
+      socket.off("server:createroom", listenerUserRooms);
+    };
+  }, [socket]);
 
-  return !rooms ? null : (
+  return !rooms && !user_roles ? null : (
     <div className={styles["roomList"]}>
-      {rooms.map((element) => (
-        <div className={styles["roomLine"]}>
+      {rooms.map((element, key) => (
+        <div className={styles["roomLine"]} title={user_roles[key]} key={key}>
           <p className={styles["roomName"]}>{element.name}</p>
           <p className={styles["roomStatus"]}>
             {element.status.toString().toLowerCase()}

@@ -6,5 +6,5 @@ const config = {
   extraHeaders: authHeader(),
 };
 
-export const socketChat = io("ws://localhost:5555", config);
+export const socketChat = io("ws://localhost:8080", config);
 export const SocketContext = React.createContext(undefined);

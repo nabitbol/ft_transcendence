@@ -1,20 +1,19 @@
 import {
-  Chat,
   SocketContext,
   vnumber,
   vpassword_length,
   vregex,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Socket } from "socket.io-client";
-import styles from "./room-form.module.css";
+import styles from "./leave-room.module.css";
 
 /* eslint-disable-next-line */
-export interface RoomFormProps {}
+export interface LeaveRoomProps {}
 
-export function RoomForm(props: RoomFormProps) {
+export function LeaveRoom(props: LeaveRoomProps) {
   const {
     register,
     handleSubmit,
@@ -34,7 +33,7 @@ export function RoomForm(props: RoomFormProps) {
 
   return (
     <div className={styles["register_form"]}>
-      <span className={styles["register_span"]}>Create a room</span>
+      <span className={styles["register_span"]}>Leave room</span>
       <form onSubmit={handleSubmit(handleRegister)}>
         <input
           placeholder="RoomName"
@@ -114,4 +113,4 @@ export function RoomForm(props: RoomFormProps) {
   );
 }
 
-export default RoomForm;
+export default LeaveRoom;

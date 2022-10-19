@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import RoomForm from './room-form';
+import JoinRoom from './join-room';
 
-describe('RoomForm', () => {
+describe('JoinRoom', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(< RoomForm />);
+    const { baseElement } = render(< JoinRoom />);
     expect(baseElement).toBeTruthy();
   });
 });
