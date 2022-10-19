@@ -102,6 +102,7 @@ model Message {
 
 enum Room_Role {
   ADMIN
+  OWNER
   NORMAL
   MUTED
   BANNED

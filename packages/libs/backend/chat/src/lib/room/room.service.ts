@@ -77,6 +77,12 @@ export class RoomService {
     });
   }
 
+  public async removeUser(roomId: string, user: UserDto) {
+    await prisma.user_Room.deleteMany({
+      where: { userId: user.id, roomId: roomId },
+    });
+  }
+
   public async createRoom(room: RoomDto, creator: UserDto, users?: UserDto[]) {
     if (room.status === Room_Status.PROTECTED) {
       if (!room.password) throw Error("No password provided");
@@ -93,7 +99,7 @@ export class RoomService {
             create: [
               {
                 updated_at: new Date(),
-                role: Room_Role.ADMIN,
+                role: Room_Role.OWNER,
                 User: {
                   connect: {
                     id: creator.id,
@@ -107,6 +113,27 @@ export class RoomService {
       if (users) {
         this.addUsers(room.id, users);
       }
+    } catch (err) {
+      throw Error("Unable to create room");
+    }
+  }
+
+  public async updateRoom(
+    room: RoomDto,
+    newStatus: Room_Status,
+    newPassword?: string | undefined
+  ) {
+    try {
+      await prisma.room.update({
+        where: {
+          id: room.id,
+        },
+        data: {
+          password: newPassword,
+          status: newStatus,
+          updated_at: new Date(),
+        },
+      });
     } catch (err) {
       throw Error("Unable to create room");
     }
@@ -153,27 +180,33 @@ export class RoomService {
 
   public async udpateUsersStatus(
     roomId: string,
-    users: UserDto[],
+    user: UserDto,
     newRole: Room_Role
   ) {
     try {
-      users.map(async (element) => {
-        await prisma.user_Room.updateMany({
-          where: { roomId: roomId, userId: element.id },
-          data: {
-            updated_at: new Date(),
-            role: newRole,
-          },
-        });
+      await prisma.user_Room.updateMany({
+        where: { roomId: roomId, userId: user.id },
+        data: {
+          updated_at: new Date(),
+          role: newRole,
+        },
       });
     } catch (err) {
       throw Error("Can't update user status");
     }
   }
 
-  public async removeUser(roomId: string, user: UserDto) {
-    await prisma.user_Room.deleteMany({
-      where: { userId: user.id, roomId: roomId },
-    });
+  public async cleanStatus() {
+    try {
+      const current = new Date(Date.now() - 2000);
+      return await prisma.user_Room.findFirst({
+        where: {
+          role: Room_Role.BANNED || Room_Role.MUTED,
+          updated_at: { gt: current },
+        },
+      });
+    } catch (err) {
+      throw Error("Can't clean status");
+    }
   }
 }
