@@ -22,7 +22,7 @@ import { LocalAuthGuard } from "./strategy/local-auth.guard";
 import { JwtAuthGuard } from "./strategy/jwt-auth.guard";
 import { JwtTwoFactorGuard } from "./strategy/jwt-two-factor.guard";
 import { Response } from "express";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { ApiBody, ApiSecurity, ApiTags } from "@nestjs/swagger";
 

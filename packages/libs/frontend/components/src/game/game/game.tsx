@@ -1,18 +1,22 @@
 import classes from "./game.module.css";
-import { useRef, useEffect, useCallback, useContext } from "react";
+import { useRef, useEffect, useCallback, useContext, useState } from "react";
 import useWindowSize from "./useWindowSize";
 import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
 import { Socket } from 'socket.io';
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
+import { ResultScreen } from "@ft-transcendence/libs-frontend-components";
+import { ResultGame } from "@ft-transcendence/libs-shared-types"
 
 function Game() {
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isResultOn, setIsResultOn] = useState<ResultGame>(undefined);
   const [width, height] = useWindowSize();
   const gameInfoRef = useRef<GameInfo>();
   const boxRef = useRef<boxDimensions>();
   const socket: Socket = useContext(SocketContext);
   const inputRef = useRef<{ up: number, down: number }>({ up: 0, down: 0 });
+
   //Setup socket io event
   const sendInput = useCallback((input: { up: number, down: number }) => {
     socket.emit('client.gameinput', input);
@@ -41,25 +45,36 @@ function Game() {
       sendInput(inputRef.current);
   }, [sendInput]);
 
+  const listenerGameInfo = (response: { info: GameInfo }) => {
+    gameInfoRef.current = response.info;
+  }
+
+  const listenerGameEnd = (result: ResultGame ) => {
+    setIsResultOn(result);
+  }
+
   useEffect(() => {
     console.log("In useEffect game");
 
-    socket.on('server.gameinfo', (response: { info: GameInfo }) => {
-      gameInfoRef.current = response.info;
-    });
-
+    socket.on('server.gameinfo', listenerGameInfo);
+    socket.on('server.gameend', listenerGameEnd);
     let canvas: HTMLCanvasElement | null;
     let context: CanvasRenderingContext2D | null;
     let animationFrameId: number;
 
     function draw(box: boxDimensions, gameInfo: GameInfo) {
-      console.log(gameInfo);
       if (context != null && gameInfo) {
         context.clearRect(box.box_x + box.box_border_width / 2, box.box_y + box.box_border_width / 2, box.box_width - box.box_border_width, box.box_height - box.box_border_width);
         context.fillRect(gameInfo.paddle_a.x_pos, gameInfo.paddle_a.y_pos, gameInfo.paddle_a.width, gameInfo.paddle_a.height);
         context.fillRect(gameInfo.paddle_b.x_pos, gameInfo.paddle_b.y_pos, gameInfo.paddle_b.width, gameInfo.paddle_b.height);
         context.fillText(gameInfo.player_a_score.toString(), box.box_x + box.box_width / 2 - 100, box.box_y + 100);
         context.fillText(gameInfo.player_b_score.toString(), box.box_x + box.box_width / 2 + 100, box.box_y + 100);
+        context.textAlign = 'center';
+        context.fillText("VS", canvas.width / 2 - 20, 70);
+        context.textAlign = 'left';
+        context.fillText(gameInfo.players_name.left, 0, 70)
+        context.textAlign = 'right';
+        context.fillText(gameInfo.players_name.right, canvas.width, 70)
         for (const ball of gameInfo.ball) {
           context.beginPath()
           context.arc(ball.x_pos, ball.y_pos, ball.circle_radius, 0, 2 * Math.PI)
@@ -77,7 +92,7 @@ function Game() {
       canvas = canvasRef.current;
       if (canvas == null)
         return;
-      canvas.width = 1920;//width;
+      canvas.width = 1920;//width; //Translate ratio to remove blur
       canvas.height = 1016;//height;
       context = canvas.getContext("2d");
       if (context == null)
@@ -98,6 +113,9 @@ function Game() {
         boxRef.current.box_width,
         boxRef.current.box_height
       );
+      context.fillStyle = "rgb(0, 0, 0)";
+      context.fillText("No connection...", canvas.width / 2 - 150, canvas.height / 2);
+      context.fillStyle = "#FFFFFF";
     }
 
     //Tick function to draw game
@@ -111,6 +129,8 @@ function Game() {
     };
 
     const endCanvas = () => {
+      socket.off('server.gameinfo', listenerGameInfo);
+      socket.off('server.gameend', listenerGameEnd);
       window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener("keydown", keyDown);
       window.removeEventListener("keyup", keyUp);
@@ -127,7 +147,8 @@ function Game() {
 
   return (
     <div className={classes["background"]}>
-      <canvas className={classes["game"]} ref={canvasRef} />
+      {!isResultOn && <canvas className={classes["game"]} ref={canvasRef} />}
+      {isResultOn && <ResultScreen result={isResultOn}/>}
     </div>
   );
 }

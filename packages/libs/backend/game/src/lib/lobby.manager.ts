@@ -2,6 +2,7 @@ import { Socket, Server } from 'socket.io';
 import { Cron } from '@nestjs/schedule';
 import { Lobby } from './lobby'
 import { WsException } from '@nestjs/websockets'
+ 
 import { ServerEvents, ServerPayloads } from "@ft-transcendence/libs-shared-types"
 
 export class LobbyManager
@@ -13,6 +14,19 @@ export class LobbyManager
   public initializeSocket(client: Socket): void
   {
     client.data.lobby = null;
+  }
+
+  public isInRoom(client_name: string): boolean
+  {
+    let clients: Map<Socket['id'], Socket>;;
+    for (const [lobbyId, lobby] of this.lobbies) {
+      clients = lobby.getClients();
+      for (const [clientId, client] of clients) {
+        if(client.data.user.name === client_name)
+          return (true);
+      }
+    }
+    return (false);
   }
 
   public getRandomLobbyId(mode): string
@@ -28,7 +42,7 @@ export class LobbyManager
   public getRandomLobby(mode: 'simple' | 'double') : Lobby | undefined
   {
     for (const [lobbyId, lobby] of this.lobbies) {
-      if(lobby.getMode() ===  mode)
+      if(lobby.getMode() ===  mode && lobby.getClients().size < 2)
         return lobby;
     }
     return undefined;
@@ -47,20 +61,20 @@ export class LobbyManager
   
   public terminateSocket(client: Socket): void
   {
-    client.data.lobby?.removeClient(client)
+    client.data.lobby?.removeClient();
   }
 
   public createLobby(client: Socket, data: 'simple' | 'double'): void
   {
     console.log("Create new lobby: " + data);
     const lobby = new Lobby(this.server, data);
-    this.lobbies.set(lobby.getId(), lobby);
     lobby.addClient(client);
+    this.lobbies.set(lobby.getId(), lobby);
   }
 
   public joinLobby(lobbyId: string, client: Socket): void
   {
-    console.log(lobbyId);
+
     const lobby = this.lobbies.get(lobbyId);
     if (!lobby) {
       throw new WsException('Lobby not found');
@@ -71,6 +85,12 @@ export class LobbyManager
       }
       
     lobby.addClient(client);
+  }
+
+  public spectateLobby(lobbyId: string, client: Socket): void
+  {
+    console.log("Spectate lobby: " + lobbyId);
+    client.join(lobbyId);
   }
 
   public deleteLobby(lobbyId: string): void
@@ -88,7 +108,7 @@ export class LobbyManager
       const lobbyLifetime = now - lobbyCreatedAt;
 
       if (lobbyLifetime > 3_600_000) {
-        lobby.sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
+        lobby.getGameInstance().sendMessage<ServerPayloads[ServerEvents.GameMessage]>(ServerEvents.GameMessage, {
           message: 'Game timed out',
         });
 
@@ -97,6 +117,11 @@ export class LobbyManager
         this.deleteLobby(lobby.getId());
       }
     }
+  }
+
+  public getLobbies(): Map<Lobby['id'], Lobby>
+  {
+    return this.lobbies;
   }
 }
 

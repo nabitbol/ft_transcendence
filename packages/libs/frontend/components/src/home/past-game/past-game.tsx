@@ -4,7 +4,6 @@ import { MatchDto } from "@ft-transcendence/libs-shared-types";
 import { AuthReq } from "@ft-transcendence/libs-frontend-services";
 
 export function PastGame(props: { game_info: MatchDto }) {
-  console.log(props.game_info);
   const name = props.game_info.winner;
   const score = props.game_info.winnerScore;
   const user_info: any = AuthReq.getCurrentUser();

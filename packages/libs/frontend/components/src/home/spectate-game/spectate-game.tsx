@@ -1,31 +1,51 @@
 import classes from "./spectate-game.module.css";
-import { Backdrop, LiveGame } from "@ft-transcendence/libs-frontend-components";
-import { useState } from "react";
+import { Backdrop, AllLiveGame } from "@ft-transcendence/libs-frontend-components";
+import { Socket } from 'socket.io';
+import { SocketContext } from '@ft-transcendence/libs-frontend-services';
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { SpectateInfo } from "@ft-transcendence/libs-shared-types";
 
 export function SpectateGame() {
-  const [list, setList] = useState(false);
-  const ID = ["1", "2"];
+  const navigate = useNavigate();
+  const [allGame, setAllGame] = useState<Array<SpectateInfo>>(undefined);
+  const [error, setError] = useState(false);
+  const socket: Socket = useContext(SocketContext);
 
   function clickme_spectate_button() {
-    setList(true);
+    setError(false);
+    socket.emit('client.lobbylist');
+    setAllGame(Array<SpectateInfo>());
   }
 
   function clickme_close() {
-    setList(false);
+    setAllGame(undefined);
   }
+
+  const listenerException = (error) => {
+    console.log("IN ERROR SPECTATE");
+    setError(true);
+  }
+
+  const listenerLobbyList = (data: { lobbies: Array<SpectateInfo> }) => {
+    setAllGame(data.lobbies);
+  }
+
+  useEffect(() => {
+    socket.on('server.lobbylist', listenerLobbyList);
+    socket.on('exception', listenerException);
+    return () => {
+      socket.off('server.lobbylist', listenerLobbyList);
+      socket.off('exception', listenerException);
+    };
+  }, [navigate, socket]);
 
   return (
     <div>
-      {list && (
+      {allGame && (
         <div>
           <Backdrop closeBackdrop={clickme_close} />
-          <div className={classes['div']}>
-            <h2 className={classes['h2_title']}>Live Game</h2>
-            <button className={classes['close']} onClick={clickme_close}></button>
-            {ID.map((ID) => (
-              <LiveGame game_id={ID} key={ID} />
-            ))}
-          </div>
+          <AllLiveGame error={error}allGame={allGame} />
         </div>
       )}
       <button

@@ -15,12 +15,7 @@ export function PlayButton() {
 
   return (
     <div>
-      {isOn && (
-        <div>
-          <Backdrop closeBackdrop={clickme_close} />
-          <PlayModule />
-        </div>
-      )}
+      {isOn && <PlayModule closeBackdrop={clickme_close}/>}
       <button className={classes['button_play']} onClick={clickMe}>
         Play
       </button>

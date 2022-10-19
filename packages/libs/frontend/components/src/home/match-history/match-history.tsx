@@ -33,7 +33,7 @@ export function MatchHistory() {
       {matchInfo && (
         <div>
           {matchInfo.map((ID) => (
-            <PastGame game_info={ID} />
+            <PastGame game_info={ID} key={ID.id} />
           ))}
         </div>
       )}
