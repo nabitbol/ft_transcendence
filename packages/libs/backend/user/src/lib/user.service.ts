@@ -94,7 +94,10 @@ export class UserService {
     }
   }
 
-  public async addFriendRequest(name_sender: string, user : UserDto): Promise<UserDto> {
+  public async addFriendRequest(
+    name_sender: string,
+    user: UserDto
+  ): Promise<UserDto> {
     try {
       return await prisma.user.update({
         where: {
@@ -111,20 +114,20 @@ export class UserService {
     }
   }
 
-  public async removeFriendRequest(name_to_delete: string, user : UserDto): Promise<UserDto> {
+  public async removeFriendRequest(
+    name_to_delete: string,
+    user: UserDto
+  ): Promise<UserDto> {
     let i = 0;
     let j = 0;
-    while (user.friendsRequest[i])
-    {
-      if (user.friendsRequest[i] != name_to_delete)
-        j++;
+    while (user.friendsRequest[i]) {
+      if (user.friendsRequest[i] != name_to_delete) j++;
       i++;
     }
-    const tmp : string[] = new Array(j);
+    const tmp: string[] = new Array(j);
     i = 0;
     j = 0;
-    while (user.friendsRequest[i])
-    {
+    while (user.friendsRequest[i]) {
       if (user.friendsRequest[i] != name_to_delete)
         tmp[j++] = user.friendsRequest[i];
       i++;
@@ -180,60 +183,58 @@ export class UserService {
               id: friendId,
             },
           },
-          },
         },
-      );
+      });
     } catch (err) {
       throw Error("Couldn't remove friend");
     }
   }
 
   public async swap(items: UserDto[], leftIndex: number, rightIndex: number) {
-    var temp = items[leftIndex];
+    let temp = items[leftIndex];
     items[leftIndex] = items[rightIndex];
     items[rightIndex] = temp;
     return items;
   }
 
   public async partition(items: UserDto[], left: number, right: number) {
-    var pivot: UserDto  = items[Math.floor((right + left) / 2)],
-    i: number   = left,
-    j: number   = right;
+    let pivot: UserDto = items[Math.floor((right + left) / 2)],
+      i: number = left,
+      j: number = right;
     while (i <= j) {
-        while (items[i].wins > pivot.wins) {
-            i++;
-        }
-        while (items[j].wins < pivot.wins) {
-            j--;
-        }
-        if (i <= j) {
-            items = await this.swap(items, j, i);
-            i++;
-            j--;
-        }
+      while (items[i].wins > pivot.wins) {
+        i++;
+      }
+      while (items[j].wins < pivot.wins) {
+        j--;
+      }
+      if (i <= j) {
+        items = await this.swap(items, j, i);
+        i++;
+        j--;
+      }
     }
     return i;
   }
 
-    public async quickSort(items: UserDto[], left: number, right: number) {
+  public async quickSort(items: UserDto[], left: number, right: number) {
     let index: number;
     if (items.length > 1) {
-        index = await this.partition(items, left, right);
-        if (left < index - 1) {
-            await this.quickSort(items, left, index - 1);
-        }
-        if (index < right) {
-            await this.quickSort(items, index, right);
-        }
+      index = await this.partition(items, left, right);
+      if (left < index - 1) {
+        await this.quickSort(items, left, index - 1);
+      }
+      if (index < right) {
+        await this.quickSort(items, index, right);
+      }
     }
     return items;
-}
-
+  }
 
   public async getGeneralLadder() {
     try {
       const tmp: UserDto[] = await prisma.user.findMany();
-      const response : UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1)
+      const response: UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1);
       return response;
     } catch (err) {
       throw Error("Couldn't remove friend");
@@ -244,7 +245,7 @@ export class UserService {
     try {
       const tmp: UserDto[] = await this.getFriends(name);
       tmp.push(await this.getUserByName(name));
-      const response : UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1)
+      const response: UserDto[] = await this.quickSort(tmp, 0, tmp.length - 1);
       return response;
     } catch (err) {
       throw Error("Couldn't remove friend");
@@ -254,17 +255,16 @@ export class UserService {
   public async updateLadderLevel(users: UserDto[]) {
     try {
       let i = 0;
-      while (users[i])
-      {
+      while (users[i]) {
         users[i].ladder_level = i + 1;
         await prisma.user.update({
           where: {
             name: users[i].name,
           },
           data: {
-            ladder_level: users[i].ladder_level
-            }
-          });
+            ladder_level: users[i].ladder_level,
+          },
+        });
         i++;
       }
       return users;
@@ -289,5 +289,95 @@ export class UserService {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
     return this.updateUser(name, user);
+  }
+
+  public async muteUser(muterId: string, muteId: string) {
+    try {
+      await prisma.user.update({
+        where: {
+          id: muterId,
+        },
+        data: {
+          mute: {
+            connect: {
+              id: muteId,
+            },
+          },
+        },
+      });
+      await prisma.user.update({
+        where: {
+          id: muteId,
+        },
+        data: {
+          muteBy: {
+            connect: {
+              id: muterId,
+            },
+          },
+        },
+      });
+    } catch (err) {
+      throw Error("Couldn't mute user");
+    }
+  }
+
+  public async unMuteUser(muterId: string, muteId: string) {
+    try {
+      await prisma.user.update({
+        where: {
+          id: muterId,
+        },
+        data: {
+          mute: {
+            disconnect: {
+              id: muteId,
+            },
+          },
+        },
+      });
+      await prisma.user.update({
+        where: {
+          id: muteId,
+        },
+        data: {
+          muteBy: {
+            disconnect: {
+              id: muterId,
+            },
+          },
+        },
+      });
+    } catch (err) {
+      throw Error("Couldn't mute user");
+    }
+  }
+
+  public async getMutedUsers(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .mute();
+    } catch (err) {
+      throw Error("Couldn't find users");
+    }
+  }
+
+  public async getMutedByUsers(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .muteBy();
+    } catch (err) {
+      throw Error("Couldn't find users");
+    }
   }
 }

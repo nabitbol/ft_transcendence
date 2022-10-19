@@ -30,6 +30,8 @@ model User {
   //many to many self relation
   friends   User[] @relation("friends")
   friendsOf User[] @relation("friends")
+  mute      User[] @relation("mute")
+  muteBy    User[] @relation("mute")
 
   match Match[]
 
