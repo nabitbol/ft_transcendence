@@ -9,14 +9,14 @@ function UploadImage() {
     const { register, handleSubmit } = useForm();
 
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         setMessage("");
         if (data.image[0].type !== "image/png")
             setMessage("Need a png image");
-            User.getBase64(data.image[0])
-            .then(result => {
+            await User.getBase64(data.image[0])
+            .then(async result => {
               data.image["base64"] = result;
-              console.log("File Is", data.image);
+              await User.sendImage(data.image);
             });
     };
   

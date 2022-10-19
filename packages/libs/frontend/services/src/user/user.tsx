@@ -189,6 +189,17 @@ class UserService {
     });
   };
 
+  async sendImage (file: any) {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+      axios.post(
+        URL + "user/" + user_info.name + "/image",
+        {file},
+        { headers }
+      );
+  };
+
 }
 
 

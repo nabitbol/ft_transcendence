@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserToUpdateDto, UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
+import * as fs from 'fs'
 
 @Injectable()
 export class UserService {
@@ -340,6 +341,28 @@ export class UserService {
     } catch (err) {
       throw Error("Couldn't find achievement");
     }
+  }
+
+  public async changeImage(file: any, user: UserDto) {
+
+    let path:string;
+    path = process.cwd() + "/assets/img/" + "test.png"; // replace with user image
+    let img = file["base64"];
+    let data = img.replace(/^data:image\/\w+;base64,/, "");
+    let buf = Buffer.from(data, "base64");
+    fs.writeFile(path, buf, function (err){
+      if (err)
+        throw err;
+      console.log("all is alright");
+    });
+   /* if(fs.existsSync(path))
+    {
+      fs.writeFile(path, file["base64"], function (err){
+        if (err)
+          throw err;
+      });
+    }*/
+    
   }
 
   async setTwoFactorAuthenticationStatus(
