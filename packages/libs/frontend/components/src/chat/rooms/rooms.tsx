@@ -23,10 +23,14 @@ export function Rooms(props: RoomsProps) {
   useEffect(() => {
     socket.on("server:getuserrooms", listenerUserRooms);
     socket.on("server:createroom", listenerUserRooms);
+    socket.on("server:joinroom", listenerUserRooms);
+    socket.on("server:leaveroom", listenerUserRooms);
     socket.emit("client:getuserrooms");
     return () => {
       socket.off("server:getuserrooms", listenerUserRooms);
       socket.off("server:createroom", listenerUserRooms);
+      socket.off("server:joinroom", listenerUserRooms);
+      socket.off("server:leaveroom", listenerUserRooms);
     };
   }, [socket]);
 

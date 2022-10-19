@@ -5,7 +5,7 @@ import {
   vregex,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Socket } from "socket.io-client";
 import styles from "./join-room.module.css";
@@ -20,20 +20,36 @@ export function JoinRoom(props: JoinRoomProps) {
     formState: { errors },
   } = useForm();
   const [message, setMessage] = useState("");
+  const [isHideInput, setIsHideInput] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const socket: Socket = useContext(SocketContext);
 
   const listenerUpdateErrorMessage = useCallback((err) => {
-    console.log(err.message);
     setMessage(err.message);
   }, []);
+
+  const listenerSuccessful = () => {
+    setSuccessful(true);
+    setMessage("Joined room successfully");
+  };
+
+  useEffect(() => {
+    socket.on("server:joinroom", listenerSuccessful);
+    return () => {
+      socket.off("server:joinroom", listenerSuccessful);
+    };
+  }, [socket]);
 
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
     socket.on("exception", listenerUpdateErrorMessage);
-    const roomData = { name: data.room_name, password: data.room_password };
-    socket.emit("client:createroom", roomData);
+    const roomData = {
+      name: data.room_name,
+      password: data.room_password || undefined,
+      status: data.status,
+    };
+    socket.emit("client:joinroom", roomData);
   };
 
   return (
@@ -68,23 +84,49 @@ export function JoinRoom(props: JoinRoomProps) {
           </div>
         )}
 
-        <input
-          placeholder="Password"
-          type="password"
-          className={
-            errors["room_password"]
-              ? styles["register_input_red"]
-              : styles["register_input"]
-          }
-          {...register("room_password", {
-            required: true,
-            validate: {
-              length: vpassword_length,
-              regex: vregex,
-              number: vnumber,
-            },
-          })}
-        />
+        <div className={styles["join_room_input_div"]}>
+          <label htmlFor="public">Public</label>
+          <input
+            {...register("status", { required: true })}
+            type="radio"
+            value="PUBLIC"
+            className={styles["join_room_input"]}
+            onChange={(e) => setIsHideInput(false)}
+          />
+          <label htmlFor="protected">Protected</label>
+          <input
+            {...register("status", { required: true })}
+            type="radio"
+            value="PROTECTED"
+            className={styles["join_room_input"]}
+            onChange={(e) => setIsHideInput(true)}
+          />
+        </div>
+        {errors["status"] && (
+          <div className="alert alert-danger" role="alert">
+            Please select a room status
+          </div>
+        )}
+
+        {isHideInput && (
+          <input
+            placeholder="Password"
+            type="password"
+            className={
+              errors["room_password"]
+                ? styles["register_input_red"]
+                : styles["register_input"]
+            }
+            {...register("room_password", {
+              required: true,
+              validate: {
+                length: vpassword_length,
+                regex: vregex,
+                number: vnumber,
+              },
+            })}
+          />
+        )}
         {errors["room_password"] && errors["room_password"].type === "length" && (
           <div className="alert alert-danger" role="alert">
             The password must be between 8 and 40 characters.

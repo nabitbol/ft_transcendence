@@ -47,6 +47,7 @@ export function CreateRoom(props: CreateRoomProps) {
     const roomData = {
       name: data.room_name,
       password: data.room_password || undefined,
+      status: data.status,
     };
     socket.emit("client:createroom", roomData);
   };

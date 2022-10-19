@@ -57,3 +57,23 @@
 	background-color: pink;
 	border: 2px solid rgb(151, 13, 13);
 }
+
+.join_room_label {
+	font-size: 30px;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+	display: table;
+	margin-bottom: 30px;
+}
+
+.join_room_input {
+	margin: 10px;
+}
+
+.join_room_input_div {
+	display: table;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}

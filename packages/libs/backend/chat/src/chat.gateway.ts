@@ -21,6 +21,7 @@ import {
   UserDto,
   UserRoomDto,
 } from "@ft-transcendence/libs-shared-types";
+import { Room_Role } from "@prisma/client";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require("jsonwebtoken");
 
@@ -113,6 +114,78 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return { event, data: { rooms, userRole } };
     } catch (err) {
       throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:joinroom")
+  async onJoinRoom(client: Socket, payload: RoomDto) {
+    try {
+      const event = "server:joinroom";
+      const joiner: UserDto[] = [];
+      joiner[0] = await this.userService.getUserByName(client.data.user.name);
+      if (!joiner[0]) throw Error("Joiner not found");
+      const room: RoomDto = await this.roomService.getRoomByName(payload.name);
+      const oldRooms: RoomDto[] = await this.roomService.getUserRooms(
+        joiner[0].id
+      );
+      const check: RoomDto = oldRooms.find(({ name }) => name === payload.name);
+      if (
+        check &&
+        (await this.roomService.getUserSatus(check.id, joiner[0])) ===
+          Room_Role.BANNED
+      )
+        throw Error("User is ban");
+      if (check) throw Error("User already in room");
+      if (!room) throw Error("Room not found");
+      if (
+        (room.status === "PROTECTED" &&
+          (await this.roomService.compareHash(
+            room.password,
+            payload.password
+          ))) ||
+        room.status !== "PROTECTED"
+      ) {
+        await this.roomService.addUsers(room.id, joiner);
+      } else throw Error("Wrong password");
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        client.data.user,
+        rooms
+      );
+      return { event, data: { rooms, userRole } };
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:leaveroom")
+  async onleaveRoom(client: Socket, payload: { name: string }) {
+    try {
+      const event = "server:leaveroom";
+      const leaver: UserDto = await this.userService.getUserByName(
+        client.data.user.name
+      );
+      if (!leaver) throw Error("Creator not found");
+      const oldRooms: RoomDto[] = await this.roomService.getUserRooms(
+        leaver.id
+      );
+      const room: RoomDto = oldRooms.find(({ name }) => name === payload.name);
+      if (!room) throw Error("Room not found");
+      await this.roomService.removeUser(room.id, leaver);
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        client.data.user,
+        rooms
+      );
+      return { event, data: { rooms, userRole } };
+    } catch (err) {
+      return new UnauthorizedException(err);
     }
   }
 }
