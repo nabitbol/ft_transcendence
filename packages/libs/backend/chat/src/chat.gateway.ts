@@ -101,8 +101,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:createroom")
   async onCreateRoom(client: Socket, room: RoomDto) {
     try {
-      console.log(room);
-      console.log(client.data.user);
       const event = "server:createroom";
       await this.roomService.createRoom(room, client.data.user);
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
@@ -112,7 +110,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         client.data.user,
         rooms
       );
-      console.log(userRole);
       return { event, data: { rooms, userRole } };
     } catch (err) {
       throw new WsException(err.message);
