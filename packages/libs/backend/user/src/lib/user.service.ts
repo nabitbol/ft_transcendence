@@ -346,23 +346,23 @@ export class UserService {
   public async changeImage(file: any, user: UserDto) {
 
     let path:string;
-    path = process.cwd() + "/assets/img/" + "test.png"; // replace with user image
+    path = process.cwd() + "/assets/img/user/" + user.name + ".png";
     let img = file["base64"];
     let data = img.replace(/^data:image\/\w+;base64,/, "");
     let buf = Buffer.from(data, "base64");
     fs.writeFile(path, buf, function (err){
       if (err)
         throw err;
-      console.log("all is alright");
     });
-   /* if(fs.existsSync(path))
-    {
-      fs.writeFile(path, file["base64"], function (err){
-        if (err)
-          throw err;
+    const tmp = "user/" + user.name;
+    await prisma.user.update({
+      where: {
+        name: user.name,
+      },
+      data: {
+       image: tmp,
+        }
       });
-    }*/
-    
   }
 
   async setTwoFactorAuthenticationStatus(

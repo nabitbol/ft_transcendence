@@ -1,26 +1,5 @@
-.qr_module_form {
-	font: inherit;
-	color: black;
-	padding: 2rem;
-	font-size: 20px;
-	background-color: gainsboro;
-	width: 40%;
-	border-radius: 10px;
-	margin: 30px;
-	max-width: 400px;
-	border: 2px solid black;
-	min-width: 300px;
-	float: left;
-}
 
-.qr_module_label {
-	display: table;
-	margin: 0 auto;
-	font-size: 20px;
-	margin-left: 15px;
-}
-
-.qr_module_btn {
+.module_btn {
 	font: inherit;
 	padding: 0.5rem 1.5rem;
 	border-radius: 4px;
@@ -35,7 +14,7 @@
 	margin: 0 auto;
 }
 
-.qr_module_input {
+.module_input {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	display: table;
@@ -43,16 +22,4 @@
 	width: 80%;
 	border: 2px solid black;
 	border-radius: 5px;
-}
-
-
-.qr_module_input_red {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: table;
-	margin: 5% auto;
-	width: 80%;
-	border-radius: 3px;
-	background-color: pink;
-	border: 2px solid rgb(151, 13, 13);
 }

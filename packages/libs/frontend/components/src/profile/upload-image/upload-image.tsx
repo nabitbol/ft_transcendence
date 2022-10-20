@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { User } from '@ft-transcendence/libs-frontend-services'
+import classes from "./upload-image.module.css"
 
 function UploadImage() {
     const [message, setMessage] = useState("");
@@ -17,18 +18,20 @@ function UploadImage() {
             .then(async result => {
               data.image["base64"] = result;
               await User.sendImage(data.image);
+              window.location.reload();
             });
     };
   
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input placeholder="Change profil image"
+                <input
+                className={classes['module_input']}
                     {...register("image", {
                         required: true,
                     })} type="file"
                     accept=".png" />
-                <button>Submit</button>
+               <input type="submit" className={classes["module_btn"]} />
             </form>
             {message && (
                 <div className="alert alert-danger" role="alert">

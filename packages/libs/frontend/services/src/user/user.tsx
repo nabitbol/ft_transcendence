@@ -31,6 +31,17 @@ class UserService {
     }
   }
 
+  async requestOtherUserInfo(name: string): Promise<UserDto> {
+    try {
+      const ret = await axios.get(URL + "user/" + name, {
+        headers: authHeader()
+      });
+      return ret.data.user;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
 
   async sendFriendRequest(name_receiver: string): Promise<any> {
     const user_info: any = AuthReq.getCurrentUser();

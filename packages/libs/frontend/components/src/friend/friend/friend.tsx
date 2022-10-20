@@ -15,7 +15,7 @@ export function Friend(props: { user: UserDto }) {
   return (
     <div className={classes['div']}>
       <img
-        src={getPathToImage("friend")}
+        src={getPathToImage(props.user.image)}
         height="60"
         width="60"
         className={classes['img']}
