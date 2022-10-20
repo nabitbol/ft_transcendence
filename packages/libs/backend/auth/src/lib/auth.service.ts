@@ -74,7 +74,7 @@ export class AuthService {
     user.name = registerDto.name;
     user.password = await this.hashString(registerDto.password);
     user.email = registerDto.email;
-    user.image = "string";
+    user.image = "utilisateur";
 
     await this.usersService.addUser(user);
     const retUserDto: ResponseUserDto = user;

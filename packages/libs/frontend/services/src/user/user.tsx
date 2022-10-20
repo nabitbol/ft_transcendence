@@ -31,6 +31,17 @@ class UserService {
     }
   }
 
+  async requestOtherUserInfo(name: string): Promise<UserDto> {
+    try {
+      const ret = await axios.get(URL + "user/" + name, {
+        headers: authHeader()
+      });
+      return ret.data.user;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
 
   async sendFriendRequest(name_receiver: string): Promise<any> {
     const user_info: any = AuthReq.getCurrentUser();
@@ -175,6 +186,30 @@ class UserService {
         throw Error(err);
     }
   }
+
+  async getBase64 (file: any) {
+    return new Promise(resolve => {
+      let baseURL: string | ArrayBuffer;
+      let reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+    });
+  };
+
+  async sendImage (file: any) {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+      axios.post(
+        URL + "user/" + user_info.name + "/image",
+        {file},
+        { headers }
+      );
+  };
 
 }
 

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserToUpdateDto, UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
+import * as fs from 'fs'
 
 @Injectable()
 export class UserService {
@@ -189,16 +190,16 @@ export class UserService {
   }
 
   public async swap(items: UserDto[], leftIndex: number, rightIndex: number) {
-    var temp = items[leftIndex];
+    const temp = items[leftIndex];
     items[leftIndex] = items[rightIndex];
     items[rightIndex] = temp;
     return items;
   }
 
   public async partition(items: UserDto[], left: number, right: number) {
-    var pivot: UserDto  = items[Math.floor((right + left) / 2)],
-    i: number   = left,
-    j: number   = right;
+    const pivot: UserDto  = items[Math.floor((right + left) / 2)];
+    let i: number = left;
+    let j: number  = right;
     while (i <= j) {
         while (items[i].wins > pivot.wins) {
             i++;
@@ -297,7 +298,7 @@ export class UserService {
     }
     i = 0;
     j = 0;
-    let tmp: AchievementDto[] = new Array(j);
+    const tmp: AchievementDto[] = new Array(j);
     while (achievement[i])
     {
       if (achievement[i].condition <= user.wins)
@@ -342,10 +343,31 @@ export class UserService {
     }
   }
 
+  public async changeImage(file: any, user: UserDto) {
+
+    const path: string = process.cwd() + "/assets/img/user/" + user.name + ".png";
+    const img = file["base64"];
+    const data = img.replace(/^data:image\/\w+;base64,/, "");
+    const buf = Buffer.from(data, "base64");
+    fs.writeFile(path, buf, function (err){
+      if (err)
+        throw err;
+    });
+    const tmp = "user/" + user.name;
+    await prisma.user.update({
+      where: {
+        name: user.name,
+      },
+      data: {
+       image: tmp,
+        }
+      });
+  }
+
   async setTwoFactorAuthenticationStatus(
     name: string,
     status: boolean
-  ): Promise<any> {
+  ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuth = status;
     return this.updateUser(name, user);
@@ -354,7 +376,7 @@ export class UserService {
   async setTwoFactorAuthenticationSecret(
     name: string,
     secret: string
-  ): Promise<any> {
+  ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
     return this.updateUser(name, user);
