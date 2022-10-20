@@ -15,9 +15,17 @@ function UploadImage() {
     const onSubmit = async (data: any) => {
         setMessage("");
         if (data.image[0].type !== "image/png")
+        {
             setMessage("Need a png image");
-            await User.getBase64(data.image[0])
-            .then(async result => {
+            return ;
+        }
+        if (data.image[0].size > 100000)
+        {
+            setMessage("Please upload a image smaller than 100 Ko");
+            return ;
+        }
+        await User.getBase64(data.image[0])
+        .then(async result => {
               data.image["base64"] = result;
               await User.sendImage(data.image);
               window.location.reload();
