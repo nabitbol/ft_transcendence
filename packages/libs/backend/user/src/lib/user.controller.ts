@@ -297,12 +297,10 @@ export class UserController {
     required: true,
   })
   public async changeImage(@Body() request: any, @Param() param) {
-    let user: UserDto;
-      user = await this.userService.getUserByName(param.name);
+      const user: UserDto = await this.userService.getUserByName(param.name);
       if (!user)
         throw new NotFoundException("This username is not associated with any account.");
       await this.userService.changeImage(request.file, user);
-
   }
 
 

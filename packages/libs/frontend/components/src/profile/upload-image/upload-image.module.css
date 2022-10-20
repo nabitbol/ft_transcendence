@@ -15,11 +15,20 @@
 }
 
 .module_input {
-	margin-top: 10px;
-	margin-bottom: 10px;
 	display: table;
 	margin: 5% auto;
 	width: 80%;
 	border: 2px solid black;
 	border-radius: 5px;
+}
+
+.module_input_red {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: table;
+	margin: 5% auto;
+	width: 80%;
+	border-radius: 3px;
+	background-color: pink;
+	border: 2px solid rgb(151, 13, 13);
 }

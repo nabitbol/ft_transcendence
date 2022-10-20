@@ -6,9 +6,11 @@ import classes from "./upload-image.module.css"
 function UploadImage() {
     const [message, setMessage] = useState("");
 
-
-    const { register, handleSubmit } = useForm();
-
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
 
     const onSubmit = async (data: any) => {
         setMessage("");
@@ -26,7 +28,11 @@ function UploadImage() {
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                className={classes['module_input']}
+                className={
+                    errors["image"]
+                      ? classes["module_input_red"]
+                      : classes["module_input"]
+                  }
                     {...register("image", {
                         required: true,
                     })} type="file"
