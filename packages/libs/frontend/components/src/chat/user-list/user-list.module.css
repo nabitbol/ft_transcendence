@@ -1,3 +1,9 @@
+.errorMessage {
+	display: flex;
+	margin-top: 8%;
+	color: rgba(190, 1, 95, 0.747);
+}
+
 .userLine {
 	display: flex;
 	margin-top: 8%;

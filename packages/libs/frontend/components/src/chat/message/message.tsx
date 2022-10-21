@@ -22,11 +22,11 @@ export function Message(props: MessageProps) {
 
   const listenerRoomMessages = (response: {
     messages: MessageDto[];
-    userMessages: string[];
+    author: string[];
   }) => {
     if (messages) {
       setMessages(response.messages);
-      setAuthor(response.userMessages);
+      setAuthor(response.author);
     }
     setScroll(true);
   };

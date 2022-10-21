@@ -12,6 +12,7 @@ export function UserList(props: UserListProps) {
   const [scroll, setScroll] = useState<boolean>(false);
   const [users, setUsers] = useState<UserDto[]>(null);
   const [status, setStatus] = useState<string[]>(undefined);
+  const [message, setMessage] = useState<string>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToEnd = useCallback(() => {
@@ -19,10 +20,15 @@ export function UserList(props: UserListProps) {
     setScroll(false);
   }, []);
 
+  const listenerUpdateErrorMessage = useCallback((err) => {
+    setMessage(err.message);
+  }, []);
+
   const listenerUsers = (response: { users: UserDto[]; status: string[] }) => {
     if (response.users) {
       setUsers(response.users);
       setStatus(response.status);
+      setMessage(null);
       setScroll(true);
     }
   };
@@ -30,6 +36,7 @@ export function UserList(props: UserListProps) {
   useEffect(() => {
     socketChat.on("server:getroomusers", listenerUsers);
     socketChat.on("server:getusers", listenerUsers);
+    socketChat.on("exception", listenerUpdateErrorMessage);
     return () => {
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
@@ -42,7 +49,9 @@ export function UserList(props: UserListProps) {
 
   return (
     <div className={styles["userList"]}>
-      {users &&
+      {message && <p className={styles["errorMessage"]}>{message}</p>}
+      {!message &&
+        users &&
         users.map((element, key) => (
           <div className={styles["userLine"]} key={key}>
             <div className={styles["userInfos"]}>

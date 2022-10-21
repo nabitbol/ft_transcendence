@@ -12,6 +12,7 @@ import { UserService } from "@ft-transcendence/libs-backend-user";
 import { RoomService } from "./lib/room/room.service";
 import { MessageService } from "./lib/message/message.service";
 import {
+  Logger,
   UnauthorizedException,
   UsePipes,
   ValidationPipe,
@@ -57,14 +58,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         userId: client.id,
         user: user,
       });
-      console.log("User: " + user.name + " joined the chat");
+      Logger.log("User: " + user.name + " joined the chat");
     } catch (err) {
       return this.disconnect(client);
     }
   }
 
   handleDisconnect(client: Socket) {
-    console.log("User " + client.data.user.name + " leaved the chat");
+    Logger.log("User " + client.data.user.name + " leaved the chat");
     this.userInChat = this.getUserWithout(client.data.user.name);
     this.disconnect(client);
   }
@@ -180,7 +181,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           room = this.userInChat[i].room;
         }
       }
-      if (!room) throw Error("User not in room");
+      if (!room) throw Error("User is not in room");
       const users: UserDto[] = [];
       const user_room: UserRoomDto[] = await this.roomService.getRoomUsers(
         room.id
@@ -196,7 +197,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           j++;
         }
       }
-      console.log(users);
       this.server.to(client.id).emit(event, { users, status });
     } catch (err) {
       throw new WsException(err.message);
@@ -207,7 +207,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSelectRoom(client: Socket, payload: string) {
     try {
       let messages: MessageDto[];
-      let userMessages: string[];
+      const author: string[] = [];
       const event = "server:getroommessages";
       const room: RoomDto = await this.roomService.getRoomByName(payload);
       if (!room) throw Error("No rooms found");
@@ -218,9 +218,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
       }
       for (let i = 0; i < messages.length; i++) {
-        userMessages[i] = await this.messageservice.getMessageUser(messages[i]);
+        author[i] = await this.messageservice.getMessageUser(messages[i]);
       }
-      return { event, data: { messages, userMessages } };
+      return { event, data: { messages, author } };
     } catch (err) {
       throw new WsException(err.message);
     }
