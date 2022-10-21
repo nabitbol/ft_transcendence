@@ -11,6 +11,7 @@ import { AchievementDto } from "./achievement.types";
 
 export type UserType = {
   name: string;
+  name_42?: string | undefined;
   email: string;
   password: string;
   image: string;
@@ -26,6 +27,7 @@ export type UserType = {
 
 export type UserToUpdateType = {
   name?: string | undefined;
+  name_42?: string | undefined;
   email?: string | undefined;
   password?: string | undefined;
   image?: string | undefined;
@@ -62,6 +64,9 @@ export class UserDto {
   @MinLength(4)
   @MaxLength(25)
   name: string;
+
+  @ApiPropertyOptional()
+  name_42?: string | undefined;
 
   @ApiProperty()
   @IsString()
@@ -127,6 +132,9 @@ export class UserToUpdateDto {
   @MinLength(4)
   @MaxLength(25)
   name: string;
+
+  @ApiPropertyOptional()
+  name_42?: string | undefined;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -199,6 +207,9 @@ export class ResponseUserDto {
   @MinLength(4)
   @MaxLength(25)
   name?: string | undefined;
+
+  @ApiPropertyOptional()
+  name_42?: string | undefined;
 
   @ApiPropertyOptional()
   @IsOptional()
