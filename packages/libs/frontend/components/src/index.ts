@@ -1,3 +1,5 @@
+
+export * from './chat/activate-user-action/activate-user-action';
 export * from "./chat/leave-room/leave-room";
 
 export * from "./chat/join-room/join-room";

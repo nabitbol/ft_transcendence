@@ -13,6 +13,7 @@ export function UserAction(props: UserActionProps) {
       <li className={styles["actionItem"]}>{"Ban from Room"}</li>
       <li className={styles["actionItem"]}>{"Grant admin"}</li>
       <li className={styles["actionItem"]}>{"Invite to play"}</li>
+      <li className={styles["actionItem"]}>{"Send message"}</li>
     </ul>
   );
 }

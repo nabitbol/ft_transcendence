@@ -80,6 +80,8 @@ model Room {
   password   String?
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
+  convName1  String?
+  convName2  String?
   status     Room_Status @default(PUBLIC)
 
   users User_Room[]
@@ -112,4 +114,5 @@ enum Room_Status {
   PUBLIC
   PROTECTED
   PRIVATE
+  CONVERSATION
 }

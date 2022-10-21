@@ -191,16 +191,16 @@ export class UserService {
   }
 
   public async swap(items: UserDto[], leftIndex: number, rightIndex: number) {
-    let temp = items[leftIndex];
+    const temp = items[leftIndex];
     items[leftIndex] = items[rightIndex];
     items[rightIndex] = temp;
     return items;
   }
 
   public async partition(items: UserDto[], left: number, right: number) {
-    let pivot: UserDto = items[Math.floor((right + left) / 2)],
-      i: number = left,
-      j: number = right;
+    const pivot: UserDto = items[Math.floor((right + left) / 2)];
+    let i: number = left;
+    let j: number = right;
     while (i <= j) {
       while (items[i].wins > pivot.wins) {
         i++;

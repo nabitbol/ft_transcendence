@@ -50,6 +50,16 @@ export class RoomDto {
   @MinLength(2)
   password?: string | undefined;
 
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  convName1?: string | undefined;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  convName2?: string | undefined;
+
   @IsOptional()
   @ApiProperty({
     description: "Time the match was disputed",

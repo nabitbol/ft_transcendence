@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
-import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { MessageDto, UserDto } from "@ft-transcendence/libs-shared-types";
 
 @Injectable()
 export class MessageService {
@@ -37,6 +37,18 @@ export class MessageService {
           NOT: mutes.map((element) => ({ userId: element.id })),
         },
       });
+    } catch (err) {
+      throw Error("Message not found");
+    }
+  }
+
+  public async getMessageUser(message: MessageDto) {
+    try {
+      return await prisma.message.findUnique({
+        where: {
+          id: message.id,
+        },
+      }).User.name;
     } catch (err) {
       throw Error("Message not found");
     }

@@ -24,7 +24,17 @@
 	border: 1px solid white;
 }
 
-.userBadge {
+.userBadgeOffline {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: red;
+	position: absolute;
+	top: -2px;
+	right: -2px;
+}
+
+.userBadgeOnline {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;

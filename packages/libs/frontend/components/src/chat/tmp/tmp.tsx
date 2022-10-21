@@ -1,24 +1,47 @@
 import ChatForms from "../chat-forms/chat-forms";
-import CreateRoom from "../create-room/create-room";
 import MessageInput from "../message-input/message-input";
 import Message from "../message/message";
 import Rooms from "../rooms/rooms";
 import styles from "./tmp.module.css";
 import ReactSwitch from "react-switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserList from "../user-list/user-list";
 import RoomsButton from "../rooms-button/rooms-button";
+import { socketChat } from "@ft-transcendence/libs-frontend-services";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 
 /* eslint-disable-next-line */
 export interface TmpProps {}
 
 export function Tmp(props: TmpProps) {
   const toggleOnColor = "#d3046b";
-  const [userTypeList, setUserTypeList] = useState("Room");
+  const [userTypeList, setUserTypeList] = useState("All");
+  const [usersCount, setUsersCount] = useState<number>(0);
 
   const toggleTypeList = () => {
-    setUserTypeList((cur) => (cur === "All" ? "Room" : "All"));
+    if (userTypeList === "All") {
+      setUserTypeList("Room");
+      socketChat.emit("client:getroomusers");
+    }
+    if (userTypeList === "Room") {
+      setUserTypeList("All");
+      socketChat.emit("client:getusers");
+    }
   };
+
+  const listenerUsers = (response: { users: UserDto[]; status: string[] }) => {
+    setUsersCount(response.users.length);
+  };
+
+  useEffect(() => {
+    socketChat.on("server:getroomusers", listenerUsers);
+    socketChat.on("server:getusers", listenerUsers);
+    socketChat.emit("client:getusers");
+    return () => {
+      socketChat.off("server:getusers", listenerUsers);
+      socketChat.off("server:getroomusers", listenerUsers);
+    };
+  }, []);
 
   return (
     <div className={styles["chat"]}>
@@ -36,10 +59,6 @@ export function Tmp(props: TmpProps) {
         <div className={styles["chatBoxWrapper"]}>
           <div className={styles["chatBoxTop"]}>
             <Message own={false} />
-            <Message own={true} />
-            <Message own={false} />
-            <Message own={false} />
-            <Message own={true} />
           </div>
           <div className={styles["chatBoxBottom"]}>
             <MessageInput />
@@ -63,24 +82,16 @@ export function Tmp(props: TmpProps) {
                     {userTypeList}
                   </label>
                 </div>
-                <span className={styles["userNumber"]}>{"12 Users"}</span>
+                <span className={styles["userNumber"]}>
+                  {usersCount + " Users"}
+                </span>
               </div>
               <div className={styles["chatUsersFilterBottom"]}>
-                <ChatForms roomName={"room1"} />
+                <ChatForms />
               </div>
             </div>
           </div>
           <div className={styles["chatUsersBottom"]}>
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
-            <UserList />
             <UserList />
           </div>
         </div>

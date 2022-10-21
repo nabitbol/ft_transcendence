@@ -95,11 +95,16 @@ export class RoomService {
           password: room.password,
           status: room.status,
           updated_at: room.updated_at,
+          convName1: room.convName1,
+          convName2: room.convName2,
           users: {
             create: [
               {
                 updated_at: new Date(),
-                role: Room_Role.OWNER,
+                role:
+                  room.status !== Room_Status.CONVERSATION
+                    ? Room_Role.OWNER
+                    : Room_Role.NORMAL,
                 User: {
                   connect: {
                     id: creator.id,

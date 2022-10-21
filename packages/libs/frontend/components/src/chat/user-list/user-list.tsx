@@ -1,56 +1,70 @@
+import { socketChat } from "@ft-transcendence/libs-frontend-services";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
-import { useRef, useState } from "react";
-import UserAction from "../user-action/user-action";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ActivateUserAction from "../activate-user-action/activate-user-action";
 import styles from "./user-list.module.css";
 
 /* eslint-disable-next-line */
 export interface UserListProps {}
 
 export function UserList(props: UserListProps) {
-  const [userAction, setUserAction] = useState<string>("userActionDown");
-  const [userActionList, setUserActionList] = useState<boolean>(false);
-  const actionRef = useRef<HTMLDivElement>(null);
+  const [scroll, setScroll] = useState<boolean>(false);
+  const [users, setUsers] = useState<UserDto[]>(null);
+  const [status, setStatus] = useState<string[]>(undefined);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const openUserActionList = (state: boolean) => {
-    setUserActionList(!state);
-    setUserAction((cur) =>
-      cur === "userActionDown" ? "userActionUp" : "userActionDown"
-    );
-  };
-  const handleClickOutsideActionList = (e) => {
-    if (
-      userActionList &&
-      userAction === "userActionUp" &&
-      !actionRef.current?.contains(e.target as Node)
-    ) {
-      setUserActionList(false);
-      setUserAction("userActionDown");
+  const scrollToEnd = useCallback(() => {
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+    setScroll(false);
+  }, []);
+
+  const listenerUsers = (response: { users: UserDto[]; status: string[] }) => {
+    if (response.users) {
+      setUsers(response.users);
+      setStatus(response.status);
+      setScroll(true);
     }
   };
-  window.addEventListener("click", handleClickOutsideActionList);
+
+  useEffect(() => {
+    socketChat.on("server:getroomusers", listenerUsers);
+    socketChat.on("server:getusers", listenerUsers);
+    return () => {
+      socketChat.off("server:getroomusers", listenerUsers);
+      socketChat.off("server:getusers", listenerUsers);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (scroll === true) scrollToEnd();
+  }, [scroll, scrollToEnd]);
 
   return (
     <div className={styles["userList"]}>
-      <div className={styles["userLine"]}>
-        <div className={styles["userInfos"]}>
-          <div className={styles["userImgContainer"]}>
-            <img
-              className={styles["userImg"]}
-              src={getPathToImage("utilisateur")}
-              alt="avatar"
-            />
-            <div className={styles["userBadge"]}></div>
+      {users &&
+        users.map((element, key) => (
+          <div className={styles["userLine"]} key={key}>
+            <div className={styles["userInfos"]}>
+              <div className={styles["userImgContainer"]}>
+                <img
+                  className={styles["userImg"]}
+                  src={getPathToImage("utilisateur")}
+                  alt="avatar"
+                />
+                <div
+                  className={
+                    status[key] === "online"
+                      ? styles["userBadgeOnline"]
+                      : styles["userBadgeOffline"]
+                  }
+                ></div>
+              </div>
+              <span className={styles["userName"]}>{element.name}</span>
+            </div>
+            <ActivateUserAction />
           </div>
-          <span className={styles["userName"]}>{"nabitbol"}</span>
-        </div>
-        <div className={styles["actionContainer"]} ref={actionRef}>
-          <span
-            className={styles[userAction]}
-            onClick={(e) => openUserActionList(userActionList)}
-          ></span>
-          <div>{userActionList && <UserAction />}</div>
-        </div>
-      </div>
+        ))}
     </div>
   );
 }
