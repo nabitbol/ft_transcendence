@@ -203,6 +203,34 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage("client:searchuser")
+  async onSearchUser(
+    client: Socket,
+    payload: { contains: string; list: UserDto[] }
+  ) {
+    try {
+      const event = "server:searchuser";
+      const users: UserDto[] = [];
+      const status: string[] = [];
+      let j = 0;
+      if (payload.list) {
+        for (let i = 0; i < payload.list.length; i++) {
+          if (payload.list[i].name !== client.data.user.name) {
+            if (payload.list[i].name.includes(payload.contains)) {
+              users[j] = payload.list[i];
+              if (this.getUserWith(users[j].name)[0]) status[j] = "online";
+              else status[j] = "offline";
+              j++;
+            }
+          }
+        }
+      }
+      this.server.to(client.id).emit(event, { users, status });
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
   @SubscribeMessage("client:selectroom")
   async onSelectRoom(client: Socket, payload: string) {
     try {

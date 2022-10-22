@@ -36,12 +36,16 @@ export function UserList(props: UserListProps) {
   useEffect(() => {
     socketChat.on("server:getroomusers", listenerUsers);
     socketChat.on("server:getusers", listenerUsers);
+    socketChat.on("server:searchuser", listenerUsers);
+    socketChat.on("server:searchuser", listenerUsers);
     socketChat.on("exception", listenerUpdateErrorMessage);
     return () => {
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
+      socketChat.off("server:searchuser", listenerUsers);
+      socketChat.off("server:searchuser", listenerUsers);
     };
-  }, []);
+  }, [listenerUpdateErrorMessage]);
 
   useEffect(() => {
     if (scroll === true) scrollToEnd();

@@ -36,10 +36,12 @@ export function Tmp(props: TmpProps) {
   useEffect(() => {
     socketChat.on("server:getroomusers", listenerUsers);
     socketChat.on("server:getusers", listenerUsers);
+    socketChat.on("server:searchuser", listenerUsers);
     socketChat.emit("client:getusers");
     return () => {
       socketChat.off("server:getusers", listenerUsers);
       socketChat.off("server:getroomusers", listenerUsers);
+      socketChat.off("server:searchuser", listenerUsers);
     };
   }, []);
 
@@ -87,7 +89,7 @@ export function Tmp(props: TmpProps) {
                 </span>
               </div>
               <div className={styles["chatUsersFilterBottom"]}>
-                <ChatForms />
+                <ChatForms userTypeList={userTypeList} />
               </div>
             </div>
           </div>

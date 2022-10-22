@@ -1,15 +1,33 @@
 import styles from "./chat-forms.module.css";
 import { socketChat } from "@ft-transcendence/libs-frontend-services";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* eslint-disable-next-line */
-export interface ChatMessageFormsProps {}
+export interface ChatMessageFormsProps {
+  userTypeList: string;
+}
 
 export function ChatForms(props: ChatMessageFormsProps) {
-  const [users, setUsers] = useState<UserDto[]>(undefined);
+  const [users, setUsers] = useState<UserDto[]>(null);
+  const [userName, setUserName] = useState<string>(undefined);
+  const inputRef = useRef(null);
 
-  const listenerUsers = (response: { users: UserDto[] }) => {
+  const handleChange = (event) => {
+    const payload = {
+      contains: inputRef?.current.value,
+      list: users,
+    };
+    if (payload.contains === "") {
+      if (props.userTypeList === "All") socketChat.emit("client:getusers");
+      if (props.userTypeList === "Room") socketChat.emit("client:getroomusers");
+    } else {
+      socketChat.emit("client:searchuser", payload);
+    }
+    event.preventDefault();
+  };
+
+  const listenerUsers = (response: { users: UserDto[]; status: string[] }) => {
     if (response.users) {
       setUsers(response.users);
     }
@@ -18,27 +36,34 @@ export function ChatForms(props: ChatMessageFormsProps) {
   useEffect(() => {
     socketChat.on("server:getroomusers", listenerUsers);
     socketChat.on("server:getusers", listenerUsers);
+    socketChat.on("server:searchuser", listenerUsers);
     return () => {
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
+      socketChat.off("server:searchuser", listenerUsers);
     };
   }, []);
 
-  return !users ? null : (
-    <form>
+  return (
+    <div>
       <input
         placeholder="Search for user"
         type="text"
         list="data"
         className={styles["chatSearchInput"]}
+        value={userName}
+        onChange={(e) => handleChange(e)}
+        ref={inputRef}
       />
 
-      <datalist id="data">
-        {users.map((item, key) => (
-          <option key={key} value={item.name} />
-        ))}
-      </datalist>
-    </form>
+      {users && (
+        <datalist id="data">
+          {users.map((item, key) => (
+            <option key={key} value={item.name} />
+          ))}
+        </datalist>
+      )}
+    </div>
   );
 }
 
