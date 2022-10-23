@@ -15,6 +15,7 @@
 
 .messageTop {
 	display: flex;
+	margin-top: 30px;
 }
 
 .messageImg {
@@ -27,6 +28,9 @@
 
 .messageText {
 	padding: 10px;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	word-break: break-word;
 	border-radius: 20px;
 	background-color: rgb(211, 4, 107);
 	color: white;

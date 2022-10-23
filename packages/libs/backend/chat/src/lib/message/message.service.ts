@@ -9,12 +9,20 @@ export class MessageService {
       await prisma.message.create({
         data: {
           content: content,
-          userId: userId,
-          roomId: roomId,
+          User: {
+            connect: {
+              id: userId,
+            },
+          },
+          Room: {
+            connect: {
+              id: roomId,
+            },
+          },
         },
       });
     } catch (err) {
-      throw Error("Unable to create room");
+      throw Error("Unable to create message");
     }
   }
   public async getRoomMessages(roomId: string) {
@@ -44,11 +52,13 @@ export class MessageService {
 
   public async getMessageUser(message: MessageDto) {
     try {
-      return await prisma.message.findUnique({
-        where: {
-          id: message.id,
-        },
-      }).User.name;
+      return await prisma.message
+        .findUnique({
+          where: {
+            id: message.id,
+          },
+        })
+        .User();
     } catch (err) {
       throw Error("Message not found");
     }

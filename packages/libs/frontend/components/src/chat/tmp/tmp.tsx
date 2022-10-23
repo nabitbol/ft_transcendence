@@ -9,6 +9,8 @@ import UserList from "../user-list/user-list";
 import RoomsButton from "../rooms-button/rooms-button";
 import { socketChat } from "@ft-transcendence/libs-frontend-services";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { User } from "@ft-transcendence/libs-frontend-services";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable-next-line */
 export interface TmpProps {}
@@ -17,6 +19,18 @@ export function Tmp(props: TmpProps) {
   const toggleOnColor = "#d3046b";
   const [userTypeList, setUserTypeList] = useState("All");
   const [usersCount, setUsersCount] = useState<number>(0);
+  const [userData, setUserData] = useState<UserDto>();
+  const navigate = useNavigate();
+
+  const getUserData = async () => {
+    try {
+      const response: UserDto = await User.requestUserInfo();
+      setUserData(response);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
+  };
 
   const toggleTypeList = () => {
     if (userTypeList === "All") {
@@ -45,6 +59,10 @@ export function Tmp(props: TmpProps) {
     };
   }, []);
 
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <div className={styles["chat"]}>
       <div className={styles["chatRooms"]}>
@@ -60,7 +78,7 @@ export function Tmp(props: TmpProps) {
       <div className={styles["chatBox"]}>
         <div className={styles["chatBoxWrapper"]}>
           <div className={styles["chatBoxTop"]}>
-            <Message own={false} />
+            <Message user={userData} />
           </div>
           <div className={styles["chatBoxBottom"]}>
             <MessageInput />

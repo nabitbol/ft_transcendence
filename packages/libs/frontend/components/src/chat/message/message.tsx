@@ -1,18 +1,25 @@
 import { socketChat } from "@ft-transcendence/libs-frontend-services";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
-import { MessageDto } from "@ft-transcendence/libs-shared-types";
+import { MessageDto, UserDto } from "@ft-transcendence/libs-shared-types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./message.module.css";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+import { userInfo } from "os";
 
 /* eslint-disable-next-line */
 export interface MessageProps {
-  own: boolean;
+  user: UserDto;
 }
+TimeAgo.addDefaultLocale(en);
+
+const timeAgo = new TimeAgo("en-US");
 
 export function Message(props: MessageProps) {
   const [scroll, setScroll] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageDto[]>(undefined);
-  const [author, setAuthor] = useState<string[]>(undefined);
+  const [empty, setEmpty] = useState<boolean>(false);
+  const [authors, setAuthors] = useState<string[]>(undefined);
   const scrollRef = useRef(null);
 
   const scrollToEnd = useCallback(() => {
@@ -20,34 +27,48 @@ export function Message(props: MessageProps) {
     setScroll(false);
   }, []);
 
-  const listenerRoomMessages = (response: {
-    messages: MessageDto[];
-    author: string[];
-  }) => {
-    if (messages) {
-      setMessages(response.messages);
-      setAuthor(response.author);
-    }
-    setScroll(true);
-  };
+  const listenerRoomMessages = useCallback(
+    (response: { messages: MessageDto[]; authors: string[] }) => {
+      if (response.messages) {
+        if (response.messages.length > 0) setEmpty(false);
+        else setEmpty(true);
+        setMessages(response.messages);
+        setAuthors(response.authors);
+        setScroll(true);
+      } else {
+        setEmpty(true);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    socketChat.on("server:getroommessages", listenerRoomMessages);
+    socketChat.on("server:getonselectmessages", listenerRoomMessages);
+    socketChat.on("server:getmessages", listenerRoomMessages);
     return () => {
-      socketChat.off("server:getroommessages", listenerRoomMessages);
+      socketChat.off("server:getonselectmessages", listenerRoomMessages);
+      socketChat.off("server:getmessages", listenerRoomMessages);
     };
-  }, [messages]);
+  }, [messages, listenerRoomMessages]);
 
   useEffect(() => {
     if (scroll === true) scrollToEnd();
   }, [scroll, scrollToEnd]);
 
   return (
-    <div className={props.own ? styles["message-own"] : styles["message"]}>
+    <div>
       {messages &&
         messages.map((element, key) => (
-          <div>
-            <div className={styles["messageTop"]} key={key}>
+          <div
+            className={
+              authors[key] === props.user.name
+                ? styles["message-own"]
+                : styles["message"]
+            }
+            key={key}
+            ref={scrollRef}
+          >
+            <div className={styles["messageTop"]}>
               <img
                 className={styles["messageImg"]}
                 src={getPathToImage("utilisateur")}
@@ -55,10 +76,12 @@ export function Message(props: MessageProps) {
               />
               <p className={styles["messageText"]}>{element.content}</p>
             </div>
-            <div className={styles["messageBottom"]}>{author}</div>
+            <div className={styles["messageBottom"]}>{`${timeAgo.format(
+              new Date(element.created_at)
+            )} - ${authors[key]}`}</div>
           </div>
         ))}
-      {!messages && <p>{"no message in the chat"}</p>}
+      {(!messages || empty === true) && <p>{"no message in the chat"}</p>}
     </div>
   );
 }

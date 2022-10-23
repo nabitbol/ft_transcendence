@@ -235,20 +235,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSelectRoom(client: Socket, payload: string) {
     try {
       let messages: MessageDto[];
-      const author: string[] = [];
-      const event = "server:getroommessages";
+      const authors: string[] = [];
+      const event = "server:getonselectmessages";
       const room: RoomDto = await this.roomService.getRoomByName(payload);
       if (!room) throw Error("No rooms found");
       for (let i = 0; i < this.userInChat.length; i++) {
         if (this.userInChat[i].userId === client.id) {
+          if (this.userInChat[i].room)
+            client.leave(this.userInChat[i].room.name);
+          client.join(room.name);
           this.userInChat[i].room = room;
           messages = await this.getRoomMessages(client.data.user, room);
         }
       }
       for (let i = 0; i < messages.length; i++) {
-        author[i] = await this.messageservice.getMessageUser(messages[i]);
+        authors[i] = (
+          await this.messageservice.getMessageUser(messages[i])
+        ).name;
       }
-      return { event, data: { messages, author } };
+      return { event, data: { messages, authors } };
     } catch (err) {
       throw new WsException(err.message);
     }
@@ -399,6 +404,44 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.broadcast
         .to(user.userId)
         .emit(event, { data: { rooms, userRole } });
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @SubscribeMessage("client:sendmessage")
+  async onSendMessage(client: Socket, message: string) {
+    try {
+      const event = "server:getmessages";
+      const roomName = await this.getUserWith(client.data.user.name)[0].room
+        .name;
+      if (!roomName) throw Error("User is not in room");
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      const room: RoomDto = rooms.find(({ name }) => name === roomName);
+      if (!room) throw Error("Room not found");
+      const role = await this.roomService.getUserSatus(
+        room.id,
+        client.data.user
+      );
+      if (role === Room_Role.BANNED) throw Error("User is nan");
+      if (role === Room_Role.MUTED) throw Error("User is mute");
+      await this.messageservice.createMessage(
+        room.id,
+        client.data.user.id,
+        message
+      );
+      const messages: MessageDto[] = await this.messageservice.getRoomMessages(
+        room.id
+      );
+      const authors: string[] = [];
+      for (let i = 0; i < messages.length; i++) {
+        authors[i] = (
+          await this.messageservice.getMessageUser(messages[i])
+        ).name;
+      }
+      this.server.to(room.name).emit(event, { messages, authors });
     } catch (err) {
       throw new WsException(err.message);
     }
