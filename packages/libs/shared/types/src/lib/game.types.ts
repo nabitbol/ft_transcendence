@@ -1,5 +1,6 @@
 import { GameInfo } from "@ft-transcendence/libs/shared/game";
 import { Lobby } from "../../../../../libs/backend/game/src/lib/lobby";
+import { MatchDto } from "./match.types";
 
 export type PlayersName = {
 	left: string;
@@ -40,12 +41,6 @@ export enum ServerEvents
 	LobbyList =  'server.lobbylist',
 }
 
-export type ResultGame = {
-	winner: string;
-	loser: string;
-	score: ScoreGame;
-}
-
 export type ServerPayloads = {
 	[ServerEvents.GameMessage]: {
 	  message: string;
@@ -69,7 +64,7 @@ export type ServerPayloads = {
 	  };
 
 	[ServerEvents.GameEnd]: {
-		result: ResultGame;
+		result: MatchDto;
 	  };
 
 	[ServerEvents.LobbyList]: {

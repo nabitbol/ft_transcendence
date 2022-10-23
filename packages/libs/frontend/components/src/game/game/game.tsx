@@ -5,12 +5,12 @@ import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
 import { Socket } from 'socket.io';
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
 import { ResultScreen } from "@ft-transcendence/libs-frontend-components";
-import { ResultGame } from "@ft-transcendence/libs-shared-types"
+import { MatchDto } from "@ft-transcendence/libs-shared-types";
 
 function Game() {
   //Setup variable
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isResultOn, setIsResultOn] = useState<ResultGame>(undefined);
+  const [isResultOn, setIsResultOn] = useState<MatchDto>(undefined);
   const [width, height] = useWindowSize();
   const gameInfoRef = useRef<GameInfo>();
   const boxRef = useRef<boxDimensions>();
@@ -49,7 +49,8 @@ function Game() {
     gameInfoRef.current = response.info;
   }
 
-  const listenerGameEnd = (result: ResultGame ) => {
+  const listenerGameEnd = (result: MatchDto ) => {
+    console.log(result)
     setIsResultOn(result);
   }
 

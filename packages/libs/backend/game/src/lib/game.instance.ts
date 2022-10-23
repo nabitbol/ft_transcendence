@@ -1,5 +1,5 @@
 import { Engine, GameInfo } from "@ft-transcendence/libs/shared/game";
-import { ServerEvents, ServerPayloads, ResultGame, MatchDto } from "@ft-transcendence/libs-shared-types"
+import { ServerEvents, ServerPayloads, MatchDto } from "@ft-transcendence/libs-shared-types"
 import { Socket, Server } from 'socket.io';
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { MatchService } from "@ft-transcendence/libs-backend-match";
@@ -10,6 +10,7 @@ export class GameInstance
 	private gameEngine: Engine;
 	private userservice: UserService = new UserService();
 	private matchservice: MatchService = new MatchService();
+	private lostPlayer: string;
 
 	constructor(private mode: 'simple' | 'double',
 				private id: string,
@@ -33,9 +34,36 @@ export class GameInstance
 		this.launchGame();
 	}
   
-	public async saveGame(): Promise<void> 
+	public async saveGameDisconnect(): Promise<MatchDto> 
 	{
-		console.log("SAVING GAMEE HEREEE");
+		console.log("DISCONNECT");
+		const matchInfo: MatchDto = new MatchDto();
+		matchInfo.players = [];
+		if(this.lostPlayer === this.gameInfo.players_name.left)
+		{
+			matchInfo.winner = this.gameInfo.players_name.right;
+			matchInfo.looser = this.gameInfo.players_name.left;
+			matchInfo.winnerScore = this.gameInfo.player_b_score;
+			matchInfo.looserScore = this.gameInfo.player_a_score;	
+		}
+		else
+		{
+			matchInfo.winner = this.gameInfo.players_name.left;
+			matchInfo.looser = this.gameInfo.players_name.right;
+			matchInfo.winnerScore = this.gameInfo.player_a_score;
+			matchInfo.looserScore = this.gameInfo.player_b_score;
+		}
+		matchInfo.playersName = [this.gameInfo.players_name.left, this.gameInfo.players_name.right];
+		matchInfo.players[0] = (await this.userservice.getUserByName(this.gameInfo.players_name.right)).id;
+		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
+		console.log(matchInfo);
+		await this.matchservice.addMatches(matchInfo);
+		return (matchInfo)
+	}
+
+	public async saveGame(): Promise<MatchDto> 
+	{
+		console.log("ENDGAME");
 		const matchInfo: MatchDto = new MatchDto();
 		matchInfo.players = [];
 		if(this.gameInfo.player_a_score > this.gameInfo.player_b_score)
@@ -58,34 +86,14 @@ export class GameInstance
 		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
 		console.log(matchInfo);
 		await this.matchservice.addMatches(matchInfo);
+		return (matchInfo)
 	}
 
 	public resetGame(): void
 	{
 		this.gameInfo = new GameInfo({width: 1920, height: 1016}, this.mode)
 		this.gameEngine = new Engine(this.gameInfo);
-	}
-
-	public createResult(): ResultGame
-	{
-		let winner: string;
-		let loser: string;
-		if(this.gameInfo.player_a_score > this.gameInfo.player_b_score)
-		{
-			winner = this.gameInfo.players_name.left;
-			loser = this.gameInfo.players_name.right;
-		}
-		else
-		{
-			winner = this.gameInfo.players_name.right;
-			loser = this.gameInfo.players_name.left;
-		}
-		const result: ResultGame = {
-			winner: winner,
-			loser: loser,
-			score: {left: this.gameInfo.player_a_score, right: this.gameInfo.player_b_score}
-		}
-		return result;
+		this.lostPlayer = undefined;
 	}
 
 	public async endGame(): Promise<void>
@@ -93,11 +101,7 @@ export class GameInstance
 		if (!this.gameInfo.has_started) {
 			return;
 		}
-		console.log("End game");
 		this.gameInfo.has_ended = true;
-		this.sendMessage<ServerPayloads[ServerEvents.GameEnd]>(ServerEvents.GameEnd, {
-			result: this.createResult(),
-		});
 	}
 
 	public delay(ms: number) {
@@ -112,12 +116,25 @@ export class GameInstance
 				this.gameEngine.render();
 				if(this.gameInfo.has_ended === true)
 				{
-					this.saveGame();
-					return this.endGame();
+					await this.endGame();
+					break;
 				}
 				this.sendGameInfo();
 				await this.delay(20);
 			}
+			console.log("LOST PLAYER =" + this.lostPlayer);
+			if(this.lostPlayer)
+			{
+				this.sendMessage<ServerPayloads[ServerEvents.GameEnd]>(ServerEvents.GameEnd, {
+					result: await this.saveGameDisconnect(),
+				});
+			}
+			else
+			{
+				this.sendMessage<ServerPayloads[ServerEvents.GameEnd]>(ServerEvents.GameEnd, {
+					result: await this.saveGame(),
+				});
+			};
 		})();	
 	}
 
@@ -136,6 +153,11 @@ export class GameInstance
 	public getGameInfo() : GameInfo
 	{
 		return this.gameInfo;
+	}
+
+	public setLostPlayer(player: string)
+	{
+		this.lostPlayer = player;
 	}
 
 	public sendGameInfo(): void

@@ -48,11 +48,12 @@ export class Lobby
     client.join(this.id);
   }
 
-  public removeClient(client: Socket): void
+  public async removeClient(client: Socket): Promise<void>
   {
     this.players_name = {left: undefined, right: undefined};
+    this.gameInstance.setLostPlayer(client.data.user.name);
     this.gameInstance.endGame();
-
+    await this.gameInstance.delay(2000);
     for (const [clientId, client] of this.clients) {
         console.log("Removed client from lobby");
         this.clients.delete(client.id);

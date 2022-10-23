@@ -61,7 +61,7 @@ export class LobbyManager
   
   public terminateSocket(client: Socket): void
   {
-    client.data.lobby?.removeClient();
+    client.data.lobby?.removeClient(client);
   }
 
   public createLobby(client: Socket, data: 'simple' | 'double'): void
