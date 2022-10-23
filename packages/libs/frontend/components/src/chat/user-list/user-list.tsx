@@ -42,6 +42,7 @@ export function UserList(props: UserListProps) {
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
       socketChat.off("server:searchuser", listenerUsers);
+      socketChat.off("exception", listenerUpdateErrorMessage);
     };
   }, [listenerUpdateErrorMessage]);
 
@@ -73,7 +74,7 @@ export function UserList(props: UserListProps) {
               </div>
               <span className={styles["userName"]}>{element.name}</span>
             </div>
-            <ActivateUserAction />
+            <ActivateUserAction user={element} />
           </div>
         ))}
     </div>

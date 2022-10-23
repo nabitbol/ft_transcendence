@@ -3,23 +3,23 @@ import { QrModule, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
-import { UserDto } from '@ft-transcendence/libs-shared-types'
-import { User } from '@ft-transcendence/libs-frontend-services'
-import { useNavigate } from "react-router-dom";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { User } from "@ft-transcendence/libs-frontend-services";
+import { useNavigate, useParams } from "react-router-dom";
 
-function Profile() {
-
+function Profile(props) {
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
   const navigate = useNavigate();
 
   const getAnswer = async () => {
     try {
-      const response: UserDto = await User.requestUserInfo();
-      if (response.losses === 0 && response.wins === 0)
-        setUserWinrate(0);
+      const response: UserDto = await User.requestUserProfileInfo(props.name);
+      if (response.losses === 0 && response.wins === 0) setUserWinrate(0);
       else
-        setUserWinrate((response.wins / (response.losses + response.wins))* 100);
+        setUserWinrate(
+          (response.wins / (response.losses + response.wins)) * 100
+        );
       setUserInfo(response);
     } catch (err) {
       navigate("/error");
@@ -29,7 +29,7 @@ function Profile() {
 
   useEffect(() => {
     getAnswer();
-  }, [])
+  }, []);
 
   return !userInfo ? null : (
     <div className={classes["profile_container"]}>
@@ -54,28 +54,36 @@ function Profile() {
         </div>
         <div className={classes["profile_cascade"]}>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Name:</strong> {userInfo.name}
+            <strong className={classes["strong_cascade"]}>Name:</strong>{" "}
+            {userInfo.name}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
+            <strong className={classes["strong_cascade"]}>Email:</strong>{" "}
+            {userInfo.email}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
+            <strong className={classes["strong_cascade"]}>Played games:</strong>{" "}
+            {userInfo.losses + userInfo.wins}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Winrate:</strong> {userWinrate}%
+            <strong className={classes["strong_cascade"]}>Winrate:</strong>{" "}
+            {userWinrate}%
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Game won:</strong> {userInfo.wins}
+            <strong className={classes["strong_cascade"]}>Game won:</strong>{" "}
+            {userInfo.wins}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Game lost:</strong> {userInfo.losses}
+            <strong className={classes["strong_cascade"]}>Game lost:</strong>{" "}
+            {userInfo.losses}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Achievement:</strong> 1/10 "not dynamic yet"
+            <strong className={classes["strong_cascade"]}>Achievement:</strong>{" "}
+            1/10 "not dynamic yet"
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
+            <strong className={classes["strong_cascade"]}>Friends:</strong> 10
+            "not dynamic yet"
           </span>
         </div>
       </div>

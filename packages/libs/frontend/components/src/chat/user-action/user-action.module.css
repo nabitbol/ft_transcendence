@@ -8,6 +8,7 @@
 }
 
 .actionItem {
+	color: black;
 	padding: 6px 25px;
 	white-space: nowrap;
 	border: 1px solid lightgrey;
@@ -16,4 +17,9 @@
 .actionItem:hover {
 	cursor: pointer;
 	background-color: lightgray;
+}
+
+.actionLink:link {
+	color: black;
+	text-decoration: none;
 }

@@ -128,6 +128,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   /* --------------------------- Room event handlers -------------------------- */
 
+  @SubscribeMessage("client:disconnect")
+  async onDisconnect(client: Socket) {
+    try {
+      this.handleDisconnect(client);
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
   @SubscribeMessage("client:getuserrooms")
   async onGetUserRooms(client: Socket) {
     try {

@@ -1,9 +1,12 @@
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 import { useRef, useState } from "react";
 import UserAction from "../user-action/user-action";
 import styles from "./activate-user-action.module.css";
 
 /* eslint-disable-next-line */
-export interface ActivateUserActionProps {}
+export interface ActivateUserActionProps {
+  user: UserDto;
+}
 
 export function ActivateUserAction(props: ActivateUserActionProps) {
   const [userAction, setUserAction] = useState<string>("userActionDown");
@@ -34,7 +37,7 @@ export function ActivateUserAction(props: ActivateUserActionProps) {
         className={styles[userAction]}
         onClick={(e) => openUserActionList(userActionList)}
       ></span>
-      <div>{userActionList && <UserAction />}</div>
+      <div>{userActionList && <UserAction user={props.user} />}</div>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./message.module.css";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import { userInfo } from "os";
 
 /* eslint-disable-next-line */
 export interface MessageProps {

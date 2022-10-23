@@ -18,6 +18,17 @@ class UserService {
     }
   }
 
+  async requestUserProfileInfo(name: string): Promise<UserDto> {
+    try {
+      const ret = await axios.get(URL + "user/" + name, {
+        headers: authHeader(),
+      });
+      return ret.data.user;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
   async requestUserInfo(): Promise<UserDto> {
     const user_info: any = AuthReq.getCurrentUser();
     try {
