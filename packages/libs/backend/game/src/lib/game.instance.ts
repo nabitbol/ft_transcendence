@@ -1,5 +1,5 @@
 import { Engine, GameInfo } from "@ft-transcendence/libs/shared/game";
-import { ServerEvents, ServerPayloads, MatchDto } from "@ft-transcendence/libs-shared-types"
+import { ServerEvents, ServerPayloads, MatchDto, UserDto } from "@ft-transcendence/libs-shared-types"
 import { Socket, Server } from 'socket.io';
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { MatchService } from "@ft-transcendence/libs-backend-match";
@@ -58,6 +58,12 @@ export class GameInstance
 		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
 		console.log(matchInfo);
 		await this.matchservice.addMatches(matchInfo);
+		const playerWinner: UserDto = await this.userservice.getUserByName(matchInfo.winner);
+		const playerLoser: UserDto = await this.userservice.getUserByName(matchInfo.looser);
+		playerLoser.losses++;
+		playerWinner.wins++;
+		await this.userservice.updateUser(playerLoser.name, playerLoser);
+		await this.userservice.updateUser(playerWinner.name, playerWinner);
 		return (matchInfo)
 	}
 
@@ -86,6 +92,12 @@ export class GameInstance
 		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
 		console.log(matchInfo);
 		await this.matchservice.addMatches(matchInfo);
+		const playerWinner: UserDto = await this.userservice.getUserByName(matchInfo.winner);
+		const playerLoser: UserDto = await this.userservice.getUserByName(matchInfo.looser);
+		playerLoser.losses++;
+		playerWinner.wins++;
+		await this.userservice.updateUser(playerLoser.name, playerLoser);
+		await this.userservice.updateUser(playerWinner.name, playerWinner);
 		return (matchInfo)
 	}
 
