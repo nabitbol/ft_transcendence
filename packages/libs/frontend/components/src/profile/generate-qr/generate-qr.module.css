@@ -1,6 +1,10 @@
 .qr_img {
 	display: table;
-	margin: 0 auto;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 3% auto;
+	height: calc(10vw + 10vh);
+	width: calc(10vw + 10vh);
+	min-width: 150px;
+	min-height: 150px;
+	max-width: 250px;
+	max-height: 250px;
 }

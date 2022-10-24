@@ -28,7 +28,7 @@ const User: UserType = {
   name: "Demo",
   email: "Demo@mail.com",
   password: "Demo",
-  image: "DemoString",
+  image: "utilisateur",
 };
 
 const Achievement1: AchievementType = {

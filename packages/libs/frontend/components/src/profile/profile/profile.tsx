@@ -1,5 +1,5 @@
 import classes from "./profile.module.css";
-import { QrModule, AllIcon } from "@ft-transcendence/libs-frontend-components";
+import { QrModule, AllIcon, UploadImage } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -52,7 +52,7 @@ function Profile() {
           <div className={classes["profile_card"]}>
             <img
               className={classes["profile_avatar"]}
-              src={getPathToImage("friend")}
+              src={getPathToImage(userInfo.image)}
               alt="avatar"
             />
             <span className={classes["user_name"]}>
@@ -62,6 +62,7 @@ function Profile() {
             <span className={classes["profile_span"]}>
               <strong>Rank:</strong> {userInfo.ladder_level}
             </span>
+            <UploadImage />
           </div>
           <QrModule />
         </div>
@@ -86,9 +87,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Achievement:</strong> {user_achievement}
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
           </span>
         </div>
       </div>

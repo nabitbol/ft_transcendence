@@ -76,6 +76,7 @@ export class ApiService {
         registerDto.password
       );
       newUser.email = registerDto.email;
+      newUser.image = "utilisateur";
       await this.usersService.addUser(newUser);
       payload = {
         name: newUser.name,

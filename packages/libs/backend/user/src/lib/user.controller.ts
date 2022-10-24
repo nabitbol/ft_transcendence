@@ -291,5 +291,17 @@ export class UserController {
     }
   }
 
+  @Post("/:name/image")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async changeImage(@Body() request: any, @Param() param) {
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      if (!user)
+        throw new NotFoundException("This username is not associated with any account.");
+      await this.userService.changeImage(request.file, user);
+  }
+
 
 }
