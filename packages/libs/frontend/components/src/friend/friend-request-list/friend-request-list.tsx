@@ -31,7 +31,7 @@ export function FriendRequestList() {
           <h2 className={classes["h2_title"]}>Friend request</h2>
           <div className={classes["friendrequest_list"]}>
             {friendRequest_ID.map((ID) => (
-              <FriendRequest friend_request={ID} />
+              <FriendRequest key={ID} friend_request={ID} />
             ))}
           </div>
         </div>

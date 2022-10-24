@@ -1,3 +1,7 @@
+
+export * from './icon/chat-icon/chat-icon';
+
+export * from './icon/logout-icon/logout-icon';
 export * from './game/result-screen/result-screen';
 
 export * from './home/all-live-game/all-live-game';
