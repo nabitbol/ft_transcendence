@@ -49,6 +49,18 @@ export class UserService {
     }
   }
 
+  public async getUserByName42(name_42: string): Promise<UserDto> {
+    try {
+      return await prisma.user.findFirst({
+        where: {
+          name_42: name_42,
+        },
+      });
+    } catch (err) {
+      throw Error("User not found");
+    }
+  }
+
   public async addUser(user: UserDto) {
     try {
       await prisma.user.create({ data: user });
