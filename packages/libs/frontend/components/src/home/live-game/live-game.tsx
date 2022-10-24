@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from '@ft-transcendence/libs-frontend-services';
 import { Socket } from 'socket.io';
+
 export function LiveGame(props: { game: SpectateInfo }) {
   const navigate = useNavigate();
   const game: SpectateInfo = props.game;
