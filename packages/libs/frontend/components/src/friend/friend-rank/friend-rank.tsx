@@ -1,16 +1,13 @@
 import classes from "../../ladderBoard/general-rank/general-rank.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 
-function FriendRank(props: {user_id: string; rank: number; key: string}) {
-  const name = "erzow";
-  const lvl = props.user_id;
-  const winrate = "20";
-  const elo = "1500";
+function FriendRank(props: {user: UserDto; }) {
 
   return (
     <div className={classes['div']}>
       <h2 className={classes['h2_rank']}>
-        <strong>{props.rank}</strong>
+        <strong>{props.user.ladder_level}</strong>
       </h2>
 
       <img
@@ -21,16 +18,10 @@ function FriendRank(props: {user_id: string; rank: number; key: string}) {
         alt="friend_avatar"
       />
       <p className={classes['p_usr']}>
-        <strong>{name}</strong>
-      </p>
-      <p className={classes['p_lvl']}>
-        <strong>Lvl: {lvl}</strong>
+        <strong>{props.user.name}</strong>
       </p>
       <p className={classes['p_winrate']}>
-        <strong>Win %: {winrate}</strong>
-      </p>
-      <p className={classes['p_elo']}>
-        <strong> Elo: {elo}</strong>
+        <strong>Win : {props.user.wins}</strong>
       </p>
     </div>
   );

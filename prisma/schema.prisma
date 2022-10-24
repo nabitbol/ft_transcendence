@@ -13,26 +13,23 @@ datasource db {
 // models
 
 model User {
-  id               String  @id @default(uuid())
-  name             String  @unique
-  email            String? @unique
-  password         String
-  doubleAuth       Boolean @default(false)
-  doubleAuthSecret String?
-  wins             Int     @default(0)
-  losses           Int     @default(0)
-  draw             Int     @default(0)
-  level            Int     @default(0)
-  image            String
+  id                  String  @id @default(uuid())
+  name                String  @unique
+  email               String? @unique
+  password            String
+  doubleAuth          Boolean @default(false)
+  doubleAuthSecret    String?
+  wins                Int     @default(0)
+  losses              Int     @default(0)
+  ladder_level        Int     @default(1)
+  image               String
+  friendsRequest      String[]
 
-  achivements Achievement[]
+  achievements Achievement[]
 
   //many to many self relation
   friends   User[] @relation("friends")
   friendsOf User[] @relation("friends")
-
-  userRank   UserRank? @relation(fields: [userRankId], references: [id])
-  userRankId String?
 
   match Match[]
 
@@ -44,20 +41,14 @@ model User {
 }
 
 model Achievement {
-  id      String @id @default(uuid())
-  title   String @unique
-  content String
-  image   String
+  id        String @id @default(uuid())
+  title     String @unique
+  content   String
+  image     String
+  condition Int    @default(0)
 
-  users User[]
-}
+  users     User[]
 
-model UserRank {
-  id          String   @id @default(uuid())
-  updated_at  DateTime @updatedAt
-  ladderLevel Int      @unique
-
-  user User[]
 }
 
 model Match {

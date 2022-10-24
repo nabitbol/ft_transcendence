@@ -3,7 +3,7 @@ import { QrModule, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
-import { UserDto } from '@ft-transcendence/libs-shared-types'
+import { UserDto, AchievementDto } from '@ft-transcendence/libs-shared-types'
 import { User } from '@ft-transcendence/libs-frontend-services'
 import { useNavigate } from "react-router-dom";
 
@@ -11,15 +11,28 @@ function Profile() {
 
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
+  const [user_achievement, setUserAchievement] = useState<string>(undefined);
   const navigate = useNavigate();
 
   const getAnswer = async () => {
     try {
+      await User.updateUserAchievement();
+      const response_user: AchievementDto[] = await User.requestUserAchievement();
+      let tmp = "";
+      let i = 0;
+      while (response_user[i])
+      {
+        tmp += response_user[i].title;
+        if (response_user[i+ 1])
+          tmp += ", ";
+        i++;
+      }
+      setUserAchievement(tmp);
       const response: UserDto = await User.requestUserInfo();
-      if (response.losses === 0 || response.wins === 0)
+      if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else
-        setUserWinrate((response.wins / (response.losses + response.wins)));
+        setUserWinrate((response.wins / (response.losses + response.wins))* 100);
       setUserInfo(response);
     } catch (err) {
       navigate("/error");
@@ -42,12 +55,12 @@ function Profile() {
               src={getPathToImage("friend")}
               alt="avatar"
             />
-            <span className={classes["profile_span"]}>
+            <span className={classes["user_name"]}>
               <strong>{userInfo.name}</strong>
             </span>
             <br />
             <span className={classes["profile_span"]}>
-              <strong>Lvl:</strong> {userInfo.level}
+              <strong>Rank:</strong> {userInfo.ladder_level}
             </span>
           </div>
           <QrModule />
@@ -58,9 +71,6 @@ function Profile() {
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Email:</strong> {userInfo.email}
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Elo:</strong> {userInfo.level}
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
@@ -75,13 +85,10 @@ function Profile() {
             <strong className={classes['strong_cascade']}>Game lost:</strong> {userInfo.losses}
           </span>
           <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Achievement:</strong> 1/10 "not dynamic yet"
+            <strong className={classes['strong_cascade']}>Achievement:</strong> {user_achievement}
           </span>
           <span className={classes["profile_span_cascade"]}>
             <strong className={classes['strong_cascade']}>Friends:</strong> 10 "not dynamic yet"
-          </span>
-          <span className={classes["profile_span_cascade"]}>
-            <strong className={classes['strong_cascade']}>Ladder Rank:</strong> 5 "not dynamic yet"
           </span>
         </div>
       </div>

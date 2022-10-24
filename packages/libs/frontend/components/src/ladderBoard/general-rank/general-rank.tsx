@@ -1,16 +1,13 @@
 import classes from "./general-rank.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 
-function GeneralRank(props: { user_id: string; rank: number }) {
-  const name = "eswox";
-  const lvl = props.user_id;
-  const winrate = "10";
-  const elo = "500";
+function GeneralRank(props: { user: UserDto; }) {
 
   return (
     <div className={classes['div']}>
       <h2 className={classes['h2_rank']}>
-        <strong>{props.rank}</strong>
+        <strong>{props.user.ladder_level}</strong>
       </h2>
 
       <img
@@ -21,16 +18,10 @@ function GeneralRank(props: { user_id: string; rank: number }) {
         className={classes['img']}
       />
       <p className={classes['p_usr']}>
-        <strong>{name}</strong>
-      </p>
-      <p className={classes['p_lvl']}>
-        <strong>Lvl: {lvl}</strong>
+        <strong>{props.user.name}</strong>
       </p>
       <p className={classes['p_winrate']}>
-        <strong>Win %: {winrate}</strong>
-      </p>
-      <p className={classes['p_elo']}>
-        <strong> Elo: {elo}</strong>
+        <strong>Win : {props.user.wins}</strong>
       </p>
     </div>
   );
