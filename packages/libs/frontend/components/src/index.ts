@@ -75,3 +75,5 @@ export * from "./profile/profile/profile";
 export * from "./profile/qr-module/qr-module";
 
 export * from "./profile/upload-image/upload-image"
+
+export * from "./profile/change-name/change-name"

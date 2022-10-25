@@ -1,5 +1,5 @@
 import classes from "./profile.module.css";
-import { QrModule, AllIcon, UploadImage } from "@ft-transcendence/libs-frontend-components";
+import { QrModule, AllIcon, UploadImage, ChangeName } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -28,7 +28,9 @@ function Profile() {
         i++;
       }
       setUserAchievement(tmp);
+      console.log("TEST");
       const response: UserDto = await User.requestUserInfo();
+      console.log(response);
       if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else
@@ -63,6 +65,7 @@ function Profile() {
               <strong>Rank:</strong> {userInfo.ladder_level}
             </span>
             <UploadImage />
+            <ChangeName />
           </div>
           <QrModule />
         </div>
