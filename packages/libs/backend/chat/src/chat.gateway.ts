@@ -58,7 +58,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         userId: client.id,
         user: user,
       });
-      Logger.log("User: " + user.name + " joined the chat");
+      // Logger.log("User: " + user.name + " joined the chat");
     } catch (err) {
       return this.disconnect(client);
     }
@@ -89,6 +89,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return value.user.name === name;
   };
 
+  withUserWithId = (value, userId) => {
+    return value.userId === userId;
+  };
+
   filterItems = (array, querry, args: string[]) => {
     return array.filter((element) => querry(element, args));
   };
@@ -111,6 +115,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
   };
 
+  getUserWithId = (userId: string) => {
+    return this.filterItems(
+      this.userInChat,
+      this.withUserWithId,
+      userId as unknown as string[]
+    );
+  };
+
   getUserRoles = async (user: UserDto, rooms: RoomDto[]) => {
     const userRole: string[] = [];
     for (let i = 0; i < rooms.length; i++) {
@@ -126,10 +138,39 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return messages;
   }
 
+  async emitToUsersInRoom(room: RoomDto, senderName: string, event: string) {
+    const clients: Set<string> = await this.server.in(room.name).allSockets();
+    const iterator = clients.values();
+    const muters: UserDto[] = await this.userService.getMutedByUsers(
+      senderName
+    );
+    let tmp;
+    let clientTmp: string;
+    let check: UserDto;
+    for (let i = 0; i < clients.size; i++) {
+      clientTmp = iterator.next().value;
+      tmp = this.getUserWithId(clientTmp)[0];
+      check = muters.find(({ name }) => name === tmp.user.name);
+      if (!check || check.name === senderName) {
+        const messages: MessageDto[] = await this.getRoomMessages(
+          tmp.user,
+          room
+        );
+        const authors: string[] = [];
+        for (let i = 0; i < messages.length; i++) {
+          authors[i] = (
+            await this.messageservice.getMessageUser(messages[i])
+          ).name;
+        }
+        this.server.to(clientTmp).emit(event, { messages, authors });
+      }
+    }
+  }
+
   /* --------------------------- Room event handlers -------------------------- */
 
   @SubscribeMessage("client:disconnect")
-  async onDisconnect(client: Socket) {
+  async onD(client: Socket) {
     try {
       this.handleDisconnect(client);
     } catch (err) {
@@ -262,7 +303,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           await this.messageservice.getMessageUser(messages[i])
         ).name;
       }
-      return { event, data: { messages, authors } };
+      this.server.to(client.id).emit(event, { messages, authors });
     } catch (err) {
       throw new WsException(err.message);
     }
@@ -361,21 +402,32 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       return { event, data: { rooms, userRole } };
     } catch (err) {
-      return new UnauthorizedException(err);
+      throw new WsException(err.message);
     }
   }
 
   @UsePipes(new ValidationPipe())
   @SubscribeMessage("client:createconversation")
-  async onCreateConversation(client: Socket, payload: UserDto) {
+  async onCreateConversation(client: Socket, payload: { user: UserDto }) {
     try {
       const event = "server:createconversation";
-      const user: UserDto = await this.userService.getUserByName(payload.name);
+      const muters: UserDto[] = await this.userService.getMutedByUsers(
+        client.data.user.id
+      );
+      console.log(muters);
+      const muter: UserDto[] = await this.userService.getMutedUsers(
+        client.data.user.id
+      );
+      console.log(muter);
+      const check: UserDto = muters.find(
+        ({ name }) => name === payload.user.name
+      );
+      if (check) throw Error(`${check.name} muted you`);
       const conv: RoomDto = {
         name: `conversation ${v4()}}`,
         status: Room_Status.CONVERSATION,
         convName1: client.data.user.name,
-        convName2: user.name,
+        convName2: payload.user.name,
       };
       await this.roomService.createRoom(conv, client.data.user);
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
@@ -385,10 +437,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         client.data.user,
         rooms
       );
-      const userToAdd: UserDto[] = [user];
+      const userToAdd: UserDto[] = [];
+      userToAdd[0] = payload.user;
       this.onJoinConversation(client, { conv, userToAdd });
       return { event, data: { rooms, userRole } };
     } catch (err) {
+      console.log(err);
       throw new WsException(err.message);
     }
   }
@@ -434,23 +488,84 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         room.id,
         client.data.user
       );
-      if (role === Room_Role.BANNED) throw Error("User is nan");
-      if (role === Room_Role.MUTED) throw Error("User is mute");
+      if (role === Room_Role.BANNED) throw Error("You are Ban");
+      if (role === Room_Role.MUTED) throw Error("You are mute");
       await this.messageservice.createMessage(
         room.id,
         client.data.user.id,
         message
       );
-      const messages: MessageDto[] = await this.messageservice.getRoomMessages(
-        room.id
+      this.emitToUsersInRoom(room, client.data.user.name, event);
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:muteuser")
+  async onMuteUser(client: Socket, payload: { user: UserDto }) {
+    try {
+      await this.userService.muteUser(client.data.user.id, payload.user.id);
+      Logger.log(`Muted ${payload.user.name} sucessfuly`);
+      const room: RoomDto = this.getUserWithId(client.id)[0].room;
+      if (room) await this.onSelectRoom(client, room.name);
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:unmuteuser")
+  async onUnmuteUser(client: Socket, payload: { user: UserDto }) {
+    try {
+      await this.userService.unMuteUser(client.data.user.id, payload.user.id);
+      Logger.log(`Unmuted ${payload.user.name} sucessfuly`);
+      const room: RoomDto = this.getUserWithId(client.id)[0].room;
+      if (room) await this.onSelectRoom(client, room.name);
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:updateuserrole")
+  public async updateUserRole(
+    client: Socket,
+    payload: { user: UserDto; newRole: Room_Role }
+  ) {
+    try {
+      const event = "server:updateuserrole";
+      const room = this.getUserWith(client.data.user.name)[0].room;
+      if (room.Room_Status === Room_Status.CONVERSATION)
+        throw Error("You can change role in conversations");
+      const updaterStatus = await this.roomService.getUserSatus(
+        room.id,
+        client.data.user
       );
-      const authors: string[] = [];
-      for (let i = 0; i < messages.length; i++) {
-        authors[i] = (
-          await this.messageservice.getMessageUser(messages[i])
-        ).name;
+      const toUpdateStatus = await this.roomService.getUserSatus(
+        room.id,
+        payload.user
+      );
+      if (!updaterStatus) throw Error("Unable to find updater in room");
+      if (!toUpdateStatus) throw Error("Unable to find user to update in room");
+      if (
+        (updaterStatus == Room_Role.OWNER ||
+          updaterStatus == Room_Role.ADMIN) &&
+        toUpdateStatus != Room_Role.ADMIN &&
+        toUpdateStatus != Room_Role.OWNER &&
+        payload.newRole != Room_Role.OWNER
+      ) {
+        this.roomService.udpateUsersStatus(
+          room.id,
+          payload.user,
+          payload.newRole
+        );
+      } else {
+        throw Error("You do not have the right to do this action");
       }
-      this.server.to(room.name).emit(event, { messages, authors });
+      const res: string =
+        payload.user.name + " is now " + payload.newRole + " in " + room.name;
+      return { event, data: { res } };
     } catch (err) {
       throw new WsException(err.message);
     }
