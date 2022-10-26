@@ -28,9 +28,7 @@ function Profile() {
         i++;
       }
       setUserAchievement(tmp);
-      console.log("TEST");
       const response: UserDto = await User.requestUserInfo();
-      console.log(response);
       if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else

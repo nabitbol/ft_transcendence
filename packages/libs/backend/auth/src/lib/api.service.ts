@@ -79,7 +79,6 @@ export class ApiService {
 
     if (await this.usersService.getUserByName42(registerDto.name_42) === null) 
     {
-      console.log("NEW");
       if (await this.usersService.getUserByName(registerDto.name) === null)
         newUser.name = registerDto.name;
       else
@@ -95,7 +94,6 @@ export class ApiService {
       };
       ret = newUser;
     } else {
-      console.log("OLD");
       const oldUser = await this.usersService.getUserByName(registerDto.name);
       payload = {
         name: oldUser.name,

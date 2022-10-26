@@ -15,10 +15,8 @@ function ChangeName() {
       } = useForm();
 
     const onSubmit = async (data: any) => {
-        console.log(data.user_name);
         setMessage("");
         const user: UserDto = await User.verifUserName(data.user_name);
-        console.log(user);
         if (user) {
             setMessage("This name is already use by a user");
             return ;
