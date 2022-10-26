@@ -52,6 +52,10 @@ export class AuthService {
       throw new UnauthorizedException(
         "This username is not associated with any account."
       );
+    if (user.name_42 !== null)
+    throw new UnauthorizedException(
+      "Please connect with 42 api for this user."
+    ); 
     if (user && (await this.compareHash(user.password, pass))) {
       const result: ResponseUserDto = user;
       return result;
