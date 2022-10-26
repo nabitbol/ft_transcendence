@@ -9,7 +9,7 @@ export function MessageInput(props: MessageInputProps) {
   const [newMessage, setNewMessage] = useState<string>();
 
   const listenerSendMessageError = useCallback((err) => {
-    alert(err.message);
+    if (err.message.search("Message:") !== -1) alert(err.message);
   }, []);
 
   const handleSend = (e) => {

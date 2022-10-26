@@ -17,20 +17,20 @@ export function UserAction(props: UserActionProps) {
     e.preventDefault();
   };
 
-  const muteUser = async (e) => {
+  const blockUser = async (e) => {
     const Data = {
       user: props.user,
     };
-    socketChat.emit("client:muteuser", Data);
-    alert("Muted: " + props.user.name);
+    socketChat.emit("client:blockuser", Data);
+    alert("Blocked: " + props.user.name);
   };
 
-  const unMuteUser = async (e) => {
+  const unBlockUser = async (e) => {
     const Data = {
       user: props.user,
     };
-    socketChat.emit("client:unmuteuser", Data);
-    alert("UnMuted: " + props.user.name);
+    socketChat.emit("client:unblockuser", Data);
+    alert("Unblocked: " + props.user.name);
   };
 
   const listenerActionError = useCallback((err) => {
@@ -71,11 +71,11 @@ export function UserAction(props: UserActionProps) {
       >
         {"View Profile"}
       </li>
-      <li className={styles["actionItem"]} onClick={(e) => muteUser(e)}>
-        {"Mute"}
+      <li className={styles["actionItem"]} onClick={(e) => blockUser(e)}>
+        {"Block"}
       </li>
-      <li className={styles["actionItem"]} onClick={(e) => unMuteUser(e)}>
-        {"Unmute"}
+      <li className={styles["actionItem"]} onClick={(e) => unBlockUser(e)}>
+        {"Unblock"}
       </li>
       <li
         className={styles["actionItem"]}

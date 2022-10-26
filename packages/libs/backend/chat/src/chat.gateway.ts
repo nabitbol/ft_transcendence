@@ -407,6 +407,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:updateroom")
+  async onUpdateRoom(client: Socket, room: RoomDto) {
+    try {
+      const event = "server:updateroom";
+      const roomTest: RoomDto = await this.roomService.getRoomByName(room.name);
+      if (!roomTest) throw Error("Room doesn't exist");
+      await this.roomService.updateRoom(roomTest, room.status, room.password);
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        client.data.user,
+        rooms
+      );
+      return { event, data: { rooms, userRole } };
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
   @SubscribeMessage("client:createconversation")
   async onCreateConversation(client: Socket, payload: { user: UserDto }) {
     try {
@@ -497,13 +518,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       );
       this.emitToUsersInRoom(room, client.data.user.name, event);
     } catch (err) {
-      throw new WsException(err.message);
+      throw new WsException(`Message: ${err.message}`);
     }
   }
 
   @UsePipes(new ValidationPipe())
-  @SubscribeMessage("client:muteuser")
-  async onMuteUser(client: Socket, payload: { user: UserDto }) {
+  @SubscribeMessage("client:blockuser")
+  async onBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
       await this.userService.muteUser(client.data.user.id, payload.user.id);
       Logger.log(`Muted ${payload.user.name} sucessfuly`);
@@ -515,8 +536,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @UsePipes(new ValidationPipe())
-  @SubscribeMessage("client:unmuteuser")
-  async onUnmuteUser(client: Socket, payload: { user: UserDto }) {
+  @SubscribeMessage("client:unblockuser")
+  async onUbBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
       await this.userService.unMuteUser(client.data.user.id, payload.user.id);
       Logger.log(`Unmuted ${payload.user.name} sucessfuly`);

@@ -128,6 +128,10 @@ export class RoomService {
     newStatus: Room_Status,
     newPassword?: string | undefined
   ) {
+    if (newStatus === Room_Status.PROTECTED) {
+      if (!newPassword) throw Error("No password provided");
+      newPassword = await this.hashString(newPassword);
+    }
     try {
       await prisma.room.update({
         where: {
@@ -140,7 +144,7 @@ export class RoomService {
         },
       });
     } catch (err) {
-      throw Error("Unable to create room");
+      throw Error("Unable to update room");
     }
   }
 
