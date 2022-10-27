@@ -1,5 +1,6 @@
 import { SocketContext } from "@ft-transcendence/libs-frontend-services";
 import { RoomDto } from "@ft-transcendence/libs-shared-types";
+import { Room_Role, Room_Status } from "@prisma/client";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import paramIcon from "../../../../../../../assets/icons/parameters.svg";
@@ -61,6 +62,7 @@ export function Rooms(props: RoomsProps) {
     socket.on("server:joinroom", listenerUserRoomsScroll);
     socket.on("server:leaveroom", listenerUserRooms);
     socket.on("server:updateroom", listenerUserRooms);
+    socket.on("server:createconversation", listenerUserRooms);
     socket.emit("client:getuserrooms");
     return () => {
       socket.off("server:getuserrooms", listenerUserRooms);
@@ -68,6 +70,7 @@ export function Rooms(props: RoomsProps) {
       socket.off("server:joinroom", listenerUserRoomsScroll);
       socket.off("server:leaveroom", listenerUserRooms);
       socket.off("server:updateroom", listenerUserRooms);
+      socket.off("server:createconversation", listenerUserRooms);
     };
   }, [socket]);
 
@@ -85,14 +88,28 @@ export function Rooms(props: RoomsProps) {
           ref={scrollRef}
           onClick={(e) => selectRoom(element)}
         >
-          <div>
-            <p className={styles["roomName"]}>{element.name}</p>
+          {element.status !== Room_Status.CONVERSATION && (
             <div>
-              <p className={styles["roomStatus"]}>
-                {element.status.toString().toLowerCase()}
-              </p>
+              <p className={styles["roomName"]}>{element.name}</p>
+              <div>
+                <p className={styles["roomStatus"]}>
+                  {element.status.toString().toLowerCase()}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
+          {element.status === Room_Status.CONVERSATION && (
+            <div>
+              <p
+                className={styles["roomName"]}
+              >{`${element.convName1} - ${element.convName2}`}</p>
+              <div>
+                <p className={styles["roomStatus"]}>
+                  {element.status.toString().toLowerCase()}
+                </p>
+              </div>
+            </div>
+          )}
           {user_roles[key] === "OWNER" && (
             <div
               className={styles["roomOwnerParamBackground"]}

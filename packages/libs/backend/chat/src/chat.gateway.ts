@@ -12,7 +12,6 @@ import { UserService } from "@ft-transcendence/libs-backend-user";
 import { RoomService } from "./lib/room/room.service";
 import { MessageService } from "./lib/message/message.service";
 import {
-  Logger,
   UnauthorizedException,
   UsePipes,
   ValidationPipe,
@@ -58,14 +57,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         userId: client.id,
         user: user,
       });
-      // Logger.log("User: " + user.name + " joined the chat");
     } catch (err) {
       return this.disconnect(client);
     }
   }
 
   handleDisconnect(client: Socket) {
-    Logger.log("User " + client.data.user.name + " leaved the chat");
     this.userInChat = this.getUserWithout(client.data.user.name);
     this.disconnect(client);
   }
@@ -353,16 +350,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (check) throw Error("User already in room");
       if (!room) throw Error("Room not found");
       if (
-        (room.status === "PROTECTED" &&
+        (room.status === Room_Status.PROTECTED &&
           (await this.roomService.compareHash(
             room.password,
             payload.password
           ))) ||
-        (room.status !== "PROTECTED" &&
-          room.status !== Room_Status.CONVERSATION)
+        room.status === Room_Status.PUBLIC
       ) {
         await this.roomService.addUsers(room.id, joiner);
-      } else throw Error("Wrong password");
+      } else if (room.status === Room_Status.PROTECTED)
+        throw Error("Wrong password");
+      else throw Error("You can't join this room");
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
         client.data.user.id
       );
@@ -432,18 +430,32 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onCreateConversation(client: Socket, payload: { user: UserDto }) {
     try {
       const event = "server:createconversation";
+      let convs: RoomDto[] = await this.roomService.getRoomByConvName(
+        client.data.user.name
+      );
+      let checkConvs: RoomDto = convs.find(
+        ({ convName2 }) => convName2 === payload.user.name
+      );
+      if (checkConvs) throw Error("Conversation already exist");
+      convs = await this.roomService.getRoomByConvName(payload.user.name);
+      checkConvs = convs.find(
+        ({ convName2 }) => convName2 === client.data.user.name
+      );
+      if (checkConvs) throw Error("Conversation already exist");
       const muters: UserDto[] = await this.userService.getMutedByUsers(
-        client.data.user.id
+        client.data.user.name
       );
-      console.log(muters);
-      const muter: UserDto[] = await this.userService.getMutedUsers(
-        client.data.user.id
+      const muted: UserDto[] = await this.userService.getMutedUsers(
+        client.data.user.name
       );
-      console.log(muter);
-      const check: UserDto = muters.find(
+      const checkMuters: UserDto = muters.find(
         ({ name }) => name === payload.user.name
       );
-      if (check) throw Error(`${check.name} muted you`);
+      const checkMuted: UserDto = muted.find(
+        ({ name }) => name === payload.user.name
+      );
+      if (checkMuters) throw Error(`${checkMuters.name} blocked you`);
+      if (checkMuted) throw Error(`You blocked ${checkMuted.name}`);
       const conv: RoomDto = {
         name: `conversation ${v4()}}`,
         status: Room_Status.CONVERSATION,
@@ -463,7 +475,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.onJoinConversation(client, { conv, userToAdd });
       return { event, data: { rooms, userRole } };
     } catch (err) {
-      console.log(err);
       throw new WsException(err.message);
     }
   }
@@ -474,7 +485,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     try {
       const event = "server:joinconversation";
-      await this.roomService.addUsers(payload.conv.id, payload.userToAdd);
+      const tmp: RoomDto = await this.roomService.getRoomByName(
+        payload.conv.name
+      );
+      await this.roomService.addUsers(tmp.id, payload.userToAdd);
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
         payload.userToAdd[0].id
       );
@@ -497,20 +511,42 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSendMessage(client: Socket, message: string) {
     try {
       const event = "server:getmessages";
-      const roomName = await this.getUserWith(client.data.user.name)[0].room
-        .name;
+      const roomName: string | undefined = await this.getUserWith(
+        client.data.user.name
+      )[0].room.name;
       if (!roomName) throw Error("User is not in room");
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
         client.data.user.id
       );
       const room: RoomDto = rooms.find(({ name }) => name === roomName);
       if (!room) throw Error("Room not found");
-      const role = await this.roomService.getUserSatus(
+      const user = await this.roomService.getUserInRoom(
         room.id,
         client.data.user
       );
-      if (role === Room_Role.BANNED) throw Error("You are Ban");
-      if (role === Room_Role.MUTED) throw Error("You are mute");
+      const timeMin = new Date(Date.now() - 3000);
+      if (
+        user.updated_at < timeMin &&
+        (user.role === Room_Role.BANNED || user.role === Room_Role.MUTED)
+      ) {
+        await this.roomService.udpateUsersStatus(
+          room.id,
+          client.data.user,
+          Room_Role.NORMAL
+        );
+        const rooms: RoomDto[] = await this.roomService.getUserRooms(
+          client.data.user.id
+        );
+        const userRole: string[] = await this.getUserRoles(
+          client.data.user,
+          rooms
+        );
+        this.server
+          .to(client.id)
+          .emit("server:updateroom", { rooms, userRole });
+      }
+      if (user.role === Room_Role.BANNED) throw Error("You are Ban");
+      if (user.role === Room_Role.MUTED) throw Error("You are mute");
       await this.messageservice.createMessage(
         room.id,
         client.data.user.id,
@@ -527,7 +563,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
       await this.userService.muteUser(client.data.user.id, payload.user.id);
-      Logger.log(`Muted ${payload.user.name} sucessfuly`);
       const room: RoomDto = this.getUserWithId(client.id)[0].room;
       if (room) await this.onSelectRoom(client, room.name);
     } catch (err) {
@@ -540,7 +575,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onUbBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
       await this.userService.unMuteUser(client.data.user.id, payload.user.id);
-      Logger.log(`Unmuted ${payload.user.name} sucessfuly`);
       const room: RoomDto = this.getUserWithId(client.id)[0].room;
       if (room) await this.onSelectRoom(client, room.name);
     } catch (err) {

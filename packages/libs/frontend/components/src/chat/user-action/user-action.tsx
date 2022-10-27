@@ -38,7 +38,14 @@ export function UserAction(props: UserActionProps) {
   }, []);
 
   const createConversation = async (e) => {
-    socketChat.emit("client:createconversation", props.user);
+    const Data = {
+      user: props.user,
+    };
+    socketChat.emit("client:createconversation", Data);
+  };
+
+  const inviteInPrivateRoom = async (e) => {
+    socketChat.emit("client:inviteInPrivateRoom", props.user);
   };
 
   const listenerUpdateUseRole = (response: { res }) => {
@@ -101,6 +108,12 @@ export function UserAction(props: UserActionProps) {
         onClick={(e) => createConversation(e)}
       >
         {"Create conversation"}
+      </li>
+      <li
+        className={styles["actionItem"]}
+        onClick={(e) => inviteInPrivateRoom(e)}
+      >
+        {"Inviate in private room"}
       </li>
     </ul>
   );

@@ -62,6 +62,18 @@ export class RoomService {
     }
   }
 
+  public async getRoomByConvName(convName: string) {
+    try {
+      return await prisma.room.findMany({
+        where: {
+          convName1: convName,
+        },
+      });
+    } catch (err) {
+      throw Error("Rooms not found");
+    }
+  }
+
   public async addUsers(roomId: string, users: UserDto[]) {
     const tmp: UserRoomDto[] = [];
     users.map((element, index) => {
@@ -187,6 +199,16 @@ export class RoomService {
     }
   }
 
+  public async getUserInRoom(roomId: string, user: UserDto) {
+    try {
+      return await prisma.user_Room.findFirst({
+        where: { roomId: roomId, userId: user.id },
+      });
+    } catch (err) {
+      throw Error("Can't get user role");
+    }
+  }
+
   public async udpateUsersStatus(
     roomId: string,
     user: UserDto,
@@ -202,20 +224,6 @@ export class RoomService {
       });
     } catch (err) {
       throw Error("Can't update user status");
-    }
-  }
-
-  public async cleanStatus() {
-    try {
-      const current = new Date(Date.now() - 2000);
-      return await prisma.user_Room.findFirst({
-        where: {
-          role: Room_Role.BANNED || Room_Role.MUTED,
-          updated_at: { gt: current },
-        },
-      });
-    } catch (err) {
-      throw Error("Can't clean status");
     }
   }
 }
