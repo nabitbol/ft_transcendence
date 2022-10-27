@@ -85,24 +85,26 @@ export function Rooms(props: RoomsProps) {
           ref={scrollRef}
           onClick={(e) => selectRoom(element)}
         >
-          <p className={styles["roomName"]}>{element.name}</p>
           <div>
-            <p className={styles["roomStatus"]}>
-              {element.status.toString().toLowerCase()}
-            </p>
-            {user_roles[key] === "OWNER" && (
-              <div
-                className={styles["roomOwnerParamBackground"]}
-                onClick={activateUpdateForm}
-              >
-                <img
-                  src={paramIcon}
-                  className={styles["roomOwnerParam"]}
-                  alt="param icon"
-                />
-              </div>
-            )}
+            <p className={styles["roomName"]}>{element.name}</p>
+            <div>
+              <p className={styles["roomStatus"]}>
+                {element.status.toString().toLowerCase()}
+              </p>
+            </div>
           </div>
+          {user_roles[key] === "OWNER" && (
+            <div
+              className={styles["roomOwnerParamBackground"]}
+              onClick={activateUpdateForm}
+            >
+              <img
+                src={paramIcon}
+                className={styles["roomOwnerParam"]}
+                alt="param icon"
+              />
+            </div>
+          )}
         </div>
       ))}
       <br />

@@ -24,37 +24,17 @@
 	font-weight: 700;
 }
 
-/* If you want to add background to param button */
-/* .roomOwnerParamBackground {
-	/* width: 23px;
-	height: 23px;
-	border-radius: 50%;
-	background-color: white;
-	position: absolute;
-	margin-left: 40px;
-	margin-top: -47px;
-}
-
 .roomOwnerParam {
-	width: 20px;
-	height: 20px;
-	margin-left: 5px;
-	margin-top: -6px;
-}*/
-
-.roomOwnerParam {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	margin-left: 41px;
-	margin-top: -48px;
+	width: 25px;
+	height: 25px;
+	display: flex;
+	align-items: top;
 }
 
 .roomOwnerParam:hover {
-	width: 20px;
-	height: 20px;
-	border-width: 22px;
+	width: 30px;
+	height: 30px;
+	border-width: 27px;
 	background-color: white;
-	margin-left: 38px;
 	cursor: pointer;
 }
