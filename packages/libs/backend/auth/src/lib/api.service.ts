@@ -77,7 +77,7 @@ export class ApiService {
     let payload: JwtDto;
     let ret: ResponseUserDto;
 
-    if (await this.usersService.getUserByName42(registerDto.name_42) === null) 
+    if (await this.usersService.getUserByName42(registerDto.name) === null) 
     {
       if (await this.usersService.getUserByName(registerDto.name) === null)
         newUser.name = registerDto.name;
@@ -94,7 +94,7 @@ export class ApiService {
       };
       ret = newUser;
     } else {
-      const oldUser = await this.usersService.getUserByName(registerDto.name);
+      const oldUser = await this.usersService.getUserByName42(registerDto.name);
       payload = {
         name: oldUser.name,
         TwoFa_auth: newUser.doubleAuth,
