@@ -75,7 +75,7 @@ export function FriendList() {
           </div>
           <div className={classes["friendlist_list"]}>
             {friend_ID.map((ID) => (
-              <Friend user={ID} />
+              <Friend key={ID.id} user={ID} />
             ))}
           </div>
         </div>

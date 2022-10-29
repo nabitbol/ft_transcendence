@@ -10,7 +10,7 @@ import {
 } from "@ft-transcendence/libs-shared-types";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 
 @Injectable()

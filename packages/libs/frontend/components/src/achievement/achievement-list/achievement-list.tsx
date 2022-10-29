@@ -37,7 +37,7 @@ export function AchievementList() {
           <h2 className={classes["h2_title"]}>Achievement</h2>
           <div className={classes["achievement_list"]}>
             {achievement_ID.map((ID) => (
-              <Achievement achievement={ID} user_achievement={user_achievement_ID} />
+              <Achievement key={ID.id} achievement={ID} user_achievement={user_achievement_ID} />
             ))}
           </div>
         </div>

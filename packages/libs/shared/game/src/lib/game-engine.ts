@@ -1,29 +1,123 @@
+ 
+import { PlayersName } from '@ft-transcendence/libs-shared-types'
+
+export class GameInfo {
+	canvasDimensions: {width: number, height: number};
+	boxDimensions: boxDimensions;
+	ball: Array<Ball> = new Array<Ball>();
+	paddle_a: Paddle;
+	paddle_b: Paddle;
+	player_a_score: number;
+	player_b_score: number;
+	end_score: number;
+	has_started: boolean;
+	has_ended: boolean;
+	mode: 'simple' | 'double';
+	players_name: PlayersName = {left: undefined, right: undefined};
+
+	copyInfo(other: GameInfo) {
+		this.ball = other.ball;
+		this.paddle_a = other.paddle_a;
+		this.paddle_b = other.paddle_b;
+		this.player_a_score = other.player_a_score;
+		this.player_b_score = other.player_b_score;
+		this.end_score = other.end_score;
+		this.has_started = other.has_started;
+		this.has_ended = other.has_ended;
+	}
+
+	constructor(canvasDimensions: {width: number, height: number},  mode: 'simple' | 'double') {
+		this.mode = mode;
+		this.canvasDimensions = canvasDimensions;
+		this.boxDimensions = new boxDimensions((0.8 * canvasDimensions.width),
+			(0.8 * canvasDimensions.height),
+			(0.1 * canvasDimensions.width),
+			(0.1 * canvasDimensions.height), 20);
+		this.end_score = 5;
+		this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
+		this.boxDimensions.box_height * 0.02));
+		if(this.mode === 'double')
+		{
+			this.end_score = 100;
+			this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
+			this.boxDimensions.box_height * 0.02));
+		}
+		this.paddle_a = new Paddle(
+			this.boxDimensions.box_x + 20,
+			canvasDimensions.height / 2,
+			20,
+			this.boxDimensions.box_height * 0.1
+		  );
+
+		this.paddle_b = new Paddle(
+        this.boxDimensions.box_width + this.boxDimensions.box_x - 40,
+        canvasDimensions.height / 2,
+        20,
+        this.boxDimensions.box_height * 0.1
+      );
+
+		this.player_a_score = 0;
+		this.player_b_score = 0;
+		this.has_ended = false;
+	}
+}
+
+export class boxDimensions {
+	box_width: number
+	box_height: number
+	box_x: number
+	box_y: number
+	box_border_width: number
+	constructor(box_width: number, box_height: number ,box_x: number,
+		box_y: number ,box_border_width: number ) {
+
+		this.box_width = box_width;
+		this.box_height = box_height;
+		this.box_x = box_x;
+		this.box_y = box_y;
+		this.box_border_width = box_border_width;
+	}
+}
+
 export class Ball {
-	circle_radius = 0;
-	x_acceleration = 1.1;
-	y_acceleration = 1.1;
-	x_pos = 0;
-	y_pos = 0;
-	start_x_pos = 0;
-	start_y_pos = 0;
-	x_velocity = -5;
-	y_velocity = 1;
-	min_velocity = -25;
-	max_velocity = 25;
+	circle_radius: number;
+	x_pos: number;
+	y_pos: number;
+	start_x_pos: number;
+	start_y_pos: number;
+	x_acceleration: number;
+	y_acceleration: number;
+	x_velocity: number;
+	y_velocity: number;
+	min_velocity_x: number;
+	max_velocity_x: number;
+	min_velocity_y: number;
+	max_velocity_y: number;
 	constructor(x_start: number, y_start: number, radius: number) {
 		this.circle_radius = radius;
 		this.x_pos = x_start;
 		this.y_pos = y_start;
 		this.start_x_pos = x_start;
 		this.start_y_pos = y_start;
+		this.x_acceleration = 1.2;
+		this.y_acceleration = 1.2;
+		this.min_velocity_x = -20;
+		this.max_velocity_x = 20;
+		this.min_velocity_y = -15;
+		this.max_velocity_y = 15;
+		this.reset();
 	}
 
 	reset()
 	{
 		this.x_pos = this.start_x_pos;
 		this.y_pos = this.start_y_pos;
-		this.x_velocity = -5;
-		this.y_velocity = 1;
+		this.x_velocity = Math.random() * (8 - 5) + 5;
+		if(Math.round(Math.random()))
+			this.x_velocity *= -1;
+		this.y_velocity = Math.random() * (8 - 5) + 5;
+		if(Math.round(Math.random()))
+			this.y_velocity *= -1;
 	}
 }
 
@@ -34,6 +128,7 @@ export class Paddle {
 	height = 0;
 	up = 0;
 	down = 0;
+	paddle_speed = 10;
 	constructor(x_pos: number, y_pos: number, width: number, height: number) {
 		this.x_pos = x_pos;
 		this.y_pos = y_pos - height/2;
@@ -43,118 +138,99 @@ export class Paddle {
 }
 
 export class Engine {
-	context!: CanvasRenderingContext2D;
-	canvasDimensions: any;
-	boxDimensions: any;
-	ball!: Ball;
-	paddle_a!: Paddle;
-	paddle_b!: Paddle;
-	player_a_score = 0;
-	player_b_score = 0;
-	end_score = 5;
-	end_game = false;
 
-	render(context: CanvasRenderingContext2D, canvasDimensions:any, boxDimensions:any, ball: Ball, paddle_a: Paddle, paddle_b: Paddle) {
-		this.canvasDimensions = canvasDimensions;
-		this.boxDimensions = boxDimensions;
-		this.context = context;
-		this.ball = ball;
-		this.paddle_a = paddle_a;
-		this.paddle_b = paddle_b;
-		this.game_tick();
+	constructor(private gameInfo: GameInfo) {}
+
+	getGameInfo(): GameInfo {
+		return this.gameInfo;
 	}
 
-	draw()
+	render()
 	{
-		if(this.context != null)
-		{
-			this.context.clearRect(this.boxDimensions.box_x + this.boxDimensions.box_border_width/2, this.boxDimensions.box_y + this.boxDimensions.box_border_width/2, this.boxDimensions.box_width - this.boxDimensions.box_border_width, this.boxDimensions.box_height - this.boxDimensions.box_border_width);
-			this.context.fillRect(this.paddle_a.x_pos, this.paddle_a.y_pos, this.paddle_a.width, this.paddle_a.height);
-			this.context.fillRect(this.paddle_b.x_pos, this.paddle_b.y_pos, this.paddle_b.width, this.paddle_b.height);
-
-			this.context.fillText(this.player_a_score.toString(), this.boxDimensions.box_x + this.boxDimensions.box_width/2 - 100, this.boxDimensions.box_y + 100);
-			this.context.fillText(this.player_b_score.toString(), this.boxDimensions.box_x + this.boxDimensions.box_width/2 + 100, this.boxDimensions.box_y + 100);
-			this.context.beginPath()
-			this.context.arc(this.ball.x_pos, this.ball.y_pos, this.ball.circle_radius, 0, 2*Math.PI)
-			this.context.fill()
-		}
-	}
-	game_tick()
-	{
-		this.ball_tick();
-		if(this.end_game === true)
+		if(this.gameInfo.has_ended === true)
 			return ;
+		this.ball_tick();
 		this.paddle_tick();
-		this.draw();
 	}
 
 	paddle_tick()
 	{
-		if(this.paddle_a.up === 1)
+		if(this.gameInfo.paddle_a.up === 1)
 		{
-			if(this.paddle_a.y_pos - 10 >= this.boxDimensions.box_y)
-				this.paddle_a.y_pos -= 10;
+			if(this.gameInfo.paddle_a.y_pos - this.gameInfo.paddle_a.paddle_speed >= this.gameInfo.boxDimensions.box_y)
+				this.gameInfo.paddle_a.y_pos -= this.gameInfo.paddle_a.paddle_speed;
 		}
 
-		if(this.paddle_a.down === 1)
+		if(this.gameInfo.paddle_a.down === 1)
 		{
-			if(this.paddle_a.y_pos - 10 <= this.boxDimensions.box_height)
-				this.paddle_a.y_pos += 10;
+			if(this.gameInfo.paddle_a.y_pos - this.gameInfo.paddle_a.paddle_speed <= this.gameInfo.boxDimensions.box_height)
+				this.gameInfo.paddle_a.y_pos += this.gameInfo.paddle_a.paddle_speed;
 		}
 
-		if(this.ball.x_pos + this.ball.circle_radius + this.ball.x_velocity >= this.paddle_b.x_pos)
+		if(this.gameInfo.paddle_b.up === 1)
 		{
-			if(this.ball.y_pos + this.ball.circle_radius >= this.paddle_b.y_pos && this.ball.y_pos - this.ball.circle_radius <= this.paddle_b.y_pos + this.paddle_b.height)
+			if(this.gameInfo.paddle_b.y_pos - this.gameInfo.paddle_b.paddle_speed >= this.gameInfo.boxDimensions.box_y)
+				this.gameInfo.paddle_b.y_pos -= this.gameInfo.paddle_b.paddle_speed;
+		}
+
+		if(this.gameInfo.paddle_b.down === 1)
+		{
+			if(this.gameInfo.paddle_b.y_pos - this.gameInfo.paddle_b.paddle_speed <= this.gameInfo.boxDimensions.box_height)
+				this.gameInfo.paddle_b.y_pos += this.gameInfo.paddle_b.paddle_speed;
+		}
+
+		for(const ball of this.gameInfo.ball)
+		{
+
+			if(ball.x_pos + ball.circle_radius + ball.x_velocity >= this.gameInfo.paddle_b.x_pos)
 			{
-				if(this.ball.x_velocity >= this.ball.min_velocity && this.ball.x_velocity <= this.ball.max_velocity)
-					this.ball.x_velocity *= this.ball.x_acceleration;
-				this.ball.x_velocity *= -1;
+				if(ball.y_pos + ball.circle_radius >= this.gameInfo.paddle_b.y_pos && ball.y_pos - ball.circle_radius <= this.gameInfo.paddle_b.y_pos + this.gameInfo.paddle_b.height)
+				{
+					if(ball.x_velocity >= ball.min_velocity_x && ball.x_velocity <= ball.max_velocity_x)
+						ball.x_velocity *= ball.x_acceleration;
+					
+					if(ball.y_velocity >= ball.min_velocity_y && ball.y_velocity <= ball.max_velocity_y)
+						ball.y_velocity *= ball.y_acceleration;
+
+						ball.x_velocity *= -1;
+				}
 			}
-		}
-		if(this.ball.x_pos - this.ball.circle_radius + this.ball.x_velocity <= this.paddle_a.x_pos + this.paddle_a.width)
-		{
-			if(this.ball.y_pos + this.ball.circle_radius >= this.paddle_a.y_pos && this.ball.y_pos - this.ball.circle_radius <= this.paddle_a.y_pos + this.paddle_a.height)
+			if(ball.x_pos - ball.circle_radius + ball.x_velocity <= this.gameInfo.paddle_a.x_pos + this.gameInfo.paddle_a.width)
 			{
-				if(this.ball.x_velocity >= this.ball.min_velocity && this.ball.x_velocity <= this.ball.max_velocity)
-					this.ball.x_velocity *= this.ball.x_acceleration;
-				this.ball.x_velocity *= -1;
+				if(ball.y_pos + ball.circle_radius >= this.gameInfo.paddle_a.y_pos && ball.y_pos - ball.circle_radius <= this.gameInfo.paddle_a.y_pos + this.gameInfo.paddle_a.height)
+				{
+					if(ball.x_velocity >= ball.min_velocity_x && ball.x_velocity <= ball.max_velocity_x)
+					ball.x_velocity *= ball.x_acceleration;
+					ball.x_velocity *= -1;
+				}
 			}
 		}
 	}
 
 	ball_tick()
 	{
-		this.ball.x_pos += this.ball.x_velocity;
-		this.ball.y_pos += this.ball.y_velocity;
-		if((this.ball.x_pos + this.ball.circle_radius + this.ball.x_velocity) >= this.canvasDimensions.width - this.boxDimensions.box_x - this.boxDimensions.box_border_width/2)
+		for(const ball of this.gameInfo.ball)
 		{
-			this.player_a_score++;
-			if(this.player_a_score >= this.end_score)
+			ball.x_pos += ball.x_velocity;
+			ball.y_pos += ball.y_velocity;
+			if((ball.x_pos + ball.circle_radius + ball.x_velocity) >= this.gameInfo.canvasDimensions.width - this.gameInfo.boxDimensions.box_x - this.gameInfo.boxDimensions.box_border_width/2)
 			{
-				if(this.context)
-					this.context.clearRect(0, 0, this.canvasDimensions.width, this.canvasDimensions.height);
-				this.end_game = true;
+				this.gameInfo.player_a_score++;
+				if(this.gameInfo.player_a_score >= this.gameInfo.end_score)
+					return this.gameInfo.has_ended = true;
+				ball.reset();
 			}
-			this.ball.reset();
-		}
 
-		else if((this.ball.x_pos - this.ball.circle_radius + this.ball.x_velocity) <= this.boxDimensions.box_x + this.boxDimensions.box_border_width/2)
-		{
-			this.player_b_score++;
-			if(this.player_b_score >= this.end_score)
+			else if((ball.x_pos - ball.circle_radius + ball.x_velocity) <= this.gameInfo.boxDimensions.box_x + this.gameInfo.boxDimensions.box_border_width/2)
 			{
-				if(this.context)
-					this.context.clearRect(0, 0, this.canvasDimensions.width, this.canvasDimensions.height);
-				this.end_game = true;
+				this.gameInfo.player_b_score++;
+				if(this.gameInfo.player_b_score >= this.gameInfo.end_score)
+					return this.gameInfo.has_ended = true;
+				ball.reset();
 			}
-			this.ball.reset();
-		}
-		if((this.ball.y_pos + this.ball.circle_radius + this.ball.y_velocity) >= this.canvasDimensions.height - this.boxDimensions.box_y - this.boxDimensions.box_border_width/2 ||
-		(this.ball.y_pos - this.ball.circle_radius + this.ball.y_velocity) <= this.boxDimensions.box_y + this.boxDimensions.box_border_width/2)
-		{
-			if(this.ball.y_velocity >= -30 && this.ball.y_velocity <= 30)
-				this.ball.y_velocity *= this.ball.y_acceleration;
-			this.ball.y_velocity *= -1;
+			if((ball.y_pos + ball.circle_radius + ball.y_velocity) >= this.gameInfo.canvasDimensions.height - this.gameInfo.boxDimensions.box_y - this.gameInfo.boxDimensions.box_border_width/2 ||
+			(ball.y_pos - ball.circle_radius + ball.y_velocity) <= this.gameInfo.boxDimensions.box_y + this.gameInfo.boxDimensions.box_border_width/2)
+				ball.y_velocity *= -1;
 		}
 	}
 }

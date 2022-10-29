@@ -7,7 +7,7 @@ import {
   ResponseUserDto,
   UserDto,
 } from "@ft-transcendence/libs-shared-types";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { AuthService } from "./auth.service";
 import { JwtService } from "@nestjs/jwt";

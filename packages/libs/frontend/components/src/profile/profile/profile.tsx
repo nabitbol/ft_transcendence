@@ -1,7 +1,7 @@
 import classes from "./profile.module.css";
 import { QrModule, AllIcon, UploadImage } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { UserDto, AchievementDto } from '@ft-transcendence/libs-shared-types'
 import { User } from '@ft-transcendence/libs-frontend-services'
@@ -14,7 +14,7 @@ function Profile() {
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
   const navigate = useNavigate();
 
-  const getAnswer = async () => {
+  const getAnswer = useCallback(async () => {
     try {
       await User.updateUserAchievement();
       const response_user: AchievementDto[] = await User.requestUserAchievement();
@@ -38,11 +38,11 @@ function Profile() {
       navigate("/error");
       window.location.reload();
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     getAnswer();
-  }, [])
+  }, [getAnswer])
 
   return !userInfo ? null : (
     <div className={classes["profile_container"]}>

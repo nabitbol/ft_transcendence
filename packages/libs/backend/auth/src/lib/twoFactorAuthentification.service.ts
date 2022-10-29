@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { authenticator } from 'otplib';
+ 
 import { UserService } from '@ft-transcendence/libs-backend-user';
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 import { toFileStream } from 'qrcode';
-import { Response } from 'express';
+import { Response } from "express";
 
 @Injectable()
 export class TwoFactorAuthenticationService {
