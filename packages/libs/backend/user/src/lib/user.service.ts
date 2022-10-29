@@ -1,10 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { UserToUpdateDto, UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
+import { UserToUpdateDto, UserDto, AchievementDto, ResponseUserDto, JwtDto } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
 import * as fs from 'fs'
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
+
+  constructor(
+    private jwtService: JwtService
+  ) {}
+
   public async getUsers(): Promise<UserDto[]> {
     try {
       return await prisma.user.findMany();
@@ -42,6 +48,18 @@ export class UserService {
       return await prisma.user.findFirst({
         where: {
           name: name,
+        },
+      });
+    } catch (err) {
+      throw Error("User not found");
+    }
+  }
+
+  public async getUserByName42(name_42: string): Promise<UserDto> {
+    try {
+      return await prisma.user.findFirst({
+        where: {
+          name_42: name_42,
         },
       });
     } catch (err) {
@@ -362,6 +380,32 @@ export class UserService {
        image: tmp,
         }
       });
+  }
+
+  public async changeName(name: string, user: UserDto) {
+
+    await prisma.user.update({
+      where: {
+        name: user.name,
+      },
+      data: {
+       name: name
+        }
+      });
+      const tmp: UserDto = await this.getUserByName(name);
+      const payload: JwtDto = {
+        name: tmp.name,
+        TwoFa_auth: tmp.doubleAuth,
+        sub: tmp.id,
+      };
+      const JWT_token = this.jwtService.sign(payload);
+  
+      const result: ResponseUserDto = {
+        jwtToken: JWT_token,
+        doubleAuth: tmp.doubleAuth,
+        name: tmp.name,
+      };
+      return result;
   }
 
   async setTwoFactorAuthenticationStatus(
