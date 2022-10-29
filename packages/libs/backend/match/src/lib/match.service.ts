@@ -54,6 +54,7 @@ export class MatchService {
         },
       });
     } catch (err) {
+      console.log(err);
       throw Error("Users not found");
     }
   }

@@ -1,7 +1,6 @@
 import classes from "./home.module.css";
 import {
   PlayButton,
-  PrivateGame,
   SpectateGame,
   MatchHistory,
   AllIcon,
@@ -16,7 +15,6 @@ function Home() {
           <MatchHistory />
           <div className={classes["home_button_flex"]}>
             <PlayButton />
-            <PrivateGame />
             <SpectateGame />
           </div>
         </div>

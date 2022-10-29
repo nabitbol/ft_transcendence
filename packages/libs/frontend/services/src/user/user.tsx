@@ -190,7 +190,7 @@ class UserService {
   async getBase64 (file: any) {
     return new Promise(resolve => {
       let baseURL: string | ArrayBuffer;
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.readAsDataURL(file);
       reader.onload = () => {

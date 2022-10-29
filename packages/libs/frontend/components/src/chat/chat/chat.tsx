@@ -20,8 +20,7 @@ const Chat: React.FC = () => {
   useEffect(() => {
 
     const socket = socketRef.current;
-    socketRef.current.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
-
+    
     socket.on('chat:message', (msg: string) => {
       console.log("Someone sent:" + msg);
     });
