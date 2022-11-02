@@ -135,6 +135,33 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     return messages;
   }
 
+  /* -------------------------------- specific -------------------------------- */
+
+  async cleanStatus(client: Socket, user: UserRoomDto, room: RoomDto) {
+    const timeMin = new Date(Date.now() - 30000);
+    let isNormalRole = false;
+    if (
+      user.updated_at < timeMin &&
+      (user.role === Room_Role.BANNED || user.role === Room_Role.MUTED)
+    ) {
+      await this.roomService.udpateUsersStatus(
+        room.id,
+        client.data.user,
+        Room_Role.NORMAL
+      );
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        client.data.user.id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        client.data.user,
+        rooms
+      );
+      this.server.to(client.id).emit("server:updateroom", { rooms, userRole });
+      isNormalRole = true;
+    }
+    return !isNormalRole ? user.role : Room_Role.NORMAL;
+  }
+
   async emitToUsersInRoom(room: RoomDto, senderName: string, event: string) {
     const clients: Set<string> = await this.server.in(room.name).allSockets();
     const iterator = clients.values();
@@ -162,6 +189,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server.to(clientTmp).emit(event, { messages, authors });
       }
     }
+  }
+
+  async emitRoomToUser(user: UserDto) {
+    const event = "server:updateroom";
+    const toEmit: { userId: string; user: UserDto } = this.getUserWith(
+      user.name
+    )[0];
+    const rooms: RoomDto[] = await this.roomService.getUserRooms(user.id);
+    console.log(rooms);
+    const userRole: string[] = await this.getUserRoles(toEmit.user, rooms);
+    this.server.to(toEmit.userId).emit(event, { rooms, userRole });
   }
 
   /* --------------------------- Room event handlers -------------------------- */
@@ -292,6 +330,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             client.leave(this.userInChat[i].room.name);
           client.join(room.name);
           this.userInChat[i].room = room;
+          const user: UserRoomDto = await this.roomService.getUserInRoom(
+            room.id,
+            client.data.user
+          );
+          user.role = await this.cleanStatus(client, user, room);
+          if (user.role === "BANNED") throw Error("You are Banned");
           messages = await this.getRoomMessages(client.data.user, room);
         }
       }
@@ -524,27 +568,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         room.id,
         client.data.user
       );
-      const timeMin = new Date(Date.now() - 3000);
-      if (
-        user.updated_at < timeMin &&
-        (user.role === Room_Role.BANNED || user.role === Room_Role.MUTED)
-      ) {
-        await this.roomService.udpateUsersStatus(
-          room.id,
-          client.data.user,
-          Room_Role.NORMAL
-        );
-        const rooms: RoomDto[] = await this.roomService.getUserRooms(
-          client.data.user.id
-        );
-        const userRole: string[] = await this.getUserRoles(
-          client.data.user,
-          rooms
-        );
-        this.server
-          .to(client.id)
-          .emit("server:updateroom", { rooms, userRole });
-      }
+      user.role = await this.cleanStatus(client, user, room);
       if (user.role === Room_Role.BANNED) throw Error("You are Ban");
       if (user.role === Room_Role.MUTED) throw Error("You are mute");
       await this.messageservice.createMessage(
@@ -591,6 +615,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     try {
       const event = "server:updateuserrole";
       const room = this.getUserWith(client.data.user.name)[0].room;
+      if (!room) throw Error("User is not in Room");
       if (room.Room_Status === Room_Status.CONVERSATION)
         throw Error("You can change role in conversations");
       const updaterStatus = await this.roomService.getUserSatus(
@@ -620,6 +645,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
       const res: string =
         payload.user.name + " is now " + payload.newRole + " in " + room.name;
+      await this.emitRoomToUser(payload.user);
       return { event, data: { res } };
     } catch (err) {
       throw new WsException(err.message);
