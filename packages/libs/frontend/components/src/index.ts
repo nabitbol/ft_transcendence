@@ -38,8 +38,6 @@ export * from "./chat/rooms/rooms";
 
 export * from "./chat/chat-forms/chat-forms";
 
-export * from "./chat/tmp/tmp";
-
 export * from "./chat/chat/chat";
 
 export * from "./achievement/achievement/achievement";

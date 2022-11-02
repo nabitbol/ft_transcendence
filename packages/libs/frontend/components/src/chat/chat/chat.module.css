@@ -1,41 +1,121 @@
-.chat_form {
-	font: inherit;
-	color: black;
-	position: fixed;
-	padding: 2%;
-	z-index: 10;
-	font-size: 20px;
-	width: 100%;
-	height: 100%;
-	background-color: whitesmoke;
-	border-radius: 10px;
+.chat {
+	height: calc(100vh - 120px);
+	display: flex;
+}
+
+.chatRooms {
+	flex: 3;
+}
+
+.chatBox {
+	flex: 4.5;
+}
+
+.chatUsers {
+	flex: 3;
+}
+
+.chatRoomsWrapper,
+.chatBoxWrapper,
+.chatUsersWrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 }
 
-.chat_bar {
-	width: 100%;
-	display: flex;
-}
-
-.chat_input {
+.chatRoomsTop {
+	flex: 10;
+	margin-left: 3%;
 	width: 90%;
-	border: 2px solid black;
+	height: 100%;
+	overflow-y: scroll;
 }
 
-.chat_span {
-	display: table;
-	margin: 0 auto;
-	font-size: 30px;
-	color: black;
+.chatRoomsBottom {
+	flex: 1.5;
+	margin-left: 3%;
+	width: 90%;
+	height: 100%;
+	margin-top: 10%;
 }
 
-.chat_btn {
-	font: inherit;
-	padding: 0.5rem 1.5rem;
-	background-color: rgb(100, 0, 50);
-	color: white;
-	border: 2px solid rgb(100, 0, 50);
-	width: 10%;
+.chatBoxTop {
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.chatBoxBottom {
+	display: flex;
+	margin-top: 5px;
+}
+
+.chatUsersTop {
+	display: flex;
+	flex: 1;
+	height: 100%;
+}
+
+.chatUsersFilter {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.chatUsersFilter:hover {
+	box-shadow: 0 8px 8px rgb(0 0 0 / 0.2);
+}
+
+.chatUsersFilterTop {
+	margin-left: 7%;
+	display: flex;
+	width: 85%;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.chatUsersFilterBottom {
+	display: flex;
+	margin-left: 7%;
+	margin-top: 5%;
+	width: 90%;
+	justify-content: left;
+}
+
+.toggleFilter {
+	display: flex;
+	align-items: center;
+}
+
+.toggleLabel {
+	margin: 10px;
+}
+
+.userNumber {
+	color: rgba(190, 1, 95, 0.747);
+}
+
+.chatUsersBottom {
+	display: flex;
+	flex: 4;
+	height: 100%;
+	margin-left: 5%;
+	flex-direction: column;
+	overflow-y: scroll;
+}
+
+.chatBoxWrapper,
+.chatRoomsWrapper,
+.chatUsersWrapper {
+	padding: 10px;
+	height: 100%;
+}
+
+@media (max-width: 70rem) {
+	.chat {
+		flex-direction: column;
+	}
+
+	.chatUsersTop {
+		flex-direction: column;
+	}
 }
