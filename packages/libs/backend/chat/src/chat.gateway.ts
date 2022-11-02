@@ -182,11 +182,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           tmp.user,
           room
         );
-        const authors: string[] = [];
+        const authors: UserDto[] = [];
         for (let i = 0; i < messages.length; i++) {
-          authors[i] = (
-            await this.messageservice.getMessageUser(messages[i])
-          ).name;
+          authors[i] = await this.messageservice.getMessageUser(messages[i]);
         }
         this.server.to(clientTmp).emit(event, { messages, authors });
       }
@@ -400,7 +398,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSelectRoom(client: Socket, payload: string) {
     try {
       let messages: MessageDto[];
-      const authors: string[] = [];
+      const authors: UserDto[] = [];
       const event = "server:getonselectmessages";
       const room: RoomDto = await this.roomService.getRoomByName(payload);
       if (!room) throw Error("No rooms found");
@@ -420,9 +418,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
       }
       for (let i = 0; i < messages.length; i++) {
-        authors[i] = (
-          await this.messageservice.getMessageUser(messages[i])
-        ).name;
+        authors[i] = await this.messageservice.getMessageUser(messages[i]);
       }
       this.server.to(client.id).emit(event, { messages, authors });
     } catch (err) {

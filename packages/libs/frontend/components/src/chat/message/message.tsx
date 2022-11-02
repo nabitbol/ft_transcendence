@@ -18,7 +18,7 @@ export function Message(props: MessageProps) {
   const [scroll, setScroll] = useState<boolean>(false);
   const [messages, setMessages] = useState<MessageDto[]>(undefined);
   const [empty, setEmpty] = useState<boolean>(false);
-  const [authors, setAuthors] = useState<string[]>(undefined);
+  const [authors, setAuthors] = useState<UserDto[]>(undefined);
   const scrollRef = useRef(null);
 
   const scrollToEnd = useCallback(() => {
@@ -27,7 +27,7 @@ export function Message(props: MessageProps) {
   }, []);
 
   const listenerRoomMessages = useCallback(
-    (response: { messages: MessageDto[]; authors: string[] }) => {
+    (response: { messages: MessageDto[]; authors: UserDto[] }) => {
       if (response.messages) {
         if (response.messages.length > 0) setEmpty(false);
         else setEmpty(true);
@@ -60,7 +60,7 @@ export function Message(props: MessageProps) {
         messages.map((element, key) => (
           <div
             className={
-              authors[key] === props.user.name
+              authors[key].name === props.user.name
                 ? styles["message-own"]
                 : styles["message"]
             }
@@ -70,14 +70,14 @@ export function Message(props: MessageProps) {
             <div className={styles["messageTop"]}>
               <img
                 className={styles["messageImg"]}
-                src={getPathToImage("utilisateur")}
+                src={getPathToImage(authors[key].image)}
                 alt="avatar"
               />
               <p className={styles["messageText"]}>{element.content}</p>
             </div>
             <div className={styles["messageBottom"]}>{`${timeAgo.format(
               new Date(element.created_at)
-            )} - ${authors[key]}`}</div>
+            )} - ${authors[key].name}`}</div>
           </div>
         ))}
       {(!messages || empty === true) && <p>{"no message in the chat"}</p>}

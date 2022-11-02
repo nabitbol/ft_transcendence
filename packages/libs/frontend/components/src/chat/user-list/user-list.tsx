@@ -61,7 +61,7 @@ export function UserList(props: UserListProps) {
               <div className={styles["userImgContainer"]}>
                 <img
                   className={styles["userImg"]}
-                  src={getPathToImage("utilisateur")}
+                  src={getPathToImage(element.image)}
                   alt="avatar"
                 />
                 <div
