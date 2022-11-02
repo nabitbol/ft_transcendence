@@ -11,9 +11,11 @@
 }
 
 .profile_cascade {
+	margin-top: 30px;
+	border-radius: 10px;
 	position: relative;
 	width: 30%;
-	min-width: 200px;
+	min-width: 250px;
 	background-color: gainsboro;
 	border: 2px solid black;
 	display: flex;

@@ -2,7 +2,7 @@ import classes from "./friend-request.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { User } from "@ft-transcendence/libs-frontend-services";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,19 +21,19 @@ export function FriendRequest(props: {friend_request: string}) {
     window.location.reload();
   }
 
-  const getAnswer = async () => {
+  const getAnswer = useCallback(async () => {
     try {
-      const response: UserDto = await User.requestOtherUserInfo(name);
+      const response: UserDto = await User.requestUserInfo(name);
       setFriendRequest(response);
     } catch (err) {
       navigate("/error");
       window.location.reload();
     }
-  };
+  }, [navigate, name]);
 
   useEffect(() => {
     getAnswer();
-  }, []);
+  }, [getAnswer]);
 
   return !friendRequest_ID ? null :(
     <div className={classes['div']}>

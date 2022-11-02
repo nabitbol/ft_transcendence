@@ -38,7 +38,7 @@ export class GameInfo {
 		this.boxDimensions.box_height * 0.02));
 		if(this.mode === 'double')
 		{
-			this.end_score = 100;
+			this.end_score = 10;
 			this.ball.push(new Ball(canvasDimensions.width / 2, canvasDimensions.height / 2,
 			this.boxDimensions.box_height * 0.02));
 		}

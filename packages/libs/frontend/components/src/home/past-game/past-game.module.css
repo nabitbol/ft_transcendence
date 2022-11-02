@@ -1,49 +1,63 @@
-.main_container {
+.main_container_win {
 	height: 20%;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background-color: aliceblue;
+	background-color: rgba(127,254,118,255);
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	margin-top: 10px;
+}
+
+.main_container_lose {
+	height: 20%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: rgba(254,81,74,255);
 	border-top: 2px solid black;
 	border-bottom: 2px solid black;
 	margin-top: 10px;
 }
 
 .left_side {
-	padding: 3%;
+	padding: 4%;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	background-color: rgba(254,81,74,255);
 	width: 50%;
 }
 
 .right_side {
-	padding: 3%;
+	padding: 4%;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	background-color: rgba(127,254,118,255);
 	width: 50%;
 }
 
 .fpile {
 	display: flex;
 	gap: 10px;
+	justify-content: space-between;
 	flex-direction: column;
 }
 
 .span_title {
-    display: table;
-    margin: 0 auto;
+	text-align: center;
 	color: black;
 	font-size: 25px;
 }
 
 .span {
-	margin-top: 5%;
+	margin-top: 8%;
 	color: black;
 	font-size: 25px;
-	font-family:'Courier New', Courier, monospace;
+}
+
+.span_score {
+	color: black;
+	font-size: 30px;
 }

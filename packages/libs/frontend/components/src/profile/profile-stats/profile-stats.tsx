@@ -18,7 +18,7 @@ export function ProfileStats(props: {userInfo: UserDto, user_achievement: string
         <strong className={classes['strong_cascade']}>Played games:</strong> {userInfo.losses + userInfo.wins}
       </span>
       <span className={classes["profile_span_cascade"]}>
-        <strong className={classes['strong_cascade']}>Winrate:</strong> {userWinrate}%
+        <strong className={classes['strong_cascade']}>Winrate:</strong> {Math.round(userWinrate)}%
       </span>
       <span className={classes["profile_span_cascade"]}>
         <strong className={classes['strong_cascade']}>Game won:</strong> {userInfo.wins}

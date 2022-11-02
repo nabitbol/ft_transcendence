@@ -4,7 +4,7 @@ import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { UserDto, AchievementDto } from '@ft-transcendence/libs-shared-types'
-import { User } from '@ft-transcendence/libs-frontend-services'
+import { AuthReq, User } from '@ft-transcendence/libs-frontend-services'
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
@@ -29,7 +29,8 @@ function Profile() {
         i++;
       }
       setUserAchievement(tmp);
-      const response: UserDto = await User.requestUserInfo();
+      const user_info: any = AuthReq.getCurrentUser();
+      const response: UserDto = await User.requestUserInfo(user_info.name);
       if (response.losses === 0 && response.wins === 0)
         setUserWinrate(0);
       else
@@ -50,7 +51,6 @@ function Profile() {
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["profile_content"]}>
-
           <div className={classes["profile_left_box"]}>
             <div className={classes["profile_card"]}>
               <img
