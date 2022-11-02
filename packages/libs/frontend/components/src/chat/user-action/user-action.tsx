@@ -45,7 +45,10 @@ export function UserAction(props: UserActionProps) {
   };
 
   const inviteInPrivateRoom = async (e) => {
-    socketChat.emit("client:inviteInPrivateRoom", props.user);
+    const Data = {
+      user: props.user,
+    };
+    socketChat.emit("client:addinprivateroom", Data);
   };
 
   const listenerUpdateUseRole = (response: { res }) => {
@@ -60,11 +63,12 @@ export function UserAction(props: UserActionProps) {
     console.log(newRole);
     socketChat.emit("client:updateuserrole", Data);
   };
-
   useEffect(() => {
     socketChat.on("exception", listenerActionError);
     socketChat.on("server:updateuserrole", listenerUpdateUseRole);
+    socketChat.on("server:addinprivateroom", listenerUpdateUseRole);
     return () => {
+      socketChat.off("server:addinprivateroom", listenerUpdateUseRole);
       socketChat.off("server:updateuserrole", listenerUpdateUseRole);
       socketChat.off("exception", listenerActionError);
     };
@@ -113,7 +117,7 @@ export function UserAction(props: UserActionProps) {
         className={styles["actionItem"]}
         onClick={(e) => inviteInPrivateRoom(e)}
       >
-        {"Inviate in private room"}
+        {"Add in private room"}
       </li>
     </ul>
   );

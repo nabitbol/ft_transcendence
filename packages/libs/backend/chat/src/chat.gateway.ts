@@ -202,6 +202,57 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to(toEmit.userId).emit(event, { rooms, userRole });
   }
 
+  async onJoinConversation(
+    client: Socket,
+    payload: { conv: RoomDto; userToAdd: UserDto[] }
+  ) {
+    try {
+      const event = "server:joinconversation";
+      const tmp: RoomDto = await this.roomService.getRoomByName(
+        payload.conv.name
+      );
+      await this.roomService.addUsers(tmp.id, payload.userToAdd);
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        payload.userToAdd[0].id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        client.data.user,
+        rooms
+      );
+      const user: { userId: string; user: UserDto } = this.getUserWith(
+        client.data.user.name
+      )[0];
+      client.broadcast
+        .to(user.userId)
+        .emit(event, { data: { rooms, userRole } });
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  async onJoinPrivateRoom(
+    client: Socket,
+    payload: { room: RoomDto; userToAdd: UserDto[] }
+  ) {
+    try {
+      const event = "server:joinprivateroom";
+      await this.roomService.addUsers(payload.room.id, payload.userToAdd);
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        payload.userToAdd[0].id
+      );
+      const userRole: string[] = await this.getUserRoles(
+        payload.userToAdd[0],
+        rooms
+      );
+      const user: { userId: string; user: UserDto } = this.getUserWith(
+        payload.userToAdd[0].name
+      )[0];
+      this.server.to(user.userId).emit(event, { rooms, userRole });
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
   /* --------------------------- Room event handlers -------------------------- */
 
   @Cron(CronExpression.EVERY_30_SECONDS)
@@ -551,34 +602,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  async onJoinConversation(
-    client: Socket,
-    payload: { conv: RoomDto; userToAdd: UserDto[] }
-  ) {
-    try {
-      const event = "server:joinconversation";
-      const tmp: RoomDto = await this.roomService.getRoomByName(
-        payload.conv.name
-      );
-      await this.roomService.addUsers(tmp.id, payload.userToAdd);
-      const rooms: RoomDto[] = await this.roomService.getUserRooms(
-        payload.userToAdd[0].id
-      );
-      const userRole: string[] = await this.getUserRoles(
-        client.data.user,
-        rooms
-      );
-      const user: { userId: string; user: UserDto } = this.getUserWith(
-        client.data.user.name
-      )[0];
-      client.broadcast
-        .to(user.userId)
-        .emit(event, { data: { rooms, userRole } });
-    } catch (err) {
-      throw new WsException(err.message);
-    }
-  }
-
   @SubscribeMessage("client:sendmessage")
   async onSendMessage(client: Socket, message: string) {
     try {
@@ -674,6 +697,51 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const res: string =
         payload.user.name + " is now " + payload.newRole + " in " + room.name;
       await this.emitRoomToUser(payload.user);
+      return { event, data: { res } };
+    } catch (err) {
+      throw new WsException(err.message);
+    }
+  }
+
+  @UsePipes(new ValidationPipe())
+  @SubscribeMessage("client:addinprivateroom")
+  async onAddToPrivateRoom(client: Socket, payload: { user: UserDto }) {
+    try {
+      const event = "server:addinprivateroom";
+      const room: RoomDto = this.getUserWith(client.data.user.name)[0].room;
+      if (!room) throw Error("User is not in Room");
+      if (room.status !== Room_Status.PRIVATE)
+        throw Error("You must be in private room to add users");
+      const isUserInRoom = await this.roomService.getUserInRoom(
+        room.id,
+        payload.user
+      );
+      if (isUserInRoom) throw Error("User already in room");
+      const muters: UserDto[] = await this.userService.getMutedByUsers(
+        client.data.user.name
+      );
+      const muted: UserDto[] = await this.userService.getMutedUsers(
+        client.data.user.name
+      );
+      const checkMuters: UserDto = muters.find(
+        ({ name }) => name === payload.user.name
+      );
+      const checkMuted: UserDto = muted.find(
+        ({ name }) => name === payload.user.name
+      );
+      if (checkMuters) throw Error(`${checkMuters.name} blocked you`);
+      if (checkMuted) throw Error(`You blocked ${checkMuted.name}`);
+      const userRole = await this.roomService.getUserSatus(
+        room.id,
+        client.data.user
+      );
+      if (userRole === Room_Role.BANNED) throw Error("You are ban");
+      if (userRole === Room_Role.MUTED) throw Error("You are ban");
+      const userToAdd: UserDto[] = [];
+      userToAdd[0] = payload.user;
+      await this.onJoinPrivateRoom(client, { room, userToAdd });
+      const res: string =
+        payload.user.name + " added to " + room.name + " successfuly";
       return { event, data: { res } };
     } catch (err) {
       throw new WsException(err.message);

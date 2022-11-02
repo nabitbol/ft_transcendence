@@ -63,6 +63,7 @@ export function Rooms(props: RoomsProps) {
     socket.on("server:leaveroom", listenerUserRooms);
     socket.on("server:updateroom", listenerUserRooms);
     socket.on("server:createconversation", listenerUserRooms);
+    socket.on("server:joinprivateroom", listenerUserRooms);
     socket.emit("client:getuserrooms");
     return () => {
       socket.off("server:getuserrooms", listenerUserRooms);
@@ -71,6 +72,7 @@ export function Rooms(props: RoomsProps) {
       socket.off("server:leaveroom", listenerUserRooms);
       socket.off("server:updateroom", listenerUserRooms);
       socket.off("server:createconversation", listenerUserRooms);
+      socket.off("server:joinprivateroom", listenerUserRooms);
     };
   }, [socket]);
 
