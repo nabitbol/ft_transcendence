@@ -14,7 +14,6 @@ export function MatchHistory() {
     try {
       const response: MatchDto[] = await User.requestUserMatchInfo();
       setMatchInfo(response);
-      console.log(matchInfo);
     } catch (err) {
       navigate("/error");
       window.location.reload();

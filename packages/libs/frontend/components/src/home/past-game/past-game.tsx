@@ -18,11 +18,14 @@ export function PastGame(props: { game_info: MatchDto }) {
 
   const getData = useCallback(async () => {
     try {
+
       const WinnerResponse: UserDto = await User.requestUserInfo(name);
+      console.log("WINNER:" + WinnerResponse);
       setWinnerInfo(WinnerResponse);
 
-      const LoserReponse: UserDto = await User.requestUserInfo(name_j2);
-      setLoserInfo(LoserReponse);
+      const LoserResponse: UserDto = await User.requestUserInfo(name_j2);
+      setLoserInfo(LoserResponse);
+      console.log("LOSER:" + LoserResponse);
 
       const user = AuthReq.getCurrentUser();
       console.log("One " + user.name + " Two " + name)
@@ -40,7 +43,7 @@ export function PastGame(props: { game_info: MatchDto }) {
     getData();
   }, [getData])
 
-  return isWinner === undefined ? null :(
+  return (isWinner === undefined || (!loserInfo || !winnerInfo)) ? null : (
     <div className={
       isWinner
         ? classes["main_container_win"]
@@ -49,13 +52,13 @@ export function PastGame(props: { game_info: MatchDto }) {
       <div className={classes["left_side"]}>
         <div className={classes["fpile"]}>
           <div className={classes["div_j1"]}>
-            <img
-              src={getPathToImage(loserInfo.image)}
-              height="50"
-              width="50"
-              className={classes["img_j1"]}
-              alt="player"
-            />
+              <img
+                src={getPathToImage(loserInfo.image)}
+                height="50"
+                width="50"
+                className={classes["img_j1"]}
+                alt="player"
+              />
           </div>
           <span className={classes["span"]}>{name}</span>
         </div>
@@ -76,13 +79,13 @@ export function PastGame(props: { game_info: MatchDto }) {
         <span className={classes["span"]}>{score_j2}</span>
         <div className={classes["fpile"]}>
           <div className={classes["div_j1"]}>
-            <img
-              src={getPathToImage(winnerInfo.image)}
-              height="50"
-              width="50"
-              className={classes["img_j1"]}
-              alt="player"
-            />
+              <img
+                src={getPathToImage(winnerInfo.image)}
+                height="50"
+                width="50"
+                className={classes["img_j1"]}
+                alt="player"
+              />
           </div>
           <span className={classes["span"]}>{name_j2}</span>
         </div>

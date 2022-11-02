@@ -3,12 +3,14 @@ import { ServerEvents, ServerPayloads, MatchDto, UserDto } from "@ft-transcenden
 import { Socket, Server } from 'socket.io';
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { MatchService } from "@ft-transcendence/libs-backend-match";
+import { JwtService } from "@nestjs/jwt";
 
 export class GameInstance
 {
+	private jwtService: JwtService = new JwtService();
 	private gameInfo: GameInfo;
 	private gameEngine: Engine;
-	private userservice: UserService = new UserService();
+	private userservice: UserService = new UserService(this.jwtService);
 	private matchservice: MatchService = new MatchService();
 	private lostPlayer: string;
 

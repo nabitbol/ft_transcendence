@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 type UserType = {
   name: string;
+  name_42?: string | undefined;
   email: string;
   password: string;
   image: string;
@@ -24,12 +25,6 @@ type AchievementType = {
   condition: number;
 };
 
-const User: UserType = {
-  name: "Demo",
-  email: "Demo@mail.com",
-  password: "Demo",
-  image: "utilisateur",
-};
 
 const Achievement1: AchievementType = {
   id: "Achievement1",
@@ -56,7 +51,6 @@ const Achievement3: AchievementType = {
 }
 
 const main = async () => {
-  await prisma.user.create({ data: User });
   await prisma.achievement.create({data: Achievement1});
   await prisma.achievement.create({data: Achievement2});
   await prisma.achievement.create({data: Achievement3});

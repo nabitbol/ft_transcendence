@@ -303,5 +303,17 @@ export class UserController {
       await this.userService.changeImage(request.file, user);
   }
 
+  @Put("/:name/name")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async changeName(@Body() request: any, @Param() param) {
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      if (!user)
+        throw new NotFoundException("This username is not associated with any account.");
+      return await this.userService.changeName(request.name, user);
+  }
+
 
 }

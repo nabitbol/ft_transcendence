@@ -198,6 +198,34 @@ class UserService {
       );
   };
 
+  async verifUserName(name: string): Promise<UserDto> {
+    try {
+      const ret =  await axios.get(URL + "user/" + name,
+        {headers: authHeader()}
+      );
+      return ret.data.user;
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
+  async changeName(name: string) {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      await axios.put(URL + "user/" + user_info.name + "/name",
+        {name},
+        {headers: authHeader()}
+      )
+      .then((response) => {
+        if (response.data)
+          localStorage.setItem("userdata", JSON.stringify(response.data));
+        return response.data;
+      });
+    } catch (err) {
+        throw Error(err);
+    }
+  }
+
 }
 
 

@@ -22,7 +22,6 @@ import { LocalAuthGuard } from "./strategy/local-auth.guard";
 import { JwtAuthGuard } from "./strategy/jwt-auth.guard";
 import { JwtTwoFactorGuard } from "./strategy/jwt-two-factor.guard";
 import { Response } from "express";
- 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { ApiBody, ApiSecurity, ApiTags } from "@nestjs/swagger";
 
@@ -38,7 +37,7 @@ export class AuthController {
 
   @Get("login/42")
   async RedirApi(@Res() res: Response) {
-    return res.redirect(302, process.env.API_URL);
+    return res.redirect(302, process.env.API_URL );//process.env.API_URL
   }
 
   @Get("login/api")

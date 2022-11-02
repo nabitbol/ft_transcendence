@@ -1,5 +1,5 @@
 import classes from "./profile.module.css";
-import { QrModule, AllIcon, UploadImage, ProfileStats, MatchHistory } from "@ft-transcendence/libs-frontend-components";
+import { QrModule, AllIcon, UploadImage, ProfileStats, MatchHistory, ChangeName } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
@@ -66,6 +66,7 @@ function Profile() {
                 <strong>Rank:</strong> {userInfo.ladder_level}
               </span>
               <UploadImage />
+              <ChangeName />
             </div>
             <QrModule />
           </div>
