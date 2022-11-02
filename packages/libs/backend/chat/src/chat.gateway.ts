@@ -11,6 +11,7 @@ import { jwtConstants } from "@ft-transcendence/libs-backend-auth";
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { RoomService } from "./lib/room/room.service";
 import { MessageService } from "./lib/message/message.service";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import {
   UnauthorizedException,
   UsePipes,
@@ -197,15 +198,42 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       user.name
     )[0];
     const rooms: RoomDto[] = await this.roomService.getUserRooms(user.id);
-    console.log(rooms);
     const userRole: string[] = await this.getUserRoles(toEmit.user, rooms);
     this.server.to(toEmit.userId).emit(event, { rooms, userRole });
   }
 
   /* --------------------------- Room event handlers -------------------------- */
 
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  async checkUsersRoles() {
+    const users: UserDto[] = await this.userService.getUsers();
+    const timeMin = new Date(Date.now() - 30000);
+    users.map(async (usersElement) => {
+      const rooms: RoomDto[] = await this.roomService.getUserRooms(
+        usersElement.id
+      );
+      rooms.map(async (roomsElement) => {
+        const userRoom: UserRoomDto = await this.roomService.getUserInRoom(
+          roomsElement.id,
+          usersElement
+        );
+        if (
+          userRoom.updated_at < timeMin &&
+          (userRoom.role === Room_Role.BANNED ||
+            userRoom.role === Room_Role.MUTED)
+        ) {
+          await this.roomService.udpateUsersStatus(
+            roomsElement.id,
+            usersElement,
+            Room_Role.NORMAL
+          );
+        }
+      });
+    });
+  }
+
   @SubscribeMessage("client:disconnect")
-  async onD(client: Socket) {
+  async onDisconnect(client: Socket) {
     try {
       this.handleDisconnect(client);
     } catch (err) {
