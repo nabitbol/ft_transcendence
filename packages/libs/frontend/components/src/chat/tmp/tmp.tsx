@@ -24,7 +24,7 @@ export function Tmp(props: TmpProps) {
 
   const getUserData = async () => {
     try {
-      const response: UserDto = await User.requestUserInfo();
+      const response: UserDto = await User.requestUserInfoForChat();
       setUserData(response);
     } catch (err) {
       navigate("/error");

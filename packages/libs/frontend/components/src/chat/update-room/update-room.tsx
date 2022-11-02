@@ -1,5 +1,5 @@
 import {
-  SocketContext,
+  SocketChatContext,
   vnumber,
   vpassword_length,
   vregex,
@@ -24,7 +24,7 @@ export function UpdateRoom(props: UpdateRoomProps) {
   const [message, setMessage] = useState("");
   const [isHideInput, setIsHideInput] = useState(false);
   const [successful, setSuccessful] = useState(false);
-  const socket: Socket = useContext(SocketContext);
+  const socket: Socket = useContext(SocketChatContext);
 
   const listenerUpdateErrorMessage = useCallback((err) => {
     setMessage(err.message);

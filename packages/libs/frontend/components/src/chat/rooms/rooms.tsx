@@ -1,6 +1,6 @@
-import { SocketContext } from "@ft-transcendence/libs-frontend-services";
+import { SocketChatContext } from "@ft-transcendence/libs-frontend-services";
 import { RoomDto } from "@ft-transcendence/libs-shared-types";
-import { Room_Role, Room_Status } from "@prisma/client";
+import { Room_Status } from "@prisma/client";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import paramIcon from "../../../../../../../assets/icons/parameters.svg";
@@ -17,7 +17,7 @@ export function Rooms(props: RoomsProps) {
   const [selectedRoom, setSelectedRoom] = useState<RoomDto>(undefined);
   const [scroll, setScroll] = useState<boolean>(false);
   const [user_roles, setUserRoomsRoles] = useState<string[]>(undefined);
-  const socket: Socket = useContext(SocketContext);
+  const socket: Socket = useContext(SocketChatContext);
   const scrollRef = useRef(null);
 
   const desactivateForm = () => {

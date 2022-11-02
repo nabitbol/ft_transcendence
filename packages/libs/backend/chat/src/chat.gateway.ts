@@ -64,7 +64,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
-    this.userInChat = this.getUserWithout(client.data.user.name);
+    if (client.data.user)
+      this.userInChat = this.getUserWithout(client.data.user.name);
     this.disconnect(client);
   }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
-import { RoomDto, UserDto } from "@ft-transcendence/libs-shared-types";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
 
 const URL = "http://localhost:3333/"; //process.env['REACT_APP_URL_TO_BACK'] ;
 

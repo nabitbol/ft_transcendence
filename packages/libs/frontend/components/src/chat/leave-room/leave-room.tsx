@@ -1,5 +1,5 @@
 import {
-  SocketContext,
+  SocketChatContext,
   vregex,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
@@ -19,7 +19,7 @@ export function LeaveRoom(props: LeaveRoomProps) {
   } = useForm();
   const [message, setMessage] = useState("");
   const [successful, setSuccessful] = useState(false);
-  const socket: Socket = useContext(SocketContext);
+  const socket: Socket = useContext(SocketChatContext);
 
   const listenerUpdateErrorMessage = useCallback((err) => {
     setMessage(err.message);
