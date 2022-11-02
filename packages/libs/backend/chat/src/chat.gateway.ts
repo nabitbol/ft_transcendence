@@ -511,10 +511,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSendMessage(client: Socket, message: string) {
     try {
       const event = "server:getmessages";
-      const roomName: string | undefined = await this.getUserWith(
-        client.data.user.name
-      )[0].room.name;
-      if (!roomName) throw Error("User is not in room");
+      const tmp: RoomDto = await this.getUserWith(client.data.user.name)[0]
+        .room;
+      if (!tmp) throw Error("User is not in room");
+      const roomName: string = tmp.name;
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
         client.data.user.id
       );
