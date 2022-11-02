@@ -19,10 +19,9 @@ class UserService {
     }
   }
 
-  async requestUserInfo(): Promise<UserDto> {
-    const user_info: any = AuthReq.getCurrentUser();
+  async requestUserInfo(user_name: string): Promise<UserDto> {
     try {
-      const ret = await axios.get(URL + "user/" + user_info.name, {
+      const ret = await axios.get(URL + "user/" + user_name, {
         headers: authHeader()
       });
       return ret.data.user;
@@ -30,18 +29,6 @@ class UserService {
         throw Error(err);
     }
   }
-
-  async requestOtherUserInfo(name: string): Promise<UserDto> {
-    try {
-      const ret = await axios.get(URL + "user/" + name, {
-        headers: authHeader()
-      });
-      return ret.data.user;
-    } catch (err) {
-        throw Error(err);
-    }
-  }
-
 
   async sendFriendRequest(name_receiver: string): Promise<any> {
     const user_info: any = AuthReq.getCurrentUser();

@@ -1,3 +1,11 @@
+export * from './profile/match-history/match-history';
+
+export * from './profile/profile-stats/profile-stats';
+
+export * from './icon/chat-icon/chat-icon';
+
+export * from './icon/logout-icon/logout-icon';
+
 export * from './game/result-screen/result-screen';
 
 export * from './home/all-live-game/all-live-game';
@@ -24,6 +32,8 @@ export * from "./auth/two-fa/two-fa";
 
 export * from "./welcome/welcome";
 
+export * from "./home/home/home";
+
 export * from "./friend/friend/friend";
 
 export * from "./friend/friend-list/friend-list";
@@ -34,11 +44,7 @@ export * from "./friend/friend-request/friend-request";
 
 export * from "./friend/friend-request-list/friend-request-list";
 
-export * from "./home/home/home";
-
 export * from "./home/live-game/live-game";
-
-export * from "./home/match-history/match-history";
 
 export * from "./home/past-game/past-game";
 
