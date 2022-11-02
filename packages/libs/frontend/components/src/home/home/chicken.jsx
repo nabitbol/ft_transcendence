@@ -5,13 +5,11 @@ function ChickenSvg() {
   return (
     <div className={classes["chicken-container"]}>
       <div className={classes["chicken-neon-container"]}>
-        <svg
+        <svg className={classes["chicken-svg"]}
           xmlns="http://www.w3.org/2000/svg"
-          xmlnsSvg="http://www.w3.org/2000/svg"
-          width="433.121"
-          height="414.213"
           version="1.2"
           xmlSpace="preserve"
+          viewBox="0 0 433.121 414.213"
         >
           <defs>
             <filter

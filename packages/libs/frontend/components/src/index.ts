@@ -1,3 +1,6 @@
+export * from './profile/match-history/match-history';
+
+export * from './profile/profile-stats/profile-stats';
 
 export * from './icon/chat-icon/chat-icon';
 
@@ -42,8 +45,6 @@ export * from "./friend/friend-request/friend-request";
 export * from "./friend/friend-request-list/friend-request-list";
 
 export * from "./home/live-game/live-game";
-
-export * from "./home/match-history/match-history";
 
 export * from "./home/past-game/past-game";
 

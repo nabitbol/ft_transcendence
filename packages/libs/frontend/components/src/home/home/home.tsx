@@ -12,11 +12,11 @@ function Home() {
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["home_flex"]}>
-          <ChickenSvg />
           <div className={classes["home_button_flex"]}>
             <PlayButton />
             <SpectateGame />
           </div>
+          <ChickenSvg />
         </div>
       </div>
     </div>
