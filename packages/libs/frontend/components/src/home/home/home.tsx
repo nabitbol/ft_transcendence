@@ -1,11 +1,10 @@
 import classes from "./home.module.css";
 import {
   PlayButton,
-  PrivateGame,
   SpectateGame,
-  MatchHistory,
   AllIcon,
 } from "@ft-transcendence/libs-frontend-components";
+import ChickenSvg from './chicken.jsx';
 
 function Home() {
   return (
@@ -13,12 +12,11 @@ function Home() {
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["home_flex"]}>
-          <MatchHistory />
           <div className={classes["home_button_flex"]}>
             <PlayButton />
-            <PrivateGame />
             <SpectateGame />
           </div>
+          <ChickenSvg />
         </div>
       </div>
     </div>

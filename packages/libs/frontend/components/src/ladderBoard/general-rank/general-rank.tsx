@@ -11,7 +11,7 @@ function GeneralRank(props: { user: UserDto; }) {
       </h2>
 
       <img
-        src={getPathToImage("friend")}
+        src={getPathToImage(props.user.image)}
         alt={"user avatar"}
         height="50"
         width="50"

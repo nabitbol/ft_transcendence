@@ -1,5 +1,9 @@
 const getPathToImage = (attribut: string): string => {
-  return require('../../../../../../assets/img/'+ attribut +'.png');
+  try {
+    return require('../../../../../../assets/img/'+ attribut +'.png');
+  } catch (err) {
+    return undefined;
+  }
 };
 
 export { getPathToImage };

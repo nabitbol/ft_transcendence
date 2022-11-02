@@ -1,4 +1,8 @@
-import { UserDto, UserToUpdateDto } from "@ft-transcendence/libs-shared-types";
+import {
+  AchievementDto,
+  UserDto,
+  UserToUpdateDto,
+} from "@ft-transcendence/libs-shared-types";
 import {
   Controller,
   Delete,
@@ -14,7 +18,7 @@ import {
   ForbiddenException,
   UseGuards,
 } from "@nestjs/common";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+
 import { JwtTwoFactorGuard } from "../../../auth/src/lib/strategy/jwt-two-factor.guard";
 import { UserService } from "./user.service";
 import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
@@ -256,5 +260,79 @@ export class UserController {
     } catch (err) {
       return new UnauthorizedException(err);
     }
+  }
+
+  @Get(":name/update_achievement")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async updateUserAchievement(@Param() param) {
+    try {
+      const achievement: AchievementDto[] =
+        await this.userService.getAchievement();
+      const user: UserDto = await this.userService.getUserByName(param.name);
+      await this.userService.updateUserAchievement(achievement, user);
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Get(":name/achievement")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getAchievement() {
+    try {
+      const response: AchievementDto[] =
+        await this.userService.getAchievement();
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Get(":name/user_achievement")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async getUserAchievement(@Param() param) {
+    try {
+      const response: AchievementDto[] =
+        await this.userService.getUserAchievement(param.name);
+      return { response: response };
+    } catch (err) {
+      return new UnauthorizedException(err);
+    }
+  }
+
+  @Post("/:name/image")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async changeImage(@Body() request: any, @Param() param) {
+    const user: UserDto = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    await this.userService.changeImage(request.file, user);
+  }
+
+  @Put("/:name/name")
+  @ApiParam({
+    name: "name",
+    required: true,
+  })
+  public async changeName(@Body() request: any, @Param() param) {
+    const user: UserDto = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    return await this.userService.changeName(request.name, user);
   }
 }

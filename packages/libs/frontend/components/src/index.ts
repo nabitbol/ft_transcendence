@@ -1,7 +1,24 @@
+export * from "./chat/update-room/update-room";
 
-export * from './chat/update-room/update-room';
+export * from "./profile/match-history/match-history";
 
-export * from './chat/activate-user-action/activate-user-action';
+export * from "./profile/profile-stats/profile-stats";
+
+export * from "./icon/chat-icon/chat-icon";
+
+export * from "./icon/logout-icon/logout-icon";
+
+export * from "./game/result-screen/result-screen";
+
+export * from "./home/all-live-game/all-live-game";
+
+export * from "./chat/chat/chat";
+
+export * from "./home/play-module/play-module";
+
+export * from "./game/game/game";
+
+export * from "./chat/activate-user-action/activate-user-action";
 export * from "./chat/leave-room/leave-room";
 
 export * from "./chat/join-room/join-room";
@@ -25,8 +42,6 @@ export * from "./chat/tmp/tmp";
 
 export * from "./chat/chat/chat";
 
-export * from "./game/game";
-
 export * from "./achievement/achievement/achievement";
 
 export * from "./achievement/achievement-list/achievement-list";
@@ -43,6 +58,8 @@ export * from "./auth/two-fa/two-fa";
 
 export * from "./welcome/welcome";
 
+export * from "./home/home/home";
+
 export * from "./friend/friend/friend";
 
 export * from "./friend/friend-list/friend-list";
@@ -53,19 +70,11 @@ export * from "./friend/friend-request/friend-request";
 
 export * from "./friend/friend-request-list/friend-request-list";
 
-export * from "./home/home/home";
-
 export * from "./home/live-game/live-game";
-
-export * from "./home/match-history/match-history";
 
 export * from "./home/past-game/past-game";
 
-export * from "./home/private-game/private-game";
-
 export * from "./home/play-button/play-button";
-
-export * from "./home/private-game-join/private-game-join";
 
 export * from "./home/spectate-game/spectate-game";
 
@@ -98,3 +107,7 @@ export * from "./profile/generate-qr/generate-qr";
 export * from "./profile/profile/profile";
 
 export * from "./profile/qr-module/qr-module";
+
+export * from "./profile/upload-image/upload-image";
+
+export * from "./profile/change-name/change-name";

@@ -11,7 +11,7 @@ function FriendRank(props: {user: UserDto; }) {
       </h2>
 
       <img
-        src={getPathToImage("friend")}
+        src={getPathToImage(props.user.image)}
         height="50"
         width="50"
         className={classes['img']}

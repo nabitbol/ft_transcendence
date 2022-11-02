@@ -1,0 +1,32 @@
+.flex_container {
+	color: black;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	max-height: 500px;
+}
+
+.span {
+    display: table;
+    margin: 0 auto;
+	color: black;
+	font-size: 40px;
+	font-family:'Courier New', Courier, monospace;
+}
+
+.spectate_container {
+	position: fixed;
+	z-index: 10;
+	width: 30%;
+	top: 20%;
+	left: 35%;
+	background-color: gainsboro;
+}
+
+.nogame {
+	font-size: 34px;
+	display: table;
+	margin: 0 auto;
+	margin-top: 10%;
+	margin-bottom: 10%;
+}

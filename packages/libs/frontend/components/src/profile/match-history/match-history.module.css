@@ -1,0 +1,40 @@
+.flex_container {
+	color: black;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.span {
+    display: table;
+    margin: 0 auto;
+	color: black;
+	font-size: 40px;
+	font-family:'Courier New', Courier, monospace;
+}
+
+.title {
+    display: table;
+    margin: 0 auto;
+	color: black;
+	font-size: 40px;
+}
+
+.match_history_container {
+	width: 60%;
+	margin-top: 30px;
+	border-radius: 5px;
+	min-width: 330px;
+	max-height: 480px;
+	overflow-y: auto;
+	background-color: gainsboro;
+}
+
+.nogame {
+	font-size: 34px;
+	display: table;
+	margin: 0 auto;
+	margin-top: 10%;
+	margin-bottom: 10%;
+}

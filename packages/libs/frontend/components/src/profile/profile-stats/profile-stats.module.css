@@ -1,0 +1,23 @@
+.profile_span_cascade {
+	margin: 10px;
+	font-size: 18px;
+}
+
+.strong_cascade {
+	border-bottom: 3px solid black;
+	font-size: 22px;
+	margin-right: 5px;
+	font-family: "Gill Sans", sans-serif;
+}
+
+.profile_cascade {
+	margin-top: 30px;
+	border-radius: 10px;
+	position: relative;
+	width: 30%;
+	min-width: 250px;
+	background-color: gainsboro;
+	border: 2px solid black;
+	display: flex;
+	flex-direction: column;
+}

@@ -7,7 +7,7 @@ import {
   ResponseUserDto,
   UserDto,
 } from "@ft-transcendence/libs-shared-types";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { AuthService } from "./auth.service";
 import { JwtService } from "@nestjs/jwt";
@@ -23,12 +23,13 @@ export class ApiService {
 
   async postApi(code: string): Promise<string> {
     const grant_type = "authorization_code";
-    const client_id = process.env.CLIENT_ID;
-    const client_secret = process.env.CLIENT_SECRET;
+    const client_id = process.env.CLIENT_ID; //process.env.CLIENT_ID
+    const client_secret = process.env.CLIENT_SECRET; //process.env.CLIENT_SECRET
     const base_url = "https://api.intra.42.fr/oauth/token";
-    const redirect_uri = "http://localhost:" + process.env.PORT + "/auth/api";
+    const redirect_uri = "http://localhost:4200/auth/api"; //process.env.PORT 
 
-    return axios
+
+      return axios
       .post(base_url, {
         grant_type,
         client_id,
@@ -60,22 +61,31 @@ export class ApiService {
     return user;
   }
 
+  async getRandomName(): Promise<string> {
+   
+   let result           = 'user';
+   let characters       = '0123456789';
+   let charactersLength = characters.length;
+    for (let i = 0; i < 10; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   async registerApi(registerDto: UserDto): Promise<ResponseUserDto> {
     const newUser: UserDto = new UserDto();
     let payload: JwtDto;
     let ret: ResponseUserDto;
 
-    if (
-      !(
-        (await this.usersService.getUserByName(registerDto.name)) &&
-        (await this.usersService.getUserByEmail(registerDto.email))
-      )
-    ) {
-      newUser.name = registerDto.name;
-      newUser.password = await this.authService.hashString(
-        registerDto.password
-      );
+    if (await this.usersService.getUserByName42(registerDto.name) === null) 
+    {
+      if (await this.usersService.getUserByName(registerDto.name) === null)
+        newUser.name = registerDto.name;
+      else
+        newUser.name = await this.getRandomName();
+      newUser.name_42 = registerDto.name;
       newUser.email = registerDto.email;
+      newUser.image = "utilisateur";
       await this.usersService.addUser(newUser);
       payload = {
         name: newUser.name,
@@ -84,7 +94,7 @@ export class ApiService {
       };
       ret = newUser;
     } else {
-      const oldUser = await this.usersService.getUserByName(registerDto.name);
+      const oldUser = await this.usersService.getUserByName42(registerDto.name);
       payload = {
         name: oldUser.name,
         TwoFa_auth: newUser.doubleAuth,

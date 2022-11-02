@@ -1,0 +1,99 @@
+.span_header{
+	font-size: 30px;
+	color: black;
+	display: table;
+	margin: 0 auto;
+}
+
+.span_player_data{
+	font-size: 20px;
+	color: black;
+	display: table;
+	margin: 0 auto;
+}
+
+.background {
+	height: 100vh;
+	overflow-y: auto;
+	background: radial-gradient(circle, rgb(0, 0, 10) 40%, rgb(10, 0, 20), rgb(20, 0, 30), rgb(25, 0, 40), rgb(20, 0, 50), rgb(10, 0, 60), rgb(20, 20, 90));
+}
+
+.result {
+	margin: 5%;
+	margin-inline: 10%;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.user_name {
+	margin: 10px;
+	font-size: 32px;
+}
+
+.pile {
+	display: flex;
+	flex-direction: column;
+}
+
+.profile_avatar {
+	float: left;
+	height: calc(7vw + 7vh);
+	width: calc(7vw + 7vh);
+	margin: 5%;
+	min-width: 75px;
+	min-height: 75px;
+	max-width: 150px;
+	max-height: 150px;
+	background-color: whitesmoke;
+	border: 2px solid rgb(172, 172, 172);
+}
+
+.header_score_win {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	background-color: rgba(127,254,118,255);
+}
+
+.header_score_lose {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+
+	background-color: rgba(254,81,74,255);
+}
+
+.player_data {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	background-color: white;
+	justify-content: space-evenly;
+}
+
+.box_player_left {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: flex-start;
+}
+
+.box_player_right {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
+.btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 4px;
+	background-color: rgb(167, 169, 170);
+	color: rgb(0, 0, 0);
+	border: 2px solid rgb(171, 171, 171);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
+	max-width: 200px;
+}

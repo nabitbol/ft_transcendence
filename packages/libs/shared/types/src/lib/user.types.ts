@@ -7,9 +7,11 @@ import {
   IsString,
   IsOptional,
 } from "class-validator";
+import { AchievementDto } from "./achievement.types";
 
 export type UserType = {
   name: string;
+  name_42?: string | undefined;
   email: string;
   password: string;
   image: string;
@@ -19,11 +21,13 @@ export type UserType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export type UserToUpdateType = {
   name?: string | undefined;
+  name_42?: string | undefined;
   email?: string | undefined;
   password?: string | undefined;
   image?: string | undefined;
@@ -33,7 +37,8 @@ export type UserToUpdateType = {
   losses?: number | undefined;
   ladder_level?: number | undefined;
   userRankId?: string | undefined;
-  friendsRequest?: string[] | undefined
+  friendsRequest?: string[] | undefined;
+  achievement?: AchievementDto[] | undefined;
 };
 
 export class LoginDto {
@@ -60,6 +65,9 @@ export class UserDto {
   @MaxLength(25)
   name: string;
 
+  @ApiPropertyOptional()
+  name_42?: string | undefined;
+
   @ApiProperty()
   @IsString()
   @MinLength(8)
@@ -112,6 +120,9 @@ export class UserDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class UserToUpdateDto {
@@ -123,6 +134,9 @@ export class UserToUpdateDto {
   name: string;
 
   @ApiPropertyOptional()
+  name_42?: string | undefined;
+
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   @MinLength(8)
@@ -177,6 +191,9 @@ export class UserToUpdateDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }
 
 export class ResponseUserDto {
@@ -190,6 +207,9 @@ export class ResponseUserDto {
   @MinLength(4)
   @MaxLength(25)
   name?: string | undefined;
+
+  @ApiPropertyOptional()
+  name_42?: string | undefined;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -240,4 +260,7 @@ export class ResponseUserDto {
 
   @ApiPropertyOptional()
   friendsRequest?: string[] | undefined;
+
+  @ApiPropertyOptional()
+  achievement?: AchievementDto[] | undefined;
 }

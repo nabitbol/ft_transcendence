@@ -1,7 +1,11 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 import { AuthReq } from "@ft-transcendence/libs-frontend-services";
-import { UserDto, MatchDto } from "@ft-transcendence/libs-shared-types";
+import {
+  UserDto,
+  MatchDto,
+  AchievementDto,
+} from "@ft-transcendence/libs-shared-types";
 
 const URL = "http://localhost:3333/"; //process.env['REACT_APP_URL_TO_BACK'] ;
 
@@ -29,7 +33,18 @@ class UserService {
     }
   }
 
-  async requestUserInfo(): Promise<UserDto> {
+  async requestUserInfo(user_name: string): Promise<UserDto> {
+    try {
+      const ret = await axios.get(URL + "user/" + user_name, {
+        headers: authHeader(),
+      });
+      return ret.data.user;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async requestUserInfoForChat(): Promise<UserDto> {
     const user_info: any = AuthReq.getCurrentUser();
     try {
       const ret = await axios.get(URL + "user/" + user_info.name, {
@@ -150,6 +165,102 @@ class UserService {
         }
       );
       return ret.data.response;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async updateUserAchievement() {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+    try {
+      await axios.get(URL + "user/" + user_info.name + "/update_achievement", {
+        headers,
+      });
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async requestAchievement(): Promise<AchievementDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(
+        URL + "user/" + user_info.name + "/achievement",
+        {
+          headers: authHeader(),
+        }
+      );
+      return ret.data.response;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async requestUserAchievement(): Promise<AchievementDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      const ret = await axios.get(
+        URL + "user/" + user_info.name + "/user_achievement",
+        {
+          headers: authHeader(),
+        }
+      );
+      return ret.data.response;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async getBase64(file: any) {
+    return new Promise((resolve) => {
+      let baseURL: string | ArrayBuffer;
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+    });
+  }
+
+  async sendImage(file: any) {
+    const user_info: any = AuthReq.getCurrentUser();
+    const headers = authHeader();
+
+    axios.post(
+      URL + "user/" + user_info.name + "/image",
+      { file },
+      { headers }
+    );
+  }
+
+  async verifUserName(name: string): Promise<UserDto> {
+    try {
+      const ret = await axios.get(URL + "user/" + name, {
+        headers: authHeader(),
+      });
+      return ret.data.user;
+    } catch (err) {
+      throw Error(err);
+    }
+  }
+
+  async changeName(name: string) {
+    const user_info: any = AuthReq.getCurrentUser();
+    try {
+      await axios
+        .put(
+          URL + "user/" + user_info.name + "/name",
+          { name },
+          { headers: authHeader() }
+        )
+        .then((response) => {
+          if (response.data)
+            localStorage.setItem("userdata", JSON.stringify(response.data));
+          return response.data;
+        });
     } catch (err) {
       throw Error(err);
     }

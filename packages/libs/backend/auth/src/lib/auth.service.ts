@@ -10,7 +10,7 @@ import {
 } from "@ft-transcendence/libs-shared-types";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserService } from "@ft-transcendence/libs-backend-user";
 
 @Injectable()
@@ -52,6 +52,10 @@ export class AuthService {
       throw new UnauthorizedException(
         "This username is not associated with any account."
       );
+    if (user.name_42 !== null)
+    throw new UnauthorizedException(
+      "Please connect with 42 api for this user."
+    ); 
     if (user && (await this.compareHash(user.password, pass))) {
       const result: ResponseUserDto = user;
       return result;
@@ -74,7 +78,7 @@ export class AuthService {
     user.name = registerDto.name;
     user.password = await this.hashString(registerDto.password);
     user.email = registerDto.email;
-    user.image = "string";
+    user.image = "utilisateur";
 
     await this.usersService.addUser(user);
     const retUserDto: ResponseUserDto = user;

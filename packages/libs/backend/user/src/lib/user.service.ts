@@ -1,9 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { UserToUpdateDto, UserDto } from "@ft-transcendence/libs-shared-types";
+import {
+  UserToUpdateDto,
+  UserDto,
+  AchievementDto,
+  ResponseUserDto,
+  JwtDto,
+} from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
+import * as fs from "fs";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
+  constructor(private jwtService: JwtService) {}
+
   public async getUsers(): Promise<UserDto[]> {
     try {
       return await prisma.user.findMany();
@@ -41,6 +51,18 @@ export class UserService {
       return await prisma.user.findFirst({
         where: {
           name: name,
+        },
+      });
+    } catch (err) {
+      throw Error("User not found");
+    }
+  }
+
+  public async getUserByName42(name_42: string): Promise<UserDto> {
+    try {
+      return await prisma.user.findFirst({
+        where: {
+          name_42: name_42,
         },
       });
     } catch (err) {
@@ -273,10 +295,120 @@ export class UserService {
     }
   }
 
+  public async getAchievement(): Promise<AchievementDto[]> {
+    try {
+      return await prisma.achievement.findMany();
+    } catch (err) {
+      throw Error("Achievement not found");
+    }
+  }
+
+  public async updateUserAchievement(
+    achievement: AchievementDto[],
+    user: UserDto
+  ) {
+    if (user.achievement != undefined) {
+      if (achievement.length == user.achievement.length) return;
+    }
+    let i = 0;
+    let j = 0;
+    while (achievement[i]) {
+      if (achievement[i].condition <= user.wins) j++;
+      i++;
+    }
+    i = 0;
+    j = 0;
+    const tmp: AchievementDto[] = new Array(j);
+    while (achievement[i]) {
+      if (achievement[i].condition <= user.wins) tmp[j++] = achievement[i];
+      i++;
+    }
+    user.achievement = tmp;
+    try {
+      i = 0;
+      while (user.achievement[i]) {
+        await prisma.user.update({
+          where: {
+            name: user.name,
+          },
+          data: {
+            achievements: {
+              connect: {
+                id: user.achievement[i].id,
+              },
+            },
+          },
+        });
+        i++;
+      }
+    } catch (err) {
+      throw Error("Failed update User");
+    }
+  }
+
+  public async getUserAchievement(name: string) {
+    try {
+      return await prisma.user
+        .findUnique({
+          where: {
+            name: name,
+          },
+        })
+        .achievements();
+    } catch (err) {
+      throw Error("Couldn't find achievement");
+    }
+  }
+
+  public async changeImage(file: any, user: UserDto) {
+    const path: string =
+      process.cwd() + "/assets/img/user/" + user.name + ".png";
+    const img = file["base64"];
+    const data = img.replace(/^data:image\/\w+;base64,/, "");
+    const buf = Buffer.from(data, "base64");
+    fs.writeFile(path, buf, function (err) {
+      if (err) throw err;
+    });
+    const tmp = "user/" + user.name;
+    await prisma.user.update({
+      where: {
+        name: user.name,
+      },
+      data: {
+        image: tmp,
+      },
+    });
+  }
+
+  public async changeName(name: string, user: UserDto) {
+    await prisma.user.update({
+      where: {
+        name: user.name,
+      },
+      data: {
+        name: name,
+      },
+    });
+    const tmp: UserDto = await this.getUserByName(name);
+    const payload: JwtDto = {
+      name: tmp.name,
+      TwoFa_auth: tmp.doubleAuth,
+      sub: tmp.id,
+    };
+    const JWT_token = this.jwtService.sign(payload);
+
+    const result: ResponseUserDto = {
+      jwtToken: JWT_token,
+      doubleAuth: tmp.doubleAuth,
+      name: tmp.name,
+    };
+    return result;
+  }
+
   async setTwoFactorAuthenticationStatus(
     name: string,
     status: boolean
-  ): Promise<any> {
+  ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuth = status;
     return this.updateUser(name, user);
@@ -285,7 +417,7 @@ export class UserService {
   async setTwoFactorAuthenticationSecret(
     name: string,
     secret: string
-  ): Promise<any> {
+  ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
     return this.updateUser(name, user);

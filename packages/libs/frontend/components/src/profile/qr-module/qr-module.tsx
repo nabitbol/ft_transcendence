@@ -17,7 +17,6 @@ const QrModule = (props: any) => {
 
   const handleTwoFa = (data: any) => {
     setMessage("");
-    console.log(data.twofa_code);
     AuthReq.ActivateTwoFa(data.twofa_code).then(() => {
       AuthReq.logout();
       navigate("/");

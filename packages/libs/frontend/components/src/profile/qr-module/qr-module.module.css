@@ -4,12 +4,10 @@
 	padding: 2rem;
 	font-size: 20px;
 	background-color: gainsboro;
-	width: 40%;
 	border-radius: 10px;
-	margin: 30px;
-	max-width: 400px;
+	margin-inline: 30px;
+	margin-top: 30px;
 	border: 2px solid black;
-	min-width: 300px;
 	float: left;
 }
 

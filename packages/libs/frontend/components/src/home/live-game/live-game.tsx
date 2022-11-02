@@ -1,54 +1,34 @@
 import classes from "./live-game.module.css";
-import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
+import { SpectateInfo } from "@ft-transcendence/libs-shared-types";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { SocketContext } from '@ft-transcendence/libs-frontend-services';
+import { Socket } from 'socket.io';
 
-export function LiveGame(props: { game_id: string }) {
-  const name = "eswox";
-  const lvl = props.game_id;
-  const name_j2 = "erzow";
-  const lvl_j2 = props.game_id;
+export function LiveGame(props: { game: SpectateInfo }) {
+  const navigate = useNavigate();
+  const game: SpectateInfo = props.game;
+  const socket: Socket = useContext(SocketContext);
 
-  function clickme_spectate_button() {
-    console.log("click");
+  function spectate() {
+    socket.emit('client.spectate', props.game.id);
+    navigate("/game");
   }
 
   return (
-    <div className={classes["div"]}>
-      <h2 className={classes["h2_vs"]}>VS</h2>
-      <button
-        className={classes["button_spectate"]}
-        onClick={clickme_spectate_button}
-      >
-        Spectate
-      </button>
-      <div className={classes["div_j1"]}>
-        <img
-          src={getPathToImage("friend")}
-          alt={"user avatar"}
-          height="75"
-          width="75"
-          className={classes["img_j1"]}
-        />
-        <p className={classes["p_usr_j1"]}>
-          <strong>{name}</strong>
-        </p>
-        <p className={classes["p_lvl_j1"]}>
-          <strong>Lvl: {lvl}</strong>
-        </p>
-      </div>
-      <div className={classes["div_j2"]}>
-        <img
-          src={getPathToImage("friend")}
-          height="75"
-          width="75"
-          className={classes["img_j2"]}
-          alt="player_2"
-        />
-        <p className={classes["p_usr_j2"]}>
-          <strong>{name_j2}</strong>
-        </p>
-        <p className={classes["p_lvl_j2"]}>
-          <strong>Lvl: {lvl_j2}</strong>
-        </p>
+    <div>
+      <div className={classes["main_container"]}>
+        <span className={classes["span"]}>{game.left}</span>
+        <div className={classes["middle_container"]}>
+          <span className={classes["span_title"]}>{game.game_mode}</span>
+          <button
+            className={classes['button_spectate']}
+            onClick={spectate}
+          >
+            Spectate
+          </button>
+        </div>
+        <span className={classes["span"]}>{game.right}</span>
       </div>
     </div>
   );

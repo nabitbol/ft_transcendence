@@ -7,6 +7,8 @@ import {
   FriendIcon,
   FriendRequestIcon,
   AchievementIcon,
+  ChatIcon,
+  LogoutIcon
 } from "@ft-transcendence/libs-frontend-components";
 
 function AllIcon() {
@@ -14,11 +16,13 @@ function AllIcon() {
     <div>
       <HomeIcon />
       <div className={classes['all_icone']}>
-        <ProfileIcon />
+        <ChatIcon />
         <LadderIcon />
-        <FriendIcon />
-        <FriendRequestIcon />
         <AchievementIcon />
+        <FriendRequestIcon />
+        <FriendIcon />
+        <ProfileIcon />
+        <LogoutIcon />
       </div>
     </div>
   );

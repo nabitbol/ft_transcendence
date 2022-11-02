@@ -56,13 +56,13 @@ export function Ladder() {
           {ladder_general ? (
             <div className={classes["ladder_list"]}>
               {general_ID.map((ID_g) => (
-                <GeneralRank user={ID_g}/>
+                <GeneralRank key={ID_g.id} user={ID_g}/>
               ))}
             </div>
           ) : (
             <div className={classes["ladder_list"]}>
               {friend_ID.map((ID_f) => (
-                <FriendRank user={ID_f} />
+                <FriendRank key={ID_f.id} user={ID_f} />
               ))}
             </div>
           )}

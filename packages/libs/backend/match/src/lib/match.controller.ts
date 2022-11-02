@@ -58,13 +58,9 @@ export class MatchController {
   @Post()
   public async addMatches(@Body(new ValidationPipe()) match: MatchDto) {
     try {
-
-      if(!await this.userService.getUserByName(match.looser) || 
-          !await this.userService.getUserByName(match.winner))
-      {
+      if(!await this.userService.getUserByName(match.winner) ||
+      !await this.userService.getUserByName(match.looser))
         throw Error("Winner or looser not found");
-      }
-
       for (let index = 0; index < match.playersName.length; index++) {
         const tmp: UserDto = await this.userService.getUserByName(
           match.playersName[index]

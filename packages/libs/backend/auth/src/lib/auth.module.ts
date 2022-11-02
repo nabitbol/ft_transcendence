@@ -2,7 +2,7 @@ import { Module, forwardRef } from "@nestjs/common";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { TwoFactorAuthenticationService } from "./twoFactorAuthentification.service";
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+ 
 import { UserModule } from "@ft-transcendence/libs-backend-user";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";

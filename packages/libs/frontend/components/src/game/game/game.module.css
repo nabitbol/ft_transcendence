@@ -1,0 +1,18 @@
+.game{
+	width: 99%;
+	height: 99%;
+	font-size: 30px;
+}
+
+.span{
+	font-size: 30px;
+	color: white;
+	display: table;
+	margin: 0 auto;
+}
+
+.background {
+	height: 100vh;
+	overflow-y: auto;
+	background: radial-gradient(circle, rgb(0, 0, 10) 40%, rgb(10, 0, 20), rgb(20, 0, 30), rgb(25, 0, 40), rgb(20, 0, 50), rgb(10, 0, 60), rgb(20, 20, 90));
+}
