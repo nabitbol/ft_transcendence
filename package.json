@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "prisma": {
+    "migrate": "prisma migrate dev",
     "seed": "ts-node prisma/seed.ts"
   },
   "scripts": {},
