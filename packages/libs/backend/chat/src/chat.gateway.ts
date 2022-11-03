@@ -256,30 +256,36 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @Cron(CronExpression.EVERY_30_SECONDS)
   async checkUsersRoles() {
-    const users: UserDto[] = await this.userService.getUsers();
-    const timeMin = new Date(Date.now() - 30000);
-    users.map(async (usersElement) => {
-      const rooms: RoomDto[] = await this.roomService.getUserRooms(
-        usersElement.id
-      );
-      rooms.map(async (roomsElement) => {
-        const userRoom: UserRoomDto = await this.roomService.getUserInRoom(
-          roomsElement.id,
-          usersElement
-        );
-        if (
-          userRoom.updated_at < timeMin &&
-          (userRoom.role === Room_Role.BANNED ||
-            userRoom.role === Room_Role.MUTED)
-        ) {
-          await this.roomService.udpateUsersStatus(
-            roomsElement.id,
-            usersElement,
-            Room_Role.NORMAL
+    try {
+      const users: UserDto[] = await this.userService.getUsers();
+      if (users) {
+        const timeMin = new Date(Date.now() - 30000);
+        users.map(async (usersElement) => {
+          const rooms: RoomDto[] = await this.roomService.getUserRooms(
+            usersElement.id
           );
-        }
-      });
-    });
+          rooms.map(async (roomsElement) => {
+            const userRoom: UserRoomDto = await this.roomService.getUserInRoom(
+              roomsElement.id,
+              usersElement
+            );
+            if (
+              userRoom.updated_at < timeMin &&
+              (userRoom.role === Room_Role.BANNED ||
+                userRoom.role === Room_Role.MUTED)
+            ) {
+              await this.roomService.udpateUsersStatus(
+                roomsElement.id,
+                usersElement,
+                Room_Role.NORMAL
+              );
+            }
+          });
+        });
+      }
+    } catch (err) {
+      return new WsException(err.message);
+    }
   }
 
   @SubscribeMessage("client:disconnect")

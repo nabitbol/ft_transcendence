@@ -3,9 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "prisma": {
+    "migrate": "prisma migrate dev",
     "seed": "ts-node prisma/seed.ts"
   },
-  "scripts": {},
+  "scripts": {
+    "backend:migrate": "prisma migrate deploy && nx serve apps-backend",
+    "frontend:migrate": "prisma migrate deploy && nx serve apps-frontend"
+  },
   "private": true,
   "devDependencies": {
     "@nestjs/schematics": "^9.0.0",
