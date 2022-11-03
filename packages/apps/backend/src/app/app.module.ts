@@ -8,12 +8,25 @@ import {
   MatchService,
 } from "@ft-transcendence/libs-backend-match";
 import { GameModule } from "@ft-transcendence/libs/backend/game";
-import { AuthModule } from "@ft-transcendence/libs-backend-auth";
 import { JwtService } from "@nestjs/jwt";
+import { AuthModule } from "@ft-transcendence/libs-backend-auth";
+
+import {
+  ChatModule,
+  ChatService,
+  RoomService,
+} from "@ft-transcendence/libs-backend-chat";
 
 @Module({
-  imports: [UserModule, MatchModule, AuthModule, GameModule],
+  imports: [UserModule, MatchModule, AuthModule, GameModule, ChatModule],
   controllers: [AppController],
-  providers: [AppService, UserService, MatchService, JwtService],
+  providers: [
+    AppService,
+    UserService,
+    MatchService,
+    JwtService,
+    ChatService,
+    RoomService,
+  ],
 })
 export class AppModule {}

@@ -1,4 +1,8 @@
-import { AchievementDto, UserDto, UserToUpdateDto } from "@ft-transcendence/libs-shared-types";
+import {
+  AchievementDto,
+  UserDto,
+  UserToUpdateDto,
+} from "@ft-transcendence/libs-shared-types";
 import {
   Controller,
   Delete,
@@ -14,7 +18,7 @@ import {
   ForbiddenException,
   UseGuards,
 } from "@nestjs/common";
- 
+
 import { JwtTwoFactorGuard } from "../../../auth/src/lib/strategy/jwt-two-factor.guard";
 import { UserService } from "./user.service";
 import { ApiParam, ApiSecurity, ApiTags } from "@nestjs/swagger";
@@ -72,9 +76,8 @@ export class UserController {
     @Body() toUpdate: UserToUpdateDto
   ) {
     try {
-      if (req.user.name !== param.name)
-      {
-        if(!await this.userService.getUserByName(param.name))
+      if (req.user.name !== param.name) {
+        if (!(await this.userService.getUserByName(param.name)))
           throw new Error("This user doesn't exist !");
         throw new Error("You can't update this user");
       }
@@ -92,9 +95,8 @@ export class UserController {
   })
   public async deleteUser(@Req() req, @Param() param) {
     try {
-      if (req.user.name !== param.name)
-      {
-        if(!await this.userService.getUserByName(param.name))
+      if (req.user.name !== param.name) {
+        if (!(await this.userService.getUserByName(param.name)))
           throw new Error("This user doesn't exist !");
         throw new Error("You can't delete this user");
       }
@@ -128,7 +130,9 @@ export class UserController {
   public async addFriend(@Body() request, @Param() param) {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
-      const userToAdd: UserDto = await this.userService.getUserByName(request.name);
+      const userToAdd: UserDto = await this.userService.getUserByName(
+        request.name
+      );
       await this.userService.addFriend(user.name, userToAdd.id);
       await this.userService.removeFriendRequest(userToAdd.name, user);
       return { response: "added friend sucessfuly" };
@@ -143,27 +147,31 @@ export class UserController {
     required: true,
   })
   public async addFriendRequest(@Body() request: any) {
-      let user: UserDto;
-      if (request.data.name_receiver == request.data.name_sender)
-        throw new ForbiddenException("You can't send yourself a friend request");
+    let user: UserDto;
+    if (request.data.name_receiver == request.data.name_sender)
+      throw new ForbiddenException("You can't send yourself a friend request");
 
-      let i = 0;
-      const friends: UserDto[] = await this.userService.getFriends(request.data.name_sender);
-      while (friends[i])
-      {
-        if (friends[i].name == request.data.name_receiver)
-          throw new ForbiddenException("This user is already your friend");
-        i++;
-      }
+    let i = 0;
+    const friends: UserDto[] = await this.userService.getFriends(
+      request.data.name_sender
+    );
+    while (friends[i]) {
+      if (friends[i].name == request.data.name_receiver)
+        throw new ForbiddenException("This user is already your friend");
+      i++;
+    }
 
-      user = await this.userService.getUserByName(request.data.name_receiver);
-      if (!user)
-        throw new NotFoundException("This username is not associated with any account.");
-      user = await this.userService.addFriendRequest(request.data.name_sender, user);
-      if (!user)
-        throw new ForbiddenException("You can't update this user");
-      return { response: "friend request send sucessfuly" };
-
+    user = await this.userService.getUserByName(request.data.name_receiver);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    user = await this.userService.addFriendRequest(
+      request.data.name_sender,
+      user
+    );
+    if (!user) throw new ForbiddenException("You can't update this user");
+    return { response: "friend request send sucessfuly" };
   }
 
   @Post("/:name/remove_friend_request")
@@ -173,14 +181,17 @@ export class UserController {
   })
   public async removeFriendRequest(@Body() request: any, @Param() param) {
     let user: UserDto;
-      user = await this.userService.getUserByName(param.name);
-      if (!user)
-        throw new NotFoundException("This username is not associated with any account.");
-      user = await this.userService.removeFriendRequest(request.name_to_delete, user);
-      if (!user)
-        throw new ForbiddenException("You can't update this user");
-      return { response: "friend request send sucessfuly" };
-
+    user = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    user = await this.userService.removeFriendRequest(
+      request.name_to_delete,
+      user
+    );
+    if (!user) throw new ForbiddenException("You can't update this user");
+    return { response: "friend request send sucessfuly" };
   }
 
   @Get("/:name/friend_request")
@@ -189,10 +200,12 @@ export class UserController {
     required: true,
   })
   public async getFriendRequest(@Param() param) {
-      const user: UserDto = await this.userService.getUserByName(param.name);
-      if (!user)
-        throw new NotFoundException("This username is not associated with any account.");
-      return { friendsRequest: user.friendsRequest };
+    const user: UserDto = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    return { friendsRequest: user.friendsRequest };
   }
 
   @Post(":name/remove_friend")
@@ -203,7 +216,9 @@ export class UserController {
   public async deleteFriend(@Body() request, @Param() param) {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
-      const userToDel: UserDto = await this.userService.getUserByName(request.name);
+      const userToDel: UserDto = await this.userService.getUserByName(
+        request.name
+      );
       await this.userService.removeFriend(user.name, userToDel.id);
       return { response: "deleted sucessfuly" };
     } catch (err) {
@@ -218,7 +233,7 @@ export class UserController {
   })
   public async getGeneralLadder() {
     try {
-      const response : UserDto[] = await this.userService.getGeneralLadder();
+      const response: UserDto[] = await this.userService.getGeneralLadder();
       await this.userService.updateLadderLevel(response);
       return { response: response };
     } catch (err) {
@@ -234,9 +249,10 @@ export class UserController {
   public async getFriendLadder(@Param() param) {
     try {
       let i = 0;
-      const response : UserDto[] = await this.userService.getFriendLadder(param.name);
-      while (response[i])
-      {
+      const response: UserDto[] = await this.userService.getFriendLadder(
+        param.name
+      );
+      while (response[i]) {
         response[i].ladder_level = i + 1;
         i++;
       }
@@ -246,16 +262,15 @@ export class UserController {
     }
   }
 
-
   @Get(":name/update_achievement")
   @ApiParam({
     name: "name",
     required: true,
   })
   public async updateUserAchievement(@Param() param) {
-
     try {
-      const achievement: AchievementDto[] = await this.userService.getAchievement();
+      const achievement: AchievementDto[] =
+        await this.userService.getAchievement();
       const user: UserDto = await this.userService.getUserByName(param.name);
       await this.userService.updateUserAchievement(achievement, user);
     } catch (err) {
@@ -270,7 +285,8 @@ export class UserController {
   })
   public async getAchievement() {
     try {
-      const response: AchievementDto[] = await this.userService.getAchievement();
+      const response: AchievementDto[] =
+        await this.userService.getAchievement();
       return { response: response };
     } catch (err) {
       return new UnauthorizedException(err);
@@ -284,7 +300,8 @@ export class UserController {
   })
   public async getUserAchievement(@Param() param) {
     try {
-      const response: AchievementDto[] = await this.userService.getUserAchievement(param.name);
+      const response: AchievementDto[] =
+        await this.userService.getUserAchievement(param.name);
       return { response: response };
     } catch (err) {
       return new UnauthorizedException(err);
@@ -297,10 +314,12 @@ export class UserController {
     required: true,
   })
   public async changeImage(@Body() request: any, @Param() param) {
-      const user: UserDto = await this.userService.getUserByName(param.name);
-      if (!user)
-        throw new NotFoundException("This username is not associated with any account.");
-      await this.userService.changeImage(request.file, user);
+    const user: UserDto = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    await this.userService.changeImage(request.file, user);
   }
 
   @Put("/:name/name")
@@ -309,11 +328,11 @@ export class UserController {
     required: true,
   })
   public async changeName(@Body() request: any, @Param() param) {
-      const user: UserDto = await this.userService.getUserByName(param.name);
-      if (!user)
-        throw new NotFoundException("This username is not associated with any account.");
-      return await this.userService.changeName(request.name, user);
+    const user: UserDto = await this.userService.getUserByName(param.name);
+    if (!user)
+      throw new NotFoundException(
+        "This username is not associated with any account."
+      );
+    return await this.userService.changeName(request.name, user);
   }
-
-
 }

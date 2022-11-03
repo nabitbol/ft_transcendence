@@ -1,51 +1,123 @@
-import classes from "./chat.module.css";
-import { useForm } from "react-hook-form";
-import { io } from "socket.io-client";
-import { useEffect, useRef, useCallback } from "react";
+import ChatForms from "../chat-forms/chat-forms";
+import MessageInput from "../message-input/message-input";
+import Message from "../message/message";
+import Rooms from "../rooms/rooms";
+import styles from "./chat.module.css";
+import ReactSwitch from "react-switch";
+import { useEffect, useState } from "react";
+import UserList from "../user-list/user-list";
+import RoomsButton from "../rooms-button/rooms-button";
+import { socketChat } from "@ft-transcendence/libs-frontend-services";
+import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { User } from "@ft-transcendence/libs-frontend-services";
+import { useNavigate } from "react-router-dom";
 
-const Chat: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
-  
-  const socketRef = useRef(io("ws://localhost:3000"));
+/* eslint-disable-next-line */
+export interface ChatProps {}
 
-  const sendMessage = useCallback((data) => {
-    socketRef.current.emit('chat:message', data.message);
-    reset();
-  }, [reset]);
-  
+export function Chat(props: ChatProps) {
+  const toggleOnColor = "#d3046b";
+  const [userTypeList, setUserTypeList] = useState("All");
+  const [usersCount, setUsersCount] = useState<number>(0);
+  const [userData, setUserData] = useState<UserDto>();
+  const navigate = useNavigate();
+
+  const getUserData = async () => {
+    try {
+      const response: UserDto = await User.requestUserInfoForChat();
+      setUserData(response);
+    } catch (err) {
+      navigate("/error");
+      window.location.reload();
+    }
+  };
+
+  const toggleTypeList = () => {
+    if (userTypeList === "All") {
+      setUserTypeList("Room");
+      socketChat.emit("client:getroomusers");
+    }
+    if (userTypeList === "Room") {
+      setUserTypeList("All");
+      socketChat.emit("client:getusers");
+    }
+  };
+
+  const listenerUsers = (response: { users: UserDto[]; status: string[] }) => {
+    setUsersCount(response.users.length);
+  };
+
   useEffect(() => {
+    socketChat.on("server:getroomusers", listenerUsers);
+    socketChat.on("server:getusers", listenerUsers);
+    socketChat.on("server:searchuser", listenerUsers);
+    socketChat.emit("client:getusers");
+    return () => {
+      socketChat.off("server:getusers", listenerUsers);
+      socketChat.off("server:getroomusers", listenerUsers);
+      socketChat.off("server:searchuser", listenerUsers);
+    };
+  }, []);
 
-    const socket = socketRef.current;
-    
-    socket.on('chat:message', (msg: string) => {
-      console.log("Someone sent:" + msg);
-    });
-
-  }, [sendMessage])
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
-    <div className={classes["chat_form"]}>
-      <span className={classes["chat_span"]}>Register</span>
-      <form onSubmit={handleSubmit(sendMessage)}>
-        <div className={classes["chat_bar"]}>
-          <input
-            placeholder="Message"
-            type="text"
-            className={classes["chat_input"]}
-            {...register("message", {
-              required: true,
-            })}
-          />
-
-          <input type="submit" className={classes["chat_btn"]} />
+    <div className={styles["chat"]}>
+      <div className={styles["chatRooms"]}>
+        <div className={styles["chatRoomsWrapper"]}>
+          <div className={styles["chatRoomsTop"]}>
+            <Rooms />
+          </div>
+          <div className={styles["chatRoomsBottom"]}>
+            <RoomsButton />
+          </div>
         </div>
-      </form>
-    </div >
+      </div>
+      <div className={styles["chatBox"]}>
+        <div className={styles["chatBoxWrapper"]}>
+          <div className={styles["chatBoxTop"]}>
+            <Message user={userData} />
+          </div>
+          <div className={styles["chatBoxBottom"]}>
+            <MessageInput />
+          </div>
+        </div>
+      </div>
+      <div className={styles["chatUsers"]}>
+        <div className={styles["chatUsersWrapper"]}>
+          <div className={styles["chatUsersTop"]}>
+            <div className={styles["chatUsersFilter"]}>
+              <div className={styles["chatUsersFilterTop"]}>
+                <div className={styles["toggleFilter"]}>
+                  <ReactSwitch
+                    onChange={toggleTypeList}
+                    checked={userTypeList === "Room"}
+                    onColor={toggleOnColor}
+                    checkedIcon={false}
+                    uncheckedIcon={false}
+                  />
+                  <label className={styles["toggleLabel"]}>
+                    {userTypeList}
+                  </label>
+                </div>
+                <span className={styles["userNumber"]}>
+                  {usersCount + " Users"}
+                </span>
+              </div>
+              <div className={styles["chatUsersFilterBottom"]}>
+                <ChatForms userTypeList={userTypeList} />
+              </div>
+            </div>
+          </div>
+          <div className={styles["chatUsersBottom"]}>
+            <UserList />
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
-export { Chat };
+export default Chat;

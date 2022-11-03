@@ -1,7 +1,9 @@
-import { Profile } from "@ft-transcendence/libs-frontend-components"
+import { Profile } from "@ft-transcendence/libs-frontend-components";
+import { useParams } from "react-router-dom";
 
 function ProfilePage() {
-	return <Profile />
+  const { name } = useParams();
+  return <Profile name={name} />;
 }
 
-export { ProfilePage }
+export { ProfilePage };

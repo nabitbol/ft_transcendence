@@ -1,0 +1,39 @@
+.chatSendBox {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+}
+
+.chatMessageInput {
+	width: 40vw;
+	height: 20vh;
+	padding: 10px;
+}
+
+.chatSubmitButton {
+	width: 10%;
+	height: 25%;
+	border: none;
+	cursor: pointer;
+	border-radius: 5px;
+	margin-left: 2vw;
+	background-color: rgb(190, 1, 96);
+	color: white;
+}
+
+.chatSubmitButton:hover {
+	transform: translateY(-4%);
+	background-color: rgba(190, 1, 95, 0.747);
+	color: white;
+}
+
+@media (max-width: 40rem) {
+	.chatSendBox {
+		flex-direction: column;
+	}
+
+	.chatSubmitButton {
+		margin-top: 2vh;
+	}
+}

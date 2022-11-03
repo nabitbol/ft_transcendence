@@ -1,0 +1,79 @@
+.register_form {
+	font: inherit;
+	color: black;
+	position: fixed;
+	padding: 2%;
+	z-index: 10;
+	font-size: 20px;
+	width: 50%;
+	max-width: 470px;
+	background-color: whitesmoke;
+	border-radius: 10px;
+	top: 20%;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}
+
+.register_span {
+	display: table;
+	margin: 1% auto;
+	font-size: 30px;
+	color: black;
+}
+
+.register_btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 5px;
+	background-color: rgb(100, 0, 50);
+	color: white;
+	border: 2px solid rgb(100, 0, 50);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	margin-left: 25%;
+}
+
+
+.register_input {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: table;
+	margin: 5% auto;
+	width: 80%;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+
+.register_input_red {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: table;
+	margin: 5% auto;
+	width: 80%;
+	border-radius: 3px;
+	background-color: pink;
+	border: 2px solid rgb(151, 13, 13);
+}
+
+.join_room_label {
+	font-size: 30px;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+	display: table;
+	margin-bottom: 30px;
+}
+
+.join_room_input {
+	margin: 10px;
+}
+
+.join_room_input_div {
+	display: table;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}

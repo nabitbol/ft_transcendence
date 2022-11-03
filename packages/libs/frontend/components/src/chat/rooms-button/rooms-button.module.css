@@ -1,0 +1,24 @@
+.roomActions {
+	display: flex;
+	width: 100%;
+	height: 80%;
+}
+
+.createRoomBox {
+	display: flex;
+	width: 100%;
+}
+
+.createRoomButton {
+	width: 80%;
+	border-radius: 7px;
+	border: none;
+	background-color: rgb(190, 1, 95);
+	color: white;
+}
+
+.createRoomButton:hover {
+	border: none;
+	background-color: rgba(190, 1, 95, 0.747);
+	transform: translateY(-4%);
+}

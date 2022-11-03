@@ -1,4 +1,6 @@
-export * from './chat-page';
+export * from "./chat-page";
+
+export * from "./yourProfilePage";
 
 export * from "./welcome";
 

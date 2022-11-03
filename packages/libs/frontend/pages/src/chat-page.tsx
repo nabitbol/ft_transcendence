@@ -1,8 +1,14 @@
-import { Chat } from "@ft-transcendence/libs-frontend-components"
+import { AllIcon, Chat } from "@ft-transcendence/libs-frontend-components";
+import styles from "./chat-page.module.css";
 
 function ChatPage() {
-	return (
-		<Chat />
-	)
+  return (
+    <div>
+      <div className={styles["navBar"]}>
+        <AllIcon />
+      </div>
+      <Chat />
+    </div>
+  );
 }
-export { ChatPage }
+export { ChatPage };

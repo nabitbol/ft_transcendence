@@ -1,14 +1,20 @@
 import classes from "./profile.module.css";
-import { QrModule, AllIcon, UploadImage, ProfileStats, MatchHistory, ChangeName } from "@ft-transcendence/libs-frontend-components";
+import {
+  QrModule,
+  AllIcon,
+  UploadImage,
+  ProfileStats,
+  MatchHistory,
+  ChangeName,
+} from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
-import { UserDto, AchievementDto } from '@ft-transcendence/libs-shared-types'
-import { AuthReq, User } from '@ft-transcendence/libs-frontend-services'
+import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
+import { User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
-function Profile() {
-
+function Profile(props) {
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
@@ -17,24 +23,23 @@ function Profile() {
   const getAnswer = useCallback(async () => {
     try {
       await User.updateUserAchievement();
-      const response_user: AchievementDto[] = await User.requestUserAchievement();
+      const response_user: AchievementDto[] =
+        await User.requestUserAchievement();
       let tmp = "";
       let i = 0;
-      if(!response_user[i])
-        tmp = "none";
+      if (!response_user[i]) tmp = "none";
       while (response_user[i]) {
         tmp += response_user[i].title;
-        if (response_user[i + 1])
-          tmp += ", ";
+        if (response_user[i + 1]) tmp += ", ";
         i++;
       }
       setUserAchievement(tmp);
-      const user_info: any = AuthReq.getCurrentUser();
-      const response: UserDto = await User.requestUserInfo(user_info.name);
-      if (response.losses === 0 && response.wins === 0)
-        setUserWinrate(0);
+      const response: UserDto = await User.requestUserProfileInfo(props.name);
+      if (response.losses === 0 && response.wins === 0) setUserWinrate(0);
       else
-        setUserWinrate((response.wins / (response.losses + response.wins)) * 100);
+        setUserWinrate(
+          (response.wins / (response.losses + response.wins)) * 100
+        );
       setUserInfo(response);
     } catch (err) {
       navigate("/error");
@@ -44,7 +49,7 @@ function Profile() {
 
   useEffect(() => {
     getAnswer();
-  }, [getAnswer])
+  }, [getAnswer]);
 
   return !userInfo ? null : (
     <div className={classes["profile_container"]}>
@@ -72,7 +77,11 @@ function Profile() {
           </div>
           <div className={classes["profile_right_box"]}>
             <MatchHistory />
-            <ProfileStats userInfo={userInfo} user_achievement={user_achievement} userWinrate={userWinrate} />
+            <ProfileStats
+              userInfo={userInfo}
+              user_achievement={user_achievement}
+              userWinrate={userWinrate}
+            />
           </div>
         </div>
       </div>

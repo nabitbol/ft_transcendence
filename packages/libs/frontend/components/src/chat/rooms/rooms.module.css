@@ -1,0 +1,40 @@
+.roomList {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+}
+
+.roomLine {
+	display: flex;
+	padding: 2%;
+	margin: 1%;
+	cursor: pointer;
+	justify-content: space-between;
+}
+
+.roomName {
+	color: rgba(190, 1, 95, 0.747);
+}
+
+.roomLine:hover {
+	background-color: rgb(199, 199, 199);
+}
+
+.roomStatus {
+	font-weight: 700;
+}
+
+.roomOwnerParam {
+	width: 25px;
+	height: 25px;
+	display: flex;
+	align-items: top;
+}
+
+.roomOwnerParam:hover {
+	width: 30px;
+	height: 30px;
+	border-width: 27px;
+	background-color: white;
+	cursor: pointer;
+}

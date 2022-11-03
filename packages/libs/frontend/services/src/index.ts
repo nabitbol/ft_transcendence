@@ -1,4 +1,8 @@
-export * from './socket-manager/socket-manager';
+export * from "./socket-manager/socket-manager";
+
+export * from "./chat/chat";
+
+export * from "./socket/socket";
 
 export * from "./user/user";
 

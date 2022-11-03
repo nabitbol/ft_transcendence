@@ -1,0 +1,14 @@
+.chatSearchInput {
+	display: flex;
+	width: 100%;
+	padding: 5%;
+	border: none;
+	border-bottom: 1px solid gray;
+	margin-bottom: 10%;
+}
+
+.chatSearchInput:focus,
+.chatSearchInput:hover {
+	outline: none;
+	border-bottom: 1px solid rgba(190, 1, 95, 0.747);
+}

@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "Room_Status" ADD VALUE 'CONVERSATION';

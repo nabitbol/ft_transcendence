@@ -1,24 +1,48 @@
-export * from './profile/match-history/match-history';
+export * from "./chat/update-room/update-room";
 
-export * from './profile/profile-stats/profile-stats';
+export * from "./profile/match-history/match-history";
 
-export * from './icon/chat-icon/chat-icon';
+export * from "./profile/profile-stats/profile-stats";
 
-export * from './icon/logout-icon/logout-icon';
+export * from "./icon/chat-icon/chat-icon";
 
-export * from './game/result-screen/result-screen';
+export * from "./icon/logout-icon/logout-icon";
 
-export * from './home/all-live-game/all-live-game';
+export * from "./game/result-screen/result-screen";
 
-export * from './chat/chat/chat';
+export * from "./home/all-live-game/all-live-game";
 
-export * from './home/play-module/play-module';
+export * from "./chat/chat/chat";
 
-export * from './game/game/game'
+export * from "./home/play-module/play-module";
 
-export * from './achievement/achievement/achievement';
+export * from "./game/game/game";
 
-export * from './achievement/achievement-list/achievement-list';
+export * from "./chat/activate-user-action/activate-user-action";
+export * from "./chat/leave-room/leave-room";
+
+export * from "./chat/join-room/join-room";
+
+export * from "./chat/create-room/create-room";
+export * from "./chat/rooms-button/rooms-button";
+
+export * from "./chat/user-action/user-action";
+
+export * from "./chat/user-list/user-list";
+
+export * from "./chat/message-input/message-input";
+
+export * from "./chat/message/message";
+
+export * from "./chat/rooms/rooms";
+
+export * from "./chat/chat-forms/chat-forms";
+
+export * from "./chat/chat/chat";
+
+export * from "./achievement/achievement/achievement";
+
+export * from "./achievement/achievement-list/achievement-list";
 
 export * from "./auth/auth/auth";
 
@@ -82,6 +106,6 @@ export * from "./profile/profile/profile";
 
 export * from "./profile/qr-module/qr-module";
 
-export * from "./profile/upload-image/upload-image"
+export * from "./profile/upload-image/upload-image";
 
-export * from "./profile/change-name/change-name"
+export * from "./profile/change-name/change-name";

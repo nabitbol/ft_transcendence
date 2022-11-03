@@ -13,24 +13,26 @@ datasource db {
 // models
 
 model User {
-  id                  String  @id @default(uuid())
-  name                String  @unique
-  name_42             String?
-  email               String?
-  password            String?
-  doubleAuth          Boolean @default(false)
-  doubleAuthSecret    String?
-  wins                Int     @default(0)
-  losses              Int     @default(0)
-  ladder_level        Int     @default(1)
-  image               String
-  friendsRequest      String[]
+  id               String   @id @default(uuid())
+  name             String   @unique
+  name_42          String?
+  email            String?
+  password         String?
+  doubleAuth       Boolean  @default(false)
+  doubleAuthSecret String?
+  wins             Int      @default(0)
+  losses           Int      @default(0)
+  ladder_level     Int      @default(1)
+  image            String
+  friendsRequest   String[]
 
   achievements Achievement[]
 
   //many to many self relation
   friends   User[] @relation("friends")
   friendsOf User[] @relation("friends")
+  mute      User[] @relation("mute")
+  muteBy    User[] @relation("mute")
 
   match Match[]
 
@@ -48,8 +50,7 @@ model Achievement {
   image     String
   condition Int    @default(0)
 
-  users     User[]
-
+  users User[]
 }
 
 model Match {
@@ -78,9 +79,11 @@ model User_Room {
 model Room {
   id         String      @id @default(uuid())
   name       String      @unique
-  password   String
+  password   String?
   created_at DateTime    @default(now())
   updated_at DateTime    @updatedAt
+  convName1  String?
+  convName2  String?
   status     Room_Status @default(PUBLIC)
 
   users User_Room[]
@@ -103,6 +106,7 @@ model Message {
 
 enum Room_Role {
   ADMIN
+  OWNER
   NORMAL
   MUTED
   BANNED
@@ -112,4 +116,5 @@ enum Room_Status {
   PUBLIC
   PROTECTED
   PRIVATE
+  CONVERSATION
 }
