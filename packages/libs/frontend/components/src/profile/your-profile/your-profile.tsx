@@ -2,10 +2,10 @@ import classes from "./your-profile.module.css";
 import {
   QrModule,
   AllIcon,
-  UploadImage,
   ProfileStats,
   MatchHistory,
-  ChangeName,
+  EditUser,
+  Backdrop
 } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
@@ -16,9 +16,18 @@ import { useNavigate } from "react-router-dom";
 
 function YourProfile(props) {
   const [userInfo, setUserInfo] = useState<UserDto>();
+  const [userEdit, setUserEdit] = useState<boolean>(false);
   const [userWinrate, setUserWinrate] = useState<number>();
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
   const navigate = useNavigate();
+
+  const onClickEdit = () => {
+    setUserEdit(true);
+  }
+
+  const onCloseEdit = () => {
+    setUserEdit(false);
+  }
 
   const getAnswer = useCallback(async () => {
     try {
@@ -45,7 +54,7 @@ function YourProfile(props) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate]);
+  }, [navigate, props.name]);
 
   useEffect(() => {
     getAnswer();
@@ -66,12 +75,19 @@ function YourProfile(props) {
               <span className={classes["user_name"]}>
                 <strong>{userInfo.name}</strong>
               </span>
+              <img
+                src={getPathToImage("edit")}
+                height="30"
+                width="30"
+                alt="edit_picture"
+                onClick={onClickEdit}
+              />
               <br />
               <span className={classes["profile_span"]}>
                 <strong>Rank:</strong> {userInfo.ladder_level}
               </span>
-              <UploadImage />
-              <ChangeName />
+              {userEdit && <EditUser />}
+              {userEdit && <Backdrop closeBackdrop={onCloseEdit} />}
             </div>
             <QrModule />
           </div>
