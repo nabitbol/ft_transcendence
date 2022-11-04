@@ -1,0 +1,82 @@
+.profile_container {
+	background-color: whitesmoke;
+	height: 100vh;
+	overflow-y: auto;
+	background-image: url("../../../../../../../assets/img/background.png");
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.profile_content {
+	padding-top: 2%;
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.profile_avatar {
+	float: left;
+	height: calc(7vw + 7vh);
+	width: calc(7vw + 7vh);
+	margin: 5%;
+	min-width: 75px;
+	min-height: 75px;
+	max-width: 150px;
+	max-height: 150px;
+	background-color: whitesmoke;
+	border: 2px solid rgb(172, 172, 172);
+}
+
+.blur_component {
+	-webkit-backdrop-filter: blur(15px);
+	backdrop-filter: blur(15px);
+	height: 100vh;
+	width: 100%;
+	overflow:auto;
+	background: linear-gradient(to top right, rgb(0, 0, 0, 0), black);
+}
+
+.user_name {
+	margin: 10px;
+	font-size: 32px;
+}
+
+.profile_card {
+	background-color: gainsboro;
+	font: inherit;
+	width: 100%;
+	border-radius: 10px;
+	padding: 15px;
+	margin-inline: 20px;
+}
+
+.profile_left_box {
+	top: 5%;
+	position: relative;
+	width: 40%;
+	min-width: 300px;
+	max-width: 420px;
+	display: flex;
+	flex-direction: column;
+	margin-right: 30px;
+	align-self: center;
+}
+
+.profile_right_box {
+	top: 5%;
+	position: relative;
+	width: 50%;
+	height: 80%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	flex-direction: row;
+	gap: 5%;
+}
+
+.profile_span {
+	margin: 10px;
+	font-size: 22px;
+}

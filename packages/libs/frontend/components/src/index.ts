@@ -1,3 +1,5 @@
+
+export * from './profile/your-profile/your-profile';
 export * from "./chat/update-room/update-room";
 
 export * from "./profile/match-history/match-history";

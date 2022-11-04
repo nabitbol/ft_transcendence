@@ -168,7 +168,7 @@ export class UserService {
     }
   }
 
-  public async updateUser(name: string, toUpdate: UserToUpdateDto) {
+  public async updateUser(name: string, toUpdate: ResponseUserDto) {
     try {
       await prisma.user.update({
         where: {

@@ -29,6 +29,20 @@ export class LobbyManager
     return (false);
   }
 
+  public playerList(): Array<string>
+  {
+    const players: Array<string> = new Array<string>;
+    let clients: Map<Socket['id'], Socket>;
+    for (const [lobbyId, lobby] of this.lobbies) {
+      clients = lobby.getClients();
+      for (const [clientId, client] of clients) {
+        console.log("CHARLI" + client.data.user.name);
+        players.push(client.data.user.name);
+      }
+    }
+    return (players);
+  }
+
   public getRandomLobbyId(mode): string
   {
     return this.getRandomLobby(mode).getId();
