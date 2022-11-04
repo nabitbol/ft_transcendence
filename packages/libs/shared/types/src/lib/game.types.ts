@@ -1,5 +1,4 @@
 import { GameInfo } from "@ft-transcendence/libs/shared/game";
-import { Lobby } from "../../../../../libs/backend/game/src/lib/lobby";
 import { MatchDto } from "./match.types";
 
 export type PlayersName = {
@@ -27,7 +26,8 @@ export enum ClientEvents
 	JoinRoom = 'client.joinroom',
 	SpectateGame = 'client.spectate',
 	LeaveRoom = 'client.leaveroom',
-	LobbyList = 'client.lobbylist'
+	LobbyList = 'client.lobbylist',
+	PlayerList = 'client.playerlist'
 }
 
 export enum ServerEvents
@@ -39,6 +39,7 @@ export enum ServerEvents
 	LobbyJoined = 'server.lobbyjoined',
 	LobbyCreated = 'server.lobbycreated',
 	LobbyList =  'server.lobbylist',
+	PlayerList = 'server.playerlist'
 }
 
 export type ServerPayloads = {
@@ -65,6 +66,10 @@ export type ServerPayloads = {
 
 	[ServerEvents.GameEnd]: {
 		result: MatchDto;
+	  };
+
+	[ServerEvents.PlayerList]: {
+		players: Array<string>
 	  };
 
 	[ServerEvents.LobbyList]: {

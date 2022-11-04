@@ -43,8 +43,15 @@ export function UserAction(props: UserActionProps) {
     };
     socketChat.emit("client:createconversation", Data);
   };
-
+  
   const inviteInPrivateRoom = async (e) => {
+    const Data = {
+      user: props.user,
+    };
+    socketChat.emit("client:addinprivateroom", Data);
+  };
+
+  const inviteToPlay = async (e) => {
     const Data = {
       user: props.user,
     };
@@ -106,7 +113,12 @@ export function UserAction(props: UserActionProps) {
       >
         {"Grant admin"}
       </li>
-      <li className={styles["actionItem"]}>{"Invite to play"}</li>
+      <li
+        className={styles["actionItem"]}
+        onClick={(e) => inviteToPlay(e)}
+      >
+        {"Invite to play"}
+      </li>
       <li
         className={styles["actionItem"]}
         onClick={(e) => createConversation(e)}

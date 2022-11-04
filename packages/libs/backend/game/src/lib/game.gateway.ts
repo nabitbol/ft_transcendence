@@ -99,6 +99,19 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     };
   }
 
+  @SubscribeMessage(ClientEvents.PlayerList)
+  onPlayerList(client: Socket): WsResponse<ServerPayloads[ServerEvents.PlayerList]>
+  {
+    const players: Array<string> = this.lobbyManager.playerList();
+    console.log(players);
+    return {
+      event:ServerEvents.PlayerList,
+      data: {
+        players,
+      },
+    };
+  }
+
   @SubscribeMessage(ClientEvents.SpectateGame)
   onSpectate(client: Socket, lobbyId): WsResponse<ServerPayloads[ServerEvents.LobbyJoined]>
   {

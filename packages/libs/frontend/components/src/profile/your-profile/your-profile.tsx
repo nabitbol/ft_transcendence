@@ -1,4 +1,4 @@
-import classes from "./profile.module.css";
+import classes from "./your-profile.module.css";
 import {
   QrModule,
   AllIcon,
@@ -14,7 +14,7 @@ import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
 import { User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
-function Profile(props) {
+function YourProfile(props) {
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
@@ -70,7 +70,10 @@ function Profile(props) {
               <span className={classes["profile_span"]}>
                 <strong>Rank:</strong> {userInfo.ladder_level}
               </span>
+              <UploadImage />
+              <ChangeName />
             </div>
+            <QrModule />
           </div>
           <div className={classes["profile_right_box"]}>
             <MatchHistory />
@@ -86,4 +89,4 @@ function Profile(props) {
   );
 }
 
-export { Profile };
+export { YourProfile };
