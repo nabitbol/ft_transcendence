@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 type UserType = {
+  first_log?: boolean;
   name: string;
   name_42?: string | undefined;
   email: string;

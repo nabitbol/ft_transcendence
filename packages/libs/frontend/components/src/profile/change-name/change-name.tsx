@@ -12,46 +12,49 @@ function ChangeName() {
         register,
         handleSubmit,
         formState: { errors },
-      } = useForm();
+    } = useForm();
 
     const onSubmit = async (data: any) => {
         setMessage("");
         const user: UserDto = await User.verifUserName(data.user_name);
         if (user) {
-            setMessage("This name is already use by a user");
-            return ;
+            setMessage("This name is already in use.");
+            return;
         }
         await User.changeName(data.user_name);
         window.location.reload();
     };
-  
+
     return (
         <div>
+            <span className={classes["span"]}>
+                Edit user name
+            </span>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                className={
-                    errors["user_name"]
-                      ? classes["module_input_red"]
-                      : classes["module_input"]
-                  }
+                    className={
+                        errors["user_name"]
+                            ? classes["module_input_red"]
+                            : classes["module_input"]
+                    }
                     {...register("user_name", {
                         required: true,
                         validate: {
                             length: vusername_length,
                             regex: vregex,
-                          },
+                        },
                     })} type="text" />
                 {errors["user_name"] && errors["user_name"].type === "length" && (
-                <div className="alert alert-danger" role="alert">
-                    The username must be between 4 and 25 characters.
-                </div>
+                    <div className="alert alert-danger" role="alert">
+                        The username must be between 4 and 25 characters.
+                    </div>
                 )}
                 {errors["user_name"] && errors["user_name"].type === "regex" && (
-                <div className="alert alert-danger" role="alert">
-                    This field must only contain alphanumeric characters.
-                </div>
+                    <div className="alert alert-danger" role="alert">
+                        This field must only contain alphanumeric characters.
+                    </div>
                 )}
-               <input type="submit" className={classes["module_btn"]} />
+                <input type="submit" className={classes["module_btn"]} />
             </form>
             {message && (
                 <div className="alert alert-danger" role="alert">

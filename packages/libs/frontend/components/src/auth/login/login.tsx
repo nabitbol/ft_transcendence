@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
         if (user && user.doubleAuth) props.activateTwoFaForm();
         else {
           navigate("/home");
-          window.location.reload();
+          
         }
       },
       (error) => {

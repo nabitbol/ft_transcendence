@@ -10,42 +10,43 @@ function UploadImage() {
         register,
         handleSubmit,
         formState: { errors },
-      } = useForm();
+    } = useForm();
 
     const onSubmit = async (data: any) => {
         setMessage("");
-        if (data.image[0].type !== "image/png")
-        {
+        if (data.image[0].type !== "image/png") {
             setMessage("Need a png image");
-            return ;
+            return;
         }
-        if (data.image[0].size > 100000)
-        {
+        if (data.image[0].size > 100000) {
             setMessage("Please upload a image smaller than 100 Ko");
-            return ;
+            return;
         }
         await User.getBase64(data.image[0])
-        .then(async result => {
-              data.image["base64"] = result;
-              await User.sendImage(data.image);
-              window.location.reload();
+            .then(async result => {
+                data.image["base64"] = result;
+                await User.sendImage(data.image);
+                window.location.reload();
             });
     };
-  
+
     return (
         <div>
+            <span className={classes["span"]}>
+                Edit profile avatar
+            </span>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                className={
-                    errors["image"]
-                      ? classes["module_input_red"]
-                      : classes["module_input"]
-                  }
+                    className={
+                        errors["image"]
+                            ? classes["module_input_red"]
+                            : classes["module_input"]
+                    }
                     {...register("image", {
                         required: true,
                     })} type="file"
                     accept=".png" />
-               <input type="submit" className={classes["module_btn"]} />
+                <input type="submit" className={classes["module_btn"]} />
             </form>
             {message && (
                 <div className="alert alert-danger" role="alert">

@@ -10,6 +10,7 @@ import {
 import { AchievementDto } from "./achievement.types";
 
 export type UserType = {
+  first_log?: boolean;
   name: string;
   name_42?: string | undefined;
   email: string;
@@ -26,6 +27,7 @@ export type UserType = {
 };
 
 export type UserToUpdateType = {
+  first_log?: boolean;
   name?: string | undefined;
   name_42?: string | undefined;
   email?: string | undefined;
@@ -58,6 +60,10 @@ export class UserDto {
   @ApiPropertyOptional()
   @IsOptional()
   id?: string | undefined;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  first_log?: boolean;
 
   @ApiProperty()
   @IsString()
@@ -126,6 +132,10 @@ export class UserDto {
 }
 
 export class UserToUpdateDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  first_log?: boolean;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
@@ -197,6 +207,10 @@ export class UserToUpdateDto {
 }
 
 export class ResponseUserDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  first_log?: boolean;
+
   @ApiPropertyOptional()
   @IsOptional()
   id?: string | undefined;

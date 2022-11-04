@@ -64,8 +64,8 @@ export class ApiService {
   async getRandomName(): Promise<string> {
    
    let result           = 'user';
-   let characters       = '0123456789';
-   let charactersLength = characters.length;
+   const characters       = '0123456789';
+   const charactersLength = characters.length;
     for (let i = 0; i < 10; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
@@ -102,6 +102,9 @@ export class ApiService {
       };
       ret = oldUser;
     }
+    const to_update: ResponseUserDto = ret;
+    to_update.first_log = false;
+    this.usersService.updateUser(to_update.name, to_update);
     ret.jwtToken = this.jwtService.sign(payload);
     return ret;
   }

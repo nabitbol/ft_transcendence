@@ -1,11 +1,8 @@
 import classes from "./profile.module.css";
 import {
-  QrModule,
   AllIcon,
-  UploadImage,
   ProfileStats,
   MatchHistory,
-  ChangeName,
 } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
@@ -45,7 +42,7 @@ function Profile(props) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate]);
+  }, [navigate, props.name]);
 
   useEffect(() => {
     getAnswer();
