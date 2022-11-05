@@ -274,7 +274,7 @@ export class UserService {
     }
   }
 
-  public async updateLadderLevel(users: UserDto[]) {
+  public async updateLadderLevel(users: ResponseUserDto[]) {
     try {
       let i = 0;
       while (users[i]) {
