@@ -15,7 +15,7 @@ import { User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
 function YourProfile(props) {
-  const [userInfo, setUserInfo] = useState<UserDto>();
+  const [userInfo, setUserInfo] = useState<UserDto>(undefined);
   const [userEdit, setUserEdit] = useState<boolean>(false);
   const [userWinrate, setUserWinrate] = useState<number>();
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
