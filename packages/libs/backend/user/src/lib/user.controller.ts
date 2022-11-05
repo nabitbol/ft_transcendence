@@ -1,5 +1,6 @@
 import {
   AchievementDto,
+  ResponseUserDto,
   UserDto,
   UserToUpdateDto,
 } from "@ft-transcendence/libs-shared-types";
@@ -33,7 +34,7 @@ export class UserController {
   @Get()
   public async getUsers() {
     try {
-      const users: UserDto[] = await this.userService.getUsers();
+      const users: ResponseUserDto[] = await this.userService.getUsers();
       return { users };
     } catch (err) {
       return new NotFoundException(err);
@@ -58,7 +59,7 @@ export class UserController {
   })
   public async getUser(@Param() param) {
     try {
-      const user: UserDto = await this.userService.getUserByName(param.name);
+      const user: ResponseUserDto = await this.userService.getUserByName(param.name);
       return { user };
     } catch (err) {
       return new NotFoundException(err);
@@ -115,7 +116,7 @@ export class UserController {
   public async getFriends(@Param() param) {
     try {
       const user: UserDto = await this.userService.getUserByName(param.name);
-      const friends: UserDto[] = await this.userService.getFriends(user.name);
+      const friends: ResponseUserDto[] = await this.userService.getFriends(user.name);
       return { response: friends };
     } catch (err) {
       return new NotFoundException(err);
@@ -191,7 +192,7 @@ export class UserController {
       user
     );
     if (!user) throw new ForbiddenException("You can't update this user");
-    return { response: "friend request send sucessfuly" };
+    return { response: "friend request remove sucessfuly" };
   }
 
   @Get("/:name/friend_request")
@@ -233,7 +234,7 @@ export class UserController {
   })
   public async getGeneralLadder() {
     try {
-      const response: UserDto[] = await this.userService.getGeneralLadder();
+      const response: ResponseUserDto[] = await this.userService.getGeneralLadder();
       await this.userService.updateLadderLevel(response);
       return { response: response };
     } catch (err) {
@@ -249,7 +250,7 @@ export class UserController {
   public async getFriendLadder(@Param() param) {
     try {
       let i = 0;
-      const response: UserDto[] = await this.userService.getFriendLadder(
+      const response: ResponseUserDto[] = await this.userService.getFriendLadder(
         param.name
       );
       while (response[i]) {
