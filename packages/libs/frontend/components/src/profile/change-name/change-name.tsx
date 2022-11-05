@@ -6,8 +6,8 @@ import { vusername_length, vregex } from "@ft-transcendence/libs-frontend-servic
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 
 function ChangeName() {
-    const [message, setMessage] = useState("");
-
+    const [message, setMessage] = useState<string>("");
+    const [successful, setsuccessful] = useState<boolean>(false);
     const {
         register,
         handleSubmit,
@@ -16,13 +16,14 @@ function ChangeName() {
 
     const onSubmit = async (data: any) => {
         setMessage("");
+        setsuccessful(false);
         const user: UserDto = await User.verifUserName(data.user_name);
         if (user) {
             setMessage("This name is already in use.");
             return;
         }
+        setsuccessful(true);
         await User.changeName(data.user_name);
-        window.location.reload();
     };
 
     return (
@@ -54,6 +55,11 @@ function ChangeName() {
                         This field must only contain alphanumeric characters.
                     </div>
                 )}
+                {successful &&
+                    <div className="alert alert-success" role="alert">
+                        You sucessfully changed your name.
+                    </div>
+                }
                 <input type="submit" className={classes["module_btn"]} />
             </form>
             {message && (

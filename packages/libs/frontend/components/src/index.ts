@@ -1,3 +1,5 @@
+export * from './first-log/first-log';
+
 export * from './edit-user/edit-user';
 
 export * from './profile/your-profile/your-profile';

@@ -9,7 +9,6 @@ const ErrorPage = (props: any) => {
 
   const ButtonPressed = () => {
     navigate("/");
-    window.location.reload();
   };
 
   return (

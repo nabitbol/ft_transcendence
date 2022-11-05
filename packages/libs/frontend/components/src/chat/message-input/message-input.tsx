@@ -14,7 +14,8 @@ export function MessageInput(props: MessageInputProps) {
 
   const handleSend = (e) => {
     e.preventDefault();
-    socketChat.emit("client:sendmessage", newMessage);
+    if(newMessage && newMessage.length !== 0)
+      socketChat.emit("client:sendmessage", newMessage);
     setNewMessage("");
   };
 
