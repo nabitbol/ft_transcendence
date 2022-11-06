@@ -10,10 +10,9 @@ import {
 const URL = "http://localhost:3333/"; //process.env['REACT_APP_URL_TO_BACK'] ;
 
 class UserService {
-  async requestUserMatchInfo(): Promise<MatchDto[]> {
-    const user_info: any = AuthReq.getCurrentUser();
+  async requestUserMatchInfo(name: string): Promise<MatchDto[]> {
     try {
-      const ret = await axios.get(URL + "match/" + user_info.name, {
+      const ret = await axios.get(URL + "match/" + name, {
         headers: authHeader(),
       });
       return ret.data.matches;

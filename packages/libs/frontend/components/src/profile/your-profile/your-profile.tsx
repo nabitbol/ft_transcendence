@@ -92,7 +92,7 @@ function YourProfile(props) {
             <QrModule />
           </div>
           <div className={classes["profile_right_box"]}>
-            <MatchHistory />
+            <MatchHistory name={props.name}/>
             <ProfileStats
               userInfo={userInfo}
               user_achievement={user_achievement}
