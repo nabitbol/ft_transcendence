@@ -7,6 +7,8 @@ export class Lobby
 {
   private id: string = v4();
 
+  private status: 'public' | 'private';
+
   public readonly createdAt: Date = new Date();
 
   private clients: Map<Socket['id'], Socket> = new Map<Socket['id'], Socket>();
@@ -31,9 +33,9 @@ export class Lobby
     
     
     if(!this.players_name.left)
-    this.players_name.left = client.data.user.name;
+      this.players_name.left = client.data.user.name;
     else
-    this.players_name.right = client.data.user.name;
+      this.players_name.right = client.data.user.name;
     console.log(this.players_name);
     if (this.clients.size >= 2) {
       this.gameInstance.startGame(this.players_name);
@@ -83,5 +85,15 @@ export class Lobby
   public getMode() : 'simple' | 'double'
   {
     return this.mode;
+  }
+
+  public getStatus() : 'public' | 'private'
+  {
+    return this.status;
+  }
+
+  public setStatus(new_status: 'public' | 'private')
+  {
+    this.status = new_status;
   }
 }

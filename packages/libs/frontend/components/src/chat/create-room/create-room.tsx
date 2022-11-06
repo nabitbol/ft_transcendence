@@ -5,9 +5,9 @@ import {
   vregex,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Socket } from "socket.io-client";
+import { Socket } from "socket.io";
 import styles from "./create-room.module.css";
 
 /* eslint-disable-next-line */
@@ -24,9 +24,9 @@ export function CreateRoom(props: CreateRoomProps) {
   const [successful, setSuccessful] = useState(false);
   const socket: Socket = useContext(SocketChatContext);
 
-  const listenerUpdateErrorMessage = useCallback((err) => {
+  const listenerUpdateErrorMessage = (err) => {
     setMessage(err.message);
-  }, []);
+  };
 
   const listenerSuccessful = () => {
     setSuccessful(true);
@@ -35,7 +35,9 @@ export function CreateRoom(props: CreateRoomProps) {
 
   useEffect(() => {
     socket.on("server:createroom", listenerSuccessful);
+    socket.on("exception", listenerUpdateErrorMessage);
     return () => {
+      socket.off("exception", listenerUpdateErrorMessage);
       socket.off("server:createroom", listenerSuccessful);
     };
   }, [socket]);
@@ -43,7 +45,6 @@ export function CreateRoom(props: CreateRoomProps) {
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
-    socket.on("exception", listenerUpdateErrorMessage);
     const roomData = {
       name: data.room_name,
       password: data.room_password || undefined,

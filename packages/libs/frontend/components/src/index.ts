@@ -1,3 +1,8 @@
+
+export * from './game-invitation/game-invitation-form/game-invitation-form';
+
+export * from './game-invitation/game-invitation';
+
 export * from './first-log/first-log';
 
 export * from './edit-user/edit-user';

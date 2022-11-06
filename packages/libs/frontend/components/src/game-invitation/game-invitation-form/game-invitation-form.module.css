@@ -1,0 +1,52 @@
+.game_invitation_span {
+	display: table;
+	margin: 0 auto;
+	color: rgb(0, 0, 0);
+	margin-bottom: 30px;
+	font-size: 20px;
+}
+
+.game_invitation_form {
+	font: inherit;
+	color: black;
+	position: fixed;
+	padding: 2%;
+	z-index: 10;
+	font-size: 20px;
+	width: 50%;
+	max-width: 400px;
+	background-color: whitesmoke;
+	border-radius: 10px;
+	top: 20%;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}
+
+.game_invitation_button_holder {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+}
+
+.game_invitation_btn {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 5px;
+	background-color: rgb(100, 0, 50);
+	color: white;
+	border: 2px solid rgb(100, 0, 50);
+	margin: 10px;
+	width: 50%;
+}
+
+.game_invitation_btn_alt {
+	font: inherit;
+	padding: 0.5rem 1.5rem;
+	border-radius: 5px;
+	background-color: rgb(200, 100, 150);
+	color: white;
+	border: 2px solid rgb(200, 100, 150);
+	margin: 10px;
+	width: 50%;
+}
