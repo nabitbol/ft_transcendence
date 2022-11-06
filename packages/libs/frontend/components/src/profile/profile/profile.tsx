@@ -8,7 +8,7 @@ import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
-import { User } from "@ft-transcendence/libs-frontend-services";
+import { AuthReq, User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
 function Profile(props) {
@@ -70,7 +70,7 @@ function Profile(props) {
             </div>
           </div>
           <div className={classes["profile_right_box"]}>
-            <MatchHistory />
+            <MatchHistory name={props.name}/>
             <ProfileStats
               userInfo={userInfo}
               user_achievement={user_achievement}

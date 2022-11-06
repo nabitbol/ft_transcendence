@@ -6,13 +6,13 @@ import { User } from "@ft-transcendence/libs-frontend-services";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function MatchHistory() {
+export function MatchHistory(props: {name: string}) {
   const [matchInfo, setMatchInfo] = useState<MatchDto[]>(undefined);
   const navigate = useNavigate();
 
   const getAnswer = useCallback( async () => {
     try {
-      const response: MatchDto[] = await User.requestUserMatchInfo();
+      const response: MatchDto[] = await User.requestUserMatchInfo(props.name);
       setMatchInfo(response);
     } catch (err) {
       navigate("/error");
