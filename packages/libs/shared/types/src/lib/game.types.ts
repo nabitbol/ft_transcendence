@@ -27,7 +27,10 @@ export enum ClientEvents
 	SpectateGame = 'client.spectate',
 	LeaveRoom = 'client.leaveroom',
 	LobbyList = 'client.lobbylist',
-	PlayerList = 'client.playerlist'
+	PlayerList = 'client.playerlist',
+	LobbyInvite = 'client.lobbyinvite',
+	AcceptInvite = 'client.acceptinvite',
+	CancelInvite = 'client.cancelinvite',
 }
 
 export enum ServerEvents
@@ -39,7 +42,8 @@ export enum ServerEvents
 	LobbyJoined = 'server.lobbyjoined',
 	LobbyCreated = 'server.lobbycreated',
 	LobbyList =  'server.lobbylist',
-	PlayerList = 'server.playerlist'
+	PlayerList = 'server.playerlist',
+	LobbyInvite = 'server.lobbyinvite',
 }
 
 export type ServerPayloads = {

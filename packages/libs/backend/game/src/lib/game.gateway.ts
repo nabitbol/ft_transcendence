@@ -34,6 +34,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client: Socket): Promise<void>
   {
+    if(!client || client === undefined)
+      return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
@@ -53,12 +55,16 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleDisconnect(client: Socket): Promise<void>
   {
+    if(!client || client === undefined)
+      return;
     this.lobbyManager.terminateSocket(client);
   }
 
   @SubscribeMessage(ClientEvents.EnterMatchMaking)
   onEnterMatchmaking(client: Socket, mode: 'simple' | 'double')
   {
+    if(!client || client === undefined)
+      return;
     if(this.lobbyManager.isInRoom(client.data.user.name))
       throw new WsException('You are already in a lobby !');
     this.lobbyManager.enterMatchMaking(client, mode);
@@ -67,15 +73,19 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(ClientEvents.GameInput)
   oninput(client: Socket, data): void
   {
+    if(!client || client === undefined)
+      return;
     this.lobbyManager.gameInput(client, data);
   }
 
   @SubscribeMessage(ClientEvents.CreateRoom)
   onLobbyCreate(client: Socket, mode: 'simple' | 'double'): WsResponse<ServerPayloads[ServerEvents.LobbyCreated]>
   {
+    if(!client || client === undefined)
+      return;
     if(this.lobbyManager.isInRoom(client.data.user.name))
       throw new WsException('You are already in a lobby !');
-    this.lobbyManager.createLobby(client, mode);
+    this.lobbyManager.createPublicLobby(client, mode);
     return {
       event: ServerEvents.LobbyCreated,
       data: {
@@ -85,12 +95,15 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     };
   }
 
-  @SubscribeMessage(ClientEvents.JoinRoom)
-  onLobbyJoin(client: Socket, data): WsResponse<ServerPayloads[ServerEvents.LobbyJoined]>
+  @SubscribeMessage(ClientEvents.AcceptInvite)
+  onAcceptInvitation(client: Socket, lobbyId): WsResponse<ServerPayloads[ServerEvents.LobbyJoined]>
   {
+    console.log("Accept invitation to lobby:" + lobbyId);
+    if(!client || client === undefined)
+      return;
     if(this.lobbyManager.isInRoom(client.data.user.name))
       throw new WsException('You are already in a lobby !');
-    this.lobbyManager.joinLobby(data.lobbyId, client);
+    this.lobbyManager.joinLobby(lobbyId, client);
     return {
       event:ServerEvents.LobbyJoined,
       data: {
@@ -99,9 +112,32 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     };
   }
 
+  @SubscribeMessage(ClientEvents.CancelInvite)
+  onCancelInvitation(client: Socket, lobbyId)
+  {
+    console.log("Cancel invitation to lobby:" + lobbyId);
+    if(!client || client === undefined)
+      return;
+    this.lobbyManager.deleteLobby(lobbyId);
+  }
+
+  @SubscribeMessage(ClientEvents.LobbyInvite)
+  onLobbyInvitation(client: Socket, to_invite: string)
+  {
+    if(!client || client === undefined)
+      return;
+    if(this.lobbyManager.isInRoom(client.data.user.name))
+      throw new WsException('You are already in a lobby !');
+    if(this.lobbyManager.isInRoom(to_invite))
+      throw new WsException('This person is already playing !');
+    this.lobbyManager.createPrivateLobby(client, to_invite);
+  }
+
   @SubscribeMessage(ClientEvents.PlayerList)
   onPlayerList(client: Socket): WsResponse<ServerPayloads[ServerEvents.PlayerList]>
   {
+    if(!client || client === undefined)
+      return;
     const players: Array<string> = this.lobbyManager.playerList();
     console.log(players);
     return {
@@ -113,21 +149,19 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage(ClientEvents.SpectateGame)
-  onSpectate(client: Socket, lobbyId): WsResponse<ServerPayloads[ServerEvents.LobbyJoined]>
+  onSpectate(client: Socket, lobbyId)
   {
+    if(!client || client === undefined)
+      return;
     console.log(client.data.user.name + " want so spectate");
     this.lobbyManager.spectateLobby(lobbyId, client);
-    return {
-      event:ServerEvents.LobbyJoined,
-      data: {
-        message: 'Successfully joined',
-      },
-    };
   }
 
   @SubscribeMessage(ClientEvents.LobbyList)
   onLobbyList(client: Socket): WsResponse<ServerPayloads[ServerEvents.LobbyList]>
   {
+    if(!client || client === undefined)
+      return;
     if(this.lobbyManager.isInRoom(client.data.user.name))
       throw new WsException('You are already in a game !');
     const lobbies: Map<Lobby['id'], Lobby> = this.lobbyManager.getLobbies();
@@ -151,6 +185,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(ClientEvents.LeaveRoom)
   onLobbyLeave(client: Socket): void
   {
+    if(!client || client === undefined)
+      return;
     this.lobbyManager.terminateSocket(client);
   }
 }

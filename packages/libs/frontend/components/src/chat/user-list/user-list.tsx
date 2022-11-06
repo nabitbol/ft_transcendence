@@ -50,6 +50,7 @@ export function UserList(props: UserListProps) {
     socketChat.on("exception", listenerUpdateErrorMessage);
     socket.emit("client.playerlist");
     return () => {
+      socket.off("server.playerlist", listenerListPlayers);
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
       socketChat.off("server:searchuser", listenerUsers);

@@ -21,12 +21,14 @@ import {
   socketGame,
   socketChat,
 } from "@ft-transcendence/libs-frontend-services";
+import { GameInvitation } from "@ft-transcendence/libs-frontend-components";
 
 class App extends Component {
   override render() {
     return (
       <SocketChatContext.Provider value={socketChat}>
         <SocketGameContext.Provider value={socketGame}>
+          <GameInvitation />
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/welcome" element={<WelcomePage />} />

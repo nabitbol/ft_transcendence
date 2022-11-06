@@ -9,16 +9,25 @@ export class LobbyManager
 {
   public server: Server;
 
+  private readonly all_clients: Map<string, Socket> = new Map<string, Socket>();
+
   private readonly lobbies: Map<Lobby['id'], Lobby> = new Map<Lobby['id'], Lobby>();
 
   public initializeSocket(client: Socket): void
   {
     client.data.lobby = null;
+    this.all_clients.set(client.data.user.name, client);
+  }
+
+  public getClient(name: string): Socket
+  {
+    console.log("SEARCH FOR CLIENT: " + name);
+    return this.all_clients.get(name);
   }
 
   public isInRoom(client_name: string): boolean
   {
-    let clients: Map<Socket['id'], Socket>;;
+    let clients: Map<Socket['id'], Socket>;
     for (const [lobbyId, lobby] of this.lobbies) {
       clients = lobby.getClients();
       for (const [clientId, client] of clients) {
@@ -36,16 +45,15 @@ export class LobbyManager
     for (const [lobbyId, lobby] of this.lobbies) {
       clients = lobby.getClients();
       for (const [clientId, client] of clients) {
-        console.log("CHARLI" + client.data.user.name);
         players.push(client.data.user.name);
       }
     }
     return (players);
   }
 
-  public getRandomLobbyId(mode): string
+  public getRandomPublicLobbyId(mode): string
   {
-    return this.getRandomLobby(mode).getId();
+    return this.getRandomPublicLobby(mode).getId();
   }
 
   public gameInput(client: Socket, data) : void
@@ -53,10 +61,10 @@ export class LobbyManager
     client.data.lobby?.getGameInstance().inputGame(client, data);
   }
 
-  public getRandomLobby(mode: 'simple' | 'double') : Lobby | undefined
+  public getRandomPublicLobby(mode: 'simple' | 'double') : Lobby | undefined
   {
     for (const [lobbyId, lobby] of this.lobbies) {
-      if(lobby.getMode() ===  mode && lobby.getClients().size < 2)
+      if(lobby.getMode() ===  mode && lobby.getClients().size < 2 && lobby.getStatus() === "public")
         return lobby;
     }
     return undefined;
@@ -65,11 +73,11 @@ export class LobbyManager
   public enterMatchMaking(client: Socket, mode: 'simple' | 'double'): void
   {
     console.log("Enter matchMaking !");
-    if (this.getRandomLobby(mode) === undefined) {
-      this.createLobby(client, mode);
+    if (this.getRandomPublicLobby(mode) === undefined) {
+      this.createPublicLobby(client, mode);
     }
     else {
-      this.joinLobby(this.getRandomLobbyId(mode), client);
+      this.joinLobby(this.getRandomPublicLobbyId(mode), client);
     }
   }
   
@@ -78,10 +86,26 @@ export class LobbyManager
     client.data.lobby?.removeClient(client);
   }
 
-  public createLobby(client: Socket, data: 'simple' | 'double'): void
+  public createPrivateLobby(client: Socket, to_invite: string)
+  {
+    console.log("Create new private lobby: ");
+    const lobby = new Lobby(this.server, 'simple');
+    lobby.setStatus("private");
+    lobby.addClient(client);
+    this.lobbies.set(lobby.getId(), lobby);
+
+    const lobby_id: string = lobby.getId();
+    console.log("lobby_id: " + lobby.getId());
+    const client_to_invite: Socket = this.getClient(to_invite);
+    console.log("client_to_invite name: " + client_to_invite.data.user.name);
+    this.server.to(client_to_invite.id).emit('server.lobbyinvite', lobby_id);
+  }
+
+  public createPublicLobby(client: Socket, data: 'simple' | 'double'): void
   {
     console.log("Create new lobby: " + data);
     const lobby = new Lobby(this.server, data);
+    lobby.setStatus("public");
     lobby.addClient(client);
     this.lobbies.set(lobby.getId(), lobby);
   }

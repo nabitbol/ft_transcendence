@@ -26,9 +26,9 @@ export function UpdateRoom(props: UpdateRoomProps) {
   const [successful, setSuccessful] = useState(false);
   const socket: Socket = useContext(SocketChatContext);
 
-  const listenerUpdateErrorMessage = useCallback((err) => {
+  const listenerUpdateErrorMessage = (err) => {
     setMessage(err.message);
-  }, []);
+  };
 
   const listenerSuccessful = () => {
     setSuccessful(true);
@@ -36,8 +36,10 @@ export function UpdateRoom(props: UpdateRoomProps) {
   };
 
   useEffect(() => {
+    socket.on("exception", listenerUpdateErrorMessage);
     socket.on("server:updateroom", listenerSuccessful);
     return () => {
+      socket.off("exception", listenerUpdateErrorMessage);
       socket.off("server:updateroom", listenerSuccessful);
     };
   }, [socket]);
@@ -45,7 +47,6 @@ export function UpdateRoom(props: UpdateRoomProps) {
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
-    socket.on("exception", listenerUpdateErrorMessage);
     const roomData = {
       name: props.room.name,
       password: data.room_password || undefined,
