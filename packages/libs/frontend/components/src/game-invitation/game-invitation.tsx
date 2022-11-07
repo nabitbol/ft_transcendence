@@ -26,10 +26,10 @@ export function GameInvitation() {
   }, [navigate]);
 
   const closeModal = () => {
-    cancelInvitation();
     setRoomCode(undefined);
   };
 
+  
   useEffect(() => {
     socket.on("server.gamestart", listenerGameStart);
     socket.on("server.lobbyinvite", listenerLobbyInvite);
@@ -40,7 +40,9 @@ export function GameInvitation() {
   }, [socket, listenerGameStart]);
 
   return !RoomCode ? null : (
-    <GameInvitationForm acceptInvitation={acceptInvitation} closeModal={closeModal} />
+    <GameInvitationForm acceptInvitation={acceptInvitation}
+    closeModal={closeModal}
+    cancelInvitation={cancelInvitation}/>
   );
 };
 
