@@ -76,11 +76,13 @@ export function UserAction(props: UserActionProps) {
   }, [navigate]);
 
   useEffect(() => {
+    socket.on("exception", listenerActionError);
     socket.on("server.gamestart", listenerGameStart);
     socketChat.on("exception", listenerActionError);
     socketChat.on("server:updateuserrole", listenerUpdateUseRole);
     socketChat.on("server:addinprivateroom", listenerUpdateUseRole);
     return () => {
+      socket.off("exception", listenerActionError);
       socket.off("server.gamestart", listenerGameStart);
       socketChat.off("server:addinprivateroom", listenerUpdateUseRole);
       socketChat.off("server:updateuserrole", listenerUpdateUseRole);

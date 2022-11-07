@@ -3,7 +3,7 @@ import React from "react";
 import authHeader from "../auth-header/auth-header";
 
 const config = {
-  extraHeaders: authHeader(),
+  extraHeaders: authHeader(), 
 };
 
 export const socketChat = io("ws://localhost:8080", config);

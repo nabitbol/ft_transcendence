@@ -4,7 +4,7 @@ import Message from "../message/message";
 import Rooms from "../rooms/rooms";
 import styles from "./chat.module.css";
 import ReactSwitch from "react-switch";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserList from "../user-list/user-list";
 import RoomsButton from "../rooms-button/rooms-button";
 import { socketChat } from "@ft-transcendence/libs-frontend-services";
@@ -22,7 +22,7 @@ export function Chat(props: ChatProps) {
   const [userData, setUserData] = useState<UserDto>();
   const navigate = useNavigate();
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     try {
       const response: UserDto = await User.requestUserInfoForChat();
       setUserData(response);
@@ -30,7 +30,7 @@ export function Chat(props: ChatProps) {
       navigate("/error");
       window.location.reload();
     }
-  };
+  }, [navigate]);
 
   const toggleTypeList = () => {
     if (userTypeList === "All") {
@@ -61,7 +61,7 @@ export function Chat(props: ChatProps) {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [getUserData]);
 
   return (
     <div className={styles["chat"]}>

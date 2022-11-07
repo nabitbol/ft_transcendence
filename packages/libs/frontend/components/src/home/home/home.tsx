@@ -17,7 +17,6 @@ function Home() {
 
   const getAnswer = useCallback(() => {
     try {
-
       const user = AuthReq.getCurrentUser();
       if (user.first_log === true) {
         user.first_log = false;
@@ -37,7 +36,7 @@ function Home() {
 
   useEffect(() => {
     getAnswer();
-  }, [getAnswer]);
+  });
 
   return (
     <div className={classes["home_container"]}>
