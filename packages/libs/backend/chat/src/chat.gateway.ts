@@ -728,11 +728,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (!updaterStatus) throw Error("Unable to find updater in room");
       if (!toUpdateStatus) throw Error("Unable to find user to update in room");
       if (
-        (updaterStatus == Room_Role.OWNER ||
+        ((updaterStatus == Room_Role.OWNER ||
           updaterStatus == Room_Role.ADMIN) &&
-        toUpdateStatus != Room_Role.ADMIN &&
-        toUpdateStatus != Room_Role.OWNER &&
-        payload.newRole != Room_Role.OWNER
+          toUpdateStatus != Room_Role.ADMIN &&
+          toUpdateStatus != Room_Role.OWNER &&
+          payload.newRole != Room_Role.OWNER) ||
+        (updaterStatus == Room_Role.OWNER &&
+          toUpdateStatus != Room_Role.OWNER &&
+          payload.newRole != Room_Role.OWNER)
       ) {
         this.roomService.udpateUsersStatus(
           room.id,
