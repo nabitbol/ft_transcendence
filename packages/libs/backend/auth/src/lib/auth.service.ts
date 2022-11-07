@@ -65,26 +65,41 @@ export class AuthService {
   }
 
   async register(registerDto: UserDto): Promise<ResponseUserDto> {
-    if (await this.usersService.getUserByName(registerDto.name))
-      throw new ConflictException(
-        "This username is already associated with an account."
-      );
-    if (await this.usersService.getUserByEmail(registerDto.email))
-      throw new ConflictException(
-        "This email is already associated with an account."
-      );
+    try {
+      if (await this.usersService.getUserByName(registerDto.name))
+        throw new ConflictException(
+          "This username is already associated with an account."
+        );
+      if (await this.usersService.getUserByEmail(registerDto.email))
+        throw new ConflictException(
+          "This email is already associated with an account."
+        );
+      const user: UserDto = new UserDto();
 
-    const user: UserDto = new UserDto();
+      user.name = registerDto.name;
+      user.password = await this.hashString(registerDto.password);
+      user.email = registerDto.email;
+      user.image = "utilisateur";
 
-    user.name = registerDto.name;
-    user.password = await this.hashString(registerDto.password);
-    user.email = registerDto.email;
-    user.image = "utilisateur";
+      await this.usersService.addUser(user);
+      const retUserDto: ResponseUserDto = user;
 
-    await this.usersService.addUser(user);
-    const retUserDto: ResponseUserDto = user;
+      return retUserDto;
+    } catch (err) {
+      if (err.message === "User not found") {
+        const user: UserDto = new UserDto();
 
-    return retUserDto;
+        user.name = registerDto.name;
+        user.password = await this.hashString(registerDto.password);
+        user.email = registerDto.email;
+        user.image = "utilisateur";
+
+        await this.usersService.addUser(user);
+        const retUserDto: ResponseUserDto = user;
+
+        return retUserDto;
+      }
+    }
   }
 
   async hashString(textToEncrypt: string): Promise<string> {
