@@ -27,6 +27,7 @@ function YourProfile(props) {
 
   const onCloseEdit = () => {
     setUserEdit(false);
+    window.location.reload();
   }
 
   const getAnswer = useCallback(async () => {
