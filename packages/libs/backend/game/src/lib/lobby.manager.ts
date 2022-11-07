@@ -17,7 +17,7 @@ export class LobbyManager
   {
     client.data.lobby = null;
     console.log(client.data.user);
-    if(client.data.user.name)
+    if(client.data.user)
     {
       this.all_clients.set(client.data.user.name, client);
       console.log("ADD CLIENT:" + client.data.user.name)
@@ -36,7 +36,7 @@ export class LobbyManager
     for (const [lobbyId, lobby] of this.lobbies) {
       clients = lobby.getClients();
       for (const [clientId, client] of clients) {
-        if(client.data.user.name.user.name === client_name)
+        if(client.data.user.name === client_name)
           return (true);
       }
     }
@@ -89,7 +89,7 @@ export class LobbyManager
   public terminateSocket(client: Socket): void
   {
     client.data.lobby?.removeClient(client);
-    if(client.data.user.name)
+    if(client.data.user)
     {
       this.all_clients.delete(client.data.user.name);
       console.log("REMOVE CLIENT:" + client.data.user.name)

@@ -12,13 +12,14 @@ export function MatchHistory(props: {name: string}) {
 
   const getAnswer = useCallback( async () => {
     try {
+      console.log(props.name);
       const response: MatchDto[] = await User.requestUserMatchInfo(props.name);
       setMatchInfo(response);
     } catch (err) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate]);
+  }, [navigate, props.name]);
 
   useEffect(() => {
     getAnswer();
@@ -33,7 +34,7 @@ export function MatchHistory(props: {name: string}) {
       {matchInfo && (
         <div className={classes["flex_container"]}>
           {matchInfo.map((ID) => (
-            <PastGame game_info={ID} key={ID.id} />
+            <PastGame name={props.name} game_info={ID} key={ID.id} />
           ))}
         </div>
       )}
