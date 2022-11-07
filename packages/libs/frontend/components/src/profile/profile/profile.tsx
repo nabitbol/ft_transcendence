@@ -8,7 +8,7 @@ import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
-import { AuthReq, User } from "@ft-transcendence/libs-frontend-services";
+import { User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
 function Profile(props) {
