@@ -31,7 +31,6 @@ export enum ClientEvents
 	LobbyInvite = 'client.lobbyinvite',
 	AcceptInvite = 'client.acceptinvite',
 	CancelInvite = 'client.cancelinvite',
-	CheckLog = 'client.checklog',
 }
 
 export enum ServerEvents
@@ -45,7 +44,7 @@ export enum ServerEvents
 	LobbyList =  'server.lobbylist',
 	PlayerList = 'server.playerlist',
 	LobbyInvite = 'server.lobbyinvite',
-	CheckLog = 'server.checklog',
+	DoubleLog = 'server.doublelog',
 
 }
 
@@ -83,7 +82,4 @@ export type ServerPayloads = {
 		lobbies: Array<SpectateInfo>;
 	  };
 	
-	 [ServerEvents.CheckLog]: {
-		logged: boolean;
-	  };
   };
