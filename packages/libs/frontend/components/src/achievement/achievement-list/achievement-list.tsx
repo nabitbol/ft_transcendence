@@ -17,7 +17,7 @@ export function AchievementList() {
       await User.updateUserAchievement();
       const response_user: AchievementDto[] = await User.requestUserAchievement();
       setUserAchievement(response_user);
-      const response_achievement: AchievementDto[] = await User.requestAchievement();
+      const response_achievement: AchievementDto[] = await User.requestUserAchievement();
       setAchievement(response_achievement);
     } catch (err) {
       navigate("/error");
