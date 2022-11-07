@@ -65,7 +65,6 @@ export class AuthService {
   }
 
   async register(registerDto: UserDto): Promise<ResponseUserDto> {
-    try {
     if (await this.usersService.getUserByName(registerDto.name))
       throw new ConflictException(
         "This username is already associated with an account."
@@ -86,7 +85,6 @@ export class AuthService {
     const retUserDto: ResponseUserDto = user;
 
     return retUserDto;
-    }
   }
 
   async hashString(textToEncrypt: string): Promise<string> {
