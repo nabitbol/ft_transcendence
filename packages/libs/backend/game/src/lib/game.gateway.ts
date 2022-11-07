@@ -32,25 +32,43 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.lobbyManager.server = server;
   }
 
-  async handleConnection(client: Socket): Promise<void>
+  async handleConnection(client: Socket)
   {
+    console.log("handleConnection GAME");
     if(!client || client === undefined)
       return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
+      if (bearerToken === undefined)
+      {
+        console.log("handleConnection NOT LOGGED");
+        client.disconnect();
+        return;
+      }
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
       const user = await this.userService.getUserByName(decoded.name);
-      if (!user)
+      if (!user || user === undefined)
       {
+        console.log("handleConnection USER NOT FOUND");
         client.disconnect();
-        this.lobbyManager.terminateSocket(client);
+        return;
       }
       client.data.user = user;
+      if(this.lobbyManager.getClient(user.name)) // On new connection: delete old client and send him event
+      {
+        console.log("DOUBLE LOG");
+        const old_client: Socket = this.lobbyManager.getClient(user.name)
+        this.lobbyManager.server.to(old_client.id).emit(ServerEvents.DoubleLog);
+        this.lobbyManager.terminateSocket(old_client);
+        old_client.disconnect();
+      }
+      console.log("handleConnection SUCCESS");
+      this.lobbyManager.initializeSocket(client);
     } catch (err) {
-        client.disconnect();
         this.lobbyManager.terminateSocket(client);
+        client.disconnect();
+        return;
     }
-    this.lobbyManager.initializeSocket(client);
   }
 
   async handleDisconnect(client: Socket): Promise<void>
@@ -58,29 +76,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     if(!client || client === undefined)
       return;
     this.lobbyManager.terminateSocket(client);
-  }
-
-  @SubscribeMessage(ClientEvents.CheckLog)
-  onCheckLog(client: Socket)
-  {
-    console.log("check");
-    if(!client || client === undefined)
-      return;
-    if(this.lobbyManager.isInRoom(client.data.user.name))
-    {
-      return {
-        event: ServerEvents.CheckLog,
-        data: {
-          logged: true,
-        },
-      };
-    }
-    return {
-        event: ServerEvents.CheckLog,
-        data: {
-          logged: false,
-        },
-      };
   }
 
   @SubscribeMessage(ClientEvents.EnterMatchMaking)
@@ -210,6 +205,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   {
     if(!client || client === undefined)
       return;
-    this.lobbyManager.terminateSocket(client);
+    client.data.lobby?.removeClient(client);
   }
 }

@@ -48,25 +48,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     [];
 
   async handleConnection(client: Socket, ...args: any[]) {
-    console.log("handleConnection CHAT");
     if(!client || client === undefined)
       return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
       if (bearerToken === undefined)
       {
-        console.log("handleConnection NOT LOGGED");
-        return this.disconnect(client);
+        this.disconnect(client);
+        return ;
       }
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
       const user = await this.userService.getUserByName(decoded.name);
-      if (!user)
+      if (!user || user === undefined)
       {
-        console.log("handleConnection USER NOT FOUND");
-        return this.disconnect(client);
+        this.disconnect(client);
+        return ;
       }
       client.data.user = user;
-      console.log("handleConnection SUCCESS");
       this.userInChat.push({
         userId: client.id,
         user: user,

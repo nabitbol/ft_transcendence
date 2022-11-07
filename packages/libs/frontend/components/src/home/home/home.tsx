@@ -24,8 +24,8 @@ function Home() {
         setUserEdit(true);
       }
     } catch (err) {
-      navigate("/error");
       window.location.reload();
+      navigate("/error");
     }
   }, [navigate]);
 

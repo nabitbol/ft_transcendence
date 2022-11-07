@@ -1,6 +1,6 @@
 export * from './lib/game.module';
 
-export * from '../../../frontend/components/src/game.gateway';
+export * from './lib/game.gateway';
 
 export * from './lib/game.instance';
 

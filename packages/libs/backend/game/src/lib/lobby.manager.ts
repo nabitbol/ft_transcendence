@@ -18,6 +18,7 @@ export class LobbyManager
     client.data.lobby = null;
     console.log(client.data.user);
     this.all_clients.set(client.data.user.name, client);
+    console.log("ADD CLIENT:" + client.data.user.name)
   }
 
   public getClient(name: string): Socket
@@ -84,12 +85,14 @@ export class LobbyManager
   
   public terminateSocket(client: Socket): void
   {
+    this.all_clients.delete(client.data.user.name);
     client.data.lobby?.removeClient(client);
+    console.log("REMOVE CLIENT:" + client.data.user.name)
   }
 
   public createPrivateLobby(client: Socket, to_invite: string)
   {
-    console.log("Create new private lobby: ");
+    console.log("Create new private lobby with:" + to_invite);
     const lobby = new Lobby(this.server, 'simple');
     lobby.setStatus("private");
     lobby.addClient(client);
