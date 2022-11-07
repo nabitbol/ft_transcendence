@@ -24,8 +24,8 @@ function Home() {
         setUserEdit(true);
       }
     } catch (err) {
-      window.location.reload();
       navigate("/error");
+      window.location.reload();
     }
   }, [navigate]);
 
@@ -36,7 +36,7 @@ function Home() {
 
   useEffect(() => {
     getAnswer();
-  });
+  }, []);
 
   return (
     <div className={classes["home_container"]}>
