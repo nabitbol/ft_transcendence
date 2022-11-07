@@ -37,7 +37,7 @@ export class AuthController {
 
   @Get("login/42")
   async RedirApi(@Res() res: Response) {
-    return res.redirect(302, process.env.API_URL );//process.env.API_URL
+    return res.redirect(302, process.env.API_URL); //process.env.API_URL
   }
 
   @Get("login/api")
