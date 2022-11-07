@@ -11,7 +11,6 @@ export function CheckLog() {
     AuthReq.logout();
     navigate("/");
     window.location.reload();
-    alert("You were disconnected because someone else has logged onto your account.");
   }, [navigate]);
 
   useEffect(() => {

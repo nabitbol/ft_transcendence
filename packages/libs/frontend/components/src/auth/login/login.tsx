@@ -1,9 +1,8 @@
 import classes from "./login.module.css";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { AuthReq, SocketGameContext } from "@ft-transcendence/libs-frontend-services";
-import { Socket } from "socket.io-client";
+import { AuthReq } from "@ft-transcendence/libs-frontend-services";
 
 
 type LoginProps = {
@@ -18,7 +17,6 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
   } = useForm();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const socket: Socket= useContext(SocketGameContext);
 
   const handleLogin = (data: any) => {
     setMessage("");
@@ -30,6 +28,10 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
           props.activateTwoFaForm();
         else {
           navigate("/home");
+          const user = AuthReq.getCurrentUser();
+          if (user.first_log === false) {
+            window.location.reload();
+          }
         }
       },
       (error) => {
