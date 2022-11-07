@@ -2,16 +2,16 @@ version: "3"
 
 services:
   postgres:
-    container_name: postgres1
+    container_name: postgres
     image: postgres:12.3-alpine
     restart: always
     env_file: .env
     ports:
       - 5432:5432
     networks:
-      - backend-db
+      - backend-postgres
     volumes:
-      - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+      - postgres:/mnt/nfs/homes/nabitbol/ft_transcendence/data
 
   frontend:
     env_file: .env
@@ -37,12 +37,17 @@ services:
       - 8080:8080
       - 3030:3030
     networks:
-      - backend-db
+      - backend-postgres
       - backend-frontend
+    # volumes:
+    #   - ./assets/img/user/:./assets/img/user/
 
 networks:
-  backend-db:
+  backend-postgres:
   backend-frontend:
 
 volumes:
   postgres:
+    driver: local
+  # backend:
+  #   driver: local
