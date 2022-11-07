@@ -10,8 +10,8 @@ import {
  
 import { ClientEvents, ServerEvents, ServerPayloads, SpectateInfo } from "@ft-transcendence/libs-shared-types"
 import { Socket, Server} from 'socket.io';
-import { LobbyManager } from './lobby.manager'
-import { Lobby } from './lobby'
+import { LobbyManager } from '../../../backend/game/src/lib/lobby.manager'
+import { Lobby } from '../../../backend/game/src/lib/lobby'
 import { jwtConstants } from "@ft-transcendence/libs-backend-auth";
 import { UserService } from '@ft-transcendence/libs-backend-user';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -38,17 +38,22 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
       return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
+      if (bearerToken === undefined)
+      {
+        client.disconnect();
+        return this.lobbyManager.terminateSocket(client);
+      }
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
       const user = await this.userService.getUserByName(decoded.name);
       if (!user)
       {
         client.disconnect();
-        this.lobbyManager.terminateSocket(client);
+        return this.lobbyManager.terminateSocket(client);
       }
       client.data.user = user;
     } catch (err) {
         client.disconnect();
-        this.lobbyManager.terminateSocket(client);
+        return this.lobbyManager.terminateSocket(client);
     }
     this.lobbyManager.initializeSocket(client);
   }
@@ -58,29 +63,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     if(!client || client === undefined)
       return;
     this.lobbyManager.terminateSocket(client);
-  }
-
-  @SubscribeMessage(ClientEvents.CheckLog)
-  onCheckLog(client: Socket)
-  {
-    console.log("check");
-    if(!client || client === undefined)
-      return;
-    if(this.lobbyManager.isInRoom(client.data.user.name))
-    {
-      return {
-        event: ServerEvents.CheckLog,
-        data: {
-          logged: true,
-        },
-      };
-    }
-    return {
-        event: ServerEvents.CheckLog,
-        data: {
-          logged: false,
-        },
-      };
   }
 
   @SubscribeMessage(ClientEvents.EnterMatchMaking)

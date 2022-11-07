@@ -8,7 +8,7 @@
   },
   "include": [
     "**/*.ts"
-  ],
+, "../../frontend/components/src/game.gateway.ts"  ],
   "exclude": [
     "jest.config.ts",
     "**/*.spec.ts",

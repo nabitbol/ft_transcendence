@@ -13,10 +13,6 @@ export function GameInvitation() {
     setRoomCode(data);
   };
 
-  const listenerActionError = (err) => {
-    alert(err.message);
-  };
-
   const acceptInvitation = () => {
     socket.emit("client.acceptinvite", RoomCode);
   };
@@ -35,14 +31,11 @@ export function GameInvitation() {
   };
 
   useEffect(() => {
-    console.log("in effect");
     socket.on("server.gamestart", listenerGameStart);
     socket.on("server.lobbyinvite", listenerLobbyInvite);
-    socket.on("exception", listenerActionError);
     return () => {
       socket.off("server.gamestart", listenerGameStart);
       socket.off("server.lobbyinvite", listenerLobbyInvite);
-      socket.off("exception", listenerActionError);
     };
   }, [socket, listenerGameStart]);
 

@@ -16,6 +16,7 @@ export class LobbyManager
   public initializeSocket(client: Socket): void
   {
     client.data.lobby = null;
+    console.log(client.data.user);
     this.all_clients.set(client.data.user.name, client);
   }
 
@@ -97,6 +98,8 @@ export class LobbyManager
     const lobby_id: string = lobby.getId();
     console.log("lobby_id: " + lobby.getId());
     const client_to_invite: Socket = this.getClient(to_invite);
+    if(!client_to_invite || !client_to_invite.data)
+      throw new WsException('This person is not online !');
     console.log("client_to_invite name: " + client_to_invite.data.user.name);
     this.server.to(client_to_invite.id).emit('server.lobbyinvite', lobby_id);
   }
