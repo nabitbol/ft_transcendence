@@ -185,10 +185,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     const lobbies: Map<Lobby['id'], Lobby> = this.lobbyManager.getLobbies();
     const lobbiesInfo: Array<SpectateInfo> = new Array<SpectateInfo>;
     for (const [lobbyId, lobby] of lobbies) {
-      if(lobby.getGameInstance().getGameInfo().has_ended === false &&
-      lobby.getGameInstance().getGameInfo().has_started === true)
-      lobbiesInfo.push({left: lobby.getGameInstance().getGameInfo().players_name.left, 
-        right:lobby.getGameInstance().getGameInfo().players_name.right
+      if(lobby.getGameInstance().getGameData().has_ended === false &&
+      lobby.getGameInstance().getGameData().has_started === true)
+      lobbiesInfo.push({left: lobby.getGameInstance().getGameData().players_name.left, 
+        right:lobby.getGameInstance().getGameData().players_name.right
         , game_mode: lobby.getMode(), id: lobby.getId()})
     }
     console.log(lobbiesInfo);
