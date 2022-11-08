@@ -1,11 +1,8 @@
 import classes from "./profile.module.css";
 import {
-  QrModule,
   AllIcon,
-  UploadImage,
   ProfileStats,
   MatchHistory,
-  ChangeName,
 } from "@ft-transcendence/libs-frontend-components";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { useCallback, useEffect } from "react";
@@ -24,7 +21,7 @@ function Profile(props) {
     try {
       await User.updateUserAchievement();
       const response_user: AchievementDto[] =
-        await User.requestUserAchievement();
+        await User.requestAchievement(props.name);
       let tmp = "";
       let i = 0;
       if (!response_user[i]) tmp = "none";
@@ -45,7 +42,7 @@ function Profile(props) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate]);
+  }, [navigate, props.name]);
 
   useEffect(() => {
     getAnswer();
@@ -70,13 +67,10 @@ function Profile(props) {
               <span className={classes["profile_span"]}>
                 <strong>Rank:</strong> {userInfo.ladder_level}
               </span>
-              <UploadImage />
-              <ChangeName />
             </div>
-            <QrModule />
           </div>
           <div className={classes["profile_right_box"]}>
-            <MatchHistory />
+            <MatchHistory name={props.name}/>
             <ProfileStats
               userInfo={userInfo}
               user_achievement={user_achievement}

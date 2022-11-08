@@ -37,10 +37,14 @@ export class AuthService {
       const JWT_token = this.jwtService.sign(payload);
 
       const result: ResponseUserDto = {
+        first_log: user.first_log,
         jwtToken: JWT_token,
         doubleAuth: user.doubleAuth,
         name: user.name,
       };
+      const to_update: ResponseUserDto = user;
+      to_update.first_log = false;
+      this.usersService.updateUser(to_update.name, to_update);
       return result;
     } catch (err) {
       throw new NotFoundException(err);

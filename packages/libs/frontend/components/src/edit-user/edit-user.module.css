@@ -1,0 +1,16 @@
+.container {
+	font: inherit;
+	color: black;
+	position: fixed;
+	padding: 2%;
+	z-index: 10;
+	font-size: 20px;
+	width: 50%;
+	max-width: 550px;
+	background-color: whitesmoke;
+	border-radius: 10px;
+	top: 20%;
+	margin: 5% auto;
+	left: 0;
+	right: 0;
+}

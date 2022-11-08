@@ -21,9 +21,9 @@ export function LeaveRoom(props: LeaveRoomProps) {
   const [successful, setSuccessful] = useState(false);
   const socket: Socket = useContext(SocketChatContext);
 
-  const listenerUpdateErrorMessage = useCallback((err) => {
+  const listenerUpdateErrorMessage = (err) => {
     setMessage(err.message);
-  }, []);
+  };
 
   const listenerSuccessful = () => {
     setSuccessful(true);
@@ -32,7 +32,9 @@ export function LeaveRoom(props: LeaveRoomProps) {
 
   useEffect(() => {
     socket.on("server:leaveroom", listenerSuccessful);
+    socket.on("exception", listenerUpdateErrorMessage);
     return () => {
+      socket.off("exception", listenerUpdateErrorMessage);
       socket.off("server:leaveroom", listenerSuccessful);
     };
   }, [socket]);
@@ -40,7 +42,6 @@ export function LeaveRoom(props: LeaveRoomProps) {
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
-    socket.on("exception", listenerUpdateErrorMessage);
     const roomData = {
       name: data.room_name,
     };

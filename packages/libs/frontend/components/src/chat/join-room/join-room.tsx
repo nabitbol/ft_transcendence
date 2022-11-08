@@ -24,9 +24,9 @@ export function JoinRoom(props: JoinRoomProps) {
   const [successful, setSuccessful] = useState(false);
   const socket: Socket = useContext(SocketChatContext);
 
-  const listenerUpdateErrorMessage = useCallback((err) => {
+  const listenerUpdateErrorMessage = (err) => {
     setMessage(err.message);
-  }, []);
+  };
 
   const listenerSuccessful = () => {
     setSuccessful(true);
@@ -34,8 +34,10 @@ export function JoinRoom(props: JoinRoomProps) {
   };
 
   useEffect(() => {
+    socket.on("exception", listenerUpdateErrorMessage);
     socket.on("server:joinroom", listenerSuccessful);
     return () => {
+      socket.off("exception", listenerUpdateErrorMessage);
       socket.off("server:joinroom", listenerSuccessful);
     };
   }, [socket]);
@@ -43,7 +45,6 @@ export function JoinRoom(props: JoinRoomProps) {
   const handleRegister = (data: any) => {
     setMessage("");
     setSuccessful(false);
-    socket.on("exception", listenerUpdateErrorMessage);
     const roomData = {
       name: data.room_name,
       password: data.room_password || undefined,

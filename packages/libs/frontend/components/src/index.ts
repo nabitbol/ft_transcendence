@@ -1,3 +1,16 @@
+
+export * from './check-log/check-log';
+
+export * from './game-invitation/game-invitation-form/game-invitation-form';
+
+export * from './game-invitation/game-invitation';
+
+export * from './first-log/first-log';
+
+export * from './edit-user/edit-user';
+
+export * from './profile/your-profile/your-profile';
+
 export * from "./chat/update-room/update-room";
 
 export * from "./profile/match-history/match-history";
@@ -19,6 +32,7 @@ export * from "./home/play-module/play-module";
 export * from "./game/game/game";
 
 export * from "./chat/activate-user-action/activate-user-action";
+
 export * from "./chat/leave-room/leave-room";
 
 export * from "./chat/join-room/join-room";

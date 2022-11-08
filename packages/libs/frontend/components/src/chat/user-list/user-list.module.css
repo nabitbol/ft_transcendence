@@ -30,6 +30,16 @@
 	border: 1px solid white;
 }
 
+.userBadgePlaying {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: rgb(255, 145, 0);
+	position: absolute;
+	top: -2px;
+	right: -2px;
+}
+
 .userBadgeOffline {
 	width: 10px;
 	height: 10px;

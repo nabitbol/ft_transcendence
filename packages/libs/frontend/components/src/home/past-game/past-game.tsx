@@ -6,7 +6,8 @@ import { useCallback, useEffect, useState } from "react";
 import { User } from '@ft-transcendence/libs-frontend-services'
 import { useNavigate } from "react-router-dom";
 
-export function PastGame(props: { game_info: MatchDto }) {
+export function PastGame(props: { name: string, game_info: MatchDto }) {
+  const logged_username = props.name;
   const name = props.game_info.winner;
   const score = props.game_info.winnerScore;
   const name_j2 = props.game_info.looser
@@ -27,9 +28,8 @@ export function PastGame(props: { game_info: MatchDto }) {
       setLoserInfo(LoserResponse);
       console.log("LOSER:" + LoserResponse);
 
-      const user = AuthReq.getCurrentUser();
-      console.log("One " + user.name + " Two " + name)
-      if (user.name === name)
+      console.log("One " + logged_username + " Two " + name)
+      if (logged_username === name)
         setIsWinner(true);
       else
         setIsWinner(false);
@@ -37,7 +37,7 @@ export function PastGame(props: { game_info: MatchDto }) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate, name, name_j2]);
+  }, [navigate, logged_username, name, name_j2]);
 
   useEffect(() => {
     getData();
