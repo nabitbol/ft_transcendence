@@ -19,28 +19,28 @@ function Game() {
   const inputRef = useRef<{ up: number; down: number }>({ up: 0, down: 0 });
 
   //Setup socket io event
-  const sendInput = useCallback( async (input: { up: number; down: number }) => {
-      socket.emit("client.gameinput", input);
-    }, [socket]);
-  
+  const sendInput = useCallback(async (input: { up: number; down: number }) => {
+    socket.emit("client.gameinput", input);
+  }, [socket]);
+
   //Setup key event
-  const keyDown = useCallback( async (event) =>{
-      if (event.repeat) return;
-      if (event.key === "ArrowUp") inputRef.current.up = 1;
-      if (event.key === "ArrowDown") inputRef.current.down = 1;
-      if (event.key === "ArrowUp" || event.key === "ArrowDown")
-        sendInput(inputRef.current);
-    },
+  const keyDown = useCallback(async (event) => {
+    if (event.repeat) return;
+    if (event.key === "ArrowUp") inputRef.current.up = 1;
+    if (event.key === "ArrowDown") inputRef.current.down = 1;
+    if (event.key === "ArrowUp" || event.key === "ArrowDown")
+      sendInput(inputRef.current);
+  },
     [sendInput]
   );
 
-  const keyUp = useCallback( async (event)  => {
-      if (event.repeat) return;
-      if (event.key === "ArrowUp") inputRef.current.up = 0;
-      if (event.key === "ArrowDown") inputRef.current.down = 0;
-      if (event.key === "ArrowUp" || event.key === "ArrowDown")
-        sendInput(inputRef.current);
-    },
+  const keyUp = useCallback(async (event) => {
+    if (event.repeat) return;
+    if (event.key === "ArrowUp") inputRef.current.up = 0;
+    if (event.key === "ArrowDown") inputRef.current.down = 0;
+    if (event.key === "ArrowUp" || event.key === "ArrowDown")
+      sendInput(inputRef.current);
+  },
     [sendInput]
   );
 
@@ -62,7 +62,23 @@ function Game() {
     let context: CanvasRenderingContext2D | null;
     let animationFrameId: number;
 
-    function draw(box: boxDimensions, gameInfo: GameData) {
+    const drawHeader = (function () {
+      let executed = false;
+      console.log("FIRST TIME");
+      return function (gameInfo: GameData) {
+        if (!executed) {
+          executed = true;
+          context.textAlign = "center";
+          context.fillText("VS", canvas.width / 2 - 20, 70);
+          context.textAlign = "left";
+          context.fillText(gameInfo.players_name.left, 0, 70);
+          context.textAlign = "right";
+          context.fillText(gameInfo.players_name.right, canvas.width, 70);
+        }
+      };
+    })();
+
+    async function draw(box: boxDimensions, gameInfo: GameData) {
       if (context != null && gameInfo) {
         console.log("FRONT");
         context.clearRect(
@@ -93,12 +109,7 @@ function Game() {
           box.box_x + box.box_width / 2 + 100,
           box.box_y + 100
         );
-        context.textAlign = "center";
-        context.fillText("VS", canvas.width / 2 - 20, 70);
-        context.textAlign = "left";
-        context.fillText(gameInfo.players_name.left, 0, 70);
-        context.textAlign = "right";
-        context.fillText(gameInfo.players_name.right, canvas.width, 70);
+        drawHeader(gameInfo);
         for (const ball of gameInfo.ball) {
           context.beginPath();
           context.arc(
