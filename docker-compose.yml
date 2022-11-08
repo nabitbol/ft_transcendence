@@ -11,7 +11,7 @@ services:
     networks:
       - backend-postgres
     volumes:
-      - postgres:/mnt/nfs/homes/nabitbol/ft_transcendence/data
+      - postgres:/data/postgres
 
   frontend:
     env_file: .env
@@ -39,8 +39,8 @@ services:
     networks:
       - backend-postgres
       - backend-frontend
-    # volumes:
-    #   - ./assets/img/user/:./assets/img/user/
+    volumes:
+      - ./assets/img/user/:/app/assets/img/user/
 
 networks:
   backend-postgres:
@@ -48,6 +48,4 @@ networks:
 
 volumes:
   postgres:
-    driver: local
-  # backend:
-  #   driver: local
+  backend:
