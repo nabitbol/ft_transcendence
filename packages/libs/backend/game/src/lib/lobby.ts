@@ -62,7 +62,7 @@ export class Lobby
         client.leave(this.id);
         client.data.lobby = null;
       }
-      if (this.gameInstance.getGameInfo().has_started) {
+      if (this.gameInstance.getGameData().has_started) {
         this.gameInstance.resetGame();
       }
   }

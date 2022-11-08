@@ -5,29 +5,26 @@ import { GameInfo, boxDimensions } from "@ft-transcendence/libs/shared/game";
 import { Socket } from "socket.io";
 import { SocketGameContext } from "@ft-transcendence/libs-frontend-services";
 import { ResultScreen } from "@ft-transcendence/libs-frontend-components";
-import { MatchDto } from "@ft-transcendence/libs-shared-types";
+import { GameData, MatchDto } from "@ft-transcendence/libs-shared-types";
 
 function Game() {
   //Setup variable
+  console.log("In RENDER game");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isResultOn, setIsResultOn] = useState<MatchDto>(undefined);
-  const [width, height] = useWindowSize();
-  const gameInfoRef = useRef<GameInfo>();
+  //const [width, height] = useWindowSize();
+  const gameDataRef = useRef<GameData>();
   const boxRef = useRef<boxDimensions>();
   const socket: Socket = useContext(SocketGameContext);
   const inputRef = useRef<{ up: number; down: number }>({ up: 0, down: 0 });
 
   //Setup socket io event
-  const sendInput = useCallback(
-    (input: { up: number; down: number }) => {
+  const sendInput = useCallback( async (input: { up: number; down: number }) => {
       socket.emit("client.gameinput", input);
-    },
-    [socket]
-  );
-
+    }, [socket]);
+  
   //Setup key event
-  const keyDown = useCallback(
-    function (event) {
+  const keyDown = useCallback( async (event) =>{
       if (event.repeat) return;
       if (event.key === "ArrowUp") inputRef.current.up = 1;
       if (event.key === "ArrowDown") inputRef.current.down = 1;
@@ -37,8 +34,7 @@ function Game() {
     [sendInput]
   );
 
-  const keyUp = useCallback(
-    function (event) {
+  const keyUp = useCallback( async (event)  => {
       if (event.repeat) return;
       if (event.key === "ArrowUp") inputRef.current.up = 0;
       if (event.key === "ArrowDown") inputRef.current.down = 0;
@@ -49,7 +45,7 @@ function Game() {
   );
 
   const listenerGameInfo = (response: { info: GameInfo }) => {
-    gameInfoRef.current = response.info;
+    gameDataRef.current = response.info;
   };
 
   const listenerGameEnd = (result: MatchDto) => {
@@ -66,8 +62,9 @@ function Game() {
     let context: CanvasRenderingContext2D | null;
     let animationFrameId: number;
 
-    function draw(box: boxDimensions, gameInfo: GameInfo) {
+    function draw(box: boxDimensions, gameInfo: GameData) {
       if (context != null && gameInfo) {
+        console.log("FRONT");
         context.clearRect(
           box.box_x + box.box_border_width / 2,
           box.box_y + box.box_border_width / 2,
@@ -155,9 +152,9 @@ function Game() {
 
     //Tick function to draw game
     const render = () => {
-      if (gameInfoRef.current) {
-        if (gameInfoRef.current.has_ended) return;
-        draw(boxRef.current, gameInfoRef.current);
+      if (gameDataRef.current && !isResultOn) {
+        if (gameDataRef.current.has_ended) return;
+        draw(boxRef.current, gameDataRef.current);
       }
       animationFrameId = window.requestAnimationFrame(render);
     };
@@ -172,11 +169,11 @@ function Game() {
 
     initContext();
     render();
-    if (gameInfoRef.current && gameInfoRef.current.has_ended) endCanvas();
+    if (gameDataRef.current && gameDataRef.current.has_ended) endCanvas();
     return () => {
       endCanvas();
     };
-  }, [height, width, keyDown, keyUp, socket]);
+  }, [keyDown, keyUp, socket, isResultOn]);
 
   return (
     <div className={classes["background"]}>

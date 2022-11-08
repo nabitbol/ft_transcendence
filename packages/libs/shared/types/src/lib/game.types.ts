@@ -1,5 +1,6 @@
 import { GameInfo } from "@ft-transcendence/libs/shared/game";
 import { MatchDto } from "./match.types";
+import { Paddle, Ball } from '@ft-transcendence/libs/shared/game'
 
 export type PlayersName = {
 	left: string;
@@ -17,6 +18,17 @@ export type SpectateInfo = {
 	game_mode: 'simple' | 'double';
 	id: string;
 };
+
+export type GameData = {
+	paddle_a: Paddle;
+	paddle_b: Paddle;
+	player_a_score: number;
+	player_b_score: number;
+	players_name: PlayersName;
+	ball: Array<Ball>;
+	has_ended: boolean;
+	has_started: boolean;
+}
 
 export enum ClientEvents
 {
@@ -63,7 +75,7 @@ export type ServerPayloads = {
 	  };
 
 	[ServerEvents.GameInfo]: {
-		info: GameInfo;
+		info: GameData;
 	  };
 
 	[ServerEvents.GameStart]: {

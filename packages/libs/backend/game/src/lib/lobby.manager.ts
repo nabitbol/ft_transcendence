@@ -162,7 +162,7 @@ export class LobbyManager
           message: 'Game timed out',
         });
 
-        lobby.getGameInstance().getGameInfo().has_ended = true;
+        lobby.getGameInstance().getGameData().has_ended = true;
 0
         this.deleteLobby(lobby.getId());
       }
