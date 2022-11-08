@@ -13,6 +13,7 @@ RUN npm install -g @nestjs/cli
 
 RUN npm install nx -y
 
+RUN npx nx build apps-backend
 
 # Init the database with the last migration
 # RUN npx prisma migrate dev
