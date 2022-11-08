@@ -6,19 +6,20 @@ import { User } from "@ft-transcendence/libs-frontend-services";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function MatchHistory() {
+export function MatchHistory(props: {name: string}) {
   const [matchInfo, setMatchInfo] = useState<MatchDto[]>(undefined);
   const navigate = useNavigate();
 
   const getAnswer = useCallback( async () => {
     try {
-      const response: MatchDto[] = await User.requestUserMatchInfo();
+      console.log(props.name);
+      const response: MatchDto[] = await User.requestUserMatchInfo(props.name);
       setMatchInfo(response);
     } catch (err) {
       navigate("/error");
       window.location.reload();
     }
-  }, [navigate]);
+  }, [navigate, props.name]);
 
   useEffect(() => {
     getAnswer();
@@ -33,7 +34,7 @@ export function MatchHistory() {
       {matchInfo && (
         <div className={classes["flex_container"]}>
           {matchInfo.map((ID) => (
-            <PastGame game_info={ID} key={ID.id} />
+            <PastGame name={props.name} game_info={ID} key={ID.id} />
           ))}
         </div>
       )}

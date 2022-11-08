@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthReq } from "@ft-transcendence/libs-frontend-services";
 
+
 type LoginProps = {
   activateTwoFaForm: () => void;
 };
@@ -23,10 +24,14 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
       () => {
         const user_data = localStorage.getItem("userdata");
         const user = JSON.parse(user_data);
-        if (user && user.doubleAuth) props.activateTwoFaForm();
+        if (user && user.doubleAuth)
+          props.activateTwoFaForm();
         else {
           navigate("/home");
-          window.location.reload();
+          const user = AuthReq.getCurrentUser();
+          if (user.first_log === false) {
+            window.location.reload();
+          }
         }
       },
       (error) => {

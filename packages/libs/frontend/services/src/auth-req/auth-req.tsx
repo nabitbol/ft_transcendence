@@ -18,6 +18,7 @@ class AuthReqService {
 
   logout() {
     localStorage.removeItem("userdata");
+    window.location.reload();
   }
 
   async register(user_pseudo: string, user_mail: string, user_password: string) {

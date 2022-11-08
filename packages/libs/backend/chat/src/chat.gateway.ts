@@ -48,11 +48,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     [];
 
   async handleConnection(client: Socket, ...args: any[]) {
+    if(!client || client === undefined)
+      return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
+      if (bearerToken === undefined)
+      {
+        this.disconnect(client);
+        return ;
+      }
       const decoded = await jwt.verify(bearerToken, jwtConstants.secret);
       const user = await this.userService.getUserByName(decoded.name);
-      if (!user) return this.disconnect(client);
+      if (!user || user === undefined)
+      {
+        this.disconnect(client);
+        return ;
+      }
       client.data.user = user;
       this.userInChat.push({
         userId: client.id,
@@ -64,12 +75,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
+    if(!client || client === undefined)
+      return;
     if (client.data.user)
       this.userInChat = this.getUserWithout(client.data.user.name);
     this.disconnect(client);
   }
 
   private disconnect(client: Socket) {
+    if(!client || client === undefined)
+      return;
     client.emit("Error", new UnauthorizedException());
     client.disconnect();
   }
@@ -140,6 +155,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   /* -------------------------------- specific -------------------------------- */
 
   async cleanStatus(client: Socket, user: UserRoomDto, room: RoomDto) {
+    if(!client || client === undefined)
+      return;
     const timeMin = new Date(Date.now() - 30000);
     let isNormalRole = false;
     if (
@@ -205,6 +222,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client: Socket,
     payload: { conv: RoomDto; userToAdd: UserDto[] }
   ) {
+    if(!client || client === undefined)
+      return;
     try {
       const event = "server:joinconversation";
       const tmp: RoomDto = await this.roomService.getRoomByName(
@@ -233,6 +252,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client: Socket,
     payload: { room: RoomDto; userToAdd: UserDto[] }
   ) {
+    if(!client || client === undefined)
+      return;
     try {
       const event = "server:joinprivateroom";
       await this.roomService.addUsers(payload.room.id, payload.userToAdd);
@@ -285,6 +306,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:disconnect")
   async onDisconnect(client: Socket) {
     try {
+      if(!client || client === undefined)
+        return;
       this.handleDisconnect(client);
     } catch (err) {
       throw new WsException(err.message);
@@ -294,6 +317,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:getuserrooms")
   async onGetUserRooms(client: Socket) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:getuserrooms";
       const rooms: RoomDto[] = await this.roomService.getUserRooms(
         client.data.user.id
@@ -312,6 +337,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:getusers")
   async onGetUsers(client: Socket) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:getusers";
       const tmp: UserDto[] = await this.userService.getUsers();
       const name: string = client.data.user.name;
@@ -334,6 +361,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:getroomusers")
   async onGetRoomUsers(client: Socket) {
     try {
+      if(!client || client === undefined)
+        return;
       let room: RoomDto;
       const event = "server:getroomusers";
       for (let i = 0; i < this.userInChat.length; i++) {
@@ -372,6 +401,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     payload: { contains: string; list: UserDto[] }
   ) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:searchuser";
       const users: UserDto[] = [];
       const status: string[] = [];
@@ -397,6 +428,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:selectroom")
   async onSelectRoom(client: Socket, payload: string) {
     try {
+      if(!client || client === undefined)
+        return;
       let messages: MessageDto[];
       const authors: UserDto[] = [];
       const event = "server:getonselectmessages";
@@ -430,6 +463,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:createroom")
   async onCreateRoom(client: Socket, room: RoomDto) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:createroom";
       const userTest: UserDto = await this.userService.getUserByName(room.name);
       const roomTest: RoomDto = await this.roomService.getRoomByName(room.name);
@@ -452,6 +487,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:joinroom")
   async onJoinRoom(client: Socket, payload: RoomDto) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:joinroom";
       const joiner: UserDto[] = [];
       joiner[0] = await this.userService.getUserByName(client.data.user.name);
@@ -498,6 +535,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:leaveroom")
   async onleaveRoom(client: Socket, payload: { name: string }) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:leaveroom";
       const leaver: UserDto = await this.userService.getUserByName(
         client.data.user.name
@@ -528,6 +567,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:updateroom")
   async onUpdateRoom(client: Socket, room: RoomDto) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:updateroom";
       const roomTest: RoomDto = await this.roomService.getRoomByName(room.name);
       if (!roomTest) throw Error("Room doesn't exist");
@@ -549,6 +590,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:createconversation")
   async onCreateConversation(client: Socket, payload: { user: UserDto }) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:createconversation";
       let convs: RoomDto[] = await this.roomService.getRoomByConvName(
         client.data.user.name
@@ -602,6 +645,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:sendmessage")
   async onSendMessage(client: Socket, message: string) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:getmessages";
       const tmp: RoomDto = await this.getUserWith(client.data.user.name)[0]
         .room;
@@ -634,6 +679,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:blockuser")
   async onBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
+      if(!client || client === undefined)
+        return;
       await this.userService.muteUser(client.data.user.id, payload.user.id);
       const room: RoomDto = this.getUserWithId(client.id)[0].room;
       if (room) await this.onSelectRoom(client, room.name);
@@ -646,6 +693,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:unblockuser")
   async onUbBlockUser(client: Socket, payload: { user: UserDto }) {
     try {
+      if(!client || client === undefined)
+        return;
       await this.userService.unMuteUser(client.data.user.id, payload.user.id);
       const room: RoomDto = this.getUserWithId(client.id)[0].room;
       if (room) await this.onSelectRoom(client, room.name);
@@ -661,6 +710,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     payload: { user: UserDto; newRole: Room_Role }
   ) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:updateuserrole";
       const room = this.getUserWith(client.data.user.name)[0].room;
       if (!room) throw Error("User is not in Room");
@@ -707,6 +758,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage("client:addinprivateroom")
   async onAddToPrivateRoom(client: Socket, payload: { user: UserDto }) {
     try {
+      if(!client || client === undefined)
+        return;
       const event = "server:addinprivateroom";
       const room: RoomDto = this.getUserWith(client.data.user.name)[0].room;
       if (!room) throw Error("User is not in Room");

@@ -1,5 +1,5 @@
 import { Engine, GameInfo } from "@ft-transcendence/libs/shared/game";
-import { ServerEvents, ServerPayloads, MatchDto, UserDto } from "@ft-transcendence/libs-shared-types"
+import { ServerEvents, ServerPayloads, MatchDto, UserDto, GameData } from "@ft-transcendence/libs-shared-types"
 import { Socket, Server } from 'socket.io';
 import { UserService } from "@ft-transcendence/libs-backend-user";
 import { MatchService } from "@ft-transcendence/libs-backend-match";
@@ -133,8 +133,8 @@ export class GameInstance
 					await this.endGame();
 					break;
 				}
-				this.sendGameInfo();
-				await this.delay(20);
+				this.sendGameData();
+				await this.delay(15);
 			}
 			console.log("LOST PLAYER =" + this.lostPlayer);
 			if(this.lostPlayer)
@@ -164,9 +164,19 @@ export class GameInstance
 		}
 	}
 
-	public getGameInfo() : GameInfo
+	public getGameData() : GameData
 	{
-		return this.gameInfo;
+		const data: GameData = {
+			paddle_a: this.gameInfo.paddle_a,
+			paddle_b: this.gameInfo.paddle_b,
+			player_a_score: this.gameInfo.player_a_score,
+			player_b_score: this.gameInfo.player_b_score,
+			players_name: this.gameInfo.players_name,
+			ball: this.gameInfo.ball,
+			has_ended: this.gameInfo.has_ended,
+			has_started: this.gameInfo.has_started,
+		}
+		return data;
 	}
 
 	public setLostPlayer(player: string)
@@ -174,10 +184,10 @@ export class GameInstance
 		this.lostPlayer = player;
 	}
 
-	public sendGameInfo(): void
+	public sendGameData(): void
 	{
 	  const payload: ServerPayloads[ServerEvents.GameInfo] = {
-	   info: this.getGameInfo(),
+	   info: this.getGameData(),
 	  };
 	  this.sendVolatileMessage(ServerEvents.GameInfo, payload);
 	}

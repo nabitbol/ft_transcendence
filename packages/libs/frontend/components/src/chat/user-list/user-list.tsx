@@ -1,12 +1,13 @@
-import { socketChat } from "@ft-transcendence/libs-frontend-services";
+import { socketChat, SocketGameContext } from "@ft-transcendence/libs-frontend-services";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Socket } from "socket.io-client";
 import ActivateUserAction from "../activate-user-action/activate-user-action";
 import styles from "./user-list.module.css";
 
 /* eslint-disable-next-line */
-export interface UserListProps {}
+export interface UserListProps { }
 
 export function UserList(props: UserListProps) {
   const [scroll, setScroll] = useState<boolean>(false);
@@ -14,6 +15,8 @@ export function UserList(props: UserListProps) {
   const [status, setStatus] = useState<string[]>(undefined);
   const [erroMessage, setMessage] = useState<string>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const socket: Socket = useContext(SocketGameContext);
+  const [usersPlaying, setUsersPlaying] = useState<Array<string>>(null);
 
   const scrollToEnd = useCallback(() => {
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,12 +36,21 @@ export function UserList(props: UserListProps) {
     }
   };
 
+  const listenerListPlayers = (response: { players: Array<string> }) => {
+    if (response.players) {
+      setUsersPlaying(response.players);
+    }
+  };
+
   useEffect(() => {
+    socket.on("server.playerlist", listenerListPlayers);
     socketChat.on("server:getroomusers", listenerUsers);
     socketChat.on("server:getusers", listenerUsers);
     socketChat.on("server:searchuser", listenerUsers);
     socketChat.on("exception", listenerUpdateErrorMessage);
+    socket.emit("client.playerlist");
     return () => {
+      socket.off("server.playerlist", listenerListPlayers);
       socketChat.off("server:getroomusers", listenerUsers);
       socketChat.off("server:getusers", listenerUsers);
       socketChat.off("server:searchuser", listenerUsers);
@@ -64,13 +76,22 @@ export function UserList(props: UserListProps) {
                   src={getPathToImage(element.image)}
                   alt="avatar"
                 />
-                <div
-                  className={
-                    status[key] === "online"
-                      ? styles["userBadgeOnline"]
-                      : styles["userBadgeOffline"]
-                  }
-                ></div>
+                {usersPlaying &&
+                  usersPlaying.indexOf(element.name) > -1 &&
+                  <div
+                    className={styles["userBadgePlaying"]}
+                  ></div>
+                }
+                {!usersPlaying ||
+                  usersPlaying.indexOf(element.name) === -1 &&
+                  <div
+                    className={
+                      status[key] === "online"
+                        ? styles["userBadgeOnline"]
+                        : styles["userBadgeOffline"]
+                    }
+                  ></div>
+                }
               </div>
               <span className={styles["userName"]}>{element.name}</span>
             </div>

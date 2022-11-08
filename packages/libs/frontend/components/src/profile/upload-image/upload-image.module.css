@@ -1,3 +1,10 @@
+.span {
+    display: table;
+    margin: 0 auto;
+	color: rgb(0, 0, 0);
+	margin-top: 10px;
+	font-size: 25px;
+}
 
 .module_btn {
 	font: inherit;

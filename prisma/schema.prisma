@@ -13,6 +13,7 @@ datasource db {
 // models
 
 model User {
+  first_log        Boolean  @default(true)
   id               String   @id @default(uuid())
   name             String   @unique
   name_42          String?
