@@ -34,6 +34,6 @@ docker volume rm pgadmin 2>&1 >/dev/null
 printf $BOLDMAGENTA"Delete postgres volume...$RESET\n"
 docker volume rm postgres 2>&1 >/dev/null
 printf $BOLDBLUE"Cleaning over !$RESET\n"
-sudo docker rmi -f $(sudo docker images -aq)
-sudo docker rm -vf $(sudo docker ps -aq)
+ docker rmi -f $( docker images -aq)
+ docker rm -vf $( docker ps -aq)
 docker system prune -a --volumes

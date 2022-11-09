@@ -35,7 +35,7 @@ function Auth() {
         Create a new account
       </button>
       <br />
-      <a href={`http://${process.env['HOSTNAME']}:${process.env.BACKEND_PORT}/auth/login/42`}>
+      <a href={`http://${process.env['NX_HOST_NAME']}:${process.env.NX_BACKEND_PORT}/auth/login/42`}>
         <button className={classes["auth_btn"]}>Connect with 42 intra</button>
       </a>
       <br />
