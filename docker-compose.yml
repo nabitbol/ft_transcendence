@@ -14,36 +14,39 @@ services:
       - postgres:/var/lib/postgresql/data
 
   frontend:
-    hostname: ${HOSTNAME}
+    env_file:
+      - .env
+    hostname: ${NX_HOST_NAME}
     restart: always
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command:  npx nx serve apps-frontend --host=0.0.0.0 --port=${FRONTEND_PORT}
-    environment:
-      - HOSTNAME=${HOSTNAME},
-      - BACKEND_PORT=${BACKEND_PORT}
+    command:  npx nx serve apps-frontend --host=${NX_HOST_NAME} --port=${NX_FRONTEND_PORT}
     ports:
-      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+      - ${NX_FRONTEND_PORT}:${NX_FRONTEND_PORT}
     networks:
       - backend-frontend
     volumes:
-      - ./assets/img/user/:/app/assets/img/user/
+      - ./assets/img/:/app/assets/img/:wr
 
   backend:
-    hostname: ${HOSTNAME}
+    env_file:
+      - .env
+    hostname: ${NX_HOST_NAME}
     restart: always
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command: npm run backend:migrate:start --host=0.0.0.0 --port=${BACKEND_PORT}
+    command: npm run backend:migrate:start --host=${NX_HOST_NAME} --port=${NX_BACKEND_PORT}
     ports:
-      - ${BACKEND_PORT}:${BACKEND_PORT}
-      - ${SOCKET_CHAT}:${SOCKET_CHAT}
-      - ${SOCKET_GAME}:${SOCKET_GAME}
+      - ${NX_BACKEND_PORT}:${NX_BACKEND_PORT}
+      - ${NX_SOCKET_CHAT}:${NX_SOCKET_CHAT}
+      - ${NX_SOCKET_GAME}:${NX_SOCKET_GAME}
     networks:
       - backend-postgres
       - backend-frontend
+    volumes:
+      - ./assets/img/:/app/assets/img/:wr
 
 networks:
   backend-postgres:

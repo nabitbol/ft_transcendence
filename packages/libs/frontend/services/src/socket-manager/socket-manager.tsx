@@ -6,7 +6,7 @@ const config = {
   extraHeaders: authHeader(), 
 };
 
-export const socketGame = io(`ws://${process.env['HOSTNAME']}:${process.env['SOCKET_GAME']}`, config);
-export const socketChat = io(`ws://${process.env['HOSTNAME']}:${process.env['SOCKET_CHAT']}`, config);
+export const socketGame = io(`ws://${process.env['NX_HOST_NAME']}:${process.env['NX_SOCKET_GAME']}`, config);
+export const socketChat = io(`ws://${process.env['NX_HOST_NAME']}:${process.env['NX_SOCKET_CHAT']}`, config);
 export const SocketGameContext = React.createContext(undefined);
 export const SocketChatContext = React.createContext(undefined);

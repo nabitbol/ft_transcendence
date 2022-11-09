@@ -7,7 +7,7 @@ import {
   AchievementDto,
 } from "@ft-transcendence/libs-shared-types";
 
-const URL = `http://${process.env['HOSTNAME']}:${process.env['BACKEND_PORT']}/`; //process.env['REACT_APP_URL_TO_BACK'] ;
+const URL = `http://${process.env['NX_HOST_NAME']}:${process.env['NX_BACKEND_PORT']}/`; //process.env['REACT_APP_URL_TO_BACK'] ;
 
 class UserService {
   async requestUserMatchInfo(name: string): Promise<MatchDto[]> {

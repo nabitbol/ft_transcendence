@@ -2,6 +2,8 @@ version: "3"
 
 services:
   nx-app-base:
+    env_file:
+      - .env
     restart: always
     build:
       context: .

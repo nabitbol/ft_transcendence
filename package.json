@@ -7,7 +7,7 @@
         "seed": "ts-node prisma/seed.ts"
     },
     "scripts": {
-        "start-backend": "cd ./dist/packages/apps/backend && node main*.js",
+        "start-backend": "cd ./dist/packages/apps/backend && node main*.js ",
         "start-frontend": "nx serve apps-frontend",
         "backend:migrate:start": "prisma migrate deploy && npm run start-backend",
         "frontend:migrate:start": "npm run start-frontend"
@@ -68,10 +68,7 @@
         "@nestjs/platform-express": "^9.0.0",
         "@nestjs/platform-socket.io": "^9.1.4",
         "@nestjs/schedule": "^2.1.0",
-        "@nestjs/platform-socket.io": "^9.1.4",
-        "@nestjs/schedule": "^2.1.0",
         "@nestjs/swagger": "^6.1.2",
-        "@nestjs/websockets": "^9.1.4",
         "@nestjs/websockets": "^9.1.4",
         "@prisma/client": "^4.3.1",
         "@types/cors": "^2.8.12",
@@ -83,8 +80,10 @@
         "class-validator": "^0.13.2",
         "core-js": "^3.6.5",
         "cors": "^2.8.5",
-        "jsonwebtoken": "^8.5.1",
+        "dotenv": "^16.0.3",
+        "env-cmd": "^10.1.0",
         "javascript-time-ago": "^2.5.7",
+        "jsonwebtoken": "^8.5.1",
         "node-ts": "^5.1.2",
         "otplib": "^12.0.1",
         "passport": "^0.6.0",

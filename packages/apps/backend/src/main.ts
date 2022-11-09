@@ -2,12 +2,15 @@ import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { AppModule } from "./app/app.module";
+require("dotenv").config();
 
-const hostname = process.env.HOSTNAME;
-const backendPort = process.env.BACKEND_PORT || 3333;
-const frontendPort = process.env.FRONTEND_PORT;
-const chatPort = process.env.SOCKET_CHAT;
-const gamePort = process.env.SOCKET_GAME;
+const hostname = process.env.NX_HOST_NAME;
+const backendPort = process.env.NX_BACKEND_PORT || 3333;
+const frontendPort = process.env.NX_FRONTEND_PORT;
+const chatPort = process.env.NX_SOCKET_CHAT;
+const gamePort = process.env.NX_SOCKET_GAME;
+
+console.log(process.env);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,12 +32,11 @@ async function bootstrap() {
       "JWT-auth"
     )
     .build();
-    console.log(process.env.BACKEND_PORT)
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(docPrefix, app, document);
   const cors = await import("cors");
   const corsOptions = {
-    origin: `http://${hostname}:` + frontendPort,
+    origin: `http://${hostname}:${frontendPort}`,
     credentials: true,
     optionSuccessStatus: 200,
   };
