@@ -30,7 +30,6 @@ export class MatchController {
     try {
       const matches: MatchDto[] = await this.matchService.getAllMatches();
       matches.map((element) => {
-        console.log(element.playersName);
       });
       return { matches };
     } catch (err) {

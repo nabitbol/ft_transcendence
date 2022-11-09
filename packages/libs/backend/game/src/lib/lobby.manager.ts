@@ -16,17 +16,14 @@ export class LobbyManager
   public initializeSocket(client: Socket): void
   {
     client.data.lobby = null;
-    console.log(client.data.user);
     if(client.data.user)
     {
       this.all_clients.set(client.data.user.name, client);
-      console.log("ADD CLIENT:" + client.data.user.name)
     }
   }
 
   public getClient(name: string): Socket
   {
-    console.log("SEARCH FOR CLIENT: " + name);
     return this.all_clients.get(name);
   }
 
@@ -77,7 +74,6 @@ export class LobbyManager
 
   public enterMatchMaking(client: Socket, mode: 'simple' | 'double'): void
   {
-    console.log("Enter matchMaking !");
     if (this.getRandomPublicLobby(mode) === undefined) {
       this.createPublicLobby(client, mode);
     }
@@ -92,30 +88,25 @@ export class LobbyManager
     if(client.data.user)
     {
       this.all_clients.delete(client.data.user.name);
-      console.log("REMOVE CLIENT:" + client.data.user.name)
     }
   }
 
   public createPrivateLobby(client: Socket, to_invite: string)
   {
-    console.log("Create new private lobby with:" + to_invite);
     const lobby = new Lobby(this.server, 'simple');
     lobby.setStatus("private");
     lobby.addClient(client);
     this.lobbies.set(lobby.getId(), lobby);
 
     const lobby_id: string = lobby.getId();
-    console.log("lobby_id: " + lobby.getId());
     const client_to_invite: Socket = this.getClient(to_invite);
     if(!client_to_invite || !client_to_invite.data)
       throw new WsException('This person is not online !');
-    console.log("client_to_invite name: " + client_to_invite.data.user.name);
     this.server.to(client_to_invite.id).emit('server.lobbyinvite', lobby_id);
   }
 
   public createPublicLobby(client: Socket, data: 'simple' | 'double'): void
   {
-    console.log("Create new lobby: " + data);
     const lobby = new Lobby(this.server, data);
     lobby.setStatus("public");
     lobby.addClient(client);
@@ -139,7 +130,6 @@ export class LobbyManager
 
   public spectateLobby(lobbyId: string, client: Socket): void
   {
-    console.log("Spectate lobby: " + lobbyId);
     client.join(lobbyId);
   }
 
@@ -151,7 +141,6 @@ export class LobbyManager
   @Cron('*/5 * * * *')
   private lobbiesCleaner(): void
   {
-    console.log("Cleanup lobby");
     for (const [lobbyId, lobby] of this.lobbies) {
       const now = (new Date()).getTime();
       const lobbyCreatedAt = lobby.createdAt.getTime();

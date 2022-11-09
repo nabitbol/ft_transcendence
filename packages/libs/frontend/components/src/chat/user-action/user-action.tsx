@@ -67,7 +67,6 @@ export function UserAction(props: UserActionProps) {
       user: props.user,
       newRole: newRole,
     };
-    console.log(newRole);
     socketChat.emit("client:updateuserrole", Data);
   };
 

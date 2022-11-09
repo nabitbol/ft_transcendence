@@ -34,14 +34,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client: Socket)
   {
-    console.log("handleConnection GAME");
     if(!client || client === undefined)
       return;
     try {
       const bearerToken = client.handshake.headers.authorization.split(" ")[1];
       if (bearerToken === undefined)
       {
-        console.log("handleConnection NOT LOGGED");
         client.disconnect();
         return;
       }
@@ -49,20 +47,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
       const user = await this.userService.getUserByName(decoded.name);
       if (!user || user === undefined)
       {
-        console.log("handleConnection USER NOT FOUND");
         client.disconnect();
         return;
       }
       client.data.user = user;
       if(this.lobbyManager.getClient(user.name)) // On new connection: delete old client and send him event
       {
-        console.log("DOUBLE LOG");
         const old_client: Socket = this.lobbyManager.getClient(user.name)
         this.lobbyManager.server.to(old_client.id).emit(ServerEvents.DoubleLog);
         this.lobbyManager.terminateSocket(old_client);
         old_client.disconnect();
       }
-      console.log("handleConnection SUCCESS");
       this.lobbyManager.initializeSocket(client);
     } catch (err) {
         this.lobbyManager.terminateSocket(client);
@@ -116,7 +111,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(ClientEvents.AcceptInvite)
   onAcceptInvitation(client: Socket, lobbyId): WsResponse<ServerPayloads[ServerEvents.LobbyJoined]>
   {
-    console.log("Accept invitation to lobby:" + lobbyId);
     if(!client || client === undefined)
       return;
     if(this.lobbyManager.isInRoom(client.data.user.name))
@@ -133,7 +127,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(ClientEvents.CancelInvite)
   onCancelInvitation(client: Socket, lobbyId)
   {
-    console.log("Cancel invitation to lobby:" + lobbyId);
     if(!client || client === undefined)
       return;
     this.lobbyManager.deleteLobby(lobbyId);
@@ -157,7 +150,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     if(!client || client === undefined)
       return;
     const players: Array<string> = this.lobbyManager.playerList();
-    console.log(players);
     return {
       event:ServerEvents.PlayerList,
       data: {
@@ -171,7 +163,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   {
     if(!client || client === undefined)
       return;
-    console.log(client.data.user.name + " want so spectate");
     this.lobbyManager.spectateLobby(lobbyId, client);
   }
 
@@ -191,7 +182,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
         right:lobby.getGameInstance().getGameData().players_name.right
         , game_mode: lobby.getMode(), id: lobby.getId()})
     }
-    console.log(lobbiesInfo);
     return {
       event:ServerEvents.LobbyList,
       data: {

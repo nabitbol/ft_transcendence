@@ -22,7 +22,6 @@ class chatServices {
       const ret = await axios.get(URL + "chat/user_rooms", {
         headers: authHeader(),
       });
-      console.log(ret);
       return ret.data.response;
     } catch (err) {
       throw Error(err);

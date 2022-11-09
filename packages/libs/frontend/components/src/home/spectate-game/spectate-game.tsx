@@ -26,7 +26,6 @@ export function SpectateGame() {
   }
 
   const listenerException = (error) => {
-    console.log("IN ERROR SPECTATE");
     setError(true);
   };
 
