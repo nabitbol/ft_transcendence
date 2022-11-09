@@ -30,7 +30,7 @@ const jwt = require("jsonwebtoken");
 
 @WebSocketGateway(8080, {
   cors: {
-    origin: ["https://hoppscotch.io", "http://localhost:4200"],
+    origin: ["https://hoppscotch.io", `http://${process.env.HOSTNAME}:${process.env.FRONTEND_PORT}`],
     credentials: true,
   },
 })

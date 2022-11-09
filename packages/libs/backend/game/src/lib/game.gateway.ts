@@ -17,7 +17,7 @@ import { UserService } from '@ft-transcendence/libs-backend-user';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require("jsonwebtoken");
 
-@WebSocketGateway(3030, {cors: {origin: 'http://localhost:4200'}})
+@WebSocketGateway(3030, {cors: {origin: `http://${process.env.HOSTNAME}:${process.env.FRONTEND_PORT}`}})
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   constructor(

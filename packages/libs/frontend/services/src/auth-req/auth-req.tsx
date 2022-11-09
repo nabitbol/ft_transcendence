@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 
-const URL = "http://localhost:3333/auth/"//process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
+const URL = `http://${process.env['HOSTNAME']}:${process.env['BACKEND_PORT']}/auth/`//process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
 
 class AuthReqService {
   async login(user_pseudo: string, user_password: string) {
