@@ -12,7 +12,6 @@ export function MatchHistory(props: {name: string}) {
 
   const getAnswer = useCallback( async () => {
     try {
-      console.log(props.name);
       const response: MatchDto[] = await User.requestUserMatchInfo(props.name);
       setMatchInfo(response);
     } catch (err) {

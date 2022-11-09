@@ -21,14 +21,11 @@ export function PastGame(props: { name: string, game_info: MatchDto }) {
     try {
 
       const WinnerResponse: UserDto = await User.requestUserInfo(name);
-      console.log("WINNER:" + WinnerResponse);
       setWinnerInfo(WinnerResponse);
 
       const LoserResponse: UserDto = await User.requestUserInfo(name_j2);
       setLoserInfo(LoserResponse);
-      console.log("LOSER:" + LoserResponse);
 
-      console.log("One " + logged_username + " Two " + name)
       if (logged_username === name)
         setIsWinner(true);
       else

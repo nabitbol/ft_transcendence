@@ -24,7 +24,6 @@ export class UserService {
 
   public async getUserById(id: string): Promise<UserDto> {
     try {
-      console.log("Id");
       return await prisma.user.findFirst({
         where: {
           id: id,
@@ -37,7 +36,6 @@ export class UserService {
 
   public async getUserByEmail(email: string): Promise<UserDto> {
     try {
-      console.log("Imail");
       return await prisma.user.findFirst({
         where: {
           email: email,
@@ -50,7 +48,6 @@ export class UserService {
 
   public async getUserByName(name: string): Promise<UserDto> {
     try {
-      console.log("Name");
       return await prisma.user.findFirst({
         where: {
           name: name,
@@ -63,7 +60,6 @@ export class UserService {
 
   public async getUserByName42(name_42: string): Promise<UserDto> {
     try {
-      console.log("Name42");
       return await prisma.user.findFirst({
         where: {
           name_42: name_42,

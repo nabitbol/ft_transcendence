@@ -23,7 +23,6 @@ export class GameInstance
 
 	public startGame(players_name: {right: string, left: string}): void
 	{
-		console.log("Start game:" + players_name.left + ' VS ' + players_name.right);
 		if (this.gameInfo.has_started) {
 			return;
 		}
@@ -38,7 +37,6 @@ export class GameInstance
   
 	public async saveGameDisconnect(): Promise<MatchDto> 
 	{
-		console.log("DISCONNECT");
 		const matchInfo: MatchDto = new MatchDto();
 		matchInfo.players = [];
 		if(this.lostPlayer === this.gameInfo.players_name.left)
@@ -58,7 +56,6 @@ export class GameInstance
 		matchInfo.playersName = [this.gameInfo.players_name.left, this.gameInfo.players_name.right];
 		matchInfo.players[0] = (await this.userservice.getUserByName(this.gameInfo.players_name.right)).id;
 		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
-		console.log(matchInfo);
 		await this.matchservice.addMatches(matchInfo);
 		const playerWinner: UserDto = await this.userservice.getUserByName(matchInfo.winner);
 		const playerLoser: UserDto = await this.userservice.getUserByName(matchInfo.looser);
@@ -71,7 +68,6 @@ export class GameInstance
 
 	public async saveGame(): Promise<MatchDto> 
 	{
-		console.log("ENDGAME");
 		const matchInfo: MatchDto = new MatchDto();
 		matchInfo.players = [];
 		if(this.gameInfo.player_a_score > this.gameInfo.player_b_score)
@@ -92,7 +88,6 @@ export class GameInstance
 		matchInfo.playersName = [this.gameInfo.players_name.left, this.gameInfo.players_name.right];
 		matchInfo.players[0] = (await this.userservice.getUserByName(this.gameInfo.players_name.right)).id;
 		matchInfo.players[1] = (await this.userservice.getUserByName(this.gameInfo.players_name.left)).id;
-		console.log(matchInfo);
 		await this.matchservice.addMatches(matchInfo);
 		const playerWinner: UserDto = await this.userservice.getUserByName(matchInfo.winner);
 		const playerLoser: UserDto = await this.userservice.getUserByName(matchInfo.looser);
@@ -136,7 +131,6 @@ export class GameInstance
 				this.sendGameData();
 				await this.delay(15);
 			}
-			console.log("LOST PLAYER =" + this.lostPlayer);
 			if(this.lostPlayer)
 			{
 				this.sendMessage<ServerPayloads[ServerEvents.GameEnd]>(ServerEvents.GameEnd, {
