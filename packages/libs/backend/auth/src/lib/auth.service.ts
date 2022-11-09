@@ -102,6 +102,8 @@ export class AuthService {
         const retUserDto: ResponseUserDto = user;
 
         return retUserDto;
+      } else {
+        throw err;
       }
     }
   }

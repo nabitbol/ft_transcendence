@@ -5,7 +5,7 @@ services:
     container_name: postgres
     image: postgres:12.3-alpine
     restart: always
-    env_file: .env
+    env_file: ./.env
     networks:
       - backend-postgres
     expose:
@@ -15,34 +15,35 @@ services:
 
   frontend:
     hostname: ${HOSTNAME}
-    env_file: .env
     restart: always
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command:  npx nx serve apps-frontend --host=0.0.0.0  --port=${FRONTEND_PORT}
+    command:  npx nx serve apps-frontend --host=0.0.0.0 --port=${FRONTEND_PORT}
+    environment:
+      - HOSTNAME=${HOSTNAME},
+      - BACKEND_PORT=${BACKEND_PORT}
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
     networks:
       - backend-frontend
+    volumes:
+      - ./assets/img/user/:/app/assets/img/user/
 
   backend:
-    env_file: .env
     hostname: ${HOSTNAME}
     restart: always
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command: npm run backend:migrate:start --host=0.0.0.0 --port=${API_PORT}
+    command: npm run backend:migrate:start --host=0.0.0.0 --port=${BACKEND_PORT}
     ports:
-      - ${API_PORT}:${API_PORT}
+      - ${BACKEND_PORT}:${BACKEND_PORT}
       - ${SOCKET_CHAT}:${SOCKET_CHAT}
       - ${SOCKET_GAME}:${SOCKET_GAME}
     networks:
       - backend-postgres
       - backend-frontend
-    volumes:
-      - ./assets/img/user/:/app/assets/img/user/
 
 networks:
   backend-postgres:

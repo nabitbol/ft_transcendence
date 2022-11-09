@@ -26,7 +26,7 @@ export class ApiService {
     const client_id = process.env.CLIENT_ID; //process.env.CLIENT_ID
     const client_secret = process.env.CLIENT_SECRET; //process.env.CLIENT_SECRET
     const base_url = "https://api.intra.42.fr/oauth/token";
-    const redirect_uri = "http://localhost:4200/auth/api"; //process.env.PORT 
+    const redirect_uri = `http://${process.env.HOSTNAME}:${process.env.FRONTEND_PORT}/auth/api`; //process.env.PORT 
 
 
       return axios

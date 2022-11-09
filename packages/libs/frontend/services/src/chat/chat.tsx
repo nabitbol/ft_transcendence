@@ -3,7 +3,7 @@ import authHeader from "../auth-header/auth-header";
 import { RoomDto, UserDto } from "@ft-transcendence/libs-shared-types";
 import { Socket } from "socket.io-client";
 
-const URL = "http://localhost:3333/"; //process.env['REACT_APP_URL_TO_BACK'] ;
+const URL =  `http://${process.env['HOSTNAME']}:${process.env['BACKEND_PORT']}/`; //process.env['REACT_APP_URL_TO_BACK'] ;
 
 class chatServices {
   async requestRoomUsers(nameRoom: string): Promise<UserDto[]> {

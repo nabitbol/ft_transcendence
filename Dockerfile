@@ -1,5 +1,7 @@
 FROM node:19.0.1-alpine3.15
 
+ENV HOSTNAME=${HOSTNAME}
+
 WORKDIR /app
 
 COPY . .

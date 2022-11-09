@@ -3,6 +3,12 @@ import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { AppModule } from "./app/app.module";
 
+const hostname = process.env.HOSTNAME;
+const backendPort = process.env.BACKEND_PORT || 3333;
+const frontendPort = process.env.FRONTEND_PORT;
+const chatPort = process.env.SOCKET_CHAT;
+const gamePort = process.env.SOCKET_GAME;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -23,23 +29,24 @@ async function bootstrap() {
       "JWT-auth"
     )
     .build();
+    console.log(process.env.BACKEND_PORT)
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(docPrefix, app, document);
-  const port = process.env.PORT || 3333;
   const cors = await import("cors");
   const corsOptions = {
-    origin: "http://localhost:" + 4200,
+    origin: `http://${hostname}:` + frontendPort,
     credentials: true,
     optionSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
 
-  await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/`);
+  await app.listen(backendPort);
+  Logger.log(`🚀 Application is running on: http://${hostname}:${backendPort}/`);
   Logger.log(
-    `📄 Please find the api documentation on http://localhost:${port}/${docPrefix}`
+    `📄 Please find the api documentation on http://${hostname}:${backendPort}/${docPrefix}`
   );
-  Logger.log(`💬 The chat socket is listening on http://localhost:8080`);
+  Logger.log(`💬 The chat socket is listening on http://${hostname}:${chatPort}`);
+  Logger.log(`💬 The game socket is listening on http://${hostname}:${gamePort}`);
 }
 
 bootstrap();
