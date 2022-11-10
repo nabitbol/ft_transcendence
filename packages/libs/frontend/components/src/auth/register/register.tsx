@@ -116,7 +116,7 @@ const Register: React.FC = () => {
         )}
         {errors["user_password"] && errors["user_password"].type === "regex" && (
           <div className="alert alert-danger" role="alert">
-            This field must only contain alphanumeric characters.
+            This field must only contain alphanumeric or special ascii characters.
           </div>
         )}
         {errors["user_password"] && errors["user_password"].type === "number" && (
