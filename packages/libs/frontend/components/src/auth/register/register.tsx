@@ -9,6 +9,7 @@ import {
   vregex,
   vnumber,
   vmaj,
+  vregex_password,
 } from "@ft-transcendence/libs-frontend-services";
 
 const Register: React.FC = () => {
@@ -103,7 +104,7 @@ const Register: React.FC = () => {
             required: true,
             validate: {
               length: vpassword_length,
-              regex: vregex,
+              regex: vregex_password,
               number: vnumber,
               maj: vmaj,
             },
