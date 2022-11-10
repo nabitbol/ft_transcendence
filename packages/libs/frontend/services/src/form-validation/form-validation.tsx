@@ -33,6 +33,15 @@ export const vpassword_length = (value: string) => {
 };
 
 export const vregex = (value: string) => {
+  const re = new RegExp("^[a-zA-Z0-9_-]+$");
+  if (!re.test(value)) {
+    return (false);
+  }
+  else
+    return true;
+};
+
+export const vregex_password = (value: string) => {
   const re = new RegExp("^[a-zA-Z0-9!-/:-@[-`{-~]+$");
   if (!re.test(value)) {
     return (false);
