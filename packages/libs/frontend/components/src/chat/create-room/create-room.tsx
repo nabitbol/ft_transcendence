@@ -144,7 +144,7 @@ export function CreateRoom(props: CreateRoomProps) {
         )}
         {errors["room_password"] && errors["room_password"].type === "regex" && (
           <div className="alert alert-danger" role="alert">
-            This field must only contain alphanumeric characters.
+            This field must only contain alphanumeric or special ascii characters.
           </div>
         )}
         {errors["room_password"] && errors["room_password"].type === "number" && (

@@ -42,7 +42,7 @@ export const vregex = (value: string) => {
 };
 
 export const vregex_password = (value: string) => {
-  const re = new RegExp("^[a-zA-Z0-9!-/:-@[-`{-~]+$");
+  const re = new RegExp("^[a-zA-Z0-9_!-/:-@[-`{-~]+$");
   if (!re.test(value)) {
     return (false);
   }
