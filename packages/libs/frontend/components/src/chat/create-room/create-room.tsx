@@ -3,6 +3,7 @@ import {
   vnumber,
   vpassword_length,
   vregex,
+  vregex_password,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
 import { useContext, useEffect, useState } from "react";
@@ -130,7 +131,7 @@ export function CreateRoom(props: CreateRoomProps) {
               required: true,
               validate: {
                 length: vpassword_length,
-                regex: vregex,
+                regex: vregex_password,
                 number: vnumber,
               },
             })}
