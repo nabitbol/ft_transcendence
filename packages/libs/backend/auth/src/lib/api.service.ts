@@ -29,6 +29,8 @@ export class ApiService {
     const base_url = "https://api.intra.42.fr/oauth/token";
     const redirect_uri = `http://${process.env.NX_HOST_NAME}:${process.env.NX_FRONTEND_PORT}/auth/api`; //process.env.PORT 
 
+    try {
+
       const ret: any = await axios
       .post(base_url, {
         grant_type,
@@ -37,14 +39,13 @@ export class ApiService {
         code,
         redirect_uri,
       })
-      .catch (function (error){
+      return ret.data.access_token;
+    } catch (error) {
         if (error.response) {
           throw new UnauthorizedException("Invalid code/id/secret");
-          
-        }});
-      return ret.data.access_token;
+        };
+      }
   }
-
   async loginApi(access_token: string): Promise<UserDto> {
     const base_url = "https://api.intra.42.fr/v2/me";
 
