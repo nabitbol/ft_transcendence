@@ -29,9 +29,7 @@ export class ApiService {
     const base_url = "https://api.intra.42.fr/oauth/token";
     const redirect_uri = `http://${process.env.NX_HOST_NAME}:${process.env.NX_FRONTEND_PORT}/auth/api`; //process.env.PORT 
 
-    try {
-
-      const ret: any = await axios
+    const ret: any = await axios
       .post(base_url, {
         grant_type,
         client_id,
@@ -39,13 +37,14 @@ export class ApiService {
         code,
         redirect_uri,
       })
-      return ret.data.access_token;
-    } catch (error) {
+      .catch (function (error){
         if (error.response) {
           throw new UnauthorizedException("Invalid code/id/secret");
-        };
-      }
-  }
+
+        }});
+      return ret.data.access_token;
+    }
+
   async loginApi(access_token: string): Promise<UserDto> {
     const base_url = "https://api.intra.42.fr/v2/me";
 
@@ -108,7 +107,7 @@ export class ApiService {
     }
     const to_update: ResponseUserDto = ret;
     to_update.first_log = false;
-    this.usersService.updateUser(to_update.name, to_update);
+    await this.usersService.updateUser(to_update.name, to_update);
     ret.jwtToken = this.jwtService.sign(payload);
     return ret;
   }
