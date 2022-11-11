@@ -411,7 +411,7 @@ export class UserService {
   ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuth = status;
-    return this.updateUser(name, user);
+    return await this.updateUser(name, user);
   }
 
   async setTwoFactorAuthenticationSecret(
@@ -420,7 +420,7 @@ export class UserService {
   ): Promise<void> {
     const user: UserToUpdateDto = new UserToUpdateDto();
     user.doubleAuthSecret = secret;
-    return this.updateUser(name, user);
+    return await this.updateUser(name, user);
   }
 
   public async muteUser(muterId: string, muteId: string) {
