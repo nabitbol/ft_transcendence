@@ -9,6 +9,7 @@ import {
   vregex,
   vnumber,
   vmaj,
+  vregex_password,
 } from "@ft-transcendence/libs-frontend-services";
 
 const Register: React.FC = () => {
@@ -103,7 +104,7 @@ const Register: React.FC = () => {
             required: true,
             validate: {
               length: vpassword_length,
-              regex: vregex,
+              regex: vregex_password,
               number: vnumber,
               maj: vmaj,
             },
@@ -116,7 +117,7 @@ const Register: React.FC = () => {
         )}
         {errors["user_password"] && errors["user_password"].type === "regex" && (
           <div className="alert alert-danger" role="alert">
-            This field must only contain alphanumeric characters.
+            This field must only contain alphanumeric or special ascii characters.
           </div>
         )}
         {errors["user_password"] && errors["user_password"].type === "number" && (

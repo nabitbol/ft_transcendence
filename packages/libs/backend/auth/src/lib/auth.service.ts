@@ -43,7 +43,7 @@ export class AuthService {
       };
       const to_update: ResponseUserDto = user;
       to_update.first_log = false;
-      this.usersService.updateUser(to_update.name, to_update);
+      await this.usersService.updateUser(to_update.name, to_update);
       return result;
     } catch (err) {
       throw Error(err);

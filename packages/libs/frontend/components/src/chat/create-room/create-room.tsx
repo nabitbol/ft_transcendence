@@ -3,6 +3,7 @@ import {
   vnumber,
   vpassword_length,
   vregex,
+  vregex_password,
   vusername_length,
 } from "@ft-transcendence/libs-frontend-services";
 import { useContext, useEffect, useState } from "react";
@@ -130,7 +131,7 @@ export function CreateRoom(props: CreateRoomProps) {
               required: true,
               validate: {
                 length: vpassword_length,
-                regex: vregex,
+                regex: vregex_password,
                 number: vnumber,
               },
             })}
@@ -143,7 +144,7 @@ export function CreateRoom(props: CreateRoomProps) {
         )}
         {errors["room_password"] && errors["room_password"].type === "regex" && (
           <div className="alert alert-danger" role="alert">
-            This field must only contain alphanumeric characters.
+            This field must only contain alphanumeric or special ascii characters.
           </div>
         )}
         {errors["room_password"] && errors["room_password"].type === "number" && (

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import axios from "axios";
 import { firstValueFrom, map } from "rxjs";
 import { HttpService } from "@nestjs/axios";
@@ -21,15 +21,14 @@ export class ApiService {
     private jwtService: JwtService
   ) {}
 
-  async postApi(code: string): Promise<string> {
+  async postApi(code: string): Promise <string> {
     const grant_type = "authorization_code";
     const client_id = process.env.CLIENT_ID; //process.env.CLIENT_ID
     const client_secret = process.env.CLIENT_SECRET; //process.env.CLIENT_SECRET
     const base_url = "https://api.intra.42.fr/oauth/token";
     const redirect_uri = "http://localhost:4200/auth/api"; //process.env.PORT 
 
-
-      return axios
+    const ret: any = await axios
       .post(base_url, {
         grant_type,
         client_id,
@@ -37,10 +36,13 @@ export class ApiService {
         code,
         redirect_uri,
       })
-      .then((response) => {
-        return response.data.access_token;
-      });
-  }
+      .catch (function (error){
+        if (error.response) {
+          throw new UnauthorizedException("Invalid code/id/secret");
+
+        }});
+      return ret.data.access_token;
+    }
 
   async loginApi(access_token: string): Promise<UserDto> {
     const base_url = "https://api.intra.42.fr/v2/me";
@@ -104,7 +106,7 @@ export class ApiService {
     }
     const to_update: ResponseUserDto = ret;
     to_update.first_log = false;
-    this.usersService.updateUser(to_update.name, to_update);
+    await this.usersService.updateUser(to_update.name, to_update);
     ret.jwtToken = this.jwtService.sign(payload);
     return ret;
   }
