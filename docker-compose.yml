@@ -21,13 +21,11 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command:  npx nx serve apps-frontend --host=${NX_HOST_NAME} --port=${NX_FRONTEND_PORT}
+    command: npx nx serve apps-frontend --host=${CONTAINER_HOST} --port=${NX_FRONTEND_PORT}
     ports:
       - ${NX_FRONTEND_PORT}:${NX_FRONTEND_PORT}
     networks:
       - backend-frontend
-    volumes:
-      - ./assets/img/:/app/assets/img/:wr
 
   backend:
     env_file:
@@ -37,7 +35,7 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command: npm run backend:migrate:start --host=${NX_HOST_NAME} --port=${NX_BACKEND_PORT}
+    command: npm run backend:migrate:start --host=${CONTAINER_HOST} --port=${NX_BACKEND_PORT}
     ports:
       - ${NX_BACKEND_PORT}:${NX_BACKEND_PORT}
       - ${NX_SOCKET_CHAT}:${NX_SOCKET_CHAT}
@@ -46,7 +44,7 @@ services:
       - backend-postgres
       - backend-frontend
     volumes:
-      - ./assets/img/:/app/assets/img/:wr
+      - ./assets/img/:/app/assets/img/
 
 networks:
   backend-postgres:
