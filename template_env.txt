@@ -1,4 +1,4 @@
-HOME_PATH=/mnt/nfs/homes/nabitbol/ft_transcendence
+HOME_PATH=
 
 NX_CONTAINER_FILES_PATH=/app
 
