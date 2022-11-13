@@ -4,7 +4,7 @@ import { AchievementDto } from "@ft-transcendence/libs-shared-types";
 
 export default function Achievement(props: { achievement: AchievementDto, user_achievement: AchievementDto[] }) {
   let i = 0;
-  let bool: boolean = false;
+  let bool = false;
   if (props.user_achievement != undefined)
   {
     while (props.user_achievement[i])

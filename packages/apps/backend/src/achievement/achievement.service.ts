@@ -23,8 +23,13 @@ const Achievement3: AchievementDto = {
 };
 
 const seedAchievement = async () => {
+  const tmp: AchievementDto[] = [Achievement1, Achievement2, Achievement3];
+
+  const check_exist = await prisma.achievement.findFirst();
+  if(check_exist)
+    return;
   await prisma.achievement.createMany({
-    data: [Achievement1, Achievement2, Achievement3],
+    data: tmp,
   });
 };
 
