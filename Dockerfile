@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts-alpine3.16
 
 # Add env variable as args
 ARG NX_CONTAINER_FILES_PATH
