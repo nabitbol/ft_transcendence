@@ -1,15 +1,16 @@
 .button_play {
-	position: relative;
-	color: white;
-	height: 10vh;
-	min-width: 120px;
-	width: 10vw;
-	border-radius: 5px;
-	background-color: rgb(100, 0, 50);
-	color: white;
-	border: 2px solid rgb(100, 0, 50);
+    position: relative;
+    color: white;
+    height: 10vh;
+    min-width: 120px;
+    width: 10vw;
+    border-radius: 5px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    border: 2px solid rgb(100, 0, 50);
 }
 
 .button_play:hover {
-	background-color: darkgrey;
+    background-color: rgb(136, 1, 69);
+    color: white;
 }

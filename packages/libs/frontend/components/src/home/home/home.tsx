@@ -1,4 +1,5 @@
 import classes from "./home.module.css";
+import starsClasses from "../../stars.module.css"
 import {
   PlayButton,
   SpectateGame,
@@ -40,6 +41,10 @@ function Home() {
 
   return (
     <div className={classes["home_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         {userEdit && <FirstLog />}
         {userEdit && <Backdrop closeBackdrop={onCloseEdit} />}

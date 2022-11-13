@@ -1,16 +1,16 @@
 .div {
     height: 100px;
-    background-color: grey;
+    background-color: gainsboro;
     position: relative;
     border: 2px solid black;
 }
 
 .color {
     height: 100px;
-    background-color: rgb(80, 79, 79);
+    background-color: gainsboro;
 }
 
-.img{
+.img {
     z-index: 2;
     position: absolute;
     top: 50%;
@@ -18,7 +18,7 @@
     transform: translate(-50%, -50%);
 }
 
-.p_title{
+.p_title {
     z-index: 2;
     position: absolute;
     top: 30%;
@@ -26,7 +26,7 @@
     transform: translate(-50%, -50%);
 }
 
-.p_description{
+.p_description {
     z-index: 2;
     position: absolute;
     top: 70%;
@@ -39,11 +39,11 @@
     transform: rotate(45deg);
     height: 25px;
     width: 12px;
-    margin-left: 60%; 
+    margin-left: 60%;
     border-bottom: 7px solid #78b13f;
     border-right: 7px solid #78b13f;
     z-index: 2;
     position: absolute;
     top: 30%;
     left: 30%;
-  }
+}

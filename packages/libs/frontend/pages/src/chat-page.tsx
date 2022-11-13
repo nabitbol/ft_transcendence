@@ -3,7 +3,7 @@ import styles from "./chat-page.module.css";
 
 function ChatPage() {
   return (
-    <div>
+    <div className={styles["body"]}>
       <div className={styles["navBar"]}>
         <AllIcon />
       </div>

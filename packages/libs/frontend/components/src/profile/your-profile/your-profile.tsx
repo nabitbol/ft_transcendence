@@ -1,4 +1,5 @@
 import classes from "./your-profile.module.css";
+import starsClasses from "../../stars.module.css"
 import {
   QrModule,
   AllIcon,
@@ -63,6 +64,10 @@ function YourProfile(props) {
 
   return !userInfo ? null : (
     <div className={classes["profile_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["profile_content"]}>

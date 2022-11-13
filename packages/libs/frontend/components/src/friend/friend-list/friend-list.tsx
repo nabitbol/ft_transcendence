@@ -1,4 +1,5 @@
 import classes from "./friend-list.module.css";
+import starsClasses from "../../stars.module.css";
 import { Friend } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
 import { User } from "@ft-transcendence/libs-frontend-services"
@@ -50,6 +51,10 @@ export function FriendList() {
 
   return !friend_ID ? null : (
     <div className={classes["friendlist_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["friendlist_content"]}>

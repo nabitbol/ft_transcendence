@@ -1,37 +1,42 @@
 .auth_btn {
-	font: inherit;
-	padding: 0.5rem 1.5rem;
-	border-radius: 4px;
-	background-color: rgb(100, 0, 50);
-	color: white;
-	border: 2px solid rgb(100, 0, 50);
-	margin-top: 10px;
-	width: 50%;
-	margin-left: 25%;
-	font-size: 20px;
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    border: 2px solid rgb(100, 0, 50);
+    margin-top: 10px;
+    width: 50%;
+    margin-left: 25%;
+    font-size: 20px;
+}
+
+.auth_btn:hover {
+    background-color: rgb(136, 1, 69);
+    color: white;
 }
 
 .auth_span {
     display: table;
     margin: 0 auto;
-	color: white;
-	margin-top: 10px;
-	font-size: 16px;
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
 }
 
 .auth_box {
-	width: 40%;
-	margin: 5%;
-	float: right;
-	position: relative;
-	top: 30vh;
+    width: 40%;
+    margin: 5%;
+    float: right;
+    position: relative;
+    top: 30vh;
 }
 
 .welcome_title {
-	font-family:'Courier New', Courier, monospace;
-	font-size: 60px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 60px;
     display: table;
     margin: 0 auto;
-	color: white;
-	margin-bottom: 50px;
+    color: white;
+    margin-bottom: 50px;
 }

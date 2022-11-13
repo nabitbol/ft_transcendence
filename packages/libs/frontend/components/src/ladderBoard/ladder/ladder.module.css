@@ -1,64 +1,62 @@
 .button {
-	background-color: grey;
-	color: white;
-	height: 50px;
-	width: 100px;
-	border-radius: 5px;
-	margin: 10px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    height: 50px;
+    width: 100px;
+    border-radius: 5px;
+    margin: 10px;
+    border: rgb(100, 0, 50) solid;
 }
 
 .blur_component {
-	-webkit-backdrop-filter: blur(15px);
-	backdrop-filter: blur(15px);
-	height: 100vh;
-	width: 100%;
-	overflow:auto;
-	background: linear-gradient(to top right, rgb(0, 0, 0, 0), black);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    height: 100vh;
+    width: 100%;
+    overflow: auto;
+    background: linear-gradient(to top right, rgb(0, 0, 0, 0), black);
 }
 
 .button:hover {
-	background-color: darkgrey;
+    transform: translateY(-4%);
+    background-color: rgb(136, 1, 69);
+    color: white;
 }
 
 .button_container {
-	display: table;
-	margin: 0 auto;
-	margin-bottom: 10px;
+    display: table;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .h2_title {
-	display: table;
-	margin: 0 auto;
-	font-size: 50px;
-	margin-bottom: 25px;
-	color: white;
+    display: table;
+    margin: 0 auto;
+    font-size: 50px;
+    margin-bottom: 25px;
+    color: white;
 }
 
 .ladder_list {
-	width: 100%;
-	max-height: 60vh;
-	border-radius: 10px;
-	background-color: grey;
-	overflow-y: scroll;
+    width: 100%;
+    max-height: 60vh;
+    border-radius: 10px;
+    background-color: gainsboro;
+    overflow-y: scroll;
 }
 
 .ladder_content {
-	position: relative;
-	width: 60%;
-	height: 65%;
-	max-width: 600px;
-	min-width: 500px;
-	display: table;
-	margin: 0 auto;
-	top: 3%;
+    position: relative;
+    width: 60%;
+    height: 65%;
+    max-width: 600px;
+    min-width: 500px;
+    display: table;
+    margin: 0 auto;
+    top: 3%;
 }
 
 .ladder_container {
-	background-color: whitesmoke;
-	height: 100vh;
-	overflow-y: auto;
-	background-image: url("../../../../../../../assets/img/background.png");
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
+    height: 100vh;
+    overflow: hidden;
 }

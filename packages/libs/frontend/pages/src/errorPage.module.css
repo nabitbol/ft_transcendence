@@ -1,17 +1,23 @@
 .error {
-	font-size: 30px;
-	color: black;
+    font-size: 30px;
+    color: white;
 }
 
 .btn {
-	font: inherit;
-	padding: 0.5rem 1.5rem;
-	border-radius: 4px;
-	background-color: rgb(167, 169, 170);
-	color: rgb(0, 0, 0);
-	border: 2px solid rgb(171, 171, 171);
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 100%;
-	max-width: 200px;
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    border: 2px solid rgb(100, 0, 50);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.btn:hover {
+    transform: translateY(-4%);
+    background-color: rgb(136, 1, 69);
+    color: white;
 }

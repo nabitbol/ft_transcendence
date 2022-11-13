@@ -1,4 +1,5 @@
 import classes from "./ladder.module.css";
+import starsClasses from "../../stars.module.css"
 import { GeneralRank, FriendRank, AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { useState } from "react";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
@@ -38,6 +39,10 @@ export function Ladder() {
 
   return !friend_ID ? null : (
     <div className={classes["ladder_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["ladder_content"]}>
