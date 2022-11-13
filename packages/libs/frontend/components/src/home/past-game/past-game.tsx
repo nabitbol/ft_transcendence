@@ -50,7 +50,7 @@ export function PastGame(props: { name: string, game_info: MatchDto }) {
         <div className={classes["fpile"]}>
           <div className={classes["div_j1"]}>
               <img
-                src={getPathToImage(loserInfo.image)}
+                src={getPathToImage(winnerInfo.image)}
                 height="50"
                 width="50"
                 className={classes["img_j1"]}
@@ -77,7 +77,7 @@ export function PastGame(props: { name: string, game_info: MatchDto }) {
         <div className={classes["fpile"]}>
           <div className={classes["div_j1"]}>
               <img
-                src={getPathToImage(winnerInfo.image)}
+                src={getPathToImage(loserInfo.image)}
                 height="50"
                 width="50"
                 className={classes["img_j1"]}
