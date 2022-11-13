@@ -287,6 +287,7 @@ export class UserController {
     try {
       const response: AchievementDto[] =
         await this.userService.getAchievement();
+      console.log(response);
       return { response: response };
     } catch (err) {
       return new UnauthorizedException(err);
