@@ -1,60 +1,62 @@
 .twofa {
-	font: inherit;
-	color: black;
-	position: fixed;
-	padding: 2rem;
-	z-index: 10;
-	font-size: 20px;
-	background-color: whitesmoke;
-	width: 60%;
-	max-width: 400px;
-	top: 30%;
-	left: 0;
-	right: 0;
-	border-radius: 10px;
-	display: table;
-	margin: 0 auto;
+    font: inherit;
+    color: black;
+    position: fixed;
+    padding: 2rem;
+    z-index: 10;
+    font-size: 20px;
+    background-color: whitesmoke;
+    width: 60%;
+    max-width: 400px;
+    top: 30%;
+    left: 0;
+    right: 0;
+    border-radius: 10px;
+    display: table;
+    margin: 0 auto;
 }
 
 .twofa_label {
-	display: table;
-	margin: 0 auto;
-	margin-top: 10px;
-	margin-bottom: 10px;
+    display: table;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .twofa_btn {
-	font: inherit;
-	padding: 0.5rem 1.5rem;
-	border-radius: 5px;
-	background-color: rgb(100, 0, 50);
-	color: white;
-	border: 2px solid rgb(100, 0, 50);
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 50%;
-	margin-left: 25%;
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    border: 2px solid rgb(100, 0, 50);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50%;
+    margin-left: 25%;
 }
 
+.twofa_btn:hover {
+    transform: translateY(-4%);
+}
 
 .twofa_input {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: table;
-	margin: 5% auto;
-	width: 80%;
-	border: 2px solid black;
-	border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    margin: 5% auto;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
-
 .twofa_input_red {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: table;
-	margin: 5% auto;
-	width: 80%;
-	border-radius: 3px;
-	background-color: pink;
-	border: 2px solid rgb(151, 13, 13);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    margin: 5% auto;
+    width: 80%;
+    border-radius: 3px;
+    background-color: pink;
+    border: 2px solid rgb(151, 13, 13);
 }

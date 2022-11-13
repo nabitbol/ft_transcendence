@@ -1,4 +1,5 @@
 import classes from "./friend-request-list.module.css";
+import starsClasses from "../../stars.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { User } from "@ft-transcendence/libs-frontend-services";
@@ -25,6 +26,10 @@ export function FriendRequestList() {
 
   return !friendRequest_ID ? null : (
     <div className={classes["friendrequest_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["friendrequest_content"]}>

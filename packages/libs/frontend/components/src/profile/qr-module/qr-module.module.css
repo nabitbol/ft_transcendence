@@ -1,56 +1,61 @@
 .qr_module_form {
-	font: inherit;
-	color: black;
-	padding: 2rem;
-	font-size: 20px;
-	background-color: gainsboro;
-	border-radius: 10px;
-	margin-inline: 30px;
-	margin-top: 30px;
-	border: 2px solid black;
-	float: left;
+    font: inherit;
+    color: black;
+    padding: 2rem;
+    font-size: 20px;
+    background-color: gainsboro;
+    border-radius: 10px;
+    margin-inline: 30px;
+    margin-top: 30px;
+    border: 2px solid black;
+    float: left;
 }
 
 .qr_module_label {
-	display: table;
-	margin: 0 auto;
-	font-size: 20px;
-	margin-left: 15px;
+    display: table;
+    margin: 0 auto;
+    font-size: 20px;
+    margin-left: 15px;
 }
 
 .qr_module_btn {
-	font: inherit;
-	padding: 0.5rem 1.5rem;
-	border-radius: 4px;
-	background-color: rgb(100, 0, 50);
-	color: white;
-	border: 2px solid rgb(100, 0, 50);
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 100%;
-	max-width: 200px;
-	display: table;
-	margin: 0 auto;
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    background-color: rgb(100, 0, 50);
+    color: white;
+    border: 2px solid rgb(100, 0, 50);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 200px;
+    display: table;
+    margin: 0 auto;
+}
+
+.qr_module_btn:hover {
+    transform: translateY(-4%);
+    background-color: rgb(136, 1, 69);
+    color: white;
 }
 
 .qr_module_input {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: table;
-	margin: 5% auto;
-	width: 80%;
-	border: 2px solid black;
-	border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    margin: 5% auto;
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
-
 .qr_module_input_red {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: table;
-	margin: 5% auto;
-	width: 80%;
-	border-radius: 3px;
-	background-color: pink;
-	border: 2px solid rgb(151, 13, 13);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: table;
+    margin: 5% auto;
+    width: 80%;
+    border-radius: 3px;
+    background-color: pink;
+    border: 2px solid rgb(151, 13, 13);
 }

@@ -2,6 +2,7 @@ import classes from "./achievement-list.module.css";
 import Achievement from "../achievement/achievement";
 import { AllIcon } from "@ft-transcendence/libs-frontend-components";
 import { useCallback, useEffect } from "react";
+import starsClasses from "../../stars.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthReq, User } from "@ft-transcendence/libs-frontend-services"
@@ -33,6 +34,10 @@ export function AchievementList() {
 
   return !achievement_ID ? null :(
     <div className={classes["achievement_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["achievement_content"]}>

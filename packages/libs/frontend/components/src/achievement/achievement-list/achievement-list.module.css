@@ -1,4 +1,4 @@
-.h2_title{
+.h2_title {
     display: table;
     margin: 0 auto;
     font-size: 50px;
@@ -10,18 +10,15 @@
     width: 100%;
     max-height: 60vh;
     border-radius: 10px;
-    box-shadow: 0px 5px 5px lightgray;
-    background-color: grey;
     overflow-y: scroll;
 }
 
 .blur_component {
-	-webkit-backdrop-filter: blur(15px);
-	backdrop-filter: blur(15px);
-	height: 100vh;
-	width: 100%;
-	overflow:auto;
-	background: linear-gradient(to top right, rgb(0, 0, 0, 0), black);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    height: 100vh;
+    width: 100%;
+    overflow: auto;
 }
 
 .achievement_content {
@@ -36,11 +33,6 @@
 }
 
 .achievement_container {
-	background-color: whitesmoke;
-	height: 100vh;
-	overflow-y: auto;
-	background-image: url("../../../../../../../assets/img/background.png");
-	background-size: cover;
-	background-position: center center;
-	background-repeat: no-repeat;
+    height: 100vh;
+    overflow: hidden;
 }

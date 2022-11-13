@@ -1,4 +1,5 @@
 import classes from "./profile.module.css";
+import starsClasses from "../../stars.module.css";
 import {
   AllIcon,
   ProfileStats,
@@ -12,6 +13,7 @@ import { User } from "@ft-transcendence/libs-frontend-services";
 import { useNavigate } from "react-router-dom";
 
 function Profile(props) {
+  
   const [userInfo, setUserInfo] = useState<UserDto>();
   const [userWinrate, setUserWinrate] = useState<number>();
   const [user_achievement, setUserAchievement] = useState<string>(undefined);
@@ -50,6 +52,10 @@ function Profile(props) {
 
   return !userInfo ? null : (
     <div className={classes["profile_container"]}>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
+      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <div className={classes["blur_component"]}>
         <AllIcon />
         <div className={classes["profile_content"]}>
