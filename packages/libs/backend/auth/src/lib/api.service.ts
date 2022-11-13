@@ -106,6 +106,7 @@ export class ApiService {
         sub: oldUser.id,
       };
       ret = oldUser;
+      ret.first_log = false;
     }
 	ret.jwtToken = this.jwtService.sign(payload);
 	const result: ResponseUserDto = {
