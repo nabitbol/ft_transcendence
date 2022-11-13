@@ -14,7 +14,7 @@ export function MessageInput(props: MessageInputProps) {
 
   const handleSend = (e) => {
     e.preventDefault();
-    if(newMessage && newMessage.length !== 0)
+    if (newMessage && newMessage.length !== 0)
       socketChat.emit("client:sendmessage", newMessage);
     setNewMessage("");
   };
@@ -27,20 +27,17 @@ export function MessageInput(props: MessageInputProps) {
   }, [listenerSendMessageError]);
 
   return (
-    <div className={styles["chatSendBox"]}>
+    <form className={styles["chatSendBox"]} onSubmit={handleSend}>
       <textarea
         className={styles["chatMessageInput"]}
         placeholder="Write your newMessage here..."
         onChange={(e) => setNewMessage(e.target.value)}
         value={newMessage}
       ></textarea>
-      <button
-        className={styles["chatSubmitButton"]}
-        onClick={(e) => handleSend(e)}
-      >
+      <button type="submit" className={styles["chatSubmitButton"]}>
         Send
       </button>
-    </div>
+    </form>
   );
 }
 
