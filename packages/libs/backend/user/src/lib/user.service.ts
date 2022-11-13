@@ -362,7 +362,10 @@ export class UserService {
 
   public async changeImage(file: any, user: UserDto) {
     const path: string =
-      process.cwd() + "/assets/img/user/" + user.name + ".png";
+      process.env.NX_CONTAINER_FILES_PATH +
+      "/assets/img/user/" +
+      user.name +
+      ".png";
     const img = file["base64"];
     const data = img.replace(/^data:image\/\w+;base64,/, "");
     const buf = Buffer.from(data, "base64");

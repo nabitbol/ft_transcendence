@@ -2,7 +2,8 @@
 NX_API_URL=
 
 # SHARED
-NX_HOST_NAME=e1r3p7.clusters.42paris.fr
+NX_HOST_NAME= #hostname (exemple localhost)
+CONTAINER_HOST=/app
 NX_SOCKET_GAME=3030
 NX_SOCKET_CHAT=8080
 
