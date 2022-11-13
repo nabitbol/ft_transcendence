@@ -7,6 +7,7 @@ import {
   JwtDto,
 } from "@ft-transcendence/libs-shared-types";
 import prisma from "@ft-transcendence/libs-backend-prisma-client";
+import { Room_Role, Room_Status } from "@prisma/client";
 import * as fs from "fs";
 import { JwtService } from "@nestjs/jwt";
 
@@ -513,6 +514,33 @@ export class UserService {
         .muteBy();
     } catch (err) {
       throw Error("Couldn't find users");
+    }
+  }
+
+  public async updateConv(oldName:string, newName:string) {
+    try {
+      await prisma.room.updateMany({
+        where: {
+          status: Room_Status.CONVERSATION,
+          convName1: oldName
+        },
+        data: {
+          convName1: newName,
+          updated_at: new Date(),
+        },
+      });
+      await prisma.room.updateMany({
+        where: {
+          status: Room_Status.CONVERSATION,
+          convName2: oldName
+        },
+        data: {
+          convName2: newName,
+          updated_at: new Date(),
+        },
+      });
+    } catch (err) {
+      throw Error("Unable to update conversation");
     }
   }
 }

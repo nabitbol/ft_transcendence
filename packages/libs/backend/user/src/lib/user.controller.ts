@@ -333,6 +333,7 @@ export class UserController {
       throw new NotFoundException(
         "This username is not associated with any account."
       );
+    this.userService.updateConv(user.name, request.name);
     return await this.userService.changeName(request.name, user);
   }
 }
