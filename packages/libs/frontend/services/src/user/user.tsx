@@ -190,7 +190,6 @@ class UserService {
           headers: authHeader(),
         }
       );
-      console.log(ret.data)
       return ret.data.response;
     } catch (err) {
       throw Error(err);

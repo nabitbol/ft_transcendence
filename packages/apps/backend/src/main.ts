@@ -10,7 +10,6 @@ const frontendPort = process.env.NX_FRONTEND_PORT;
 const chatPort = process.env.NX_SOCKET_CHAT;
 const gamePort = process.env.NX_SOCKET_GAME;
 
-console.log(process.env);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
