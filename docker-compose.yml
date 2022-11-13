@@ -27,7 +27,7 @@ services:
     networks:
       - backend-frontend
     volumes:
-      - images:/app/assets/img
+      - images:${NX_CONTAINER_FILES_PATH}/assets/img
 
   backend:
     env_file:
@@ -46,7 +46,7 @@ services:
       - backend-postgres
       - backend-frontend
     volumes:
-      - images:/app/assets/img:rw
+      - images:${NX_CONTAINER_FILES_PATH}/assets/img:rw
 
 networks:
   backend-postgres:
