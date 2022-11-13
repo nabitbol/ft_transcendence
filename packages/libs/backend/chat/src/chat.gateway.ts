@@ -28,7 +28,7 @@ import { v4 } from "uuid";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require("jsonwebtoken");
 
-@WebSocketGateway(8080, {
+@WebSocketGateway(+process.env.NX_SOCKET_CHAT, {
   cors: {
     origin: ["https://hoppscotch.io", `http://${process.env.NX_HOST_NAME}:${process.env.NX_FRONTEND_PORT}`],
     credentials: true,

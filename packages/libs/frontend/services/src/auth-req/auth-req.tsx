@@ -34,12 +34,16 @@ class AuthReqService {
   }
 
   async sendApiCode(code: string) {
-    return await axios.get(URL + "login/api?code=" + code).then((response) => {
-      if (response.data)
-        localStorage.setItem("userdata", JSON.stringify(response.data));
-      return response.data;
-    });
-  }
+    const ret: any = await axios.get(URL + "login/api?code=" + code)
+    .catch (function (error){
+      if (error.response) {
+        throw new Error(error.response);
+      }});
+      if (ret.data) {
+        localStorage.setItem("userdata", JSON.stringify(ret.data));
+      }
+      return ret.data;
+    }
 
   async requestQr(): Promise<any> {
     try {

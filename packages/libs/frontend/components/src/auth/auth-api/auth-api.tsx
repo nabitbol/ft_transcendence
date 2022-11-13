@@ -7,12 +7,19 @@ const AuthApi = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const code = searchParams.get("code");
-    AuthReq.sendApiCode(code).then(() => {
+  const handleLogin = async () => {
+    try{
+      const code = searchParams.get("code");
+      await AuthReq.sendApiCode(code).then(() => {
       navigate("/home");
       window.location.reload();
     });
+    }
+    catch (err)
+    {
+      navigate("/error");
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
