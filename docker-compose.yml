@@ -26,6 +26,8 @@ services:
       - ${NX_FRONTEND_PORT}:${NX_FRONTEND_PORT}
     networks:
       - backend-frontend
+    volumes:
+      - images:/app/assets/img
 
   backend:
     env_file:
@@ -44,12 +46,19 @@ services:
       - backend-postgres
       - backend-frontend
     volumes:
-      - ./assets/img/:/app/assets/img/
+      - images:/app/assets/img:rw
 
 networks:
   backend-postgres:
+    external: false
   backend-frontend:
+    external: false
 
 volumes:
   postgres:
-  backend:
+  images:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME_PATH}/assets/img

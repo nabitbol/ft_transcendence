@@ -8,3 +8,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NX_CONTAINER_FILES_PATH=${NX_CONTAINER_FILES_PATH}
