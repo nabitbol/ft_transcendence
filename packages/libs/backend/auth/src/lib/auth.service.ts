@@ -42,7 +42,7 @@ export class AuthService {
         doubleAuth: user.doubleAuth,
         name: user.name,
       };
-      const to_update: ResponseUserDto = user;
+      const to_update: UserDto = user;
       to_update.first_log = false;
       await this.usersService.updateUser(to_update.name, to_update);
       return result;
