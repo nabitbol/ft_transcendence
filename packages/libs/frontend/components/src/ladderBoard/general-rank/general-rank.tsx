@@ -7,10 +7,6 @@ function GeneralRank(props: { user: UserDto; }) {
 
   return (
     <div className={classes['div']}>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <h2 className={classes['h2_rank']}>
         <strong>{props.user.ladder_level}</strong>
       </h2>

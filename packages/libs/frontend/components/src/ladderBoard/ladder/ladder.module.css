@@ -9,8 +9,6 @@
 }
 
 .blur_component {
-    -webkit-backdrop-filter: blur(15px);
-    backdrop-filter: blur(15px);
     height: 100vh;
     width: 100%;
     overflow: auto;
@@ -42,7 +40,8 @@
     max-height: 60vh;
     border-radius: 10px;
     background-color: gainsboro;
-    overflow-y: scroll;
+    overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .ladder_content {
