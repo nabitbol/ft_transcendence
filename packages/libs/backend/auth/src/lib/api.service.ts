@@ -24,8 +24,8 @@ export class ApiService {
 
   async postApi(code: string): Promise <string> {
     const grant_type = "authorization_code";
-    const client_id = process.env.NX_CLIENT_ID; //process.env.CLIENT_ID
-    const client_secret = process.env.NX_CLIENT_SECRET; //process.env.CLIENT_SECRET
+    const client_id = process.env.NX_CLIENT_ID;
+    const client_secret = process.env.NX_CLIENT_SECRET;
     const base_url = "https://api.intra.42.fr/oauth/token";
     const redirect_uri = `http://${process.env.NX_HOST_NAME}:${process.env.NX_FRONTEND_PORT}/auth/api`; //process.env.PORT 
 
@@ -39,7 +39,7 @@ export class ApiService {
       })
       .catch (function (error){
         if (error.response) {
-          throw new UnauthorizedException("Invalid code/id/secret");
+          throw new UnauthorizedException(error);
 
         }});
       return ret.data.access_token;
@@ -89,6 +89,8 @@ export class ApiService {
       newUser.name_42 = registerDto.name;
       newUser.email = registerDto.email;
       newUser.image = "utilisateur";
+	  newUser.first_log = true;
+	  newUser.doubleAuth = false;
       await this.usersService.addUser(newUser);
       payload = {
         name: newUser.name,
@@ -97,18 +99,24 @@ export class ApiService {
       };
       ret = newUser;
     } else {
-      const oldUser = await this.usersService.getUserByName42(registerDto.name);
-      payload = {
+		const oldUser = await this.usersService.getUserByName42(registerDto.name);
+		payload = {
         name: oldUser.name,
         TwoFa_auth: newUser.doubleAuth,
         sub: oldUser.id,
       };
       ret = oldUser;
     }
-    const to_update: ResponseUserDto = ret;
+	ret.jwtToken = this.jwtService.sign(payload);
+	const result: ResponseUserDto = {
+        first_log: ret.first_log,
+        jwtToken: ret.jwtToken,
+        doubleAuth: ret.doubleAuth,
+        name: ret.name,
+      };
+    const to_update: UserDto = await this.usersService.getUserByName42(ret.name);
     to_update.first_log = false;
     await this.usersService.updateUser(to_update.name, to_update);
-    ret.jwtToken = this.jwtService.sign(payload);
-    return ret;
+    return result;
   }
 }

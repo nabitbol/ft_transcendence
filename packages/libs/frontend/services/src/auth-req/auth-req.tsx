@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "../auth-header/auth-header";
-import { UserDto } from "@ft-transcendence/libs-shared-types";
+import { ResponseUserDto, UserDto } from "@ft-transcendence/libs-shared-types";
 
 const URL = `http://${process.env['NX_HOST_NAME']}:${process.env['NX_BACKEND_PORT']}/auth/`//process.env['REACT_APP_URL_TO_BACK'] + "/auth/";
 
@@ -34,12 +34,13 @@ class AuthReqService {
   }
 
   async sendApiCode(code: string) {
-    const ret: any = await axios.get(URL + "login/api?code=" + code)
+    const ret : any = await axios.get(URL + "login/api?code=" + code)
     .catch (function (error){
       if (error.response) {
         throw new Error(error.response);
       }});
       if (ret.data) {
+		const tmp: ResponseUserDto = ret.data;
         localStorage.setItem("userdata", JSON.stringify(ret.data));
       }
       return ret.data;
