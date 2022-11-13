@@ -21,7 +21,7 @@ function Profile(props) {
     try {
       await User.updateUserAchievement();
       const response_user: AchievementDto[] =
-        await User.requestAchievement(props.name);
+        await User.requestUserAchievement(props.name);
       let tmp = "";
       let i = 0;
       if (!response_user[i]) tmp = "none";

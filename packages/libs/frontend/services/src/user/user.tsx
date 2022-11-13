@@ -181,10 +181,11 @@ class UserService {
     }
   }
 
-  async requestAchievement(name: string): Promise<AchievementDto[]> {
+  async requestAchievement(): Promise<AchievementDto[]> {
+    const user_info: any = AuthReq.getCurrentUser();
     try {
       const ret = await axios.get(
-        URL + "user/" + name + "/user_achievement",
+        URL + "user/" + user_info.name + "/achievement",
         {
           headers: authHeader(),
         }
@@ -195,11 +196,10 @@ class UserService {
     }
   }
 
-  async requestUserAchievement(): Promise<AchievementDto[]> {
-    const user_info: any = AuthReq.getCurrentUser();
+  async requestUserAchievement(name: string): Promise<AchievementDto[]> {
     try {
       const ret = await axios.get(
-        URL + "user/" + user_info.name + "/user_achievement",
+        URL + "user/" + name + "/user_achievement",
         {
           headers: authHeader(),
         }
