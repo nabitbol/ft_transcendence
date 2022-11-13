@@ -271,6 +271,7 @@ export class UserController {
     try {
       const achievement: AchievementDto[] =
         await this.userService.getAchievement();
+      console.log("POMME" + achievement);
       const user: UserDto = await this.userService.getUserByName(param.name);
       await this.userService.updateUserAchievement(achievement, user);
     } catch (err) {

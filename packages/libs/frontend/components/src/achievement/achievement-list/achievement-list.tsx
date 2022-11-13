@@ -1,33 +1,35 @@
 import classes from "./achievement-list.module.css";
 import Achievement from "../achievement/achievement";
 import { AllIcon } from "@ft-transcendence/libs-frontend-components";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "@ft-transcendence/libs-frontend-services"
-import { UserDto, AchievementDto } from "@ft-transcendence/libs-shared-types";
+import { AuthReq, User } from "@ft-transcendence/libs-frontend-services"
+import { AchievementDto } from "@ft-transcendence/libs-shared-types";
 
 export function AchievementList() {
   const [user_achievement_ID, setUserAchievement] = useState<AchievementDto[]>(undefined);
   const [achievement_ID, setAchievement] = useState<AchievementDto[]>(undefined);
   const navigate = useNavigate();
 
-  const getAnswer = async () => {
+  const getAnswer = useCallback(async () => {
     try {
       await User.updateUserAchievement();
-      const response_user: AchievementDto[] = await User.requestUserAchievement();
+      const user = AuthReq.getCurrentUser();
+      const response_user: AchievementDto[] = await User.requestUserAchievement(user.name);
       setUserAchievement(response_user);
-      const response_achievement: AchievementDto[] = await User.requestUserAchievement();
+      const response_achievement: AchievementDto[] = await User.requestAchievement();
+      console.log(response_achievement);
       setAchievement(response_achievement);
     } catch (err) {
       navigate("/error");
       window.location.reload();
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     getAnswer();
-  }, []);
+  }, [getAnswer]);
 
   return !achievement_ID ? null :(
     <div className={classes["achievement_container"]}>
