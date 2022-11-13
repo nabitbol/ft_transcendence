@@ -10,7 +10,7 @@ WORKDIR ${NX_CONTAINER_FILES_PATH}
 COPY . .
 
 # Install npm latest version
-RUN npm install npm@latest -g
+RUN npm install npm@latest
 
 # Install dependencies
 RUN npm install
