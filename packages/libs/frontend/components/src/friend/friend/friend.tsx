@@ -1,5 +1,4 @@
 import classes from "./friend.module.css";
-import starsClasses from "../../stars.module.css";
 import { getPathToImage } from "@ft-transcendence/libs-shared-get-config";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 import { User } from "@ft-transcendence/libs-frontend-services";
@@ -15,10 +14,6 @@ export function Friend(props: { user: UserDto }) {
 
   return (
     <div className={classes['div']}>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars1"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars2"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars3"]}`}></div>
-      <div className={`${starsClasses["space"]} ${starsClasses["stars4"]}`}></div>
       <img
         src={getPathToImage(props.user.image)}
         height="60"
