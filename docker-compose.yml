@@ -2,14 +2,63 @@ version: "3"
 
 services:
   postgres:
-    container_name: postgres
+    container_name: ${DB_NAME}
     image: postgres:12.3-alpine
     restart: always
-    env_file: .env
-    ports:
-      - 5432:5432
+    env_file: ./.env
+    networks:
+      - backend-postgres
+    expose:
+      - 5432
     volumes:
-      - postgres:/var/home/noam/Documents/web/todo.app/postgresql/data
+      - postgres:/var/lib/postgresql/data
+
+  frontend:
+    env_file:
+      - .env
+    hostname: ${NX_HOST_NAME}
+    restart: always
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    command: npx nx serve apps-frontend --host=${CONTAINER_HOST} --port=${NX_FRONTEND_PORT}
+    ports:
+      - ${NX_FRONTEND_PORT}:${NX_FRONTEND_PORT}
+    networks:
+      - backend-frontend
+    volumes:
+      - images:${NX_CONTAINER_FILES_PATH}/assets/img
+
+  backend:
+    env_file:
+      - .env
+    hostname: ${NX_HOST_NAME}
+    restart: always
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    command: npm run backend:migrate:start --host=${CONTAINER_HOST} --port=${NX_BACKEND_PORT}
+    ports:
+      - ${NX_BACKEND_PORT}:${NX_BACKEND_PORT}
+      - ${NX_SOCKET_CHAT}:${NX_SOCKET_CHAT}
+      - ${NX_SOCKET_GAME}:${NX_SOCKET_GAME}
+    networks:
+      - backend-postgres
+      - backend-frontend
+    volumes:
+      - images:${NX_CONTAINER_FILES_PATH}/assets/img:rw
+
+networks:
+  backend-postgres:
+    external: false
+  backend-frontend:
+    external: false
 
 volumes:
   postgres:
+  images:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME_PATH}/assets/img

@@ -1,3 +1,3 @@
 export const jwtConstants = {
-	secret: "balbal", //needs to be secret
+	secret: process.env.NX_JWT_SECRET ||"default", //needs to be secret
   };

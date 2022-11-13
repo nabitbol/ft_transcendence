@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "../auth-header/auth-header";
 import { UserDto } from "@ft-transcendence/libs-shared-types";
 
-const URL = "http://localhost:3333/"; //process.env['REACT_APP_URL_TO_BACK'] ;
+const URL = `http://${process.env['NX_HOST_NAME']}:${process.env['NX_BACKEND_PORT']}/`; //process.env['REACT_APP_URL_TO_BACK'] ;
 
 class SocketService {
   async requestRoomUsers(nameRoom: string): Promise<UserDto[]> {

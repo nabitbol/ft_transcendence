@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  nx-app-base:
+    env_file:
+      - .env
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NX_CONTAINER_FILES_PATH=${NX_CONTAINER_FILES_PATH}

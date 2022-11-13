@@ -9,7 +9,6 @@ import { GameData, MatchDto } from "@ft-transcendence/libs-shared-types";
 
 function Game() {
   //Setup variable
-  console.log("In RENDER game");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isResultOn, setIsResultOn] = useState<MatchDto>(undefined);
   //const [width, height] = useWindowSize();
@@ -49,12 +48,10 @@ function Game() {
   };
 
   const listenerGameEnd = (result: MatchDto) => {
-    console.log(result);
     setIsResultOn(result);
   };
 
   useEffect(() => {
-    console.log("In useEffect game");
 
     socket.on("server.gameinfo", listenerGameInfo);
     socket.on("server.gameend", listenerGameEnd);
@@ -64,7 +61,6 @@ function Game() {
 
     const drawHeader = (function () {
       let executed = false;
-      console.log("FIRST TIME");
       return function (gameInfo: GameData) {
         if (!executed) {
           executed = true;
@@ -80,7 +76,6 @@ function Game() {
 
     async function draw(box: boxDimensions, gameInfo: GameData) {
       if (context != null && gameInfo) {
-        console.log("FRONT");
         context.clearRect(
           box.box_x + box.box_border_width / 2,
           box.box_y + box.box_border_width / 2,

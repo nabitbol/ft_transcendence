@@ -26,7 +26,6 @@ export class Lobby
 
   public addClient(client: Socket): void
   {
-    console.log("Client " + client.id +" join: " + this.id);
     this.clients.set(client.id, client);
     client.join(this.id);
     client.data.lobby = this;
@@ -36,7 +35,6 @@ export class Lobby
       this.players_name.left = client.data.user.name;
     else
       this.players_name.right = client.data.user.name;
-    console.log(this.players_name);
     if (this.clients.size >= 2) {
       this.gameInstance.startGame(this.players_name);
     }
@@ -44,9 +42,7 @@ export class Lobby
 
   public addSpectator(client: Socket): void
   {
-    console.log("Add spectator to lobby");
     this.clients_spectator.set(client.id, client);
-    console.log("Client " + client.id +" join: " + this.id);
     client.join(this.id);
   }
 
@@ -57,7 +53,6 @@ export class Lobby
     this.gameInstance.endGame();
     await this.gameInstance.delay(2000);
     for (const [clientId, client] of this.clients) {
-        console.log("Removed client from lobby");
         this.clients.delete(client.id);
         client.leave(this.id);
         client.data.lobby = null;
