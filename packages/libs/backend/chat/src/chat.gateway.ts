@@ -139,8 +139,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   getUserRoles = async (user: UserDto, rooms: RoomDto[]) => {
     const userRole: string[] = [];
-    for (let i = 0; i < rooms.length; i++) {
-      userRole.push(await this.roomService.getUserSatus(rooms[i].id, user));
+    if (user && rooms) {
+      for (let i = 0; i < rooms.length; i++) {
+        userRole.push(await this.roomService.getUserSatus(rooms[i].id, user));
+      }
     }
     return userRole;
   };
