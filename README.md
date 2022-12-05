@@ -78,8 +78,8 @@ We decided to change for a cleaner setup that would greatly improve the maintena
 
 ## Quick start
 
-> Create a .env file at the root of the repository.
-> Copy the content of template_env.txt located in the notes directory.
+Create a .env file at the root of the repository.
+Copy the content of template_env.txt located in the notes directory.
 
 The environnement variable NX_HOST_NAME and HOME_PATH are mandatory and should be filled with the following:
 - HOME_PATH: the path of this repository, use pwd.
