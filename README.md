@@ -18,8 +18,8 @@ This project is about creating a website for the mighty Pong contest!
 		- [Github project :](#github-project-)
 		- [Review :](#review-)
 		- [Monorepo :](#monorepo-)
-		- [Conception :](#conception-)
-		- [Implementation :](#implementation-)
+		- [Conception :](#conception)
+		- [Implementation :](#implementation)
 	- [Contributors](#contributors)
 
 ## Project description
