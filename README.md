@@ -112,7 +112,7 @@ Check the logger in the backend container for precise informations.
 - We decided to use github kanban board to create task and be more efficient with the repartition of the work.
 
 ### Conventional commit :
-- We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/
+- We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Review :
 - We protected the main branch and used mandatory review to keep clean code at all time.
