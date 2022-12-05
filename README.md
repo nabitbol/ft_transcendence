@@ -26,7 +26,7 @@ This project is about creating a website for the mighty Pong contest!
 
 This is the final project of the 42_cursus. 
 
-The aim of this project is to create a SPA (more informations about Single Page Application: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
+The aim of this project is to create a SPA (more informations about Single Page Application here: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
 
 This is a fullstack typescript project, with 2fa auth, jwt access token and much more !
 
@@ -109,17 +109,17 @@ Check the logger in the backend container for precise informations.
 - We decided to use github kanban board to create task and be more efficient with the repartition of the work.
 
 ### Conventional commit :
-- We used conventional commits for clarity and manageability. (more informations about conventional commits: https://www.conventionalcommits.org/en/v1.0.0/
+- We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/
 
 ### Review :
 - We protected the main branch and used mandatory review to keep clean code at all time.
 
 ### Monorepo :
-- We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos: https://monorepo.tools/)
+- We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos here: https://monorepo.tools/)
 
 ### Conception :
 
-- We started by designing our relationnal database using dbdiagram (https://dbdiagram.io/home)
+- We started by designing our relationnal database using dbdiagram (more informations about dbdiagram here: https://dbdiagram.io/home)
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
 
