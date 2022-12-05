@@ -18,7 +18,7 @@ This project is about creating a website for the mighty Pong contest!
 		- [Github project :](#github-project-)
 		- [Review :](#review-)
 		- [Monorepo :](#monorepo-)
-		- [Conception and design :](#Conception and design-)
+		- [Conception :](#conception-)
 		- [Implementation :](#implementation-)
 	- [Contributors](#contributors)
 
@@ -117,7 +117,7 @@ Check the logger in the backend container for precise informations.
 ### Monorepo :
 - We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos: https://monorepo.tools/)
 
-### Conception and design :
+### Conception :
 
 - We started by designing our relationnal database using dbdiagram (https://dbdiagram.io/home)
 
