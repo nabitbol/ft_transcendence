@@ -21,7 +21,7 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    command: npx nx serve apps-frontend --host=${NX_HOST_NAME} --port=${NX_FRONTEND_PORT}
+    command: npx nx serve apps-frontend --host=${CONTAINER_HOST} --port=${NX_FRONTEND_PORT}
     ports:
       - ${NX_FRONTEND_PORT}:${NX_FRONTEND_PORT}
     networks:
