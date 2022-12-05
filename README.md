@@ -18,21 +18,27 @@ This project is about creating a website for the mighty Pong contest!
 		- [Github project :](#github-project-)
 		- [Review :](#review-)
 		- [Monorepo :](#monorepo-)
-		- [Conception :](#conception-)
-		- [Implementation :](#implementation-)
+		- [Conception :](#conception)
+		- [Implementation :](#implementation)
 	- [Contributors](#contributors)
 
 ## Project description
 
 This is the final project of the 42_cursus. 
 
-The aim of the project is to create a SPA (single page application for more informations check this: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
+The aim of this project is to create a SPA. (more informations about Single Page Application here: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
 
-Where you can register using your 42 account and play to the game pong online.
+This is a fullstack typescript project, with 2fa auth, jwt access token and much more !
 
-Also you must have the ability to chat with others add users as friends, check there profile etc...
+The goal of the project is to have people play a pong game live simultaneously. 
 
-Everything based on a fullstack typescript.
+The client is able to:
+ - Create an account or connect with his 42 credentials
+ - Chat with others users, add them as friends
+ - Check their profile
+ - Unlock new exciting achievement
+ - and forth...
+
 
 ## Stack
 
@@ -45,6 +51,8 @@ Everything based on a fullstack typescript.
   - Eslint (Lint the code)
   - PostgreSQL (database)
   - Docker/Docker-compose (Automate deployement)
+
+We decided to change for a cleaner setup that would greatly improve the maintenance of the project.
 
 - Second set up
   - Nx (For monorepository)
@@ -70,7 +78,17 @@ Everything based on a fullstack typescript.
 
 ## Quick start
 
-> Create a .env file a the root of the repo you can copy the template_env.txt located in the notes directory. You can run the project without: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET set. But the connection with 42 won't work.
+Create a .env file at the root of the repository.
+
+Copy the content of template_env.txt located in the notes directory.
+
+The environnement variable NX_HOST_NAME and HOME_PATH are mandatory and should be filled with the following:
+- HOME_PATH: the path of this repository, use pwd.
+- NX_HOST_NAME: localhost or 0.0.0.0.
+
+You will be missing a few variables that are client related such as: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET. The application will still work fine, but the connection with 42 won't work. If you want 42 api connexion to work, you will need to create an application on 42 intra and copy the credentials in .env.
+
+When the .env file is done, you can launch the application:
 
 ```bash
 docker-compose up -d --build
@@ -81,43 +99,50 @@ docker-compose up -d --build
 > To get the api documentation go on `http://${hostname}:${port}/doc`
 Check the logger in the backend container for precise informations.
 
-> If your port is already in use do not panic, simply use Scan port: `lsof -i -P -n | grep ${port}` to check wich process use it and use `kill -9 process_id` to kill the process. Or just change the port in the .env file.
+> If your port is already in use do not panic, simply use Scan port: `lsof -i -P -n | grep ${port}` to check which process uses it and use `kill -9 process_id` to kill the process. You can also change the port in the .env file.
 
-> To fix the syncronization with the 2fa use `hwclock -s`
+> Sometime your computer time could be unsynchronized and this can lead to some issues regarding the validity of the 2fa qr code. To fix this problem use `hwclock -s`.
 
-> You can use a databse manager like DBeaver to connect to the database and check the content of your entites.
+> You can use a database manager like DBeaver to connect to the database and check table creation or the content of your entities.
 
 
 ## Our approach
 
 ### Github project :
-- To get a better efficienty in the group we decided to use a kanban board.
+- We decided to use github kanban board to create task and be more efficient with the repartition of the work.
+
+### Conventional commit :
+- We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Review :
-- To get a better worflow we set review and protected the main branch.
+- We protected the main branch and used mandatory review to keep clean code at all time.
 
 ### Monorepo :
-- We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more info about monorepos in : https://monorepo.tools/)
+- We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos here: https://monorepo.tools/)
 
-### Conception :
+## Conception
 
-- We started by designing our relationnal databse using dbdiagram (https://dbdiagram.io/home)
+- We started by designing our relationnal database using dbdiagram. (more informations about dbdiagram here: https://dbdiagram.io/home)
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
 
-- After we created the feature list
+- Then we listed all the feature that the application needed to have:
 
 ![Feature_list image](./assets/notes.assets/project.visualisation.assets/feature_list.png)
 
-- We created a wireframe too, you can find it in the notes.assets
+- Using the feature list, we defined the flow of the application:
 
-### Implementation :
+![webflow image](./assets/notes.assets/project.visualisation.assets/webflow.png)
 
-- We used swagger to create a documentation of the api protected by a jwt acess token.
+- Finally we designed each page with a wireframe, you can find it in assets/notes.assets/project.visualisation.assets/.
+
+## Implementation
+
+- We used swagger to create a documentation of the api, it can use jwt access token.
 
 ![Feature_list image](./assets/notes.assets/project.visualisation.assets/swagger_doc.png)
 
-- We used the Nx graph to get a good overview of our project.
+- We used Nx graph to get a good overview of our project.
   
 ![dependencies graph image](./assets/notes.assets/project.visualisation.assets/dependencies_graph.png)
 
