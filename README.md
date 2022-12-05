@@ -83,7 +83,7 @@ Create a .env file at the root of the repository.
 Copy the content of template_env.txt located in the notes directory.
 
 The environnement variable NX_HOST_NAME and HOME_PATH are mandatory and should be filled with the following:
-- HOME_PATH: the path of this repository, use ```bash pwd```.
+- HOME_PATH: the path of this repository, use pwd.
 - NX_HOST_NAME: localhost or 0.0.0.0.
 
 You will be missing a few variables that are client related such as: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET. The application will still work fine, but the connection with 42 won't work. If you want 42 api connexion to work, you will need to create an application on 42 intra and copy the credentials in .env.
