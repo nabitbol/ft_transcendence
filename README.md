@@ -120,7 +120,7 @@ Check the logger in the backend container for precise informations.
 ### Monorepo :
 - We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos here: https://monorepo.tools/)
 
-### Conception :
+## Conception :
 
 - We started by designing our relationnal database using dbdiagram. (more informations about dbdiagram here: https://dbdiagram.io/home)
 
@@ -136,7 +136,7 @@ Check the logger in the backend container for precise informations.
 
 - Finally we designed each page with a wireframe, you can find it in assets/notes.assets/project.visualisation.assets/.
 
-### Implementation :
+## Implementation :
 
 - We used swagger to create a documentation of the api, it can use jwt access token.
 
