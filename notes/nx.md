@@ -29,6 +29,16 @@ Below are our core plugins:
 
 There are also many [community plugins](https://nx.dev/community) you could add.
 
+### Add a nest lib
+
+> use: ` npx nx generate @nrwl/nest:lib lib-name --Options`
+> Example of options could be --controller or --service
+
+### Add a react component
+
+> use: `npx nx g component component-name --project=project-name --directory=directory-name`
+> Example of command coould be: npx nx g component playButton --project=pages --directory=home
+
 ## Generate an application
 
 Run `nx g @nrwl/react:app my-app` to generate an application.

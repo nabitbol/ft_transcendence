@@ -1,74 +1,128 @@
 # ft_transcendence
 
-This project is about creating a website for the mighty Pong contest! 
+This project is about creating a website for the mighty Pong contest!
 
-## Overview
+![ft_transcendenc](./assets/notes.assets/transcendence_welcome_page.gif)
 
-## Run Data Base
+## Table of contents
+- [ft\_transcendence](#ft_transcendence)
+	- [Table of contents](#table-of-contents)
+	- [Project description](#project-description)
+	- [Stack](#stack)
+		- [Tooling](#tooling)
+		- [Frontend](#frontend)
+		- [Backend](#backend)
+	- [Quick start](#quick-start)
+		- [Tips and tricks](#tips-and-tricks)
+	- [Our approach](#our-approach)
+		- [Github project :](#github-project-)
+		- [Review :](#review-)
+		- [Monorepo :](#monorepo-)
+		- [Conception :](#conception-)
+		- [Implementation :](#implementation-)
+	- [Contributors](#contributors)
+
+## Project description
+
+This is the final project of the 42_cursus. 
+
+The aim of the project is to create a SPA (single page application for more informations check this: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
+
+Where you can register using your 42 account and play to the game pong online.
+
+Also you must have the ability to chat with others add users as friends, check there profile etc...
+
+Everything based on a fullstack typescript.
+
+## Stack
+
+### Tooling
+
+- First set up
+  - Yarn Workspace (For monorepository)
+  - Husky (For precommit hooks check code coverage + lint code)
+  - Jest (Test the code)
+  - Eslint (Lint the code)
+  - PostgreSQL (database)
+  - Docker/Docker-compose (Automate deployement)
+
+- Second set up
+  - Nx (For monorepository)
+  - Swagger (Documentation for the Api)
+  - Eslint (Lint the code)
+  - Jest (Test the code)
+  - PostgreSQL (database)
+  - Docker/Docker-compose (Automate deployement)
+
+### Frontend
+
+- React
+- Css modules
+- Typescript
+- Websockets
+
+### Backend
+
+- Nestjs
+- Prisma
+- Open APi
+- Websockets
+
+## Quick start
+
+> Create a .env file a the root of the repo you can copy the template_env.txt located in the notes directory. You can run the project without: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET set. But the connection with 42 won't work.
 
 ```bash
-sudo docker-compose -f docker-compose.yml up -d --build
+docker-compose up -d --build
 ```
 
-### Run the backend
+### Tips and tricks
 
-```bash
-npx nx serve backend
-```
+> To get the api documentation go on `http://${hostname}:${port}/doc`
+Check the logger in the backend container for precise informations.
 
-### Run the frontend
+> If your port is already in use do not panic, simply use Scan port: `lsof -i -P -n | grep ${port}` to check wich process use it and use `kill -9 process_id` to kill the process. Or just change the port in the .env file.
 
-```bash
-npx nx serve frontend
-```
-### Get API doc
+> To fix the syncronization with the 2fa use `hwclock -s`
 
-> serve the backend then got to hostname:port/doc check the backend
-> logger for precise informations
+> You can use a databse manager like DBeaver to connect to the database and check the content of your entites.
 
-## About the set up
 
-> the project use a monorepo system based on nx for more information check nx.md in notes.
+## Our approach
 
-### Add a nest lib
+### Github project :
+- To get a better efficienty in the group we decided to use a kanban board.
 
-> use: ` npx nx generate @nrwl/nest:lib lib-name --Options`
-> Example of options could be --controller or --service
+### Review :
+- To get a better worflow we set review and protected the main branch.
 
-### Add a react component
+### Monorepo :
+- We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more info about monorepos in : https://monorepo.tools/)
 
-> use: `npx nx g component component-name --project=project-name --directory=directory-name`
-> Example of command coould be: npx nx g component playButton --project=pages --directory=home
+### Conception :
 
-## About Prisma
-
-### Connection
-
-> To connect to the postgresql database you have to provid an database url in the .env
-> respecting this standrad : (One exemple is provided in template_env.md)
-> **postgresql://USER:PASSWORD@HOST:PORT/DATABASE?KEY1=VALUE&KEY2=VALUE&KEY3=VALUE**
-` check this like form more information https://www.prisma.io/docs/concepts/database-connectors/postgresql`
-
-### Migration
-
-> To deploy your application you have to migrate to the last version of the database
-> use: `npx prisma migrate dev` (for developpement)
-
-### Data visualisation
-
-> To check the database content
-> use: `npx prisma studio`
-
-## Data Base
+- We started by designing our relationnal databse using dbdiagram (https://dbdiagram.io/home)
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
 
-## Fix sync for 2fa
+- After we created the feature list
 
-```bash
-sudo hwclock -s
-```
+![Feature_list image](./assets/notes.assets/project.visualisation.assets/feature_list.png)
 
-## Port already in use
-> Scan port: `netstat -lnp | grep 4200`
-> Kill process: `kill -9 process_id`
+- We created a wireframe too, you can find it in the notes.assets
+
+### Implementation :
+
+- We used swagger to create a documentation of the api protected by a jwt acess token.
+
+![Feature_list image](./assets/notes.assets/project.visualisation.assets/swagger_doc.png)
+
+- We used the Nx graph to get a good overview of our project.
+  
+![dependencies graph image](./assets/notes.assets/project.visualisation.assets/dependencies_graph.png)
+
+## Contributors
+
+<a href="https://github.com/nabitbol/ft_transcendence/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=nabitbol/ft_transcendence" />
+</a>
