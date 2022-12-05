@@ -26,7 +26,7 @@ This project is about creating a website for the mighty Pong contest!
 
 This is the final project of the 42_cursus. 
 
-The aim of this project is to create a SPA (more informations about Single Page Application here: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
+The aim of this project is to create a SPA. (more informations about Single Page Application here: https://developer.mozilla.org/en-US/docs/Glossary/SPA).
 
 This is a fullstack typescript project, with 2fa auth, jwt access token and much more !
 
@@ -119,7 +119,7 @@ Check the logger in the backend container for precise informations.
 
 ### Conception :
 
-- We started by designing our relationnal database using dbdiagram (more informations about dbdiagram here: https://dbdiagram.io/home)
+- We started by designing our relationnal database using dbdiagram. (more informations about dbdiagram here: https://dbdiagram.io/home)
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
 
