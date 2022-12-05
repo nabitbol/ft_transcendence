@@ -7,7 +7,7 @@ This project is about creating a website for the mighty Pong contest!
 ## Table of contents
 - [ft\_transcendence](#ft_transcendence)
 	- [Table of contents](#table-of-contents)
-	- [Project description](#project-description)
+	- [Project goal](#project-goal)
 	- [Stack](#stack)
 		- [Tooling](#tooling)
 		- [Frontend](#frontend)
@@ -22,7 +22,7 @@ This project is about creating a website for the mighty Pong contest!
 		- [Implementation :](#implementation-)
 	- [Contributors](#contributors)
 
-## Project description
+## Project goal
 
 This is the final project of the 42_cursus. 
 
