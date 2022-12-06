@@ -114,24 +114,24 @@ Check the logger in the backend container for precise informations.
 ## Our approach
 
 ### Github project :
-- We decided to use github kanban board to create task and be more efficient with the repartition of the work.
+- The use of github kanban board allowed us to create task and be more efficient with the repartition of the work.
 
 ### Conventional commit :
 - We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Review :
-- We protected the main branch and used mandatory review to keep clean code at all time.
+- Our main branch is protected and we implemented mandatory review to keep clean code at all time.
 
 ### Monorepo :
 - We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos here: https://monorepo.tools/)
 
 ## Conception
 
-- We started by designing our relationnal database using dbdiagram. (more informations about dbdiagram here: https://dbdiagram.io/home)
+- Firstly we designed our relationnal database using dbdiagram. (more informations about dbdiagram here: https://dbdiagram.io/home)
 
 ![database image](./assets/notes.assets/project.visualisation.assets/database.png)
 
-- Then we listed all the feature that the application needed to have:
+- Then we listed all the feature that the application needed to have, it helped us to create task on the kanban:
 
 ![Feature_list image](./assets/notes.assets/project.visualisation.assets/feature_list.png)
 
@@ -139,7 +139,7 @@ Check the logger in the backend container for precise informations.
 
 ![webflow image](./assets/notes.assets/project.visualisation.assets/webflow.png)
 
-- Finally we designed each page with a wireframe, you can find it in assets/notes.assets/project.visualisation.assets/.
+- Finally we designed each page with a wireframe using the flow as a reference, you can find it in assets/notes.assets/project.visualisation.assets/.
 
 ## Implementation
 
