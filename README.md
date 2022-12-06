@@ -87,7 +87,7 @@ The environnement variable NX_HOST_NAME and HOME_PATH are mandatory and should b
 - HOME_PATH: the path of this repository, use pwd.
 - NX_HOST_NAME: localhost or 0.0.0.0.
 
-You will be missing a few variables that are client related such as: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET. The application will still work fine, but the connection with 42 won't work. If you want 42 api connexion to work, you will need to create an application on 42 intra and copy the credentials in .env.
+You will be missing a few variables that are client related such as: NX_API_URL, NX_CLIENT_ID and NX_CLIENT_SECRET. The application will still work fine, but the connexion with 42 won't work. If you want 42 api connexion to work, you will need to create an application on 42 intra and copy the credentials in .env.
 
 When the .env file is done, you can launch the application:
 
@@ -106,10 +106,7 @@ Check the logger in the backend container for precise informations.
 
 > You can use a database manager like DBeaver to connect to the database and check table creation or the content of your entities.
 
-> If you have no space left on device, its probably because of docker images. You can launch our script to make some space :
-> ```bash
-> bash clean.sh
-> ```
+> If you have no space left on device, its probably because of docker images. You can launch our script to make some space : `bash clean.sh`
 
 ## Our approach
 
