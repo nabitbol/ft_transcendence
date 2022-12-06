@@ -15,11 +15,12 @@ This project is about creating a website for the mighty Pong contest!
 	- [Quick start](#quick-start)
 		- [Tips and tricks](#tips-and-tricks)
 	- [Our approach](#our-approach)
-		- [Github project :](#github-project-)
-		- [Review :](#review-)
-		- [Monorepo :](#monorepo-)
-		- [Conception :](#conception)
-		- [Implementation :](#implementation)
+		- [Github project](#github-project)
+		- [Conventional commit](#conventional-commit)
+		- [Review](#review)
+		- [Monorepo](#monorepo)
+	- [Conception](#conception)
+	- [Implementation](#implementation)
 	- [Contributors](#contributors)
 
 ## Project description
@@ -110,16 +111,20 @@ Check the logger in the backend container for precise informations.
 
 ## Our approach
 
-### Github project :
+### Github project
+
 - The use of github kanban board allowed us to create task and be more efficient with the repartition of the work.
 
-### Conventional commit :
+### Conventional commit
+
 - We used conventional commits for clarity and manageability. (more informations about conventional commits here: https://www.conventionalcommits.org/en/v1.0.0/)
 
-### Review :
+### Review
+
 - Our main branch is protected and we implemented mandatory review to keep clean code at all time.
 
-### Monorepo :
+### Monorepo
+
 - We also decided to use a monorepo to increase our developping speed and avoid boilerplate code. (more informations about monorepos here: https://monorepo.tools/)
 
 ## Conception
