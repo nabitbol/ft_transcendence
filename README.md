@@ -35,8 +35,8 @@ The goal of the project is to have people play a pong game live simultaneously.
 The client is able to:
  - Create an account or connect with his 42 credentials
  - Chat with others users, add them as friends
- - Check their profile
- - Unlock new exciting achievement
+ - Play with friends or random people
+ - Climb the ladder and unlock new exciting achievement
  - and forth...
 
 
@@ -61,6 +61,7 @@ We decided to change for a cleaner setup that would greatly improve the maintena
   - Jest (Test the code)
   - PostgreSQL (database)
   - Docker/Docker-compose (Automate deployement)
+  - Workspaces (Ease the import of package)
 
 ### Frontend
 
@@ -99,12 +100,16 @@ docker-compose up -d --build
 > To get the api documentation go on `http://${hostname}:${port}/doc`
 Check the logger in the backend container for precise informations.
 
-> If your port is already in use do not panic, simply use Scan port: `lsof -i -P -n | grep ${port}` to check which process uses it and use `kill -9 process_id` to kill the process. You can also change the port in the .env file.
+> If your port is already in use do not panic, simply use scan port: `lsof -i -P -n | grep ${port}` to check which process uses it and use `kill -9 process_id` to kill the process. You can also change the port in the .env file.
 
 > Sometime your computer time could be unsynchronized and this can lead to some issues regarding the validity of the 2fa qr code. To fix this problem use `hwclock -s`.
 
 > You can use a database manager like DBeaver to connect to the database and check table creation or the content of your entities.
 
+> If you have no space left on device, its probably because of docker images. You can launch our script to make some space :
+> ```bash
+> bash clean.sh
+> ```
 
 ## Our approach
 
@@ -138,7 +143,7 @@ Check the logger in the backend container for precise informations.
 
 ## Implementation
 
-- We used swagger to create a documentation of the api, it can use jwt access token.
+- We used swagger to create a documentation of the api, it can use jwt access token to make authentified request.
 
 ![Feature_list image](./assets/notes.assets/project.visualisation.assets/swagger_doc.png)
 
